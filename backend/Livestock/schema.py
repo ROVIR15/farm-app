@@ -5,7 +5,7 @@ class InfoSchema(Schema):
   sled_id = fields.Int(allow_none=True)
 
 class LivestockSchema(Schema):
-    id = fields.Int(dump_only=True)
+    id = fields.Int(primary_key=True, dump_only=True)
     name = fields.Str(required=True)
     gender = fields.Int(required=True)
     bangsa = fields.Str(required=True)
