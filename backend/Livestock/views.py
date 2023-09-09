@@ -70,7 +70,7 @@ def post_livestock():
         # Create a response JSON
         response = {
             'status': 'success',
-            'message': f'Hello, {name}! Your message "{message}" has been received.'
+            'message': f'Hello, {name}! Your message has been received.'
         }
 
         return jsonify(response), 200
