@@ -11,6 +11,7 @@ from Feature.views import views_feature_bp
 
 from Record.BCSRecord.views import views_bcs_record_bp
 from Record.WeightRecord.views import views_weight_record_bp
+from Record.HealthRecord.views import views_health_record_bp
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:kucing%401@localhost:5432/'
@@ -42,6 +43,7 @@ app.register_blueprint(views_bcs_record_bp)
 # 8. Weight Record
 app.register_blueprint(views_weight_record_bp)
 # 9. Health Record
+app.register_blueprint(views_health_record_bp)
 
 
 # app.register_blueprint(views_bp)

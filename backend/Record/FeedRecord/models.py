@@ -3,15 +3,16 @@ from sqlalchemy import func
 from datetime import datetime
 
 
-class HealthRecord(db.Model):
-    __tablename__ = "health_record"
+class FeedRecord(db.Model):
+    __tablename__ = "consumption_record"
 
     id = db.Column(db.Integer(), primary_key=True)
-    livestock_id = db.Column(db.Integer(), db.ForeignKey(
+    food_category = db.Column(db.Integer(), nullable=False)
+    block_area_id = db.Column(db.Integer(), db.ForeignKey(
         'livestock.id'), nullable=False)
+    sku_id = db.Column(db.Integer(), db.ForeignKey(
+        'sku.id'), nullable=False)
     date = db.Column(db.Date(), nullable=False)
-    disease_type = db.Column(db.Integer(), nullable=False)
-    treatment_methods = db.Column(db.Text(), nullable=False)
     remarks = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
