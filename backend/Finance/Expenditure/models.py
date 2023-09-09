@@ -1,7 +1,7 @@
 from db import db
 from utils.index import CustomDateTimeField
 
-class BudgetItem (db.Model):
+class Expenditure (db.Model):
     __tablename__ = "Expenditure"
 
     id = db.Column(db.Integer(), primary_key=True)
@@ -11,3 +11,6 @@ class BudgetItem (db.Model):
     amount = db.Column(db.Float(), nullable=False)
     description = db.Column(db.Text(), nullable=False)
     created_at = CustomDateTimeField()
+
+    def __repr__(self):
+        return f'<Expenditure {self.name}>'

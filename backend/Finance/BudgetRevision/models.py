@@ -1,5 +1,5 @@
 from db import db
-from utils.index import CustomDateTimeField
+from datetime import datetime
 
 class BudgetRevision (db.Model):
     __tablename__ = "budget_revision"
@@ -10,4 +10,8 @@ class BudgetRevision (db.Model):
     from_amount = db.Column(db.Float(), nullable=False)
     to_amount = db.Column(db.Float(), nullable=False)
     notes = db.Column(db.Text(), nullable=False)
-    created_at = CustomDateTimeField()
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<BudgetRevision {self.name}>'
+    
