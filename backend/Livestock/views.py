@@ -4,7 +4,7 @@ from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
 from Livestock.schema import LivestockSchema
 
-views_bp = Blueprint('views', __name__)
+views_bp = Blueprint('views_livestock', __name__)
 
 livestock_schema = LivestockSchema()
 livestocks_schema = LivestockSchema(many=True)
@@ -13,7 +13,7 @@ livestocks_schema = LivestockSchema(many=True)
 @views_bp.route('/livestocks', methods=['GET'])
 def get_livestocks():
     # Retrieve all livestock records from the database
-    query = Livestock.query.options(subqueryload(Livestock.info)).all()
+    query = Livestock.query.all()
 
     results = []
     # Serialize the livestock data using the schema
@@ -25,11 +25,11 @@ def get_livestocks():
             'bangsa': item.bangsa,
             'descrip tion': item.description,
             'created_at': item.created_at,
-            'updated_at': item.updated_at,
-            'info': {
-                'block_area_id': item.info[0].block_area_id,
-                'sled_id': item.info[0].sled_id
-            }
+        # 'updated_at': item.updated_at,
+            # 'info': {
+            #     'block_area_id': item.info[0].block_area_id,
+            #     'sled_id': item.info[0].sled_id
+            # }
         }
     results.append(data)
     result = livestocks_schema.dump(results)

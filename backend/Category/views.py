@@ -1,68 +1,64 @@
 from db import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy.orm import joinedLoad, subqueryload
-from ConsumptionRecord.models import ConsumptionRecord
-from ConsumptionRecord.schema import ConsumptionRecordSchema
+from sqlalchemy.orm import subqueryload
+from Category.models import Category
+from Category.schema import CategorySchema
 
-views_bp = Blueprint('views', __name__)
+views_category_bp = Blueprint('views_category', __name__)
 
-consumption_record_schema = ConsumptionRecordSchema()
-consumption_records_schema = ConsumptionRecordSchema(many=True)
+category_schema = CategorySchema()
+blocks_area_schema = CategorySchema(many=True)
 
 
-@views_bp.route('/consumption-records', methods=['GET'])
-def get_consumption_records():
+@views_category_bp.route('/categories', methods=['GET'])
+def get_block_areas():
     # Retrieve all livestock records from the database
-    query = ConsumptionRecord.query.all()
+    query = Category.query.all()
 
     results = []
     # Serialize the livestock data using the schema
     for item in query:
         data = {
             'id': item.id,
-            'livestock_id': item.livestock_id,
-            'foods_id': item.foods_id,
-            'consumption_record_id': item.consumption_record_id,
-            'description': item.description,
-            'created_at': item.created_at,
+            'name': item.name,
+            # 'created_at': item.created_at,
         }
-    results.append(data)
-    result = consumption_records_schema.dump(results)
+        results.append(data)
+    result = blocks_area_schema.dump(results)
 
     # Return the serialized data as JSON response
     return jsonify(result)
 
 
-@views_bp.route('/consumption-record/<int:consumption_record_id>', methods=['GET'])
-def get_a_block_area(consumption_record_id):
+@views_category_bp.route('/category/<int:category_id>', methods=['GET'])
+def get_a_block_area(category_id):
     # Retrieve all livestock records from the database
-    query = ConsumptionRecord.query.get(consumption_record_id)
+    query = Category.query.get(category_id)
 
     # Serialize the livestock data using the schema
-    result = consumption_record_schema.dump(query)
+    result = category_schema.dump(query)
 
     # Return the serialized data as JSON response
     return jsonify(result)
 
 
-@views_bp.route('/consumption-record', methods=['POST'])
+@views_category_bp.route('/category', methods=['POST'])
 def post_block_area():
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
-    description = data.get('description')
 
     try:
-        query = ConsumptionRecord(name=name, description=description)
+        query = Category(name=name)
         db.session.add(query)
         db.session.commit()
 
         # Create a response JSON
         response = {
             'status': 'success',
-            'message': f'Hello, {name}! Your message "{message}" has been received.'
+            # 'message': f'Hello, {name}! Your message "{message}" has been received.'
         }
 
         return jsonify(response), 200
@@ -77,9 +73,8 @@ def post_block_area():
 
         return jsonify(response), 500
 
-
-@views_bp.route('/consumption-record/<int:consumption_record_id>', methods=['PUT'])
-def update_block_area(consumption_record_id):
+@views_category_bp.route('/category/<int:category_id>', methods=['PUT'])
+def update_block_area(category_id):
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
@@ -88,7 +83,7 @@ def update_block_area(consumption_record_id):
     description = data.get('description')
 
     # Assuming you have a Livestock model and an existing livestock object
-    block_area = ConsumptionRecord.query.get(consumption_record_id)
+    block_area = Category.query.get(category_id)
     if block_area:
         block_area.name = name
         block_area.description = description
@@ -97,33 +92,33 @@ def update_block_area(consumption_record_id):
         # Create a response JSON
         response = {
             'status': 'success',
-            'message': f'Block Area {consumption_record_id} has been updated.'
+            'message': f'Category {category_id} has been updated.'
         }
         return jsonify(response), 200
     else:
         response = {
             'status': 'error',
-            'message': f'Block Area {consumption_record_id} not found.'
+            'message': f'Category {category_id} not found.'
         }
         return jsonify(response), 404
 
 
-@views_bp.route('/consumption-record/<int:consumption_record_id>', methods=['DELETE'])
-def delete_block_area(consumption_record_id):
+@views_category_bp.route('/category/<int:category_id>', methods=['DELETE'])
+def delete_block_area(category_id):
     # Assuming you have a Livestock model and an existing livestock object
-    query = ConsumptionRecord.query.get(consumption_record_id)
+    query = Category.query.get(category_id)
     if query:
         db.session.delete(query)
         db.session.commit()
 
         response = {
             'status': 'success',
-            'message': f'Block Area {consumption_record_id} has been deleted.'
+            'message': f'Category {category_id} has been deleted.'
         }
         return jsonify(response), 200
     else:
         response = {
             'status': 'error',
-            'message': f'Block Area {consumption_record_id} not found.'
+            'message': f'Category {category_id} not found.'
         }
         return jsonify(response), 404

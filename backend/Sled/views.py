@@ -1,16 +1,16 @@
 from db import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy.orm import joinedload, subqueryload
+from sqlalchemy.orm import subqueryload, joinedload
 from Sled.models import Sled
 from Sled.schema import SledSchema
 
-views_bp = Blueprint('views', __name__)
+views_sled_bp = Blueprint('views_sled', __name__)
 
 sled_schema = SledSchema()
 sleds_schema = SledSchema(many=True)
 
 
-@views_bp.route('/sleds', methods=['GET'])
+@views_sled_bp.route('/sleds', methods=['GET'])
 def get_sleds():
     # Retrieve all livestock records from the database
     query = Sled.query.options(subqueryload(Sled.block_area)).all()
@@ -23,23 +23,47 @@ def get_sleds():
             'block_area_id': item.block_area_id,
             'name': item.name,
             'description': item.description,
-            'block_area': {
-                'block_area_id': item.block_area[0].block_area_id,
-                'name': item.block_area[0].name,
-                'description': item.block_area[0].description
-            }
+            'block_area_name': item.block_area.name,
+            'block_area_description': item.block_area.description
         }
-    results.append(data)
+        results.append(data)
     result = sleds_schema.dump(results)
-
     # Return the serialized data as JSON response
     return jsonify(result)
 
+    try:
+        if query:
+            results = []
+            # Serialize the livestock data using the schema
+            for item in query:
+                data = {
+                    'id': item.id,
+                    'block_area_id': item.block_area_id,
+                    'name': item.name,
+                    'description': item.description
+                }
+                results.append(data)
+            result = sleds_schema.dump(results)
 
-@views_bp.route('/sled/<int:sled_id>', methods=['GET'])
+            # Return the serialized data as JSON response
+            return jsonify(result)
+        else:
+            raise ValueError('Error')
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry, Failed to store livestock data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
+
+
+@views_sled_bp.route('/sled/<int:sled_id>', methods=['GET'])
 def get_sled(sled_id):
     # Retrieve all livestock records from the database
-    query = Sled.query.options(subqueryload(Sled.block_area)).all()
+    query = Sled.query.options(subqueryload(Sled.block_area)).get(sled_id)
 
     # Serialize the livestock data using the schema
     result = sled_schema.dump(query)
@@ -48,7 +72,7 @@ def get_sled(sled_id):
     return jsonify(result)
 
 
-@views_bp.route('/sled', methods=['POST'])
+@views_sled_bp.route('/sled', methods=['POST'])
 def post_sled():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -66,8 +90,7 @@ def post_sled():
 
         # Create a response JSON
         response = {
-            'status': 'success',
-            'message': f'Hello, {name}! Your message "{message}" has been received.'
+            'status': 'success'
         }
 
         return jsonify(response), 200
@@ -83,7 +106,7 @@ def post_sled():
         return jsonify(response), 500
 
 
-@views_bp.route('/sled/<int:sled_id>', methods=['PUT'])
+@views_sled_bp.route('/sled/<int:sled_id>', methods=['PUT'])
 def update_sled(sled_id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -115,7 +138,7 @@ def update_sled(sled_id):
         return jsonify(response), 404
 
 
-@views_bp.route('/sled/<int:sled_id>', methods=['DELETE'])
+@views_sled_bp.route('/sled/<int:sled_id>', methods=['DELETE'])
 def delete_sled(sled_id):
     # Assuming you have a Livestock model and an existing livestock object
     sled = Sled.query.get(sled_id)

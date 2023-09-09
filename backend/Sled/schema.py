@@ -6,4 +6,5 @@ class SledSchema(Schema):
     block_area_id = fields.Int(required=True)
     name = fields.Str(required=True)
     description = fields.Str(required=True)
-    block_area = fields.Nested(BlockAreaSchema, allow_none=True)
+    block_area_name = fields.Str(required=True)
+    block_area_description = fields.Str(required=True)

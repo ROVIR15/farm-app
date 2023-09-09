@@ -1,19 +1,19 @@
 from db import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy.orm import joinedLoad, subqueryload
+from sqlalchemy.orm import subqueryload
 from BlockArea.models import BlockArea
 from BlockArea.schema import BlockAreaSchema
 
-views_bp = Blueprint('views', __name__)
+views_block_area_bp = Blueprint('views_block_area', __name__)
 
 block_area_schema = BlockAreaSchema()
 blocks_area_schema = BlockAreaSchema(many=True)
 
 
-@views_bp.route('/block-areas', methods=['GET'])
+@views_block_area_bp.route('/block-areas', methods=['GET'])
 def get_block_areas():
     # Retrieve all livestock records from the database
-    query = BlockArea.query.options(subqueryload(Livestock.info)).all()
+    query = BlockArea.query.options(subqueryload(BlockArea.sleds)).all()
 
     results = []
     # Serialize the livestock data using the schema
@@ -22,19 +22,20 @@ def get_block_areas():
             'id': item.id,
             'name': item.name,
             'description': item.description,
-            'created_at': item.created_at,
+            'sleds': item.sleds
+            # 'created_at': item.created_at,
         }
-    results.append(data)
+        results.append(data)
     result = blocks_area_schema.dump(results)
 
     # Return the serialized data as JSON response
     return jsonify(result)
 
 
-@views_bp.route('/livestock/<int:block_area_id>', methods=['GET'])
+@views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['GET'])
 def get_a_block_area(block_area_id):
     # Retrieve all livestock records from the database
-    query = BlockArea.query.get(block_area_id)
+    query = BlockArea.query.options(subqueryload(BlockArea.sleds)).get(block_area_id)
 
     # Serialize the livestock data using the schema
     result = block_area_schema.dump(query)
@@ -43,7 +44,7 @@ def get_a_block_area(block_area_id):
     return jsonify(result)
 
 
-@views_bp.route('/block-area', methods=['POST'])
+@views_block_area_bp.route('/block-area', methods=['POST'])
 def post_block_area():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -60,7 +61,7 @@ def post_block_area():
         # Create a response JSON
         response = {
             'status': 'success',
-            'message': f'Hello, {name}! Your message "{message}" has been received.'
+            # 'message': f'Hello, {name}! Your message "{message}" has been received.'
         }
 
         return jsonify(response), 200
@@ -75,7 +76,7 @@ def post_block_area():
 
         return jsonify(response), 500
 
-@views_bp.route('/block-area/<int:block_area_id>', methods=['PUT'])
+@views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['PUT'])
 def update_block_area(block_area_id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -105,12 +106,12 @@ def update_block_area(block_area_id):
         return jsonify(response), 404
 
 
-@views_bp.route('/block-area/<int:block_area_id>', methods=['DELETE'])
+@views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['DELETE'])
 def delete_block_area(block_area_id):
     # Assuming you have a Livestock model and an existing livestock object
-    livestock = BlockArea.query.get(block_area_id)
-    if livestock:
-        db.session.delete(livestock)
+    query = BlockArea.query.get(block_area_id)
+    if query:
+        db.session.delete(query)
         db.session.commit()
 
         response = {

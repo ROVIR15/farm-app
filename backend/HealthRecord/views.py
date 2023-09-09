@@ -1,19 +1,19 @@
 from db import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import joinedLoad, subqueryload
-from ConsumptionRecord.models import ConsumptionRecord
-from ConsumptionRecord.schema import ConsumptionRecordSchema
+from HealthRecord.models import HealthRecord
+from HealthRecord.schema import HealthRecordSchema
 
-views_bp = Blueprint('views', __name__)
+views_health_record_bp = Blueprint('views_health_record', __name__)
 
-consumption_record_schema = ConsumptionRecordSchema()
-consumption_records_schema = ConsumptionRecordSchema(many=True)
+health_record_schema = HealthRecordSchema()
+health_records_schema = HealthRecordSchema(many=True)
 
 
-@views_bp.route('/consumption-records', methods=['GET'])
-def get_consumption_records():
+@views_health_record_bp.route('/health-records', methods=['GET'])
+def get_health_records():
     # Retrieve all livestock records from the database
-    query = ConsumptionRecord.query.all()
+    query = HealthRecord.query.all()
 
     results = []
     # Serialize the livestock data using the schema
@@ -22,7 +22,7 @@ def get_consumption_records():
             'id': item.id,
             'livestock_id': item.livestock_id,
             'foods_id': item.foods_id,
-            'consumption_record_id': item.consumption_record_id,
+            'healt_record_id': item.healt_record_id,
             'description': item.description,
             'created_at': item.created_at,
         }
@@ -33,10 +33,10 @@ def get_consumption_records():
     return jsonify(result)
 
 
-@views_bp.route('/consumption-record/<int:consumption_record_id>', methods=['GET'])
-def get_a_block_area(consumption_record_id):
+@views_health_record_bp.route('/health-record/<int:healt_record_id>', methods=['GET'])
+def get_a_health_record(healt_record_id):
     # Retrieve all livestock records from the database
-    query = ConsumptionRecord.query.get(consumption_record_id)
+    query = HealthRecord.query.get(healt_record_id)
 
     # Serialize the livestock data using the schema
     result = consumption_record_schema.dump(query)
@@ -45,8 +45,8 @@ def get_a_block_area(consumption_record_id):
     return jsonify(result)
 
 
-@views_bp.route('/consumption-record', methods=['POST'])
-def post_block_area():
+@views_health_record_bp.route('/health-record', methods=['POST'])
+def post_health_record():
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
@@ -55,7 +55,7 @@ def post_block_area():
     description = data.get('description')
 
     try:
-        query = ConsumptionRecord(name=name, description=description)
+        query = HealthRecord(name=name, description=description)
         db.session.add(query)
         db.session.commit()
 
@@ -78,8 +78,8 @@ def post_block_area():
         return jsonify(response), 500
 
 
-@views_bp.route('/consumption-record/<int:consumption_record_id>', methods=['PUT'])
-def update_block_area(consumption_record_id):
+@views_health_record_bp.route('/health-record/<int:healt_record_id>', methods=['PUT'])
+def update_health_record(healt_record_id):
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
@@ -88,7 +88,7 @@ def update_block_area(consumption_record_id):
     description = data.get('description')
 
     # Assuming you have a Livestock model and an existing livestock object
-    block_area = ConsumptionRecord.query.get(consumption_record_id)
+    block_area = HealthRecord.query.get(healt_record_id)
     if block_area:
         block_area.name = name
         block_area.description = description
@@ -97,33 +97,33 @@ def update_block_area(consumption_record_id):
         # Create a response JSON
         response = {
             'status': 'success',
-            'message': f'Block Area {consumption_record_id} has been updated.'
+            'message': f'Health Record{healt_record_id} has been updated.'
         }
         return jsonify(response), 200
     else:
         response = {
             'status': 'error',
-            'message': f'Block Area {consumption_record_id} not found.'
+            'message': f'Health Record{healt_record_id} not found.'
         }
         return jsonify(response), 404
 
 
-@views_bp.route('/consumption-record/<int:consumption_record_id>', methods=['DELETE'])
-def delete_block_area(consumption_record_id):
+@views_health_record_bp.route('/health-record/<int:healt_record_id>', methods=['DELETE'])
+def delete_health_record(healt_record_id):
     # Assuming you have a Livestock model and an existing livestock object
-    query = ConsumptionRecord.query.get(consumption_record_id)
+    query = HealthRecord.query.get(healt_record_id)
     if query:
         db.session.delete(query)
         db.session.commit()
 
         response = {
             'status': 'success',
-            'message': f'Block Area {consumption_record_id} has been deleted.'
+            'message': f'Health Record{healt_record_id} has been deleted.'
         }
         return jsonify(response), 200
     else:
         response = {
             'status': 'error',
-            'message': f'Block Area {consumption_record_id} not found.'
+            'message': f'Health Record{healt_record_id} not found.'
         }
         return jsonify(response), 404
