@@ -1,6 +1,9 @@
 from db import db
 from flask import Blueprint, request, jsonify
 from User.models import User
+from FarmProfile.models import FarmProfile
+from FarmProfile.models import FarmProfileHasUsers
+
 from flask_login import login_user, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -12,28 +15,60 @@ def register():
     data = request.json
     username = data.get('username')
     password = data.get('password')
+    email = data.get('email')
+
 
     # Check if the username is already taken
-    existing_user = User.query.filter_by(username=username).first()
+    existing_user = User.query.filter([User.username==username, User.email==email]).first()
     if existing_user:
         response = {
             'status': 'success',
-            'message': 'Username already exists. Please choose another.'
+            'message': 'Username or Email already exists. Please choose another.'
         }
         return jsonify(response)
 
     # Hash the password before storing it in the database
     hashed_password = generate_password_hash(password, method='sha256')
 
-    new_user = User(username=username, password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        new_user = User(username=username, password=hashed_password, email=email)
+        db.session.add(new_user)
+        db.session.commit()
 
-    response = {
-        'status': 'success',
-        'message': 'Account created successfully. You can now log in.'
-    }
-    return jsonify(response), 201
+        # Create new farm profile
+        # Get data from request body
+        name = data.get('name')
+        address_one = data.get('address_one')
+        address_two = data.get('address_two')
+        city = data.get('city')
+        province = data.get('province')
+
+        query = FarmProfile(
+            name=name,
+            address_one=address_one,
+            address_two=address_two,
+            city=city,
+            province=province)
+        db.session.add(query)
+        db.session.commit()
+
+        query2 = FarmProfileHasUsers(farm_profile_id=query.id, user_id=new_user.id)
+        db.session.add(query2)
+        db.session.commit()
+
+        response = {
+            'status': 'success',
+            'message': 'Account created successfully. You can now log in.'
+        }
+        return jsonify(response), 201
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error'
+        }
+        return jsonify(response), 500
 
 
 # Login route
