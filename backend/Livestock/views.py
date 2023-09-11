@@ -2,6 +2,7 @@ from db import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
+from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
 from Livestock.schema import LivestockSchema
 
 views_bp = Blueprint('views_livestock', __name__)
@@ -60,11 +61,16 @@ def post_livestock():
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
+    farm_profile_id = data.get('farm_profile_id')
 
     try:
         query = Livestock(name=name, gender=gender,
                           bangsa=bangsa, description=description)
         db.session.add(query)
+        db.session.commit()
+
+        has_livestock = FarmProfileHasLivestock(livestock_id=query.id, farm_profile_id=farm_profile_id)
+        db.session.add(has_livestock)
         db.session.commit()
 
         # Create a response JSON
