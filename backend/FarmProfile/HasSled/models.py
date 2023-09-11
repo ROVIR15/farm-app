@@ -2,7 +2,7 @@ from db import db
 from datetime import datetime
 
 
-class HasBlockArea (db.Model):
+class HasSled (db.Model):
     __tablename__ = 'farm_profile_has_block_area'
 
     id = db.Column(db.Integer(), primary_key=True)
