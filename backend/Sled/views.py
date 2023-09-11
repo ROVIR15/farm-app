@@ -2,6 +2,7 @@ from db import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload, joinedload
 from Sled.models import Sled
+from FarmProfile.HasSled.models import HasSled as FarmProfileHasSled
 from Sled.schema import SledSchema
 
 views_sled_bp = Blueprint('views_sled', __name__)
@@ -81,11 +82,16 @@ def post_sled():
     name = data.get('name')
     description = data.get('description')
     block_area_id = data.get('block_area_id')
+    farm_profile_id = data.get('farm_profile_id')
 
     try:
         query = Sled(name=name, block_area_id=block_area_id,
                      description=description)
         db.session.add(query)
+        db.session.commit()
+
+        has_sled = FarmProfileHasSled(farm_profile_id=farm_profile_id, sled_id=query.id)
+        db.session.add(has_sled)
         db.session.commit()
 
         # Create a response JSON
