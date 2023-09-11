@@ -2,6 +2,7 @@ from db import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload
 from BlockArea.models import BlockArea
+from FarmProfile.HasBlockArea.models import HasBlockArea as FarmProfileHasBlockArea
 from BlockArea.schema import BlockAreaSchema
 
 views_block_area_bp = Blueprint('views_block_area', __name__)
@@ -52,11 +53,14 @@ def post_block_area():
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     description = data.get('description')
-
+    farm_profile_id = data.get('farm_profile_id')
+    
     try:
         query = BlockArea(name=name, description=description)
         db.session.add(query)
         db.session.commit()
+
+        has_block_area = FarmProfileHasBlockArea(block_area_id=query.id, farm_profile_id=farm_profile_id)
 
         # Create a response JSON
         response = {
