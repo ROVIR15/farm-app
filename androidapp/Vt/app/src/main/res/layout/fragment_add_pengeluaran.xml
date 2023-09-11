@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.pengeluaran.add_pengeluaran.AddPengeluaranFragment">
+
+    <include
+        android:id="@+id/app_bar_add_anggaran"
+        layout="@layout/app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Kategori Budget" />
+
+        <Spinner
+            android:id="@+id/sp_kategori_anggaran"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/dropdown_items" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Kategori Produk/Jasa" />
+
+        <Spinner
+            android:id="@+id/sp_kategori_produk_jasa"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/dropdown_items" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Qty" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingHorizontal="12dp"
+                android:text="Harga Barang" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_quatity"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_harga_barang"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical|end"
+                android:paddingHorizontal="12dp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Total" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_total_pengeluaran"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edt_normal"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical|end"
+            android:paddingHorizontal="12dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save_add_budget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_btn_simpan"
+            android:text="Simpan"
+            android:textColor="@color/green_text_button" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

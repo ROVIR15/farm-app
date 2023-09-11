@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <View
+        android:layout_width="48dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_center_line_bottom_sheet" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:padding="8dp"
+        android:text="Tambah History"
+        android:textAlignment="center"
+        android:textColor="@color/text_black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Selamat atas kehamilan livestock Anda, silahkan menambahkan tanggal lahir livestock baru ini."
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_calendar_grey"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_date_picker_history_animal_mating"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_baseline_calendar_24" />
+
+        <TextView
+            android:id="@+id/tv_history_animal_mating_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="Isi Tanggal..."
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_history_animal_mating"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:inputType="textPersonName"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_description_history_animal_mating"
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="top|start"
+        android:hint="Deskripsi"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:scrollHorizontally="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save_animal_mating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_btn_input_product"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Simpan"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_cancel_animal_mating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_error"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Batal"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Pressed state -->
+    <item android:state_pressed="true">
+        <shape>
+            <!-- Define the shape and appearance for the pressed state -->
+            <solid android:color="#FF5722" />
+            <corners android:radius="8dp" /> <!-- Adjust the corner radius as needed -->
+        </shape>
+    </item>
+
+    <!-- Focused state -->
+    <item android:state_focused="true">
+        <shape>
+            <!-- Define the shape and appearance for the focused state -->
+            <solid android:color="#FFC107" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Default state -->
+    <item>
+        <shape>
+            <!-- Define the shape and appearance for the default state -->
+            <solid android:color="#2196F3" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+</selector>

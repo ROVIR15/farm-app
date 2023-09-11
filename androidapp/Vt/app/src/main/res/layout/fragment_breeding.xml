@@ -1,0 +1,315 @@
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:context=".ui.breeding.BreedingFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="vertical"
+        android:overScrollMode="always">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_blue">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title_breeding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:text="Breeding"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="180dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/tv_title_breeding"
+                app:layout_constraintStart_toStartOf="@+id/tv_title_breeding"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_breeding" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_breeding_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/tv_title_breeding"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/bg_profile_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_breeding_subtitle"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_breeding_category_record_weight"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toStartOf="@+id/content_breeding_category_record_health"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/view5"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_breeding_category_record_health"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toStartOf="@+id/content_breeding_category_record_animal_mating"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_weight"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_breeding_category_record_animal_mating"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toStartOf="@+id/view5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_health"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_weight"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_breeding_category_record_weight"
+                app:layout_constraintStart_toStartOf="@+id/content_breeding_category_record_weight"
+                app:layout_constraintTop_toBottomOf="@+id/content_breeding_category_record_weight" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_health"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_breeding_category_record_health"
+                app:layout_constraintStart_toStartOf="@+id/content_breeding_category_record_health"
+                app:layout_constraintTop_toBottomOf="@+id/content_breeding_category_record_health" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_animal_matings"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_breeding_category_record_animal_mating"
+                app:layout_constraintStart_toStartOf="@+id/content_breeding_category_record_animal_mating"
+                app:layout_constraintTop_toBottomOf="@+id/content_breeding_category_record_animal_mating" />
+
+            <LinearLayout
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_calendar_grey"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guideline3">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_date_picker"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_baseline_calendar_24" />
+
+                <TextView
+                    android:id="@+id/tv_breeding_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="Isi Tanggal..."
+                    android:paddingHorizontal="16dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart_breeding"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginVertical="16dp"
+                android:padding="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline4"
+                tools:viewBindingType="com.github.mikephil.charting.charts.LineChart" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="52,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatTextView16"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linechart_breeding" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rata-rata"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView18"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView18"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView18" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="72,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView18"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatTextView17"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/appCompatTextView18"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView18"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="Pertumbuhan"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView16"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView16"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView16" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="+2,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView16"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatTextView19"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/appCompatTextView16"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView16"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rata-rata"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView17"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView17"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView17" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="+22,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView17"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/appCompatTextView17"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView17"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pertumbuhan"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView19"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView19"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView19" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="349dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="417dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

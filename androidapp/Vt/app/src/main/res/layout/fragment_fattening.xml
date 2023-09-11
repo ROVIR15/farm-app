@@ -1,0 +1,341 @@
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:context=".ui.fattening.FatteningFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="vertical"
+        android:overScrollMode="always">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_blue">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/content_home_greeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:text="Fattening"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="180dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/content_home_greeting"
+                app:layout_constraintStart_toStartOf="@+id/content_home_greeting"
+                app:layout_constraintTop_toBottomOf="@+id/content_home_greeting" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/content_fattening_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/content_home_greeting"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/bg_profile_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content_fattening_subtitle"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_fattening_category_height_record"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toStartOf="@+id/content_fattening_category_bcs_record"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_fattening_category_bcs_record"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintBottom_toBottomOf="@+id/content_fattening_category_height_record"
+                app:layout_constraintEnd_toStartOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_height_record"
+                app:layout_constraintTop_toTopOf="@+id/content_fattening_category_height_record" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_fattening_category_health_record"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintBottom_toBottomOf="@+id/content_fattening_category_bcs_record"
+                app:layout_constraintEnd_toStartOf="@+id/content_fattening_category_food_record"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_bcs_record"
+                app:layout_constraintTop_toTopOf="@+id/content_fattening_category_bcs_record" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_fattening_category_food_record"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintBottom_toBottomOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintTop_toTopOf="@+id/content_fattening_category_health_record" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_weight"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_height_record"
+                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_height_record"
+                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_height_record" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_bcs"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_bcs_record"
+                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_bcs_record"
+                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_bcs_record" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_health"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintHorizontal_bias="0.523"
+                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_health_record" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_food"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_food_record"
+                app:layout_constraintHorizontal_bias="0.523"
+                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_food_record"
+                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_food_record" />
+
+            <LinearLayout
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_calendar_grey"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guideline3">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_date_picker"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_baseline_calendar_24" />
+
+                <TextView
+                    android:id="@+id/tv_fattening_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="Isi Tanggal..."
+                    android:paddingHorizontal="16dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart_fattening"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginVertical="16dp"
+                android:padding="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline4"
+                tools:viewBindingType="com.github.mikephil.charting.charts.LineChart" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="52,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatTextView16"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linechart_fattening" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rata-rata"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView18"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView18"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView18" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="72,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView18"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatTextView17"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/appCompatTextView18"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView18"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="Pertumbuhan"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView16"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView16"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView16" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="+2,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView16"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatTextView19"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/appCompatTextView16"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView16"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rata-rata"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView17"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView17"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView17" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="+22,3"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView17"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/appCompatTextView17"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView17"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pertumbuhan"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/appCompatTextView19"
+                app:layout_constraintStart_toStartOf="@+id/appCompatTextView19"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView19" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="349dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="417dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

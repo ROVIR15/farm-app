@@ -1,0 +1,263 @@
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="vertical"
+        android:overScrollMode="always">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_blue">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="18dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/ic_baseline_circle_ellipse_24"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/content_home_greeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="Hello Jane👋"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/content_home_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Lets’s find your dream job"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/content_home_greeting"
+                app:layout_constraintTop_toBottomOf="@+id/content_home_greeting" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/bg_profile_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content_home_subtitle"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_home_category_add_livestock"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toStartOf="@+id/content_home_category_add_expenses"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_home_category_add_expenses"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toStartOf="@+id/content_home_category_see_cage"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_home_category_add_livestock"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_home_category_see_cage"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_home_category_add_expenses"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/tambah_nlivestock"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_home_category_add_livestock"
+                app:layout_constraintStart_toStartOf="@+id/content_home_category_add_livestock"
+                app:layout_constraintTop_toBottomOf="@+id/content_home_category_add_livestock" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/tambah_npengeluran"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_home_category_add_expenses"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="@+id/content_home_category_add_expenses"
+                app:layout_constraintTop_toBottomOf="@+id/content_home_category_add_expenses" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/lihat_nkandang"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_home_category_see_cage"
+                app:layout_constraintStart_toStartOf="@+id/content_home_category_see_cage"
+                app:layout_constraintTop_toBottomOf="@+id/content_home_category_see_cage" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Dashboard Laporan Performa"
+                android:textColor="@color/text_black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/img_btn_breeding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/frame_category"
+                android:contentDescription="breeding"
+                android:padding="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView9" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingHorizontal="16dp"
+                android:text="Breeding"
+                android:textColor="@color/text_blue"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/img_btn_breeding"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/img_btn_breeding"
+                app:layout_constraintTop_toTopOf="@+id/img_btn_breeding" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="8dp"
+                android:paddingHorizontal="16dp"
+                android:text="Lorem Ipsum is simply dummy text of the printing and \ntypesetting industry."
+                android:textColor="@color/text_blue"
+                app:layout_constraintBottom_toBottomOf="@+id/img_btn_breeding"
+                app:layout_constraintEnd_toEndOf="@+id/img_btn_breeding"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/img_btn_breeding"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView10"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/img_btn_fattening"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/frame_category"
+                android:contentDescription="fattening"
+                android:padding="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_btn_breeding" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingHorizontal="16dp"
+                android:text="Fattening"
+                android:textColor="@color/text_blue"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/img_btn_fattening"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/img_btn_fattening"
+                app:layout_constraintTop_toTopOf="@+id/img_btn_fattening" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingHorizontal="16dp"
+                android:text="Lorem Ipsum is simply dummy text of the printing and \ntypesetting industry."
+                android:textColor="@color/text_blue"
+                app:layout_constraintBottom_toBottomOf="@+id/img_btn_fattening"
+                app:layout_constraintEnd_toEndOf="@+id/img_btn_fattening"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/img_btn_fattening"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView11"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="365dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

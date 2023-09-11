@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_add_goods_and_services"
+        android:icon="@drawable/ic_clipboard_dd_broken"
+        android:orderInCategory="100"
+        android:title="Add Goods and Services "
+        app:showAsAction="ifRoom" />
+</menu>

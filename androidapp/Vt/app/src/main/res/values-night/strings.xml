@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Bottom Navigation Title     -->
+    <string name="app_name">Vt</string>
+    <string name="title_home">Home</string>
+    <string name="title_livestock">Livestock</string>
+    <string name="title_scan">Scan</string>
+    <string name="title_keuangan">Keuangan</string>
+    <string name="title_profile">Profile</string>
+
+    <string name="tambah_nlivestock">Tambah \n <b>Livestock</b></string>
+    <string name="tambah_nlivestocks">Tambah \nLivestock</string>
+    <string name="tambah_npengeluran">Tambah \n<b>Pengeluaran</b></string>
+    <string name="lihat_nlivestock">Lihat \nLivestock</string>
+    <string name="anggaran_dan_realisasi_nkeuangan">Anggaran dan Realisasi \nKeuangan</string>
+    <string name="question_about_ngetting_started">Question about \nGetting Started</string>
+    <string name="daftar_narea_ternak">Daftar \nArea Ternak</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+    <string name="tambah_livestock">Tambah Livestock</string>
+    <string name="tambah_nkandang">Tambah \n<b>Kandang</b></string>
+    <string name="lihat_nkandang">Lihat \n<b>Kandang</b></string>
+    <!--  Fattening Union Breeding -->
+    <string name="record_weight">Rekam \n<b>Berat Badan</b></string>
+    <string name="record_bcs">Rekam \n<b>BCS</b></string>
+    <string name="record_health">Rekam \n<b>Kesehatan</b></string>
+    <string name="record_food">Rekam \n<b>Pakan</b></string>
+    <string name="tab_text_1_animal_mating_history">Histori</string>
+    <string name="tab_text_2_animal_mating_history">Peranakan</string>
+    <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>
+
+    <!--  Spinner Product Category  -->
+    <string-array name="product_category_array">
+        <item>Pilih Kategori</item>
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
+</resources>

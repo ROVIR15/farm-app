@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bottom_sheet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Ambil foto"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        app:layout_constraintStart_toStartOf="@id/bottom_sheet_title"
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_title">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_camera"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_outline_photo_camera_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/_tv_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_toRightOf="@id/ic_camera"
+            android:drawablePadding="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="bottom"
+            android:text="Dari Kamera"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        app:layout_constraintStart_toStartOf="@id/rl_camera"
+        app:layout_constraintTop_toBottomOf="@id/rl_camera">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_galery"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_outline_image_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/bottom_sheet_tv_galery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toRightOf="@id/ic_galery"
+            android:drawablePadding="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="bottom"
+            android:text="Dari Galeri"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/ic_galery"
+            app:layout_constraintStart_toEndOf="@id/ic_galery"
+            app:layout_constraintTop_toTopOf="@id/ic_galery" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

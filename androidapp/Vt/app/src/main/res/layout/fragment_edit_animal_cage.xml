@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.edit_kandang.EditAnimalCageFragment">
+
+    <include
+        android:id="@+id/app_bar_layout"
+        layout="@layout/app_bar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="always"
+        android:padding="12dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_edit_image_area_block"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_file_photo"
+                android:contentDescription="Image Area Block"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_file_photo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_baseline_file_upload_24"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_edit_image_area_block"
+                app:layout_constraintEnd_toEndOf="@+id/iv_edit_image_area_block"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="@+id/iv_edit_image_area_block"
+                app:layout_constraintTop_toTopOf="@+id/iv_edit_image_area_block" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_bold"
+                android:padding="8dp"
+                android:text="Livestock Name"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_edit_image_area_block" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_nama_edit_animal_cage"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Nama"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_area_edit_animal_cage"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Area"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_nama_edit_animal_cage" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_desc_animal_cage"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:hint="Deskripsi"
+                android:imeOptions="actionDone"
+                android:inputType="textShortMessage"
+                android:maxLength="1"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:scrollHorizontally="false"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_area_edit_animal_cage" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_save_edit_animal_cage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_btn_input_product"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Simpan"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/btn_cancel_edit_animal_cage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel_edit_animal_cage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_edt_error"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Batal"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="163dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="0dp"
+    tools:context=".ui.bottom_navigation.home.HomeFragment">
+
+    <include
+        android:id="@+id/content_home"
+        layout="@layout/content_home" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_blue"
+    tools:context=".ui.bottom_navigation.profile.ProfileFragment">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_user"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="32dp"
+        android:src="@mipmap/ic_user_profile_round"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:civ_circle_background_color="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_profile_user_company"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_profile_username" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_profile_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/roboto_medium"
+        android:paddingHorizontal="16dp"
+        android:text="Jane McCalister"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile_user"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_profile_user_company"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:paddingHorizontal="16dp"
+        android:text="Makmur Jaya Farm"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile_user"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_username" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout sementara"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/bg_profile_white"
+        android:elevation="0dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile_user">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="8dp"
+            android:text="Umum"
+            android:textColor="@color/text_black"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/personal_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Profile Pribadi" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/farm_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Profile Perternakan" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="8dp"
+            android:text="Master Data"
+            android:textColor="@color/text_black"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profile_goods_and_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Barang dan Jasa" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profile_animal_cage_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Area/Blok Kandang" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="8dp"
+            android:text="Bantuan"
+            android:textColor="@color/text_black"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Lupa Password" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Pusat Bantuan" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

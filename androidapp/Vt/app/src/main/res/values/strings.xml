@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Vt</string>
+    <string name="title_home">Home</string>
+    <string name="title_livestock">Livestock</string>
+    <string name="title_scan">Scan</string>
+    <string name="title_keuangan">Keuangan</string>
+    <string name="title_profile">Profile</string>
+    <!--  Custom View Sign In/Sign Up  -->
+    <string name="empty_full_name">Nama tidak boleh kosong!</string>
+    <string name="invalid_full_name">Nama hanya boleh berisi huruf dan tidak boleh ada spasi di akhir!</string>
+    <string name="empty_email">Email tidak boleh kosong!</string>
+    <string name="invalid_email">Email tidak valid!</string>
+    <string name="empty_pn">Nomor telepon tidak boleh kosong!</string>
+    <string name="length_number">Setidaknya 5 angka!</string>
+    <string name="empty_password">Kata sandi tidak boleh kosong!</string>
+    <string name="length_password">Setidaknya 8 karakter!</string>
+    <string name="rule_password">"Kata sandi harus mengandung setidaknya satu huruf besar, huruf kecil, angka, simbol, dan tanpa spasi"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tambah_nlivestock">Tambah \n<b>Livestock</b></string>
+    <string name="tambah_nlivestocks">Tambah \n<b>Livestock</b></string>
+    <string name="tambah_npengeluran">Tambah \n<b>Pengeluaran</b></string>
+    <string name="lihat_nlivestock">Lihat \n<b>Livestock</b></string>
+    <string name="anggaran_dan_realisasi_nkeuangan">Anggaran dan Realisasi \n<b>Keuangan</b></string>
+    <string name="question_about_ngetting_started">Question about \n<b>Getting Started</b></string>
+    <string name="daftar_narea_ternak">Daftar \n<b>Area Ternak</b></string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+
+    <!--  Pemberian Makan  -->
+    <string name="dropdown_prompt">Select an item</string>
+    <string name="tambah_livestock">Tambah Livestock</string>
+    <string name="tambah_nkandang">Tambah \n<b>Kandang</b></string>
+    <string name="lihat_nkandang">Lihat \n<b>Kandang</b></string>
+
+    <!--  Fattening And Breeding  -->
+    <string name="record_weight">Rekam \n<b>Berat Badan</b></string>
+    <string name="record_bcs">Rekam \n<b>BCS</b></string>
+    <string name="record_health">Rekam \n<b>Kesehatan</b></string>
+    <string name="record_food">Rekam \n<b>Pakan</b></string>
+    <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>
+
+    <array name="dropdown_items">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <!-- Add more items as needed -->
+    </array>
+
+    <!--  Spinner Product Category  -->
+    <string-array name="product_category_array">
+        <item>Pilih Kategori</item>
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="tab_text_1_animal_mating_history">Histori</string>
+    <string name="tab_text_2_animal_mating_history">Peranakan</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+</resources>

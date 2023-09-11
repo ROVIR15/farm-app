@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.vt.vt.ui.bottom_navigation.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="ShowBottomNav"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_home_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_breedingFragment"
+            app:destination="@id/breedingFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_fatteningFragment"
+            app:destination="@id/fatteningFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_addLivestockFragment"
+            app:destination="@id/addLivestockFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_penyimpanTernakFragment"
+            app:destination="@id/penyimpanTernakFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_livestock"
+        android:name="com.vt.vt.ui.bottom_navigation.livestock.LivestockFragment"
+        android:label="@string/title_livestock"
+        tools:layout="@layout/fragment_livestock">
+        <argument
+            android:name="ShowBottomNav"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_livestock_to_detailLivestockFragment"
+            app:destination="@id/detailLivestockFragment" />
+        <action
+            android:id="@+id/action_navigation_livestock_to_editLivestockFragment"
+            app:destination="@id/editLivestockFragment" />
+        <action
+            android:id="@+id/action_navigation_livestock_to_fatteningFragment"
+            app:destination="@id/fatteningFragment"
+            app:popUpTo="@id/navigation_livestock"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_scan"
+        android:name="com.vt.vt.ui.bottom_navigation.scan.ScanFragment"
+        android:label="fragment_scan"
+        tools:layout="@layout/fragment_scan">
+        <argument
+            android:name="ShowBottomNav"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_scan_to_toDetailAfterScanFragment"
+            app:destination="@id/toDetailAfterScanFragment"
+            app:popUpTo="@id/navigation_scan"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_keuangan"
+        android:name="com.vt.vt.ui.bottom_navigation.keuangan.KeuanganFragment"
+        android:label="@string/title_keuangan"
+        tools:layout="@layout/fragment_keuangan">
+        <argument
+            android:name="ShowBottomNav"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.vt.vt.ui.bottom_navigation.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="ShowBottomNav"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_profile_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_profile_to_detailAreaBlockFragment"
+            app:destination="@id/detailAreaBlockFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_dataBarangDanJasaFragment"
+            app:destination="@id/dataBarangDanJasaFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_personalProfileFragment"
+            app:destination="@id/personalProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_personalFarmProfileFragment"
+            app:destination="@id/personalFarmProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.vt.vt.ui.signup.SignUpFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.vt.vt.ui.signin.SignInFragment"
+        android:label="SignInFragment">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDataBarangJasaFragment"
+        android:name="com.vt.vt.ui.file_provider.add_data_barang.AddDataBarangJasaFragment"
+        android:label="fragment_data_barang_jasa"
+        tools:layout="@layout/fragment_add_data_barang_jasa" />
+    <fragment
+        android:id="@+id/dataAreaFragment"
+        android:name="com.vt.vt.ui.file_provider.dataarea.DataAreaFragment"
+        android:label="DataAreaFragment" />
+    <fragment
+        android:id="@+id/dataKandangFragment"
+        android:name="com.vt.vt.ui.file_provider.datakandang.DataKandangFragment"
+        android:label="DataKandangFragment" />
+    <fragment
+        android:id="@+id/addLivestockFragment"
+        android:name="com.vt.vt.ui.file_provider.addlivestock.AddLivestockFragment"
+        android:label="AddLivestockFragment" />
+    <fragment
+        android:id="@+id/displayLivestockFragment"
+        android:name="com.vt.vt.ui.displaylivestock.DisplayLivestockFragment"
+        android:label="fragment_display_livestock"
+        tools:layout="@layout/fragment_display_livestock" />
+    <fragment
+        android:id="@+id/bcsFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment"
+        android:label="BcsFragment" />
+    <fragment
+        android:id="@+id/detailLivestockFragment"
+        android:name="com.vt.vt.ui.detail_livestock.DetailLivestockFragment"
+        android:label="fragment_detail_livestock"
+        tools:layout="@layout/fragment_detail_livestock">
+        <action
+            android:id="@+id/action_detailLivestockFragment_to_editLivestockFragment"
+            app:destination="@id/editLivestockFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/kesehatanFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.KesehatanFragment"
+        android:label="fragment_kesehatan"
+        tools:layout="@layout/fragment_kesehatan">
+        <action
+            android:id="@+id/action_kesehatanFragment_to_bcsFragment"
+            app:destination="@id/bcsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/beratBadanFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.BeratBadanFragment"
+        android:label="fragment_pakan"
+        tools:layout="@layout/fragment_edit_livestock">
+        <action
+            android:id="@+id/action_beratBadanFragment_to_kesehatanFragment"
+            app:destination="@id/kesehatanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pemberianTernakFragment"
+        android:name="com.vt.vt.ui.pemberian_ternak.PemberianTernakFragment"
+        android:label="fragment_pemberian_ternak"
+        tools:layout="@layout/fragment_pemberian_ternak">
+        <action
+            android:id="@+id/action_pemberianTernakFragment_to_hijauanFragment"
+            app:destination="@id/hijauanFragment" />
+        <action
+            android:id="@+id/action_pemberianTernakFragment_to_kimiaFragment"
+            app:destination="@id/kimiaFragment" />
+        <action
+            android:id="@+id/action_pemberianTernakFragment_to_tambahanFragment"
+            app:destination="@id/tambahanFragment" />
+        <action
+            android:id="@+id/action_pemberianTernakFragment_to_vitaminFragment"
+            app:destination="@id/vitaminFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hijauanFragment"
+        android:name="com.vt.vt.ui.pemberian_ternak.hijauan.HijauanFragment"
+        android:label="fragment_hijauan"
+        tools:layout="@layout/fragment_hijauan">
+        <action
+            android:id="@+id/action_hijauanFragment_to_kimiaFragment"
+            app:destination="@id/kimiaFragment"
+            app:popUpTo="@id/hijauanFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/penyimpanTernakFragment"
+        android:name="com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakFragment"
+        android:label="fragment_penyimpan_ternak"
+        tools:layout="@layout/fragment_penyimpan_ternak">
+        <action
+            android:id="@+id/action_penyimpanTernakFragment_to_pemberianTernakFragment"
+            app:destination="@id/pemberianTernakFragment" />
+        <action
+            android:id="@+id/action_penyimpanTernakFragment_to_dataAreaFragment"
+            app:destination="@id/dataAreaFragment" />
+        <action
+            android:id="@+id/action_penyimpanTernakFragment_to_detailAreaBlockFragment"
+            app:destination="@id/detailAreaBlockFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/kimiaFragment"
+        android:name="com.vt.vt.ui.pemberian_ternak.kimia.KimiaFragment"
+        android:label="fragment_kimia"
+        tools:layout="@layout/fragment_kimia">
+        <action
+            android:id="@+id/action_kimiaFragment_to_vitaminFragment"
+            app:destination="@id/vitaminFragment"
+            app:popUpTo="@id/kimiaFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/tambahanFragment"
+        android:name="com.vt.vt.ui.pemberian_ternak.tambahan.TambahanFragment"
+        android:label="fragment_tambahan"
+        tools:layout="@layout/fragment_tambahan">
+        <action
+            android:id="@+id/action_tambahanFragment_to_pemberianTernakFragment"
+            app:destination="@id/pemberianTernakFragment"
+            app:popUpTo="@id/tambahanFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/vitaminFragment"
+        android:name="com.vt.vt.ui.pemberian_ternak.vitamin.VitaminFragment"
+        android:label="fragment_vitamin"
+        tools:layout="@layout/fragment_vitamin">
+        <action
+            android:id="@+id/action_vitaminFragment_to_tambahanFragment"
+            app:destination="@id/tambahanFragment"
+            app:popUpTo="@id/vitaminFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/anggaranFragment"
+        android:name="com.vt.vt.ui.anggaran.AnggaranFragment"
+        android:label="fragment_anggaran"
+        tools:layout="@layout/fragment_anggaran">
+        <action
+            android:id="@+id/action_anggaranFragment_to_addBudgetFragment"
+            app:destination="@id/addBudgetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addBudgetFragment"
+        android:name="com.vt.vt.ui.anggaran.AddBudgetFragment"
+        android:label="fragment_add_budget"
+        tools:layout="@layout/fragment_add_budget" />
+    <fragment
+        android:id="@+id/pengeluaranFragment"
+        android:name="com.vt.vt.ui.pengeluaran.PengeluaranFragment"
+        android:label="fragment_pengeluaran"
+        tools:layout="@layout/fragment_pengeluaran">
+        <action
+            android:id="@+id/action_pengeluaranFragment_to_addPengeluaranFragment"
+            app:destination="@id/addPengeluaranFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPengeluaranFragment"
+        android:name="com.vt.vt.ui.pengeluaran.add_pengeluaran.AddPengeluaranFragment"
+        android:label="fragment_add_pengeluaran"
+        tools:layout="@layout/fragment_add_pengeluaran" />
+    <fragment
+        android:id="@+id/anggaranDanRealisasiFragment"
+        android:name="com.vt.vt.ui.anggaran_dan_realisasi.AnggaranDanRealisasiFragment"
+        android:label="fragment_anggaran_dan_realisasi"
+        tools:layout="@layout/fragment_anggaran_dan_realisasi">
+        <action
+            android:id="@+id/action_anggaranDanRealisasiFragment_to_anggaranFragment"
+            app:destination="@id/anggaranFragment" />
+        <action
+            android:id="@+id/action_anggaranDanRealisasiFragment_to_pengeluaranFragment"
+            app:destination="@id/pengeluaranFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rekamKesehatanFragment"
+        android:name="com.vt.vt.ui.rekam_kesehatan.RekamKesehatanFragment"
+        android:label="RekamKesehatanFragment" />
+    <fragment
+        android:id="@+id/breedingFragment"
+        android:name="com.vt.vt.ui.breeding.BreedingFragment"
+        android:label="fragment_breeding"
+        tools:layout="@layout/fragment_breeding" >
+        <action
+            android:id="@+id/action_breedingFragment_to_rekamBeratBadanFragment"
+            app:destination="@id/rekamBeratBadanFragment" />
+        <action
+            android:id="@+id/action_breedingFragment_to_rekamKesehatanFragment"
+            app:destination="@id/rekamKesehatanFragment" />
+        <action
+            android:id="@+id/action_breedingFragment_to_listAnimalMatingsFragment"
+            app:destination="@id/listAnimalMatingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fatteningFragment"
+        android:name="com.vt.vt.ui.fattening.FatteningFragment"
+        android:label="fragment_fattening"
+        tools:layout="@layout/fragment_fattening">
+        <action
+            android:id="@+id/action_fatteningFragment_to_rekamKesehatanFragment"
+            app:destination="@id/rekamKesehatanFragment" />
+        <action
+            android:id="@+id/action_fatteningFragment_to_rekamBCSFragment"
+            app:destination="@id/rekamBCSFragment" />
+        <action
+            android:id="@+id/action_fatteningFragment_to_rekamBeratBadanFragment"
+            app:destination="@id/rekamBeratBadanFragment" />
+        <action
+            android:id="@+id/action_fatteningFragment_to_penyimpanTernakFragment"
+            app:destination="@id/penyimpanTernakFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/toDetailAfterScanFragment"
+        android:name="com.vt.vt.ui.ToDetailAfterScanFragment"
+        android:label="fragment_to_detail_after_scan"
+        tools:layout="@layout/fragment_to_detail_after_scan">
+        <argument
+            android:name="scanId"
+            android:defaultValue="id_scan"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/rekamPerkawinanFragment"
+        android:name="com.vt.vt.ui.rekam_perkawinan.RekamPerkawinanFragment"
+        android:label="fragment_rekam_perkawinan"
+        tools:layout="@layout/fragment_rekam_perkawinan" />
+    <fragment
+        android:id="@+id/pakanFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.pakan.PakanFragment"
+        android:label="fragment_pakan"
+        tools:layout="@layout/fragment_pakan" />
+    <fragment
+        android:id="@+id/animalsBreedingFragment"
+        android:name="com.vt.vt.ui.rekam_perkawinan.tab_layout.animals_breeding.AnimalsBreedingFragment"
+        android:label="fragment_animals_breeding"
+        tools:layout="@layout/fragment_animals_breeding" />
+    <fragment
+        android:id="@+id/historyAnimalMatingFragment3"
+        android:name="com.vt.vt.ui.rekam_perkawinan.tab_layout.history_animal_mating.HistoryAnimalMatingFragment"
+        android:label="fragment_animal_mating_history"
+        tools:layout="@layout/fragment_animal_mating_history" />
+    <fragment
+        android:id="@+id/detailAreaBlockFragment"
+        android:name="com.vt.vt.ui.detail_area_block.DetailAreaBlockFragment"
+        android:label="fragment_detail_area_block"
+        tools:layout="@layout/fragment_detail_area_block" >
+        <action
+            android:id="@+id/action_detailAreaBlockFragment_to_editAreaBlockFragment"
+            app:destination="@id/editAreaBlockFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rekamBCSFragment"
+        android:name="com.vt.vt.ui.rekam_bcs.RekamBCSFragment"
+        android:label="RekamBCSFragment" />
+    <fragment
+        android:id="@+id/dataBarangDanJasaFragment"
+        android:name="com.vt.vt.ui.barang_dan_jasa.DataBarangDanJasaFragment"
+        android:label="fragment_data_barang_dan_jasa"
+        tools:layout="@layout/fragment_data_barang_dan_jasa" />
+    <fragment
+        android:id="@+id/personalProfileFragment"
+        android:name="com.vt.vt.ui.profile.personal_profile.PersonalProfileFragment"
+        android:label="fragment_personal_profile"
+        tools:layout="@layout/fragment_personal_profile" />
+    <fragment
+        android:id="@+id/personalFarmProfileFragment"
+        android:name="com.vt.vt.ui.profile.farm_profile.PersonalFarmProfileFragment"
+        android:label="fragment_personal_farm_profile"
+        tools:layout="@layout/fragment_personal_farm_profile" />
+    <fragment
+        android:id="@+id/editLivestockFragment"
+        android:name="com.vt.vt.ui.edit_livestock.EditLivestockFragment"
+        android:label="fragment_edit_livestock"
+        tools:layout="@layout/fragment_edit_livestock" />
+    <fragment
+        android:id="@+id/listAnimalMatingsFragment"
+        android:name="com.vt.vt.ui.daftar_perkawinan.ListAnimalMatingsFragment"
+        android:label="fragment_list_animal_matings"
+        tools:layout="@layout/fragment_list_animal_matings" >
+        <action
+            android:id="@+id/action_listAnimalMatingsFragment_to_rekamPerkawinanFragment"
+            app:destination="@id/rekamPerkawinanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rekamBeratBadanFragment"
+        android:name="com.vt.vt.ui.rekam_berat_badan.RekamBeratBadanFragment"
+        android:label="fragment_rekam_berat_badan"
+        tools:layout="@layout/fragment_rekam_berat_badan" />
+    <fragment
+        android:id="@+id/editAreaBlockFragment"
+        android:name="com.vt.vt.ui.edit_area_block.EditAreaBlockFragment"
+        android:label="fragment_edit_area_block"
+        tools:layout="@layout/fragment_edit_area_block" />
+
+</navigation>
