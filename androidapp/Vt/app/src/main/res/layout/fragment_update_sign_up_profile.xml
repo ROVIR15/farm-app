@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_sign_in"
+    android:padding="12dp"
+    tools:context=".ui.signup.UpdateSignUpProfileFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sign_up_tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Sign Up"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sign_up_tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:elevation="2dp"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="Login"
+        android:textAlignment="center"
+        android:textColor="@color/btn_blue_icon"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_tv_title"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView30"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Lengkapi Informasi!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Perternakanmu!"
+        android:textColor="@color/text_blue"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView30" />
+
+    <com.vt.ui.customview.CustomEditText
+        android:id="@+id/update_sign_up_cv_name"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="136dp"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Name"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_title"
+        custom:flagType="name" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_white"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/update_sign_up_cv_name"
+        app:layout_constraintStart_toStartOf="@+id/update_sign_up_cv_name"
+        app:layout_constraintTop_toBottomOf="@+id/update_sign_up_cv_name">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_date_picker"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_baseline_calendar_24" />
+
+        <TextView
+            android:id="@+id/tv_farm_created_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="Tanggal Perternakan"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_edit_address_one_farm_profile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Alamat 1"
+        android:inputType="textShortMessage"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout11"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout11"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_edit_address_two_farm_profile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Alamat 1"
+        android:inputType="textShortMessage"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout11"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout11"
+        app:layout_constraintTop_toBottomOf="@+id/edt_edit_address_one_farm_profile" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_edit_city_farm_profile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Provinsi"
+        android:inputType="textShortMessage"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="@+id/edt_edit_address_two_farm_profile"
+        app:layout_constraintTop_toBottomOf="@+id/edt_edit_address_two_farm_profile" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_edit_provice_farm_profile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Kota"
+        android:inputType="textShortMessage"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/edt_edit_address_two_farm_profile"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/edt_edit_address_two_farm_profile" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save_update_profile_sign_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_btn_shape_rounded"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_edit_city_farm_profile" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="194dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
