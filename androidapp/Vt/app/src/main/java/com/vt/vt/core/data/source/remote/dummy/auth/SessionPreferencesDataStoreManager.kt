@@ -1,4 +1,4 @@
-package com.vt.vt.core.data.local.auth
+package com.vt.vt.core.data.source.remote.dummy.auth
 
 import android.content.Context
 import androidx.datastore.core.DataStore

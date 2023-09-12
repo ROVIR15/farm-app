@@ -3,8 +3,8 @@ package com.vt.vt.ui.penyimpan_ternak
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vt.vt.core.data.local.cobahilt.model.Animal
-import com.vt.vt.core.data.local.cobahilt.model.IAnimal
+import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.Animal
+import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.IAnimal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

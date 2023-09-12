@@ -8,7 +8,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.local.livestock.Livestock
+import com.vt.vt.core.data.source.remote.dummy.livestock.Livestock
 import com.vt.vt.databinding.ItemLivestockBinding
 
 class LivestockAdapter(private val livestock: List<Livestock>) :

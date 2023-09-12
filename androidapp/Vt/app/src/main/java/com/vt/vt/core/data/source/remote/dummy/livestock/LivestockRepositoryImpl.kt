@@ -1,4 +1,4 @@
-package com.vt.vt.core.data.local.livestock
+package com.vt.vt.core.data.source.remote.dummy.livestock
 
 class LivestockRepositoryImpl: ILivestock {
     override fun getLivestock(): List<Livestock> {

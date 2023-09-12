@@ -1,4 +1,4 @@
-package com.vt.vt.core.data.local.list_animal_matings
+package com.vt.vt.core.data.source.remote.dummy.list_animal_matings
 
 interface IAnimalMatings {
     fun getAnimalMaatings(): List<AnimalMatings>

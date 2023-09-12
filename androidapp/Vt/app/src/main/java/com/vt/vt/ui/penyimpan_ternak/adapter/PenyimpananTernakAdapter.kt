@@ -8,7 +8,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.local.cobahilt.model.Animal
+import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.Animal
 import com.vt.vt.databinding.ItemPenyimpanTernakBinding
 
 class PenyimpananTernakAdapter(private val animal: List<Animal>) :

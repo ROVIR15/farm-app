@@ -1,6 +1,6 @@
 package com.vt.vt.core.data.di
 
-import com.vt.vt.core.data.remote.ApiService
+import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.utils.loggingInterceptor
 import com.vt.vt.utils.wilayah_indonesia
 import dagger.Module

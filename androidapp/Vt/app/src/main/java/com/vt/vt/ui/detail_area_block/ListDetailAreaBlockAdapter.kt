@@ -8,7 +8,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.local.list_animal_cage.AnimalCage
+import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.AnimalCage
 import com.vt.vt.databinding.ItemDetailAreaBlockBinding
 
 class ListDetailAreaBlockAdapter(private val animalCage: List<AnimalCage>) :

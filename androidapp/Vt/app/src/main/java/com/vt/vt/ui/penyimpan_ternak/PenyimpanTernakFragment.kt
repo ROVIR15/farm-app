@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.R
-import com.vt.vt.core.data.local.cobahilt.model.Animal
+import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.Animal
 import com.vt.vt.databinding.FragmentPenyimpanTernakBinding
 import com.vt.vt.ui.penyimpan_ternak.adapter.PenyimpananTernakAdapter
 import dagger.hilt.android.AndroidEntryPoint

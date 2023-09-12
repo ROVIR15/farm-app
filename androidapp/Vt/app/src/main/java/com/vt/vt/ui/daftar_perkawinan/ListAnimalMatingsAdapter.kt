@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.local.list_animal_matings.AnimalMatings
+import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.AnimalMatings
 import com.vt.vt.databinding.ItemListAnimalMatingsBinding
 
 class ListAnimalMatingsAdapter(private val animalMatings: List<AnimalMatings>) :

@@ -3,8 +3,8 @@ package com.vt.vt.ui.bottom_navigation.livestock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vt.vt.core.data.local.livestock.ILivestock
-import com.vt.vt.core.data.local.livestock.Livestock
+import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
+import com.vt.vt.core.data.source.remote.dummy.livestock.Livestock
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.vt.vt.core.data.local.list_animal_matings
+package com.vt.vt.core.data.source.remote.dummy.list_animal_matings
 
 class AnimalMatingsRepositoryImpl : IAnimalMatings {
     override fun getAnimalMaatings(): List<AnimalMatings> {

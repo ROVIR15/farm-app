@@ -2,7 +2,7 @@ package com.vt.vt.ui.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.vt.vt.core.data.local.auth.SessionPreferencesDataStoreManager
+import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -17,7 +17,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
-import com.vt.vt.core.data.local.list_animal_matings.AnimalMatings
+import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.AnimalMatings
 import com.vt.vt.databinding.FragmentListAnimalMatingsBinding
 import com.vt.vt.utils.PickDatesUtils
 import dagger.hilt.android.AndroidEntryPoint
