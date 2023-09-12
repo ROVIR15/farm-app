@@ -20,11 +20,11 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-fun rotate(bitmap: Bitmap, angle: Float): Bitmap {
+/*fun rotate(bitmap: Bitmap, angle: Float): Bitmap {
     val matrix = Matrix()
     matrix.postRotate(angle)
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-}
+}*/
 
 fun uriToFile(selectedImg: Uri, context: Context): File {
     val contentResolver: ContentResolver = context.contentResolver
