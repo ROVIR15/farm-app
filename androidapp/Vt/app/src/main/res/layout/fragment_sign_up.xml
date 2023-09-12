@@ -17,8 +17,8 @@
         android:fontFamily="@font/roboto_bold"
         android:text="Sign Up"
         android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         android:textColor="@color/black"
-        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,13 +41,13 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <com.vt.ui.customview.CustomEditText
-        android:id="@+id/sign_up_cv_name"
+        android:id="@+id/sign_up_cv_username"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="136dp"
         android:fontFamily="@font/roboto_regular"
-        android:hint="Name"
+        android:hint="Username"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="16dp"
         android:textSize="14sp"
@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_regular"
         android:hint="Email"
         android:inputType="textEmailAddress"
@@ -70,7 +70,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_cv_name"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_cv_username"
         app:layout_constraintVertical_bias="1.0"
         custom:flagType="email" />
 
@@ -79,9 +79,9 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_regular"
-        android:hint="Enter Your Password"
+        android:hint="Enter Password"
         android:inputType="textPassword"
         android:paddingHorizontal="16dp"
         android:textSize="14sp"
@@ -90,15 +90,31 @@
         app:layout_constraintTop_toBottomOf="@+id/sign_up_cv_email"
         custom:flagType="signInPass" />
 
+    <com.vt.ui.customview.CustomEditText
+        android:id="@+id/sign_up_cv_retype_password"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_cv_password"
+        custom:flagType="signInPass" />
+
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sign_up_btn_sign_up"
+        android:id="@+id/sign_up_btn_create_account"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="72dp"
         android:background="@drawable/bg_btn_shape_rounded"
-        android:fontFamily="@font/roboto_bold"
-        android:text="Sign Up"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Create Account"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"

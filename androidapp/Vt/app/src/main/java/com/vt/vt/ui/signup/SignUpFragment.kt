@@ -29,6 +29,9 @@ class SignUpFragment : Fragment() {
             this.signUpTvLogin.setOnClickListener { view ->
                 view.findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
             }
+            this.signUpBtnCreateAccount.setOnClickListener { view->
+                view.findNavController().navigate(R.id.action_signUpFragment_to_updateSignUpProfileFragment)
+            }
         }
 
     }

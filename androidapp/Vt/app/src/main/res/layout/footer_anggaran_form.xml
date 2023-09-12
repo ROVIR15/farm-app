@@ -8,12 +8,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_tambah_anggaran"
+        style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:shapeAppearance=""
-        style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/green_grass"
         android:fontFamily="@font/roboto_bold"

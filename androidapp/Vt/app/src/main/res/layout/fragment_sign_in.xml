@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient_sign_in"
     android:padding="12dp"
-    tools:context=".ui.signup.SignUpFragment">
+    tools:context=".ui.signin.SignInFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sign_in_tv_title"
@@ -71,7 +71,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_cv_password" />
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_in_btn_sign_up"
         android:layout_width="0dp"
@@ -92,7 +91,9 @@
         android:id="@+id/sign_in_tv_forgot_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_medium"
+        android:padding="8dp"
         android:text="Forgot your password"
         android:textAlignment="center"
         android:textColor="@color/btn_blue_icon"

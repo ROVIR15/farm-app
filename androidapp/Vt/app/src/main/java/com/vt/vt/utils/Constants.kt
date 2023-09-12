@@ -1,7 +1,16 @@
 package com.vt.vt.utils
 
-import androidx.annotation.StringRes
-import com.vt.vt.R
+import com.vt.vt.BuildConfig
+import okhttp3.logging.HttpLoggingInterceptor
+
+const val apiKey = "ce84baa5ea6072805228db04568c7ba9"
+const val wilayah_indonesia = "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
+
+val loggingInterceptor = if (BuildConfig.DEBUG) {
+    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+} else {
+    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+}
 
 const val FILE_PREFERENCE_DATASTORE = "user_session"
 

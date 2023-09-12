@@ -8,6 +8,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.vt.vt.R
 import com.vt.vt.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +41,9 @@ class SignInFragment : Fragment() {
         with(binding) {
             signInBtnLogin.setOnClickListener {
                 signInViewModel.saveOnLoginState()
+            }
+            signInBtnSignUp.setOnClickListener {
+                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
             }
         }
 

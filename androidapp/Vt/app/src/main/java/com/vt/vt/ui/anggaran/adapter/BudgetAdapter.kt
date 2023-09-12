@@ -27,7 +27,7 @@ class BudgetAdapter(private val budgetItemList: List<AnggaranFragment.BudgetItem
     inner class BudgetViewHolder(private val binding: ItemAnggaranBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(budgetItem: AnggaranFragment.BudgetItem) {
-            binding.tvNilaiJumlahAnggaran.text = budgetItem.name
+            binding.tvTitleKategoriBudget.text = budgetItem.name
         }
     }
 }

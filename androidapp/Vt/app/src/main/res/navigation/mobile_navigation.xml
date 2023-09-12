@@ -111,6 +111,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_updateSignUpProfileFragment"
+            app:destination="@id/updateSignUpProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -409,5 +412,13 @@
         android:name="com.vt.vt.ui.edit_area_block.EditAreaBlockFragment"
         android:label="fragment_edit_area_block"
         tools:layout="@layout/fragment_edit_area_block" />
+    <fragment
+        android:id="@+id/updateSignUpProfileFragment"
+        android:name="com.vt.vt.ui.signup.UpdateSignUpProfileFragment"
+        android:label="UpdateSignUpProfileFragment" >
+        <action
+            android:id="@+id/action_updateSignUpProfileFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
 
 </navigation>
