@@ -9,7 +9,7 @@
 
     <View
         android:layout_width="48dp"
-        android:layout_height="4dp"
+        android:layout_height="5dp"
         android:layout_gravity="center"
         android:background="@drawable/bg_center_line_bottom_sheet" />
 
@@ -29,7 +29,6 @@
         android:padding="8dp"
         android:text="Menambahkan data livestock yang akan dikawinkan."
         android:textAlignment="center" />
-
 
     <LinearLayout
         android:id="@+id/linearLayout4"

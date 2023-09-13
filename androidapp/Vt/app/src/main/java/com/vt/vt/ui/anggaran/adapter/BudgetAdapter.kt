@@ -1,13 +1,13 @@
 package com.vt.vt.ui.anggaran.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.vt.vt.core.data.source.remote.dummy.keuangan.Pengeluaran
 import com.vt.vt.databinding.ItemAnggaranBinding
-import com.vt.vt.ui.anggaran.AnggaranFragment
 
-// belum dipakai
-class BudgetAdapter(private val budgetItemList: List<AnggaranFragment.BudgetItem>) :
+class BudgetAdapter(private val budgetItemList: List<Pengeluaran>) :
     RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetViewHolder {
@@ -26,8 +26,10 @@ class BudgetAdapter(private val budgetItemList: List<AnggaranFragment.BudgetItem
 
     inner class BudgetViewHolder(private val binding: ItemAnggaranBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(budgetItem: AnggaranFragment.BudgetItem) {
-            binding.tvTitleKategoriBudget.text = budgetItem.name
+        @SuppressLint("SetTextI18n")
+        fun bind(budgetItem: Pengeluaran) {
+            binding.tvTitleKategoriBudget.text = budgetItem.title
+            binding.tvBudget.text = "Rp.${budgetItem.budget}"
         }
     }
 }

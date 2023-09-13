@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_sign_in"
     tools:context=".ui.bottom_navigation.profile.ProfileFragment">
 
     <include
@@ -18,14 +19,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_gradient_sign_in"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/linearLayout10"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/bg_calendar_grey"
                 android:orientation="horizontal"
                 android:padding="8dp"
@@ -40,7 +40,7 @@
                     android:src="@drawable/ic_baseline_calendar_24" />
 
                 <TextView
-                    android:id="@+id/tv_breeding_date"
+                    android:id="@+id/tv_date_pick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -55,6 +55,7 @@
                 android:id="@+id/cardView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="2dp"
@@ -144,6 +145,7 @@
                 android:id="@+id/appCompatTextView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/roboto_bold"
                 android:padding="8dp"
                 android:text="Pengeluaran"
@@ -155,25 +157,25 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_margin="8dp"
+                android:layout_marginHorizontal="16dp"
                 android:background="@color/black_overlay"
                 app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView3"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView5"
                 app:layout_constraintStart_toEndOf="@+id/appCompatTextView3"
                 app:layout_constraintTop_toTopOf="@+id/appCompatTextView3" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_anggaran_realisasi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_anggaran_realisasi" />
+                tools:itemCount="5"
+                tools:listitem="@layout/item_finance_summary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

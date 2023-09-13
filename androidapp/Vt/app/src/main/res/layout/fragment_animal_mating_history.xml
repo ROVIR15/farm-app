@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.rekam_perkawinan.tab_layout.history_animal_mating.HistoryAnimalMatingFragment">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Animal Mating History"
+        android:text="TAB LAYOUT FOR REKAM PERKAWINAN \nAnimal Mating History"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -10,64 +10,97 @@
         android:id="@+id/anggaran_app_bar"
         layout="@layout/app_bar" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="always"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_title_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:text="Pilih Bulan dan Tahun"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/iv_date_picker_anggaran"
-            style="@style/Base.Widget.AppCompat.ImageButton"
-            android:layout_width="50dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/baseline_date_range_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_date" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_date_content_anggaran"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/bg_edt_normal"
-            android:fontFamily="@font/roboto_regular"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_date_picker_anggaran"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_date" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView2"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:overScrollMode="always"
-            app:layout_constraintBottom_toTopOf="@+id/footer_anggaran_form"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date_content_anggaran"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_anggaran" />
+            android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/footer_anggaran_form"
-            layout="@layout/footer_anggaran_form"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:padding="8dp"
+                android:text="Kategori Budget"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                app:startIconDrawable="@drawable/ic_baseline_currency"
+                app:startIconTint="@color/text_blue">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_calendar_grey"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:hint="Jumlah Budget"
+                    android:inputType="numberDecimal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_bold"
+                android:padding="8dp"
+                android:text="Detail Pengeluaran"
+                android:textColor="@color/text_black"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@color/black_overlay"
+                app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_pengeluaran"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:overScrollMode="always"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_anggaran" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/footer_anggaran_form"
+        layout="@layout/footer_anggaran_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

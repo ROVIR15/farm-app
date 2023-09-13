@@ -1,4 +1,4 @@
-package com.vt.vt.ui.bottom_navigation.keuangan
+package com.vt.vt.ui.anggaran
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,14 +9,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class KeuanganViewModel @Inject constructor(private val pengeluaranRepository: IPengeluaran) : ViewModel() {
-
+class AnggaranViewModel @Inject constructor(private val pengeluaranRepo: IPengeluaran) :
+    ViewModel() {
     private val pengeluaranEmmiter = MutableLiveData<List<Pengeluaran>>()
     val pengeluaranItem: LiveData<List<Pengeluaran>> = pengeluaranEmmiter
+
     init {
         loadPengeluaran()
     }
-    private fun loadPengeluaran(){
-        pengeluaranEmmiter.value = pengeluaranRepository.getPengeluaran()
+
+    private fun loadPengeluaran() {
+        pengeluaranEmmiter.value = pengeluaranRepo.getPengeluaran()
     }
 }

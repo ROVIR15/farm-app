@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
+    android:background="@drawable/bg_gradient_sign_in"
     tools:context=".ui.bottom_navigation.livestock.LivestockFragment">
 
     <androidx.cardview.widget.CardView
@@ -20,6 +20,7 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
             app:queryHint="Search Here..." />
@@ -29,7 +30,10 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         android:overScrollMode="always"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         tools:listitem="@layout/item_livestock" />
 

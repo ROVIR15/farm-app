@@ -4,6 +4,8 @@ import android.content.Context
 import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.IAnimal
 import com.vt.vt.core.data.source.remote.dummy.cobahilt.repository.AnimalRepositoryImpl
+import com.vt.vt.core.data.source.remote.dummy.keuangan.IPengeluaran
+import com.vt.vt.core.data.source.remote.dummy.keuangan.PengeluaranRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.AnimalCageRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.IAnimalCage
 import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.AnimalMatingsRepositoryImpl
@@ -36,6 +38,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideInterfaceAnimalMatings(): IAnimalMatings = AnimalMatingsRepositoryImpl()
+
+    @Provides
+    @Singleton
+    fun provideInterfacePengeluaran(): IPengeluaran = PengeluaranRepositoryImpl()
 
     @Provides
     @Singleton

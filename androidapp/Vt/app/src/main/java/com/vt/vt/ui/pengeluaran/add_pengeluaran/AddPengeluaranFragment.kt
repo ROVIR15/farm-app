@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.vt.vt.databinding.FragmentAddPengeluaranBinding
+import com.vt.vt.utils.PickDatesUtils
 
 class AddPengeluaranFragment : Fragment() {
 
@@ -28,6 +29,9 @@ class AddPengeluaranFragment : Fragment() {
             appBarAddAnggaran.topAppBar.apply {
                 title = "Tambah Pengeluaran"
                 setNavigationOnClickListener { findNavController().popBackStack() }
+            }
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvPengeluaranCreatedAt)
             }
         }
     }
