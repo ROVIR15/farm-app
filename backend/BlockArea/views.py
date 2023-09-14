@@ -54,7 +54,7 @@ def post_block_area():
     name = data.get('name')
     description = data.get('description')
     farm_profile_id = data.get('farm_profile_id')
-    
+
     try:
         query = BlockArea(name=name, description=description)
         db.session.add(query)

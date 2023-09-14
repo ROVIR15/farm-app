@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class HasSled (db.Model):
-    __tablename__ = 'farm_profile_has_block_area'
+    __tablename__ = 'farm_profile_has_sled'
 
     id = db.Column(db.Integer(), primary_key=True)
     farm_profile_id = db.Column(

@@ -5,13 +5,16 @@ from FarmProfile.models import FarmProfile
 from FarmProfile.models import FarmProfileHasUsers
 from FarmProfile.schema import FarmProfileSchema
 
+from flask_login import login_required
+
 views_farm_profile_bp = Blueprint('views_farm_profile', __name__)
 
 farm_profile_schema = FarmProfileSchema()
 farm_profile_many_schema = FarmProfileSchema(many=True)
 
 
-@views_farm_profile_bp.route('/farm-profiles', methods=['GET'])
+@views_farm_profile_bp.route('/api/farm-profiles', methods=['GET'])
+@login_required
 def get_farm_profile_details():
     # Retrieve all farm_profile records from the database
     query = FarmProfile.query.all()
@@ -24,7 +27,8 @@ def get_farm_profile_details():
     return jsonify(result)
 
 
-@views_farm_profile_bp.route('/farm-profile/<int:farm_profile_id>', methods=['GET'])
+@views_farm_profile_bp.route('/api/farm-profile/<int:farm_profile_id>', methods=['GET'])
+@login_required
 def get_a_farm_profile_detail(farm_profile_id):
     # Retrieve farm_profile detail records from the database
     query = FarmProfile.query.get(farm_profile_id)
@@ -36,7 +40,8 @@ def get_a_farm_profile_detail(farm_profile_id):
     return jsonify(result)
 
 
-@views_farm_profile_bp.route('/farm-profile', methods=['POST'])
+@views_farm_profile_bp.route('/api/farm-profile', methods=['POST'])
+@login_required
 def post_farm_profile_details():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -79,7 +84,8 @@ def post_farm_profile_details():
         return jsonify(response), 500
 
 
-@views_farm_profile_bp.route('/farm-profile/<int:farm_profile_id>', methods=['PUT'])
+@views_farm_profile_bp.route('/api/farm-profile/<int:farm_profile_id>', methods=['PUT'])
+@login_required
 def update_farm_profile_detail(farm_profile_id):
     data = request.get_json()  # Get the JSON data from the request only
 
@@ -113,7 +119,7 @@ def update_farm_profile_detail(farm_profile_id):
         return jsonify(response), 404
 
 
-@views_farm_profile_bp.route('/farm-profile/<int:farm_profile_id>', methods=['DELETE'])
+@views_farm_profile_bp.route('/api/farm-profile/<int:farm_profile_id>', methods=['DELETE'])
 def remove_farm_profile_detail(farm_profile_id):
     # Assuming you have a Feature model and an existing feature object
     farm_profile_detail = FarmProfile.query.get(farm_profile_id)
@@ -132,7 +138,8 @@ def remove_farm_profile_detail(farm_profile_id):
         }
 
 
-@views_farm_profile_bp.route('/farm-profile-add-user', methods=['POST'])
+@views_farm_profile_bp.route('/api/farm-profile-add-user', methods=['POST'])
+@login_required
 def post_farm_profile_has_user():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -163,7 +170,8 @@ def post_farm_profile_has_user():
         }
         return jsonify(response), 500
 
-@views_farm_profile_bp.route('/farm-profile-remove-user/<int:user_id>', methods=['DELETE'])
+@views_farm_profile_bp.route('/api/farm-profile-remove-user/<int:user_id>', methods=['DELETE'])
+@login_required
 def remove_farm_profile_user(user_id):
     # Assuming you have a Feature model and an existing feature object
     farm_profile_detail = FarmProfile.query.get(user_id)

@@ -1,5 +1,7 @@
 from flask import Flask
 from db import db
+from dotenv import load_dotenv
+import os
 
 from Livestock.views import views_bp
 from BlockAreaSledLivestock.views import views_livestock_details_bp
@@ -13,10 +15,14 @@ from Record.BCSRecord.views import views_bcs_record_bp
 from Record.WeightRecord.views import views_weight_record_bp
 from Record.HealthRecord.views import views_health_record_bp
 
+
 from FarmProfile.views import views_farm_profile_bp
-from Finance.Budget.views import views_budget_bp
-from Finance.BudgetItem.views import views_budget_item_bp
-from Finance.BudgetCategory.views import views_budget_category_bp
+# from Finance.Budget.views import views_budget_bp
+# from Finance.BudgetItem.views import views_budget_item_bp
+# from Finance.BudgetCategory.views import views_budget_category_bp
+
+# Load enviroment variable
+load_dotenv()
 
 # ----------------------------------------- #
 # Auth
@@ -28,9 +34,9 @@ from User.models import User as UserModel
 from User.views import views_auth_bp
 
 app = Flask(__name__)
-app.debug = False  # Turn off debug mode
-app.secret_key = "yLKXF7'EU5z3j~K1"  # Replace with a strong secret key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:kucing%401@localhost:5432/'
+app.debug = os.environ.get('DEBUG') == 'True'  # Turn off debug mode
+app.secret_key = os.environ.get('SECRET_KEY')  # Replace with a strong secret key
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -44,38 +50,38 @@ def load_user(user_id):
     return UserModel.query.get(int(user_id))
 
 # 1. Block Area register and management
-app.register_blueprint(views_block_area_bp)
+# app.register_blueprint(views_block_area_bp)
 
 # 2. Sled register 
-app.register_blueprint(views_sled_bp)
+# app.register_blueprint(views_sled_bp)
 
 # 3. Category for product register and management
-app.register_blueprint(views_category_bp)
+# app.register_blueprint(views_category_bp)
 
 # 4. Product register
-app.register_blueprint(views_product_bp)
+# app.register_blueprint(views_product_bp)
 
 # 5. Feature register
-app.register_blueprint(views_feature_bp)
+# app.register_blueprint(views_feature_bp)
 
 # 6. Block Area Sled and Livestock
-app.register_blueprint(views_livestock_details_bp)
+# app.register_blueprint(views_livestock_details_bp)
 
 # Record
 # 7. BCS Record 
-app.register_blueprint(views_bcs_record_bp)
+# app.register_blueprint(views_bcs_record_bp)
 # 8. Weight Record
-app.register_blueprint(views_weight_record_bp)
+# app.register_blueprint(views_weight_record_bp)
 # 9. Health Record
-app.register_blueprint(views_health_record_bp)
+# app.register_blueprint(views_health_record_bp)
 
 # Finance
 # 10. Budget
-app.register_blueprint(views_budget_bp)
+# app.register_blueprint(views_budget_bp)
 # 11. Budget Item
-app.register_blueprint(views_budget_item_bp)
+# app.register_blueprint(views_budget_item_bp)
 # 12. Budget Category
-app.register_blueprint(views_budget_category_bp)
+# app.register_blueprint(views_budget_category_bp)
 
 
 # Auth

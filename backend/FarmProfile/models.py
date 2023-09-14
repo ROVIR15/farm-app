@@ -15,6 +15,8 @@ class FarmProfile (db.Model):
 
 
 class FarmProfileHasUsers (db.Model):
+    __tablename__ = "farm_profile_has_users"
+
     farm_profile_id = db.Column(db.Integer(), db.ForeignKey(
         'farm_profile.id'), primary_key=True, nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey(
