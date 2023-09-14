@@ -104,5 +104,5 @@ def hello():
     return "<h1 style='color:blue'>Hello There!</h1>"
 
 # Add the following block at the end of the file
-if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=8000, debug=True)
+# if __name__ == '__main__':
+#   app.run(host='0.0.0.0', port=8000, debug=True)
