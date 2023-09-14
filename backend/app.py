@@ -1,7 +1,9 @@
 from flask import Flask
-from db_connection import db
 from dotenv import load_dotenv
 import os
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 from Livestock.views import views_bp
 from BlockAreaSledLivestock.views import views_livestock_details_bp
