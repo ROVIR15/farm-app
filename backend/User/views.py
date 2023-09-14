@@ -6,6 +6,7 @@ from FarmProfile.models import FarmProfileHasUsers
 
 from flask_login import login_user, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import and_
 
 views_auth_bp = Blueprint('views_auth', __name__)
 
@@ -19,7 +20,7 @@ def register():
 
 
     # Check if the username is already taken
-    existing_user = User.query.filter([User.username==username, User.email==email]).first()
+    existing_user = User.query.filter(and_(User.username == username, User.email == email)).first()
     if existing_user:
         response = {
             'status': 'success',
@@ -31,17 +32,18 @@ def register():
     hashed_password = generate_password_hash(password, method='sha256')
 
     try:
+        data_farm_profile = data.get('farm_profile')
         new_user = User(username=username, password=hashed_password, email=email)
         db.session.add(new_user)
         db.session.commit()
 
         # Create new farm profile
         # Get data from request body
-        name = data.get('name')
-        address_one = data.get('address_one')
-        address_two = data.get('address_two')
-        city = data.get('city')
-        province = data.get('province')
+        name = data_farm_profile.get('name')
+        address_one = data_farm_profile.get('address_one')
+        address_two = data_farm_profile.get('address_two')
+        city = data_farm_profile.get('city')
+        province = data_farm_profile.get('province')
 
         query = FarmProfile(
             name=name,
@@ -66,7 +68,8 @@ def register():
         # Handling the exception if storing the data fails
         error_message = str(e)
         response = {
-            'status': 'error'
+            'status': 'error',
+            'message': error_message
         }
         return jsonify(response), 500
 

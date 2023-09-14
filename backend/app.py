@@ -97,7 +97,10 @@ app.register_blueprint(views_farm_profile_bp)
 # app.register_blueprint(views_sled_bp)
 # app.register_blueprint(views_livestock_details_bp)
 
+@app.route("/")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
 
 # Add the following block at the end of the file
 if __name__ == '__main__':
-    app.run(debug=True)
+   app.run(host='0.0.0.0', port=8000, debug=True)

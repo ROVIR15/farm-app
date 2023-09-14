@@ -12,6 +12,8 @@ class User (db.Model):
     email = db.Column(db.String(100), nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
+    farm_profiles = db.relationship('FarmProfileHasUsers', back_populates='users')
+
     # Implement these methods and attributes from UserMixin
     @property
     def is_active(self):
