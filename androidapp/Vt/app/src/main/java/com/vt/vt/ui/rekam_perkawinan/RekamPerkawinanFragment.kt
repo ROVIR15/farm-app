@@ -26,8 +26,7 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRekamPerkawinanBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,16 +35,12 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            appBarRecordMating.topAppBar.apply {
+            toolbar3.apply {
                 title = "Rekam Perkawinan"
-                setNavigationIcon(R.drawable.baseline_arrow_back_24)
                 setNavigationOnClickListener {
                     view.findNavController().popBackStack()
                 }
-                post {
-                    inflateMenu(R.menu.menu_rekam_perkawinan)
-                    setOnMenuItemClickListener(this@RekamPerkawinanFragment)
-                }
+                setOnMenuItemClickListener(this@RekamPerkawinanFragment)
             }
             adapterSpinner(spinnerStallRecordMating)
             adapterSpinner(spinnerChooseMaleLivestockRecordMating)
@@ -84,9 +79,7 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun adapterSpinner(binding: Spinner) {
         ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.product_category_array,
-            R.layout.item_spinner
+            requireActivity(), R.array.product_category_array, R.layout.item_spinner
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.item_spinner)
             binding.adapter = adapter
@@ -148,8 +141,7 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         dialog.setContentView(R.layout.bottom_sheet_add_animal_child)
 
         val nameAnimal = dialog.findViewById<AppCompatEditText>(R.id.edt_name_animal_child)
-        val ivPickDate =
-            dialog.findViewById<AppCompatImageView>(R.id.iv_date_picker_animal_child)
+        val ivPickDate = dialog.findViewById<AppCompatImageView>(R.id.iv_date_picker_animal_child)
         val tvDateAnimalPregnant = dialog.findViewById<TextView>(R.id.tv_animal_child_date)
 
         val spinnerGender = dialog.findViewById<Spinner>(R.id.spinner_gender_animal_child)
@@ -183,9 +175,7 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun adapterSpinnerRecordMating(spinner: Spinner) {
         ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.product_category_array,
-            R.layout.item_spinner
+            requireActivity(), R.array.product_category_array, R.layout.item_spinner
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.item_spinner)
             spinner.adapter = adapter
@@ -209,8 +199,7 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     companion object {
         private val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1_animal_mating_history,
-            R.string.tab_text_2_animal_mating_history
+            R.string.tab_text_1_animal_mating_history, R.string.tab_text_2_animal_mating_history
         )
     }
 

@@ -12,6 +12,8 @@ import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.AnimalMatings
 import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.IAnimalMatings
 import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
 import com.vt.vt.core.data.source.remote.dummy.livestock.LivestockRepositoryImpl
+import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.HistoryPeranakanRepositoryImpl
+import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +44,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideInterfacePengeluaran(): IPengeluaran = PengeluaranRepositoryImpl()
+
+    @Provides
+    @Singleton
+    fun provideInterfaceHistoryPeranakan(): IHistoryPeranakan = HistoryPeranakanRepositoryImpl()
 
     @Provides
     @Singleton
