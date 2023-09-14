@@ -3,8 +3,7 @@ from dotenv import load_dotenv
 import os
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
-
+from db_connection import db
 from Livestock.views import views_bp
 from BlockAreaSledLivestock.views import views_livestock_details_bp
 from Sled.views import views_sled_bp
@@ -40,7 +39,6 @@ app.debug = os.environ.get('DEBUG') == 'True'  # Turn off debug mode
 app.secret_key = os.environ.get('SECRET_KEY')  # Replace with a strong secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db.init_app(app)
 
 login_manager = LoginManager()
@@ -105,4 +103,4 @@ def hello():
 
 # Add the following block at the end of the file
 # if __name__ == '__main__':
-#   app.run(host='0.0.0.0', port=8000, debug=True)
+#    app.run(host='0.0.0.0', port=8000, debug=True)

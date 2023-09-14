@@ -1,4 +1,4 @@
-from db_connection import db
+from app import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock

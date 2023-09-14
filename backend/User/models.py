@@ -1,4 +1,4 @@
-from db_connection import db
+from app import db
 from sqlalchemy import Numeric
 from datetime import datetime
 
