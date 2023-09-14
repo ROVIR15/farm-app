@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from Record.BCSRecord.models import BCSRecord
 from Record.BCSRecord.schema import BCSRecordSchema

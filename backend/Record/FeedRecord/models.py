@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from sqlalchemy import func
 from datetime import datetime
 

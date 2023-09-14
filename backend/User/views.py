@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from User.models import User
 from FarmProfile.models import FarmProfile

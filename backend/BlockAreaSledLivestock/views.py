@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload
 from BlockAreaSledLivestock.models import BlockAreaSledLivestock

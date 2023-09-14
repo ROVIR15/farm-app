@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from Breeds.Breeding.models import Breeding
 from Breeds.BreedingHistory.models import BreedingHistory

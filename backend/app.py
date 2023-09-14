@@ -1,5 +1,5 @@
 from flask import Flask
-from db import db
+from db_connection import db
 from dotenv import load_dotenv
 import os
 

@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from Product.models import Product
 from Category.models import Category
 

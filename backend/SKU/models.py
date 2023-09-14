@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 
 class SKU(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

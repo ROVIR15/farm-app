@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from Record.HealthRecord.models import HealthRecord
 from Record.HealthRecord.schema import HealthRecordSchema

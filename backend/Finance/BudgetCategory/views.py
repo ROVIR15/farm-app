@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from Finance.BudgetCategory.models import BudgetCategory
 from Finance.BudgetCategory.schema import BudgetCategorySchema

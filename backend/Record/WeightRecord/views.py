@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from flask import Blueprint, request, jsonify
 from Record.WeightRecord.models import WeightRecord
 from Record.WeightRecord.schema import WeightRecordSchema

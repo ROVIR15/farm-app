@@ -1,6 +1,6 @@
 from sqlalchemy import func
 from datetime import datetime
-from db import db
+from db_connection import db
 
 
 class Livestock (db.Model):

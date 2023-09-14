@@ -1,4 +1,4 @@
-from db import db
+from db_connection import db
 from datetime import datetime
 
 class BudgetRevision (db.Model):
