@@ -3,8 +3,8 @@ package com.vt.vt.utils
 import com.vt.vt.BuildConfig
 import okhttp3.logging.HttpLoggingInterceptor
 
-const val apiKey = "ce84baa5ea6072805228db04568c7ba9"
-const val wilayah_indonesia = "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
+const val breed_api = "https://dog.ceo/api/breeds/"
+const val local_url = "http://103.189.164.95/"
 
 val loggingInterceptor = if (BuildConfig.DEBUG) {
     HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

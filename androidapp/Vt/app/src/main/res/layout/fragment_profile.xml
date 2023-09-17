@@ -50,11 +50,14 @@
         app:layout_constraintStart_toEndOf="@+id/iv_profile_user"
         app:layout_constraintTop_toBottomOf="@+id/tv_profile_username" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout sementara"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/black"
+        android:elevation="2dp"
+        android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.di
 
 import android.content.Context
+import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.IAnimal
 import com.vt.vt.core.data.source.remote.dummy.cobahilt.repository.AnimalRepositoryImpl
@@ -14,6 +15,7 @@ import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
 import com.vt.vt.core.data.source.remote.dummy.livestock.LivestockRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.HistoryPeranakanRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
+import com.vt.vt.core.data.source.repository.DataRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +24,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
-@Module
+@Module(includes = [NetworkModule::class])
 @InstallIn(SingletonComponent::class)
 class AppModule {
     @Provides
@@ -48,6 +50,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideInterfaceHistoryPeranakan(): IHistoryPeranakan = HistoryPeranakanRepositoryImpl()
+
+    @Provides
+    @Singleton
+    fun provideDataRepository(apiService: ApiService): DataRepository = DataRepository(apiService)
 
     @Provides
     @Singleton

@@ -30,7 +30,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             buttonProfile.setOnClickListener {
-                profileViewModel.removeLoginState()
+                profileViewModel.logout()
                 // startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 view.findNavController().navigate(R.id.action_navigation_profile_to_signInFragment)
             }

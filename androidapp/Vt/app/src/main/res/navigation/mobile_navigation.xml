@@ -216,7 +216,7 @@
         android:id="@+id/breedingFragment"
         android:name="com.vt.vt.ui.breeding.BreedingFragment"
         android:label="fragment_breeding"
-        tools:layout="@layout/fragment_breeding" >
+        tools:layout="@layout/fragment_breeding">
         <action
             android:id="@+id/action_breedingFragment_to_rekamBeratBadanFragment"
             app:destination="@id/rekamBeratBadanFragment" />
@@ -269,7 +269,7 @@
         android:id="@+id/detailAreaBlockFragment"
         android:name="com.vt.vt.ui.detail_area_block.DetailAreaBlockFragment"
         android:label="fragment_detail_area_block"
-        tools:layout="@layout/fragment_detail_area_block" >
+        tools:layout="@layout/fragment_detail_area_block">
         <action
             android:id="@+id/action_detailAreaBlockFragment_to_editAreaBlockFragment"
             app:destination="@id/editAreaBlockFragment" />
@@ -302,7 +302,7 @@
         android:id="@+id/listAnimalMatingsFragment"
         android:name="com.vt.vt.ui.daftar_perkawinan.ListAnimalMatingsFragment"
         android:label="fragment_list_animal_matings"
-        tools:layout="@layout/fragment_list_animal_matings" >
+        tools:layout="@layout/fragment_list_animal_matings">
         <action
             android:id="@+id/action_listAnimalMatingsFragment_to_rekamPerkawinanFragment"
             app:destination="@id/rekamPerkawinanFragment" />
@@ -320,12 +320,25 @@
     <fragment
         android:id="@+id/updateSignUpProfileFragment"
         android:name="com.vt.vt.ui.signup.UpdateSignUpProfileFragment"
-        android:label="UpdateSignUpProfileFragment" >
+        android:label="UpdateSignUpProfileFragment">
         <action
             android:id="@+id/action_updateSignUpProfileFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <argument
+            android:name="username"
+            android:defaultValue="username"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            android:defaultValue="email"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            android:defaultValue="password"
+            app:argType="string" />
     </fragment>
-    <navigation android:id="@+id/navigation"
+    <navigation
+        android:id="@+id/navigation"
         app:startDestination="@id/pemberianTernakFragment">
         <fragment
             android:id="@+id/vitaminFragment"

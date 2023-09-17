@@ -33,9 +33,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
-        // jika belum login maka akan ke tampilan logind
-        signInViewModel.loginState.observe(viewLifecycleOwner) {
-            if (it != true) {
+
+        signInViewModel.loginState.observe(viewLifecycleOwner) { user ->
+            if (!user.isLogin) {
                 view.findNavController()
                     .navigate(R.id.action_navigation_home_to_signInFragment)
             }
@@ -51,7 +51,8 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "no action", Toast.LENGTH_SHORT).show()
             }
             contentHome.contentHomeCategorySeeCage.setOnClickListener {
-                it.findNavController().navigate(R.id.action_navigation_home_to_penyimpanTernakFragment)
+                it.findNavController()
+                    .navigate(R.id.action_navigation_home_to_penyimpanTernakFragment)
             }
             contentHome.imgBtnBreeding.setOnClickListener {
                 it.findNavController().navigate(R.id.action_navigation_home_to_breedingFragment)

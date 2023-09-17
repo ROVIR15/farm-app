@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView30" />
 
     <com.vt.ui.customview.CustomEditText
-        android:id="@+id/update_sign_up_cv_name"
+        android:id="@+id/update_sign_up_cv_farm_name"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
@@ -83,40 +83,11 @@
         app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_title"
         custom:flagType="name" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout11"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/bg_white"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/update_sign_up_cv_name"
-        app:layout_constraintStart_toStartOf="@+id/update_sign_up_cv_name"
-        app:layout_constraintTop_toBottomOf="@+id/update_sign_up_cv_name">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_date_picker"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_baseline_calendar_24" />
-
-        <TextView
-            android:id="@+id/tv_farm_created_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/roboto_regular"
-            android:hint="Tanggal Perternakan"
-            android:paddingHorizontal="16dp"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edt_edit_address_one_farm_profile"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_edt_normal"
         android:fontFamily="@font/roboto_regular"
@@ -126,14 +97,15 @@
         android:paddingVertical="8dp"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout11"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout11"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/update_sign_up_cv_farm_name" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edt_edit_address_two_farm_profile"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_edt_normal"
         android:fontFamily="@font/roboto_regular"
@@ -143,8 +115,8 @@
         android:paddingVertical="8dp"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout11"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_edit_address_one_farm_profile" />
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -184,21 +156,31 @@
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/edt_edit_address_two_farm_profile" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_save_update_profile_sign_up"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignUp"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_btn_shape_rounded"
-        android:fontFamily="@font/roboto_medium"
-        android:text="Sign Up"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="38dp"
+        android:backgroundTint="@color/btn_blue_icon"
+        android:text="Sign In"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/edt_edit_provice_farm_profile"
+        app:layout_constraintStart_toStartOf="@+id/edt_edit_city_farm_profile"
         app:layout_constraintTop_toBottomOf="@+id/edt_edit_city_farm_profile" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSignUp"
+        app:layout_constraintEnd_toEndOf="@+id/btnSignUp"
+        app:layout_constraintStart_toStartOf="@+id/btnSignUp"
+        app:layout_constraintTop_toTopOf="@+id/btnSignUp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.vt.vt.R
@@ -12,7 +13,6 @@ import com.vt.vt.databinding.FragmentSignUpBinding
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,15 +26,31 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            this.signUpTvLogin.setOnClickListener { view ->
-                view.findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
-            }
-            this.signUpBtnCreateAccount.setOnClickListener { view->
-                view.findNavController().navigate(R.id.action_signUpFragment_to_updateSignUpProfileFragment)
+            this.signUpBtnCreateAccount.setOnClickListener { view ->
+                val username = signUpCvUsername.text.toString().trim()
+                val email = signUpCvEmail.text.toString().trim()
+                val password = signUpCvPassword.text.toString().trim()
+                val retypePassword = signUpCvRetypePassword.text.toString().trim()
+                if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && retypePassword.isNotEmpty() && password == retypePassword) {
+                    val bundle = Bundle().apply {
+                        putString("username", username)
+                        putString("email", email)
+                        putString("password", password)
+                    }
+                    view.findNavController()
+                        .navigate(R.id.action_signUpFragment_to_updateSignUpProfileFragment, bundle)
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Kata sandi tidak cocok atau kolom kosong",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
-
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

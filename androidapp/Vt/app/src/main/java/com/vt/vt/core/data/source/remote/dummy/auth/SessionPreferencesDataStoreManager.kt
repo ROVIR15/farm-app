@@ -5,7 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.vt.vt.core.data.source.remote.auth.model.user_session.UserSession
 import com.vt.vt.utils.FILE_PREFERENCE_DATASTORE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,17 +17,25 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class SessionPreferencesDataStoreManager(context: Context) {
 
     private val sessionDataStore = context.dataStore
+    private val usernameKey = stringPreferencesKey("username")
+    private val passwordKey = stringPreferencesKey("password")
     private val isLoginKey = booleanPreferencesKey("LOGIN_STATE")
 
-    fun getIsLoginState(): Flow<Boolean> {
+    fun getLoginSession(): Flow<UserSession> {
         return sessionDataStore.data.map { preferences ->
-            preferences[isLoginKey] ?: false
+            UserSession(
+                preferences[usernameKey] ?: "",
+                preferences[passwordKey] ?: "",
+                preferences[isLoginKey] ?: false
+            )
         }
     }
 
     //login
-    suspend fun saveUserLoginState() {
+    suspend fun saveUserLoginState(userSession: UserSession) {
         sessionDataStore.edit { preferences ->
+            preferences[usernameKey] = userSession.username
+            preferences[passwordKey] = userSession.password
             preferences[isLoginKey] = true
         }
     }
@@ -33,7 +43,7 @@ class SessionPreferencesDataStoreManager(context: Context) {
     //logout
     suspend fun removeLoginState() {
         sessionDataStore.edit { preferences ->
-            preferences[isLoginKey] = false
+            preferences.clear()
         }
     }
 }
