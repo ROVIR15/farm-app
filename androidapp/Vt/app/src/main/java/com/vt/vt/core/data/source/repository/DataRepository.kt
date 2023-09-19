@@ -5,6 +5,7 @@ import com.vt.vt.core.data.source.remote.auth.model.login.LoginRequest
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
 import com.vt.vt.core.data.source.remote.auth.model.register.request.RegisterRequest
 import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterResponse
+import com.vt.vt.core.data.source.remote.auth.model.user_session.UserSession
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -14,5 +15,7 @@ class DataRepository @Inject constructor(private val networkService: ApiService)
 
     suspend fun login(loginRequest: LoginRequest): Response<LoginResponse> =
         networkService.doLogin(loginRequest)
+
+    suspend fun logout(): Response<LoginResponse> = networkService.doLogout()
 
 }

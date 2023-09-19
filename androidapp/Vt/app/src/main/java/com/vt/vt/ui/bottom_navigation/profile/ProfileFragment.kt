@@ -1,9 +1,11 @@
 package com.vt.vt.ui.bottom_navigation.profile
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -29,21 +31,48 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            buttonProfile.setOnClickListener {
+            btnLogout.setOnClickListener {
                 profileViewModel.logout()
-                // startActivity(Intent(requireActivity(), LoginActivity::class.java))
-                view.findNavController().navigate(R.id.action_navigation_profile_to_signInFragment)
+                profileViewModel.logoutSession()
             }
             personalProfile.setOnClickListener(this@ProfileFragment)
             farmProfile.setOnClickListener(this@ProfileFragment)
             profileGoodsAndService.setOnClickListener(this@ProfileFragment)
             profileAnimalCageArea.setOnClickListener(this@ProfileFragment)
         }
+
+        observerView()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observerView() {
+        profileViewModel.isError().observe(viewLifecycleOwner) { error ->
+            Toast.makeText(requireActivity(), error.toString(), Toast.LENGTH_SHORT).show()
+        }
+        profileViewModel.observeLoading().observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+        profileViewModel.isLogout.observe(viewLifecycleOwner) {
+            view?.findNavController()?.navigate(R.id.action_navigation_profile_to_signInFragment)
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        with(binding) {
+            if (state) {
+                progressBar.visibility = View.VISIBLE
+                btnLogout.isEnabled = false
+                btnLogout.setBackgroundColor(Color.GRAY)
+            } else {
+                progressBar.visibility = View.GONE
+                btnLogout.isEnabled = true
+                btnLogout.setBackgroundColor(Color.BLACK)
+            }
+        }
     }
 
     override fun onClick(v: View?) {

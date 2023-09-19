@@ -5,10 +5,6 @@ import java.io.IOException
 import java.net.HttpURLConnection
 
 class NetworkError(var error: Throwable) : Throwable() {
-    companion object {
-        private const val HTTP_UNPROCESS_ENTITY = 422
-    }
-
     val errorMessage: String?
         get() = error.message
 
@@ -38,4 +34,8 @@ class NetworkError(var error: Throwable) : Throwable() {
 
     val tokenIsExpired: Boolean
         get() = isHttpError && (error as HttpException).code() == HttpURLConnection.HTTP_FORBIDDEN
+
+    companion object {
+        private const val HTTP_UNPROCESS_ENTITY = 422
+    }
 }

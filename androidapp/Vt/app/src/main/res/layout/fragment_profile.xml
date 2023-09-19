@@ -50,18 +50,6 @@
         app:layout_constraintStart_toEndOf="@+id/iv_profile_user"
         app:layout_constraintTop_toBottomOf="@+id/tv_profile_username" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/black"
-        android:elevation="2dp"
-        android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -186,7 +174,32 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/subtle_grey" />
-
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/black"
+        android:elevation="2dp"
+        android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_logout"
+        app:layout_constraintEnd_toEndOf="@+id/btn_logout"
+        app:layout_constraintStart_toStartOf="@+id/btn_logout"
+        app:layout_constraintTop_toTopOf="@+id/btn_logout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
