@@ -24,15 +24,23 @@ def get_sleds():
     try:
         if query:
             results = []
+
             # Serialize the livestock data using the schema
             for item in query:
+                if item.block_area:
+                    block_area_name = item.block_area.name
+                    block_area_description = item.block_area.description
+                else:
+                    block_area_name = ""
+                    block_area_description = ""
+
                 data = {
                     'id': item.id,
                     'block_area_id': item.block_area_id,
                     'name': item.name,
                     'description': item.description,
-                    'block_area_name': item.block_area.name,
-                    'block_area_description': item.block_area.description
+                    'block_area_name': block_area_name,
+                    'block_area_description': block_area_description
                 }
                 results.append(data)
             result = sleds_schema.dump(results)
@@ -84,9 +92,11 @@ def post_sled():
         db.session.add(query)
         db.session.commit()
 
-        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=current_user.id).first()
+        farm_profile = FarmProfileHasUsers.query.filter_by(
+            user_id=current_user.id).first()
 
-        has_sled = FarmProfileHasSled(farm_profile_id=farm_profile.farm_profile_id, sled_id=query.id)
+        has_sled = FarmProfileHasSled(
+            farm_profile_id=farm_profile.farm_profile_id, sled_id=query.id)
         db.session.add(has_sled)
         db.session.commit()
 
