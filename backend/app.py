@@ -49,23 +49,28 @@ login_manager.init_app(app)
 def load_user(user_id):
     return UserModel.query.get(int(user_id))
 
+
+# Auth
+# 0. Authentication
+app.register_blueprint(views_auth_bp)
+
 # 1. Block Area register and management
-# app.register_blueprint(views_block_area_bp)
+app.register_blueprint(views_block_area_bp, url_prefix='/api')
 
 # 2. Sled register 
-# app.register_blueprint(views_sled_bp)
+app.register_blueprint(views_sled_bp, url_prefix='/api')
 
 # 3. Category for product register and management
 # app.register_blueprint(views_category_bp)
 
 # 4. Product register
-# app.register_blueprint(views_product_bp)
+app.register_blueprint(views_product_bp, url_prefix='/api')
 
 # 5. Feature register
 # app.register_blueprint(views_feature_bp)
 
 # 6. Block Area Sled and Livestock
-# app.register_blueprint(views_livestock_details_bp)
+app.register_blueprint(views_livestock_details_bp)
 
 # Record
 # 7. BCS Record 
@@ -82,11 +87,6 @@ def load_user(user_id):
 # app.register_blueprint(views_budget_item_bp)
 # 12. Budget Category
 # app.register_blueprint(views_budget_category_bp)
-
-
-# Auth
-# 0. Authentication
-app.register_blueprint(views_auth_bp)
 
 # Farm Profile
 # 13. Farm Profile API

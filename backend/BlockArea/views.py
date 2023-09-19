@@ -3,7 +3,10 @@ from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload
 from BlockArea.models import BlockArea
 from FarmProfile.HasBlockArea.models import HasBlockArea as FarmProfileHasBlockArea
+from FarmProfile.models import FarmProfileHasUsers
 from BlockArea.schema import BlockAreaSchema
+
+from flask_login import login_required, current_user
 
 views_block_area_bp = Blueprint('views_block_area', __name__)
 
@@ -12,9 +15,11 @@ blocks_area_schema = BlockAreaSchema(many=True)
 
 
 @views_block_area_bp.route('/block-areas', methods=['GET'])
+@login_required
 def get_block_areas():
     # Retrieve all livestock records from the database
-    query = BlockArea.query.options(subqueryload(BlockArea.sleds)).all()
+    query = BlockArea.query.all()
+    # query = BlockArea.query.options(subqueryload(BlockArea.sleds)).all()
 
     results = []
     # Serialize the livestock data using the schema
@@ -23,7 +28,7 @@ def get_block_areas():
             'id': item.id,
             'name': item.name,
             'description': item.description,
-            'sleds': item.sleds
+            # 'sleds': item.sleds
             # 'created_at': item.created_at,
         }
         results.append(data)
@@ -34,6 +39,7 @@ def get_block_areas():
 
 
 @views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['GET'])
+@login_required
 def get_a_block_area(block_area_id):
     # Retrieve all livestock records from the database
     query = BlockArea.query.options(subqueryload(BlockArea.sleds)).get(block_area_id)
@@ -46,6 +52,7 @@ def get_a_block_area(block_area_id):
 
 
 @views_block_area_bp.route('/block-area', methods=['POST'])
+@login_required
 def post_block_area():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -53,14 +60,17 @@ def post_block_area():
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     description = data.get('description')
-    farm_profile_id = data.get('farm_profile_id')
 
     try:
         query = BlockArea(name=name, description=description)
         db.session.add(query)
         db.session.commit()
 
-        has_block_area = FarmProfileHasBlockArea(block_area_id=query.id, farm_profile_id=farm_profile_id)
+        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=current_user.id).first()
+
+        has_block_area = FarmProfileHasBlockArea(block_area_id=query.id, farm_profile_id=farm_profile.farm_profile_id)
+        db.session.add(has_block_area)
+        db.session.commit()
 
         # Create a response JSON
         response = {
@@ -81,6 +91,7 @@ def post_block_area():
         return jsonify(response), 500
 
 @views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['PUT'])
+@login_required
 def update_block_area(block_area_id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -111,6 +122,7 @@ def update_block_area(block_area_id):
 
 
 @views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['DELETE'])
+@login_required
 def delete_block_area(block_area_id):
     # Assuming you have a Livestock model and an existing livestock object
     query = BlockArea.query.get(block_area_id)

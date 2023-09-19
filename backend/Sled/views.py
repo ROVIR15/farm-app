@@ -3,7 +3,11 @@ from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload, joinedload
 from Sled.models import Sled
 from FarmProfile.HasSled.models import HasSled as FarmProfileHasSled
+from FarmProfile.models import FarmProfileHasUsers
+
 from Sled.schema import SledSchema
+
+from flask_login import login_required, current_user
 
 views_sled_bp = Blueprint('views_sled', __name__)
 
@@ -12,25 +16,10 @@ sleds_schema = SledSchema(many=True)
 
 
 @views_sled_bp.route('/sleds', methods=['GET'])
+@login_required
 def get_sleds():
     # Retrieve all livestock records from the database
     query = Sled.query.options(subqueryload(Sled.block_area)).all()
-
-    results = []
-    # Serialize the livestock data using the schema
-    for item in query:
-        data = {
-            'id': item.id,
-            'block_area_id': item.block_area_id,
-            'name': item.name,
-            'description': item.description,
-            'block_area_name': item.block_area.name,
-            'block_area_description': item.block_area.description
-        }
-        results.append(data)
-    result = sleds_schema.dump(results)
-    # Return the serialized data as JSON response
-    return jsonify(result)
 
     try:
         if query:
@@ -41,7 +30,9 @@ def get_sleds():
                     'id': item.id,
                     'block_area_id': item.block_area_id,
                     'name': item.name,
-                    'description': item.description
+                    'description': item.description,
+                    'block_area_name': item.block_area.name,
+                    'block_area_description': item.block_area.description
                 }
                 results.append(data)
             result = sleds_schema.dump(results)
@@ -62,6 +53,7 @@ def get_sleds():
 
 
 @views_sled_bp.route('/sled/<int:sled_id>', methods=['GET'])
+@login_required
 def get_sled(sled_id):
     # Retrieve all livestock records from the database
     query = Sled.query.options(subqueryload(Sled.block_area)).get(sled_id)
@@ -70,10 +62,12 @@ def get_sled(sled_id):
     result = sled_schema.dump(query)
 
     # Return the serialized data as JSON response
-    return jsonify(result)
+    # return jsonify(current_user)
+    return jsonify(result), 200
 
 
 @views_sled_bp.route('/sled', methods=['POST'])
+@login_required
 def post_sled():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -90,7 +84,9 @@ def post_sled():
         db.session.add(query)
         db.session.commit()
 
-        has_sled = FarmProfileHasSled(farm_profile_id=farm_profile_id, sled_id=query.id)
+        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=current_user.id).first()
+
+        has_sled = FarmProfileHasSled(farm_profile_id=farm_profile.farm_profile_id, sled_id=query.id)
         db.session.add(has_sled)
         db.session.commit()
 
@@ -103,6 +99,7 @@ def post_sled():
 
     except Exception as e:
         # Handling the exception if storing the data fails
+        db.session.rollback()
         error_message = str(e)
         response = {
             'status': 'error',
@@ -113,6 +110,7 @@ def post_sled():
 
 
 @views_sled_bp.route('/sled/<int:sled_id>', methods=['PUT'])
+@login_required
 def update_sled(sled_id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -120,7 +118,7 @@ def update_sled(sled_id):
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     description = data.get('description')
-    block_area_id = data.get('sled_id')
+    block_area_id = data.get('block_area_id')
 
     # Assuming you have a Livestock model and an existing livestock object
     sled = Sled.query.get(sled_id)
@@ -145,11 +143,12 @@ def update_sled(sled_id):
 
 
 @views_sled_bp.route('/sled/<int:sled_id>', methods=['DELETE'])
+@login_required
 def delete_sled(sled_id):
     # Assuming you have a Livestock model and an existing livestock object
     sled = Sled.query.get(sled_id)
     if sled:
-        db.session.delete(sled_id)
+        db.session.delete(sled)
         db.session.commit()
 
         response = {
