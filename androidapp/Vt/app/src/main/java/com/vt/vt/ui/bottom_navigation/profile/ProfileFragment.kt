@@ -2,7 +2,6 @@ package com.vt.vt.ui.bottom_navigation.profile
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,8 +33,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         with(binding) {
             btnLogout.setOnClickListener {
                 profileViewModel.logout()
-                profileViewModel.logoutSession()
-                view.findNavController().navigate(R.id.action_navigation_profile_to_signInFragment)
             }
             personalProfile.setOnClickListener(this@ProfileFragment)
             farmProfile.setOnClickListener(this@ProfileFragment)
@@ -60,12 +57,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             showLoading(it)
         }
         profileViewModel.getUser.observe(viewLifecycleOwner) {
-            Log.d("PROFILE", it.toString())
             binding.tvProfileUsername.text = it?.username
         }
-        /*  profileViewModel.isLogout.observe(viewLifecycleOwner) {
-              view?.findNavController()?.navigate(R.id.action_navigation_profile_to_signInFragment)
-          }*/
+        profileViewModel.isLogout.observe(viewLifecycleOwner) {
+            view?.findNavController()?.navigate(R.id.action_navigation_profile_to_signInFragment)
+        }
     }
 
     private fun showLoading(state: Boolean) {

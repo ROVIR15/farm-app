@@ -1,16 +1,13 @@
 package com.vt.vt.ui.bottom_navigation.profile
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
 import com.vt.vt.core.data.source.remote.auth.model.profile.UserResponse
 import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -53,8 +50,8 @@ class ProfileViewModel @Inject constructor(
             action = {
                 val response = dataRepository.logout()
                 if (response.isSuccessful) {
-                    Log.d("PROFILE", "can't logout")
                     _logoutEmitter.postValue(response.body())
+                    sessionPreferencesDataStoreManager.removeLoginState()
                 } else {
                     val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                     val message = errorBody.getString("message")
@@ -70,11 +67,5 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         )
-    }
-
-    fun logoutSession() {
-        viewModelScope.launch {
-            sessionPreferencesDataStoreManager.removeLoginState()
-        }
     }
 }

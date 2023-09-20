@@ -102,7 +102,6 @@ class SignInFragment : Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                    view?.findNavController()?.popBackStack()
                 }
             })
 

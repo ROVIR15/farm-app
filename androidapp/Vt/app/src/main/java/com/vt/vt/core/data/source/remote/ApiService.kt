@@ -17,10 +17,9 @@ interface ApiService {
     @POST("login")
     suspend fun doLogin(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
-    //    @Headers("")
     @GET("api/profile")
     suspend fun getUser(): Response<UserResponse>
 
-    @POST("logout")
+    @POST("api/logout")
     suspend fun doLogout(): Response<LoginResponse>
 }
