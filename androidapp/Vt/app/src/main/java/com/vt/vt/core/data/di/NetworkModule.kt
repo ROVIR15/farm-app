@@ -20,6 +20,13 @@ class NetworkModule {
     fun proviedOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            /*.addInterceptor { chain ->
+                val original = chain.request();
+                val authorized = original.newBuilder()
+                    .addHeader("Cookie", "cookie-name=cookie-value")
+                    .build();
+                chain.proceed(authorized);
+            }*/
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()
