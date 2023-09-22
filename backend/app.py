@@ -72,11 +72,11 @@ app.register_blueprint(views_bp, url_prefix='/api')
 
 # Record
 # 7. BCS Record 
-# app.register_blueprint(views_bcs_record_bp)
+app.register_blueprint(views_bcs_record_bp, url_prefix='/api')
 # 8. Weight Record
-# app.register_blueprint(views_weight_record_bp)
+app.register_blueprint(views_weight_record_bp, url_prefix='/api')
 # 9. Health Record
-# app.register_blueprint(views_health_record_bp)
+app.register_blueprint(views_health_record_bp, url_prefix='/api')
 
 # Finance
 # 10. Budget

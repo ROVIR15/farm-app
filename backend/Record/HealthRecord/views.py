@@ -3,6 +3,8 @@ from flask import Blueprint, request, jsonify
 from Record.HealthRecord.models import HealthRecord
 from Record.HealthRecord.schema import HealthRecordSchema
 
+from auth import login_required
+
 views_health_record_bp = Blueprint('views_health_record', __name__)
 
 health_record_schema = HealthRecordSchema()
@@ -10,42 +12,67 @@ health_many_record_schema = HealthRecordSchema(many=True)
 
 
 @views_health_record_bp.route('/health-records', methods=['GET'])
+@login_required
 def get_health_record():
-    # Retrieve all health records from database
-    query = HealthRecord.query.all()
 
-    results = []
-    # Serialize the health record data using the schema
-    for item in query:
-        data = {
-            'id': item.id,
-            'livestock_id': item.livestock_id,
-            'date': item.date,
-            'disease_type': item.disease_type,
-            'treatment_methods': item.treatment_methods,
-            'remarks': item.remarks,
-            'created_at': item.created_at
+    try:
+        # Retrieve all health records from database
+        query = HealthRecord.query.all()
+
+        results = []
+        # Serialize the health record data using the schema
+        for item in query:
+            data = {
+                'id': item.id,
+                'livestock_id': item.livestock_id,
+                'date': item.date,
+                'disease_type': item.disease_type,
+                'treatment_methods': item.treatment_methods,
+                'remarks': item.remarks,
+                'created_at': item.created_at
+            }
+            results.append(data)
+        result = health_many_record_schema.dump(results)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry error, due to {error_message}'
         }
-        results.append(data)
-    result = health_many_record_schema.dump(results)
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        return jsonify(response), 500
 
 
 @views_health_record_bp.route('/health-record/<int:livestock_id>', methods=['GET'])
+@login_required
 def get_a_health_record(livestock_id):
-    # Retrieve BCS Record based on livestock_id from the database
-    query = HealthRecord.query.get(livestock_id)
 
-    # Serialize the livestock data using the schema
-    result = health_record_schema.dump(query)
+    try
+        # Retrieve BCS Record based on livestock_id from the database
+        query = HealthRecord.query.get(livestock_id)
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        # Serialize the livestock data using the schema
+        result = health_record_schema.dump(query)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry error, due to {error_message}'
+        }
+
+        return jsonify(response), 500
 
 
 @views_health_record_bp.route('/health-record', methods=['POST'])
+@login_required
 def post_health_record():
     data = request.get_json()  # Get the JSON data from request body
 
@@ -84,6 +111,7 @@ def post_health_record():
 
 
 @views_health_record_bp.route('/health-record/<int:id>', methods=['PUT'])
+@login_required
 def update_health_record(id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -115,6 +143,7 @@ def update_health_record(id):
 
 
 @views_health_record_bp.route('/health-record/<int:id>', methods=['DELETE'])
+@login_required
 def delete_health_record(id):
     # Assuming the system has health record model and an existing health_record object
     query = HealthRecord.query.get(id)
