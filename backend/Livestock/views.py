@@ -2,8 +2,12 @@ from app import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
-from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
 from Livestock.schema import LivestockSchema
+
+from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
+from FarmProfile.models import FarmProfileHasUsers
+
+from auth import login_required, current_user
 
 views_bp = Blueprint('views_livestock', __name__)
 
@@ -12,6 +16,7 @@ livestocks_schema = LivestockSchema(many=True)
 
 
 @views_bp.route('/livestocks', methods=['GET'])
+@login_required
 def get_livestocks():
     # Retrieve all livestock records from the database
     query = Livestock.query.all()
@@ -26,11 +31,6 @@ def get_livestocks():
             'bangsa': item.bangsa,
             'descrip tion': item.description,
             'created_at': item.created_at,
-        # 'updated_at': item.updated_at,
-            # 'info': {
-            #     'block_area_id': item.info[0].block_area_id,
-            #     'sled_id': item.info[0].sled_id
-            # }
         }
     results.append(data)
     result = livestocks_schema.dump(results)
@@ -40,9 +40,14 @@ def get_livestocks():
 
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['GET'])
+@login_required
 def get_a_livestock(livestock_id):
     # Retrieve all livestock records from the database
-    query = Livestock.query.get(livestock_id)
+    query = Livestock.query.options([
+        subqueryload(Livestock.weight_records),
+        subqueryload(Livestock.bcs_records),
+        subqueryload(Livestock.health_records)
+    ]).get(livestock_id)
 
     # Serialize the livestock data using the schema
     result = livestock_schema.dump(query)
@@ -52,6 +57,7 @@ def get_a_livestock(livestock_id):
 
 
 @views_bp.route('/livestock', methods=['POST'])
+@login_required
 def post_livestock():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -61,25 +67,32 @@ def post_livestock():
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
-    farm_profile_id = data.get('farm_profile_id')
 
     try:
-        query = Livestock(name=name, gender=gender,
-                          bangsa=bangsa, description=description)
-        db.session.add(query)
-        db.session.commit()
 
-        has_livestock = FarmProfileHasLivestock(livestock_id=query.id, farm_profile_id=farm_profile_id)
-        db.session.add(has_livestock)
-        db.session.commit()
+        user_id = current_user()
+        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=user_id)
 
-        # Create a response JSON
-        response = {
-            'status': 'success',
-            'message': f'Hello, {name}! Your message has been received.'
-        }
+        if not farm_profile:
+            raise Exception("Cannot find farm profile!")
+        else:
+            query = Livestock(name=name, gender=gender,
+                              bangsa=bangsa, description=description)
+            db.session.add(query)
+            db.session.commit()
 
-        return jsonify(response), 200
+            has_livestock = FarmProfileHasLivestock(
+                livestock_id=query.id, farm_profile_id=farm_profile.id)
+            db.session.add(has_livestock)
+            db.session.commit()
+
+            # Create a response JSON
+            response = {
+                'status': 'success',
+                'message': f'Hello, {name}! Your message has been received.'
+            }
+
+            return jsonify(response), 200
 
     except Exception as e:
         # Handling the exception if storing the data fails
@@ -93,6 +106,7 @@ def post_livestock():
 
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['PUT'])
+@login_required
 def update_livestock(livestock_id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -127,6 +141,7 @@ def update_livestock(livestock_id):
 
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['DELETE'])
+@login_required
 def delete_livestock(livestock_id):
     # Assuming you have a Livestock model and an existing livestock object
     livestock = Livestock.query.get(livestock_id)

@@ -15,7 +15,7 @@ class HealthRecord(db.Model):
     remarks = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
-    # livestock = db.relationship('Sled', back_populates='block_area', lazy=True)
+    livestock = db.relationship('Livestock', back_populates='health_records', lazy=True)
 
     def __repr__(self):
         return f'<HealthRecord {self.name}>'

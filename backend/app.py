@@ -67,8 +67,8 @@ app.register_blueprint(views_product_bp, url_prefix='/api')
 # 5. Feature register
 app.register_blueprint(views_feature_bp, url_prefix='/api')
 
-# 6. Block Area Sled and Livestock
-app.register_blueprint(views_livestock_details_bp, url_prefix='/api')
+# 6. Livestock
+app.register_blueprint(views_bp, url_prefix='/api')
 
 # Record
 # 7. BCS Record 
