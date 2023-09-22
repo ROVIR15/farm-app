@@ -1,7 +1,8 @@
 from flask import Flask
 from dotenv import load_dotenv
 import os
-from flask_sqlalchemy import SQLAlchemy
+
+from auth import AuthManager
 
 from db_connection import db
 from Livestock.views import views_bp
@@ -41,14 +42,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-login_manager = LoginManager()
-login_manager.login_view = 'login'
-login_manager.init_app(app)
+app.login_manager = AuthManager(app, app.config['SECRET_KEY'])
 
-@login_manager.user_loader
-def load_user(user_id):
-    return UserModel.query.get(int(user_id))
-
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return UserModel.query.get(int(user_id))
 
 # Auth
 # 0. Authentication
@@ -59,7 +57,7 @@ app.register_blueprint(views_block_area_bp, url_prefix='/api')
 
 # 2. Sled register 
 app.register_blueprint(views_sled_bp, url_prefix='/api')
-
+# 
 # 3. Category for product register and management
 # app.register_blueprint(views_category_bp)
 
@@ -67,10 +65,10 @@ app.register_blueprint(views_sled_bp, url_prefix='/api')
 app.register_blueprint(views_product_bp, url_prefix='/api')
 
 # 5. Feature register
-# app.register_blueprint(views_feature_bp)
+app.register_blueprint(views_feature_bp, url_prefix='/api')
 
 # 6. Block Area Sled and Livestock
-app.register_blueprint(views_livestock_details_bp)
+app.register_blueprint(views_livestock_details_bp, url_prefix='/api')
 
 # Record
 # 7. BCS Record 
@@ -90,7 +88,7 @@ app.register_blueprint(views_livestock_details_bp)
 
 # Farm Profile
 # 13. Farm Profile API
-app.register_blueprint(views_farm_profile_bp)
+app.register_blueprint(views_farm_profile_bp, url_prefix='/api')
 
 
 # app.register_blueprint(views_bp)

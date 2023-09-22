@@ -4,7 +4,8 @@ from User.models import User
 from FarmProfile.models import FarmProfile
 from FarmProfile.models import FarmProfileHasUsers
 
-from flask_login import login_user, login_user, login_required, logout_user, current_user
+from auth import login_required, encode_token, logout_user, current_user
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import and_
 
@@ -84,8 +85,8 @@ def login():
     user = User.query.filter_by(username=username).first()
 
     if user and check_password_hash(user.password, password):
-        login_user(user)
-        return jsonify({"message": "Logged in successfully."}), 200
+        token = encode_token(user.id)
+        return jsonify({"message": "Logged in successfully.", "token": token}), 200
     else:
         return jsonify({"message": "Login failed. Check your username and password."}), 401
 
@@ -93,7 +94,8 @@ def login():
 @views_auth_bp.route('/api/profile', methods=['GET'])
 @login_required
 def api_profile():
-    return jsonify({"username": current_user.username}), 200
+    user_id = current_user()
+    return jsonify({"status": user_id}), 200
 
 # Logout route (protected API)
 @views_auth_bp.route('/api/logout', methods=['POST'])
