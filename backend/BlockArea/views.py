@@ -6,7 +6,7 @@ from FarmProfile.HasBlockArea.models import HasBlockArea as FarmProfileHasBlockA
 from FarmProfile.models import FarmProfileHasUsers
 from BlockArea.schema import BlockAreaSchema
 
-from flask_login import login_required, current_user
+from auth import login_required, current_user
 
 views_block_area_bp = Blueprint('views_block_area', __name__)
 
@@ -66,7 +66,8 @@ def post_block_area():
         db.session.add(query)
         db.session.commit()
 
-        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=current_user.id).first()
+        user_id = current_user()
+        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=user_id).first()
 
         has_block_area = FarmProfileHasBlockArea(block_area_id=query.id, farm_profile_id=farm_profile.farm_profile_id)
         db.session.add(has_block_area)

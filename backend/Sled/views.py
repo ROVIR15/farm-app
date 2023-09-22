@@ -7,7 +7,7 @@ from FarmProfile.models import FarmProfileHasUsers
 
 from Sled.schema import SledSchema
 
-from flask_login import login_required, current_user
+from auth import login_required, current_user
 
 views_sled_bp = Blueprint('views_sled', __name__)
 
@@ -92,8 +92,10 @@ def post_sled():
         db.session.add(query)
         db.session.commit()
 
+        user_id = current_user()
+
         farm_profile = FarmProfileHasUsers.query.filter_by(
-            user_id=current_user.id).first()
+            user_id=user_id).first()
 
         has_sled = FarmProfileHasSled(
             farm_profile_id=farm_profile.farm_profile_id, sled_id=query.id)
