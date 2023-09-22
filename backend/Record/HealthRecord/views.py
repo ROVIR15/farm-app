@@ -51,7 +51,7 @@ def get_health_record():
 @login_required
 def get_a_health_record(livestock_id):
 
-    try
+    try:
         # Retrieve BCS Record based on livestock_id from the database
         query = HealthRecord.query.get(livestock_id)
 
