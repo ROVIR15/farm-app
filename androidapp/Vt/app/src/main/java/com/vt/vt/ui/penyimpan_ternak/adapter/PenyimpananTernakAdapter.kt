@@ -8,10 +8,10 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.Animal
+import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.databinding.ItemPenyimpanTernakBinding
 
-class PenyimpananTernakAdapter(private val animal: List<Animal>) :
+class PenyimpananTernakAdapter(private val blockAndAreas: List<BlockAndAreasResponseItem>) :
     RecyclerView.Adapter<PenyimpananTernakAdapter.PenyimpananTernakViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PenyimpananTernakViewHolder {
@@ -21,19 +21,19 @@ class PenyimpananTernakAdapter(private val animal: List<Animal>) :
     }
 
     override fun onBindViewHolder(holder: PenyimpananTernakViewHolder, position: Int) {
-        holder.bindTo(animal[position])
+        holder.bindTo(blockAndAreas[position])
     }
 
     override fun getItemCount(): Int {
-        return animal.size
+        return blockAndAreas.size
     }
 
     inner class PenyimpananTernakViewHolder(private val binding: ItemPenyimpanTernakBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         PopupMenu.OnMenuItemClickListener {
-        fun bindTo(index: Animal) {
-            binding.tvTitlePenyimpanTernak.text = index.name
-            binding.tvSubtitlePenyimpanTernak.text = index.age.toString()
+        fun bindTo(data: BlockAndAreasResponseItem) {
+            binding.tvTitlePenyimpanTernak.text = data.name
+            binding.tvSubtitlePenyimpanTernak.text = data.description
             binding.btnRekam.setOnClickListener(this)
             binding.btnSeeAllArea.setOnClickListener(this)
             binding.btnOptions.setOnClickListener(this)

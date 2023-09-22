@@ -13,16 +13,20 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentDataAreaBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DataAreaFragment : Fragment() {
 
     private var _binding: FragmentDataAreaBinding? = null
     private val binding get() = _binding!!
 
+    private val dataAreaViewModel by viewModels<DataAreaViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +39,7 @@ class DataAreaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             this.appBarLayout.topAppBar.also { toolbar ->
-                toolbar.title = "Data Area"
+                toolbar.title = "Tambah Area"
                 toolbar.setNavigationOnClickListener {
                     view.findNavController().popBackStack()
                 }
@@ -44,7 +48,35 @@ class DataAreaFragment : Fragment() {
                 requestPermissionsIfNeeded()
             }
             this.btnSimpan.setOnClickListener {
-                Toast.makeText(requireContext(), "no action", Toast.LENGTH_SHORT).show()
+                val title = binding.edtNamaArea.text.toString().trim()
+                val description = binding.edtDescription.text.toString().trim()
+                if (title.isNotEmpty() && description.isNotEmpty()) {
+                    dataAreaViewModel.createBlockAndArea(title, description)
+                } else {
+                    Toast.makeText(requireContext(), "Lengkapi Kolom ", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+        observeView()
+    }
+    private fun observeView() {
+        dataAreaViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
+            showLoading(isLoading)
+        }
+        dataAreaViewModel.isCreatedBlockAndArea.observe(viewLifecycleOwner) {
+            view?.findNavController()?.popBackStack()
+        }
+        dataAreaViewModel.isError().observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun showLoading(state: Boolean) {
+        with(binding) {
+            if (state) {
+                loading.progressBar.visibility = View.VISIBLE
+            } else {
+                loading.progressBar.visibility = View.GONE
             }
         }
     }
@@ -53,6 +85,7 @@ class DataAreaFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private val requestPermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             permissions.entries.forEach {

@@ -2,24 +2,37 @@ package com.vt.vt.ui.penyimpan_ternak
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.Animal
-import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.IAnimal
+import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.repository.VtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
-class PenyimpanTernakViewModel @Inject constructor(private val animalRepository: IAnimal) :
-    ViewModel() {
+class PenyimpanTernakViewModel @Inject constructor(private val vtRepository: VtRepository) :
+    BaseViewModel() {
+    private val _blockAndAreasEmitter = MutableLiveData<List<BlockAndAreasResponseItem>>()
+    val allBlockAndAreas: LiveData<List<BlockAndAreasResponseItem>> = _blockAndAreasEmitter
 
-    private val animalEmitter = MutableLiveData<List<Animal>>()
-    val animalName: LiveData<List<Animal>> = animalEmitter
-
-    init {
-        loadAnimalName()
+    //val allBlockAndAreas = vtRepository.getAreasAndBlock().asLiveData()
+    fun getAllBlockAndArea() {
+        launch(
+            action = {
+                val response = vtRepository.getBlockAndAreas()
+                if (response.isSuccessful) {
+                    _blockAndAreasEmitter.postValue(response.body())
+                } else {
+                    val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                    val message = errorBody.getString("message")
+                    isError.postValue(message.toString())
+                }
+            }, error = { networkError ->
+                if (networkError.isNetworkError) {
+                    isError.postValue("No Internet Connection")
+                }
+            }
+        )
     }
 
-    private fun loadAnimalName() {
-        animalEmitter.value = animalRepository.getName()
-    }
 }

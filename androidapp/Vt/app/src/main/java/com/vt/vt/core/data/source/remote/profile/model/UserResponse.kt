@@ -1,4 +1,4 @@
-package com.vt.vt.core.data.source.remote.auth.model.profile
+package com.vt.vt.core.data.source.remote.profile.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,5 +1,6 @@
 package com.vt.vt.core.data.di
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
@@ -8,17 +9,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -43,42 +42,39 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(pref: SessionPreferencesDataStoreManager): OkHttpClient {
-        val client: OkHttpClient = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .cookieJar(provideCookies())
-            .addInterceptor { chain ->
-                val newReq = chain.request().newBuilder().build()
-                val response = chain.proceed(newReq)
-                // seharusnya error 401 bukan 500 jika user udah logout tapi masih bisa masuk
-                if (response.code >= HttpURLConnection.HTTP_INTERNAL_ERROR) {
-                    println("error 500")
-                    CoroutineScope(Dispatchers.Main).launch {
+        val client: OkHttpClient =
+            OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .cookieJar(provideCookies())
+                .authenticator { _, response ->
+                    val newRequest = response.request.newBuilder()
+                    var token: String?
+                    runBlocking {
                         try {
-                            pref.removeLoginState()
-                        } catch (ex: Exception) {
-                            println("error ${ex.message.toString()}")
+                            token = pref.getToken()
+                            if (!token.isNullOrEmpty()) {
+                                newRequest.addHeader("Authorization", "Bearer $token")
+                            } else {
+                                pref.removeLoginState()
+                            }
+                        } catch (e: Exception) {
+                            Log.e("NetworkError", e.message.toString())
                         }
+                        newRequest.build()
                     }
                 }
-                response
-            }
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .build()
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
+                .build()
 
         return client
     }
 
     @Provides
     fun provideApiService(client: OkHttpClient): ApiService {
-        val gson = GsonBuilder()
-            .setLenient()
-            .create()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://ekoarianto.tech/")
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(client)
-            .build()
+        val gson = GsonBuilder().setLenient().create()
+        val retrofit = Retrofit.Builder().baseUrl("https://ekoarianto.tech/")
+            .addConverterFactory(GsonConverterFactory.create(gson)).client(client).build()
         return retrofit.create(ApiService::class.java)
     }
 }

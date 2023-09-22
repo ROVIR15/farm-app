@@ -35,7 +35,11 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        signInViewModel.loginState.observe(viewLifecycleOwner) { user ->
+            if (user.token.isNotEmpty() && user.username.isNotEmpty()) {
+                view.findNavController().popBackStack()
+            }
+        }
         with(binding) {
             signInBtnLogin.setOnClickListener {
                 val username = signInCvEmail.text.toString()
@@ -54,11 +58,6 @@ class SignInFragment : Fragment() {
 
 
     private fun observeView() {
-        signInViewModel.loginState.observe(viewLifecycleOwner) { user ->
-            if (user.isLogin) {
-                view?.findNavController()?.popBackStack()
-            }
-        }
         signInViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }

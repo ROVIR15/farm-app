@@ -30,8 +30,9 @@ class SignInViewModel @Inject constructor(
                 val loginRequest = LoginRequest(username, password)
                 val response = dataRepository.login(loginRequest)
                 if (response.isSuccessful) {
+                    val token = response.body()?.token
                     _loginEmitter.postValue(response.body())
-                    val userSession = UserSession(username, password)
+                    val userSession = UserSession(username, token!!, true)
                     sessionPreferencesDataStoreManager.saveUserLoginState(userSession)
                 } else {
                     val errorBody = JSONObject(response.errorBody()!!.charStream().readText())

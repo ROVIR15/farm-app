@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.Animal
+import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.databinding.FragmentPenyimpanTernakBinding
 import com.vt.vt.ui.penyimpan_ternak.adapter.PenyimpananTernakAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,7 @@ class PenyimpanTernakFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private var _binding: FragmentPenyimpanTernakBinding? = null
     private val binding get() = _binding!!
 
-    private val penyimpanTernakViewModel: PenyimpanTernakViewModel by viewModels()
+    private val livestockStorage: PenyimpanTernakViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,17 +47,35 @@ class PenyimpanTernakFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 setOnMenuItemClickListener(this@PenyimpanTernakFragment)
             }
         }
-        penyimpanTernakViewModel.animalName.observe(viewLifecycleOwner) { animal ->
-            setRecyclerView(animal)
+        livestockStorage.getAllBlockAndArea()
+        livestockStorage.observeLoading().observe(viewLifecycleOwner) { isLoading ->
+            showLoading(isLoading)
         }
+        livestockStorage.allBlockAndAreas.observe(viewLifecycleOwner) { blockAndAreas ->
+            setRecyclerView(blockAndAreas)
+        }
+        livestockStorage.isError().observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
-    private fun setRecyclerView(data: List<Animal>) {
-        val penyimpanTernakAdapter = PenyimpananTernakAdapter(data)
+    private fun setRecyclerView(data: List<BlockAndAreasResponseItem>) {
+        val livestockStorageAdapter = PenyimpananTernakAdapter(data)
         with(binding) {
             rvPenyimpananTernak.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-            rvPenyimpananTernak.adapter = penyimpanTernakAdapter
+            rvPenyimpananTernak.adapter = livestockStorageAdapter
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        with(binding) {
+            if (state) {
+                progressBar.progressBar.visibility = View.VISIBLE
+            } else {
+                progressBar.progressBar.visibility = View.GONE
+            }
         }
     }
 

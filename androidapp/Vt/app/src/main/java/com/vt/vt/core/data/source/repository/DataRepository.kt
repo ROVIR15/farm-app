@@ -3,9 +3,9 @@ package com.vt.vt.core.data.source.repository
 import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginRequest
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
-import com.vt.vt.core.data.source.remote.auth.model.profile.UserResponse
 import com.vt.vt.core.data.source.remote.auth.model.register.request.RegisterRequest
 import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterResponse
+import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import retrofit2.Response
 import javax.inject.Inject
 

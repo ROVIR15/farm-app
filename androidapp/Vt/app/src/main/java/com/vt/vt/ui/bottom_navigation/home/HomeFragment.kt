@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
         activity?.actionBar?.hide()
 
         signInViewModel.loginState.observe(viewLifecycleOwner) { user ->
-            if (!user.isLogin) {
+            if (user.token.isBlank() or user.token.isEmpty()) {
                 view.findNavController()
                     .navigate(R.id.action_navigation_home_to_signInFragment)
             }
