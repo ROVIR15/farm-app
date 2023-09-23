@@ -1,34 +1,40 @@
 package com.vt.vt.ui.penyimpan_ternak.adapter
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.databinding.ItemPenyimpanTernakBinding
+import com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakViewModel
 
-class PenyimpananTernakAdapter(private val blockAndAreas: List<BlockAndAreasResponseItem>) :
-    RecyclerView.Adapter<PenyimpananTernakAdapter.PenyimpananTernakViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PenyimpananTernakViewHolder {
+class PenyimpananTernakAdapter(
+    private val context: Context,
+    private val viewModel: PenyimpanTernakViewModel,
+) : ListAdapter<BlockAndAreasResponseItem, PenyimpananTernakAdapter.ViewHolder>(
+    TASK_DIFF_CALLBACK
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             ItemPenyimpanTernakBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PenyimpananTernakViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: PenyimpananTernakViewHolder, position: Int) {
-        holder.bindTo(blockAndAreas[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val data = getItem(position)
+        holder.bindTo(data)
     }
 
-    override fun getItemCount(): Int {
-        return blockAndAreas.size
-    }
-
-    inner class PenyimpananTernakViewHolder(private val binding: ItemPenyimpanTernakBinding) :
+    inner class ViewHolder(private val binding: ItemPenyimpanTernakBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         PopupMenu.OnMenuItemClickListener {
         fun bindTo(data: BlockAndAreasResponseItem) {
@@ -67,10 +73,46 @@ class PenyimpananTernakAdapter(private val blockAndAreas: List<BlockAndAreasResp
                 }
 
                 R.id.menu_delete_penyimpanan_ternak -> {
+                    AlertDialog.Builder(context)
+                        .setTitle("Delete")
+                        .setIcon(R.drawable.ic_outline_delete_outline_24)
+                        .setMessage("Are you sure delete this Information")
+                        .setPositiveButton("Yes") { dialog, _ ->
+                            val blockArea = currentList[adapterPosition]
+                            viewModel.deleteBlockAndArea(
+                                blockArea.id.toString()
+                            )
+                            dialog.dismiss()
+                        }
+                        .setNegativeButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+
                     return true
                 }
             }
             return false
         }
+    }
+
+    companion object {
+        val TASK_DIFF_CALLBACK: DiffUtil.ItemCallback<BlockAndAreasResponseItem?> =
+            object : DiffUtil.ItemCallback<BlockAndAreasResponseItem?>() {
+                override fun areItemsTheSame(
+                    oldItem: BlockAndAreasResponseItem,
+                    newItem: BlockAndAreasResponseItem
+                ): Boolean {
+                    return oldItem.id == newItem.id
+                }
+
+                override fun areContentsTheSame(
+                    oldItem: BlockAndAreasResponseItem,
+                    newItem: BlockAndAreasResponseItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
+            }
     }
 }

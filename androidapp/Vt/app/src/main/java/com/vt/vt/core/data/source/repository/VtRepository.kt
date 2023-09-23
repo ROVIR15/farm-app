@@ -4,6 +4,7 @@ import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.state_handler.ApiResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -13,6 +14,9 @@ class VtRepository @Inject constructor(private val apiService: ApiService) {
 
     suspend fun createBlockAndArea(blockAndAreaRequest: BlockAndAreaRequest): Response<BlockAndAreasResponse> =
         apiService.createBlockArea(blockAndAreaRequest)
+
+    suspend fun deleteBlockAndArea(id: String): Response<BlockAndAreasResponse> =
+        apiService.deleteBlockArea(id)
     /* fun getAreasAndBlock(): Flow<ApiResponse<List<BlockAndAreasResponseItem>>> {
          return flow {
              try {

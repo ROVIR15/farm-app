@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -48,20 +49,40 @@ class PenyimpanTernakFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
         livestockStorage.getAllBlockAndArea()
+
         livestockStorage.observeLoading().observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
         }
         livestockStorage.allBlockAndAreas.observe(viewLifecycleOwner) { blockAndAreas ->
+            binding.dataEmpty.isEmpty.isVisible = blockAndAreas.isEmpty()
             setRecyclerView(blockAndAreas)
+        }
+        livestockStorage.deleteBlockAndArea.observe(viewLifecycleOwner) {
+            livestockStorage.getAllBlockAndArea()
+        }
+        livestockStorage.isDeleted.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { eventMessage ->
+                Toast.makeText(
+                    requireActivity(),
+                    eventMessage,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
         }
         livestockStorage.isError().observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
         }
-
     }
 
-    private fun setRecyclerView(data: List<BlockAndAreasResponseItem>) {
-        val livestockStorageAdapter = PenyimpananTernakAdapter(data)
+    private fun setRecyclerView(
+        data: List<BlockAndAreasResponseItem>
+    ) {
+        val livestockStorageAdapter =
+            PenyimpananTernakAdapter(requireActivity(), livestockStorage)
+        if (data.isNotEmpty()) {
+            livestockStorageAdapter.submitList(data)
+        }
         with(binding) {
             rvPenyimpananTernak.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)

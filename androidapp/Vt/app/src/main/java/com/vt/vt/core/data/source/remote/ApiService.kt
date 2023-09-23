@@ -10,8 +10,10 @@ import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @POST("register")
@@ -32,4 +34,9 @@ interface ApiService {
 
     @POST("api/block-area")
     suspend fun createBlockArea(@Body blockAndAreaRequest: BlockAndAreaRequest): Response<BlockAndAreasResponse>
+
+    @DELETE("api/block-area/{id}")
+    suspend fun deleteBlockArea(
+        @Path("id") id: String
+    ): Response<BlockAndAreasResponse>
 }

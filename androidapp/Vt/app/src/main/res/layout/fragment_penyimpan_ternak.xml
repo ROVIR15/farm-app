@@ -31,4 +31,8 @@
     <include
         android:id="@+id/progressBar"
         layout="@layout/loading" />
+
+    <include
+        android:id="@+id/data_empty"
+        layout="@layout/data_empty" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
