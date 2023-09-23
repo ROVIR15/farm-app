@@ -4,8 +4,13 @@ from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
 from Livestock.schema import LivestockSchema
 
+from ProductHasCategory.models import ProductHasCategory
+from Product.models import Product
+from SKU.models import SKU
+
 from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
 from FarmProfile.models import FarmProfileHasUsers
+
 
 from auth import login_required, current_user
 
@@ -79,6 +84,18 @@ def post_livestock():
             query = Livestock(name=name, gender=gender,
                               bangsa=bangsa, description=description)
             db.session.add(query)
+            db.session.commit()
+
+            product = Product(name=name, unit_measurement="ekor", description="none")
+            db.session.add(product)
+            db.session.commit()
+
+            phc = ProductHasCategory(product_id=product['id'], category_id=3)
+            db.session.add(phc)
+            db.session.commit()
+
+            sku = SKU(product_id=product['id'], name=name)
+            db.session.add(sku)
             db.session.commit()
 
             has_livestock = FarmProfileHasLivestock(
