@@ -1,8 +1,10 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
+from sqlalchemy import not_
 from sqlalchemy.orm import joinedload, subqueryload
-from Product.models import Product as Product_q
-from ProductHasCategory.models import ProductHasCategory as Product
+from Product.models import Product as Product
+from Feature.models import Feature
+from ProductHasCategory.models import ProductHasCategory
 from SKU.models import SKU
 
 from ProductHasCategory.schema import ProductHasCategorySchema as ProductSchema
@@ -16,10 +18,10 @@ products_schema = ProductSchema(many=True)
 @views_product_bp.route('/products', methods=['GET'])
 def get_products():
     # Retrieve all product records from the database
-    query = Product.query.options([
+    query = ProductHasCategory.query.options([
         subqueryload(Product.product),
         subqueryload(Product.category),
-    ]).all()
+    ]).filter(not_(category_id=3))
 
     results = []
     # Serialize the product data using the schema
@@ -66,22 +68,31 @@ def post_product():
 
     try:
         product_q = Product(name=name, unit_measurment=unit_measurment,
-                        description=description)
+                            description=description)
         db.session.add(product_q)
+        db.session.commit()
 
-        product_has_category_q = Product_q(product_id=product_q['id'], category_id=category_id)
-        db.session.add(product_has_category_q)
+        phc = ProductHasCategory(
+            category_id=category_id, product_id=product_q['id'])
+        db.session.add(phc)
+        db.session.commit()
 
         if feature1:
             for item in feature1:
-                sku_q = SKU(product_id=product_q['id'], feature_id=item, description=description)
+                feature = Feature(type=item.type, name=item.name)
+                db.session.add(product_q)
+                db.session.commit()
+                
+                sku_q = SKU(
+                    product_id=product_q['id'], feature_id=feature['id'], description=description)
                 db.session.add(sku_q)
+                db.session.commit()
         else:
-            sku_q = SKU(product_id=product_q['id'], description=description)
+            sku_q = SKU(product_id=product_q['id'], name=name)
 
         # Create a response JSON
         response = {
-            'status': 'success',
+            'status': 'success'
         }
 
         return jsonify(response), 200
@@ -135,7 +146,7 @@ def update_product(product_id):
 def delete_product(product_id):
     # Assuming you have a Product model and an existing product object
     product = Product.query.get(product_id)
-    sku = SKU.query.get()
+    # sku = SKU.query.get()
     if product:
         db.session.delete(product)
         db.session.commit()
