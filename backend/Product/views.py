@@ -19,14 +19,16 @@ products_schema = ProductSchema(many=True)
 def get_products():
     # Retrieve all product records from the database
     query = ProductHasCategory.query.options([
-        subqueryload(Product.product),
-        subqueryload(Product.category),
-    ]).filter(not_(category_id=3))
+        subqueryload(ProductHasCategory.product),
+        subqueryload(ProductHasCategory.category),
+        subqueryload(ProductHasCategory.sku)
+    ]).filter(not_(ProductHasCategory.category_id == 3))
 
     results = []
     # Serialize the product data using the schema
     for item in query:
         data = {
+            'sku_id': item.sku.id,
             'product_id': item.product_id,
             'category_id': item.category_id,
             'product_name': item.product.name,
@@ -44,14 +46,47 @@ def get_products():
 
 @views_product_bp.route('/product/<int:product_id>', methods=['GET'])
 def get_a_product(product_id):
-    # Retrieve all product records from the database
-    query = Product.query.get(product_id)
 
-    # Serialize the product data using the schema
-    result = product_schema.dump(query)
+    try:
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        # Retrieve all product records from the database
+        query = ProductHasCategory.query.options([
+            subqueryload(ProductHasCategory.product),
+            subqueryload(ProductHasCategory.category),
+            subqueryload(ProductHasCategory.sku)
+        ]).filter(product_id == 12).first()
+
+        if not query:
+            response = {
+                'status': 'error, not found'
+            }
+            return jsonify(response), 404
+
+        # Serialize the product data using the schema
+        result_query = {
+            'sku_id': query.sku.id,
+            'product_id': query.product_id,
+            'category_id': query.category_id,
+            'product_name': query.product.name,
+            'category_name': query.category.name,
+            'description': query.product.description,
+            'unit_measurement': query.product.unit_measurement
+        }
+        result = product_schema.dump(result_query)
+
+        # Return the serialized data as JSON response
+        return jsonify(result), 200
+
+    except Exception as e:
+        db.session.rollback()
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry, Failed to store product data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
 
 
 @views_product_bp.route('/product', methods=['POST'])
@@ -62,18 +97,18 @@ def post_product():
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     category_id = data.get('category_id')
-    unit_measurment = data.get('unit_measurment')
+    unit_measurement = data.get('unit_measurement')
     description = data.get('description')
-    feature1 = data.get(feature1)
+    feature1 = data.get('feature1')
 
     try:
-        product_q = Product(name=name, unit_measurment=unit_measurment,
+        product_q = Product(name=name, unit_measurement=unit_measurement,
                             description=description)
         db.session.add(product_q)
         db.session.commit()
 
         phc = ProductHasCategory(
-            category_id=category_id, product_id=product_q['id'])
+            category_id=category_id, product_id=product_q.id)
         db.session.add(phc)
         db.session.commit()
 
@@ -82,13 +117,15 @@ def post_product():
                 feature = Feature(type=item.type, name=item.name)
                 db.session.add(product_q)
                 db.session.commit()
-                
+
                 sku_q = SKU(
-                    product_id=product_q['id'], feature_id=feature['id'], description=description)
+                    product_id=product_q.id, name=name, feature_id=feature.id)
                 db.session.add(sku_q)
                 db.session.commit()
         else:
-            sku_q = SKU(product_id=product_q['id'], name=name)
+            sku_q = SKU(product_id=product_q.id, name=name)
+            db.session.add(sku_q)
+            db.session.commit()
 
         # Create a response JSON
         response = {
@@ -98,6 +135,7 @@ def post_product():
         return jsonify(response), 200
 
     except Exception as e:
+        db.session.rollback()
         # Handling the exception if storing the data fails
         error_message = str(e)
         response = {

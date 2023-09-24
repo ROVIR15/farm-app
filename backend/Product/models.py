@@ -10,6 +10,7 @@ class Product (db.Model):
     # Define the 'categories' relationship
     categories = db.relationship(
         'ProductHasCategory', back_populates='product')
+    # sku = db.relationship('SKU', back_populates='product')
 
     def __repr__(self):
         return f'<Product {self.id}>'

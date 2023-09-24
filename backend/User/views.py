@@ -12,8 +12,6 @@ from sqlalchemy import and_
 views_auth_bp = Blueprint('views_auth', __name__)
 
 # Registration route
-
-
 @views_auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     data = request.json
