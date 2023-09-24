@@ -70,6 +70,9 @@ app.register_blueprint(views_feature_bp, url_prefix='/api')
 # 6. Livestock
 app.register_blueprint(views_bp, url_prefix='/api')
 
+# 7. Store Livestock on Sled
+app.register_blueprint(views_livestock_details_bp, url_prefix='/api')
+
 # Record
 # 7. BCS Record 
 app.register_blueprint(views_bcs_record_bp, url_prefix='/api')

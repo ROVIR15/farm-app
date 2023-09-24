@@ -39,7 +39,7 @@ def get_a_livestock_detail(livestock_id):
     return jsonify(result)
 
 
-@views_livestock_details_bp.route('/livestock-list', methods=['POST'])
+@views_livestock_details_bp.route('/store-livestock', methods=['POST'])
 def post_livestock_details():
     data = request.get_json()  # Get the JSON data from the request body
 
