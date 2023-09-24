@@ -89,7 +89,7 @@ def login():
         farm_profile = FarmProfileHasUsers.query.filter_by(
             user_id=user.id).first()
         if user and check_password_hash(user.password, password):
-            token = encode_token(user.id, farm_profile.id)
+            token = encode_token(user.id, farm_profile.farm_profile_id)
             return jsonify({"message": "Logged in successfully.", "token": token}), 200
         else:
             return jsonify({"message": "Login failed. Check your username and password."}), 401
