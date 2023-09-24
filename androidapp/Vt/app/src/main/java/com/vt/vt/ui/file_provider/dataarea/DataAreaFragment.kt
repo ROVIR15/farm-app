@@ -79,9 +79,10 @@ class DataAreaFragment : Fragment() {
         dataAreaViewModel.isCreatedBlockAndArea.observe(viewLifecycleOwner) {
             view?.findNavController()?.popBackStack()
         }
-        dataAreaViewModel.getBlockArea.observe(viewLifecycleOwner) {
-            binding.edtAreaName.setText(it?.name)
-            binding.edtDescription.setText(it?.description)
+        dataAreaViewModel.getBlockArea.observe(viewLifecycleOwner) { data ->
+            binding.appBarLayout.topAppBar.title = "Edit ${data?.name}"
+            binding.edtAreaName.setText(data?.name)
+            binding.edtDescription.setText(data?.description)
         }
         dataAreaViewModel.isUpdatedBlockAndArea.observe(viewLifecycleOwner) {
             view?.findNavController()?.popBackStack()
