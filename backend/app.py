@@ -16,6 +16,7 @@ from Feature.views import views_feature_bp
 from Record.BCSRecord.views import views_bcs_record_bp
 from Record.WeightRecord.views import views_weight_record_bp
 from Record.HealthRecord.views import views_health_record_bp
+from Record.ConsumptionRecord.views import views_consumption_bp
 
 
 from FarmProfile.views import views_farm_profile_bp
@@ -74,12 +75,15 @@ app.register_blueprint(views_bp, url_prefix='/api')
 app.register_blueprint(views_livestock_details_bp, url_prefix='/api')
 
 # Record
-# 7. BCS Record 
+# 8. BCS Record 
 app.register_blueprint(views_bcs_record_bp, url_prefix='/api')
-# 8. Weight Record
+# 9. Weight Record
 app.register_blueprint(views_weight_record_bp, url_prefix='/api')
-# 9. Health Record
+# 10. Health Record
 app.register_blueprint(views_health_record_bp, url_prefix='/api')
+# 11. Consumption Record 
+app.register_blueprint(views_consumption_bp, url_prefix='/api')
+
 
 # Finance
 # 10. Budget
