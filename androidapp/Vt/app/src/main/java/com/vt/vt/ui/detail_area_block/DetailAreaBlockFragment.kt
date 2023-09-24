@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -15,8 +16,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.AnimalCage
+import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
 import com.vt.vt.databinding.FragmentDetailAreaBlockBinding
+import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +28,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     private val binding get() = _binding!!
 
     private val detailAreaBlockViewModel: DetailAreaBlockViewModel by viewModels()
+    private val areaBlockViewModel by viewModels<AreaBlockViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,15 +49,46 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
                 setOnMenuItemClickListener(this@DetailAreaBlockFragment)
             }
             btnEditAreaBlock.setOnClickListener(this@DetailAreaBlockFragment)
+            refresh.setOnRefreshListener {
+                detailAreaBlockViewModel.getSleds()
+            }
         }
-        detailAreaBlockViewModel.animalCageItems.observe(viewLifecycleOwner) {
-            setupRecyclerView(it)
-        }
+        observeView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun observeView() {
+        detailAreaBlockViewModel.getSleds()
+        detailAreaBlockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                showLoading(isLoading)
+            }
+            sledItems.observe(viewLifecycleOwner) { sleds ->
+                setupRecyclerView(sleds)
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+        areaBlockViewModel.apply {
+            deleteSledById.observe(viewLifecycleOwner) {
+                detailAreaBlockViewModel.getSleds()
+            }
+            isDeleted.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { eventMessage ->
+                    Toast.makeText(
+                        requireActivity(),
+                        eventMessage,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
     }
 
     private fun showBottomSheetDialog() {
@@ -87,12 +121,24 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
         }
     }
 
-    fun setupRecyclerView(animalCage: List<AnimalCage>) {
-        val adapter = ListDetailAreaBlockAdapter(animalCage)
+    private fun setupRecyclerView(data: List<SledsResponseItem>) {
+        val adapter = ListDetailAreaBlockAdapter(requireContext(), areaBlockViewModel)
+        adapter.submitList(data)
         binding.recyclerViewListDetailArea.apply {
             this.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             this.adapter = adapter
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.refresh.isRefreshing = state
+        with(binding) {
+            if (state) {
+                loading.progressBar.visibility = View.VISIBLE
+            } else {
+                loading.progressBar.visibility = View.GONE
+            }
         }
     }
 

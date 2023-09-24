@@ -8,6 +8,9 @@ import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.core.data.source.remote.profile.model.UserResponse
+import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
+import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
+import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -51,4 +54,27 @@ interface ApiService {
         @Path("id") id: String,
         @Body blockAndAreaRequest: BlockAndAreaRequest
     ): Response<BlockAndAreasResponse>
+
+    // SLED
+    @GET("api/sleds")
+    suspend fun getAllSleds(): Response<List<SledsResponseItem>>
+
+    @DELETE("/api/sled/{id}")
+    suspend fun deleteSledById(
+        @Path("id") id: String
+    ): Response<SledsResponse>
+
+    @GET("api/sled/{id}")
+    suspend fun getSledById(
+        @Path("id") id: String
+    ): Response<SledsResponseItem>
+
+    @POST("api/sled")
+    suspend fun createSled(@Body sledRequest: SledRequest): Response<SledsResponse>
+
+    @PUT("api/sled/{id}")
+    suspend fun updateSled(
+        @Path("id") id: String,
+        @Body sledRequest: SledRequest
+    ): Response<SledsResponse>
 }

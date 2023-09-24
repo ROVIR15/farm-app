@@ -17,6 +17,7 @@ import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.Histor
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
 import com.vt.vt.core.data.source.repository.DataRepository
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
+import com.vt.vt.core.data.source.repository.SledsVtRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +60,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideVtRepository(apiService: ApiService): BlockAndAreasVtRepository = BlockAndAreasVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun provideSledsVtRepository(apiService: ApiService): SledsVtRepository = SledsVtRepository(apiService)
 
     @Provides
     @Singleton

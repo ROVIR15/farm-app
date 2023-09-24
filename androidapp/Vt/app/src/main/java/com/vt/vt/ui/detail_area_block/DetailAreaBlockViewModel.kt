@@ -2,24 +2,34 @@ package com.vt.vt.ui.detail_area_block
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.AnimalCage
-import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.IAnimalCage
+import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
+import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.repository.SledsVtRepository
+import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailAreaBlockViewModel @Inject constructor(private val animalCageRepositoryImpl: IAnimalCage) :
-    ViewModel() {
+class DetailAreaBlockViewModel @Inject constructor(private val sledsVtRepository: SledsVtRepository) :
+    BaseViewModel() {
+    private val _sledsEmitter = MutableLiveData<List<SledsResponseItem>>()
+    val sledItems: LiveData<List<SledsResponseItem>> = _sledsEmitter
 
-    private val animalCageEmitter = MutableLiveData<List<AnimalCage>>()
-    val animalCageItems: LiveData<List<AnimalCage>> = animalCageEmitter
-
-    init {
-        loadListAnimalCage()
+    fun getSleds() {
+        launch(action = {
+            val response = sledsVtRepository.getSleds()
+            if (response.isSuccessful) {
+                _sledsEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
     }
 
-    private fun loadListAnimalCage() {
-        animalCageEmitter.value = animalCageRepositoryImpl.getListAnimalCage()
-    }
+
 }

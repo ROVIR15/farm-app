@@ -137,16 +137,22 @@
     <fragment
         android:id="@+id/dataAreaFragment"
         android:name="com.vt.vt.ui.file_provider.dataarea.DataAreaFragment"
-        android:label="DataAreaFragment" >
+        android:label="DataAreaFragment">
         <argument
             android:name="id"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/dataKandangFragment"
         android:name="com.vt.vt.ui.file_provider.datakandang.DataKandangFragment"
-        android:label="DataKandangFragment" />
+        android:label="DataKandangFragment" >
+        <action
+            android:id="@+id/action_dataKandangFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/dataKandangFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/addLivestockFragment"
         android:name="com.vt.vt.ui.file_provider.addlivestock.AddLivestockFragment"
@@ -324,7 +330,12 @@
         android:id="@+id/editAreaBlockFragment"
         android:name="com.vt.vt.ui.edit_area_block.EditAreaBlockFragment"
         android:label="fragment_edit_area_block"
-        tools:layout="@layout/fragment_edit_area_block" />
+        tools:layout="@layout/fragment_edit_area_block">
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/updateSignUpProfileFragment"
         android:name="com.vt.vt.ui.signup.UpdateSignUpProfileFragment"

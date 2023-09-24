@@ -28,10 +28,10 @@
                 android:layout_height="280dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_file_photo"
+                android:contentDescription="Image Area Block"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="Image Area Block" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/icon_file_photo"
@@ -58,76 +58,81 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_edit_image_area_block" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_nama_area_block"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="Nama"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_desc_area_block"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:hint="Deskripsi"
-                android:imeOptions="actionDone"
-                android:inputType="textShortMessage"
-                android:maxLength="1"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:scrollHorizontally="false"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_nama_area_block" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_save_edit_area_block"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_btn_input_product"
-                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="32dp"
+                android:hint="Nama"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_nama_area_block"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Deskripsi"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_desc_area_block"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_edit_area_block"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/btn_blue_icon"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Simpan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                app:cornerRadius="8dp"
+                app:elevation="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_cancel_edit_area_block"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel_edit_area_block"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_edt_error"
+                android:layout_height="58dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Batal"
                 android:textAllCaps="false"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:strokeColor="@color/red" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
@@ -138,4 +143,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

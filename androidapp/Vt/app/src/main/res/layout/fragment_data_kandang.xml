@@ -65,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:hint="Nama Area"
+                android:hint="Nama Kandang"
                 app:boxStrokeColor="@color/btn_blue_icon"
                 app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +102,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Deskripsi"
+                android:hint="Deskripsi Kandang"
                 app:boxStrokeColor="@color/btn_blue_icon"
                 app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,39 +117,44 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_simpan"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_height="58dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_btn_input_product"
+                android:backgroundTint="@color/btn_blue_icon"
+                android:elevation="2dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Simpan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_batal"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_error"
+                android:layout_height="58dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Batal"
                 android:textAllCaps="false"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_simpan" />
-
+                app:layout_constraintTop_toBottomOf="@+id/btn_simpan"
+                app:strokeColor="@color/red" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
