@@ -60,7 +60,7 @@ app.register_blueprint(views_block_area_bp, url_prefix='/api')
 app.register_blueprint(views_sled_bp, url_prefix='/api')
 # 
 # 3. Category for product register and management
-# app.register_blueprint(views_category_bp)
+app.register_blueprint(views_category_bp, url_prefix='/api')
 
 # 4. Product register
 app.register_blueprint(views_product_bp, url_prefix='/api')
