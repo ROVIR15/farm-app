@@ -21,9 +21,6 @@ class PenyimpanTernakViewModel @Inject constructor(private val blockAndAreasVtRe
     private val _deleteBlockAndArea = MutableLiveData<BlockAndAreasResponse?>()
     val deleteBlockAndArea: LiveData<BlockAndAreasResponse?> = _deleteBlockAndArea
 
-    private val _isDeleted = MutableLiveData<Event<String>>()
-    val isDeleted: LiveData<Event<String>> = _isDeleted
-
     fun getAllBlockAndArea() {
         launch(action = {
             val response = blockAndAreasVtRepository.getBlockAndAreas()

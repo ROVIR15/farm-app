@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vt.vt.core.data.source.network.NetworkError
+import com.vt.vt.utils.Event
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,6 +20,10 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val isEmptyData = MutableLiveData<Boolean>()
     fun observeEmptyData(): LiveData<Boolean> = isEmptyData
+
+    protected val _isDeleted = MutableLiveData<Event<String>>()
+    val isDeleted: LiveData<Event<String>> = _isDeleted
+
 
     protected val isException = MutableLiveData<Exception?>()
     fun observeException(): LiveData<Exception?> = isException
