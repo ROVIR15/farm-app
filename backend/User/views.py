@@ -12,6 +12,8 @@ from sqlalchemy import and_
 views_auth_bp = Blueprint('views_auth', __name__)
 
 # Registration route
+
+
 @views_auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     data = request.json
@@ -19,9 +21,9 @@ def register():
     password = data.get('password')
     email = data.get('email')
 
-
     # Check if the username is already taken
-    existing_user = User.query.filter(and_(User.username == username, User.email == email)).first()
+    existing_user = User.query.filter(
+        and_(User.username == username, User.email == email)).first()
     if existing_user:
         response = {
             'status': 'success',
@@ -34,7 +36,8 @@ def register():
 
     try:
         data_farm_profile = data.get('farm_profile')
-        new_user = User(username=username, password=hashed_password, email=email)
+        new_user = User(username=username,
+                        password=hashed_password, email=email)
         db.session.add(new_user)
         db.session.commit()
 
@@ -55,7 +58,8 @@ def register():
         db.session.add(query)
         db.session.commit()
 
-        query2 = FarmProfileHasUsers(farm_profile_id=query.id, user_id=new_user.id)
+        query2 = FarmProfileHasUsers(
+            farm_profile_id=query.id, user_id=new_user.id)
         db.session.add(query2)
         db.session.commit()
 
@@ -82,13 +86,25 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    user = User.query.filter_by(username=username).first()
+    try:
+        user = User.query.filter_by(username=username).first()
+        farm_profile = FarmProfileHasUsers.query.filter_by(
+            user_id=user.id).first()
+        if user and check_password_hash(user.password, password):
+            token = encode_token(user.id, farm_profile.id)
+            return jsonify({"message": "Logged in successfully.", "token": token}), 200
+        else:
+            return jsonify({"message": "Login failed. Check your username and password."}), 401
 
-    if user and check_password_hash(user.password, password):
-        token = encode_token(user.id)
-        return jsonify({"message": "Logged in successfully.", "token": token}), 200
-    else:
-        return jsonify({"message": "Login failed. Check your username and password."}), 401
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': error_message
+        }
+        return jsonify(response), 500
+
 
 # Profile route (protected API)
 @views_auth_bp.route('/api/profile', methods=['GET'])
@@ -98,6 +114,8 @@ def api_profile():
     return jsonify({"status": user_id}), 200
 
 # Logout route (protected API)
+
+
 @views_auth_bp.route('/api/logout', methods=['POST'])
 @login_required
 def api_logout():

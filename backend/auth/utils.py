@@ -8,12 +8,12 @@ from flask import current_app
 from functools import wraps
 
 
-def encode_token(user_id):
+def encode_token(user_id, farm_profile_id):
     secret_key = current_app.secret_key
     current_datetime = datetime.datetime.now()
     formatted_datetime = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
-    payload = {'user_id': user_id, 'created_at': formatted_datetime}
+    payload = {'user_id': user_id, 'farm_profile_id': farm_profile_id, 'created_at': formatted_datetime}
     return jwt.encode(payload, secret_key, algorithm='HS256')
 
 
@@ -45,6 +45,10 @@ def current_user():
     payload = decode_token(token)
     return payload['user_id']
 
+def current_farm_profile():
+    token = get_token_from_request()
+    payload = decode_token(token)
+    return payload['farm_profile_id']
 
 def login_required(func):
     @wraps(func)
