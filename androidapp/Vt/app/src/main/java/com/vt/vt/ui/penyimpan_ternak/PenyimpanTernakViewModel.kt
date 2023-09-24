@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
-import com.vt.vt.core.data.source.repository.VtRepository
+import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
-class PenyimpanTernakViewModel @Inject constructor(private val vtRepository: VtRepository) :
+class PenyimpanTernakViewModel @Inject constructor(private val blockAndAreasVtRepository: BlockAndAreasVtRepository) :
     BaseViewModel() {
     //val allBlockAndAreas = vtRepository.getAreasAndBlock().asLiveData()
     private val _blockAndAreasEmitter = MutableLiveData<List<BlockAndAreasResponseItem>>()
@@ -26,7 +26,7 @@ class PenyimpanTernakViewModel @Inject constructor(private val vtRepository: VtR
 
     fun getAllBlockAndArea() {
         launch(action = {
-            val response = vtRepository.getBlockAndAreas()
+            val response = blockAndAreasVtRepository.getBlockAndAreas()
             if (response.isSuccessful) {
                 _blockAndAreasEmitter.postValue(response.body())
             } else {
@@ -43,7 +43,7 @@ class PenyimpanTernakViewModel @Inject constructor(private val vtRepository: VtR
 
     fun deleteBlockAndArea(id: String) {
         launch(action = {
-            val response = vtRepository.deleteBlockAndArea(id)
+            val response = blockAndAreasVtRepository.deleteBlockAndArea(id)
             if (response.isSuccessful) {
                 _deleteBlockAndArea.postValue(response.body())
                 _isDeleted.postValue(Event(response.body()?.message.toString()))

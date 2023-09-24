@@ -6,13 +6,13 @@ import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
-import com.vt.vt.core.data.source.repository.VtRepository
+import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
-class DataAreaViewModel @Inject constructor(private val vtRepository: VtRepository) :
+class DataAreaViewModel @Inject constructor(private val blockAndAreasVtRepository: BlockAndAreasVtRepository) :
     BaseViewModel() {
     private val _createBlockAndArea = MutableLiveData<BlockAndAreasResponse?>()
     val isCreatedBlockAndArea: LiveData<BlockAndAreasResponse?> = _createBlockAndArea
@@ -26,7 +26,7 @@ class DataAreaViewModel @Inject constructor(private val vtRepository: VtReposito
     fun createBlockAndArea(title: String?, description: String?) {
         launch(action = {
             val blockAndAreaModel = BlockAndAreaRequest(title, description)
-            val response = vtRepository.createBlockAndArea(blockAndAreaModel)
+            val response = blockAndAreasVtRepository.createBlockAndArea(blockAndAreaModel)
             if (response.isSuccessful) {
                 _createBlockAndArea.postValue(response.body())
             } else {
@@ -43,7 +43,7 @@ class DataAreaViewModel @Inject constructor(private val vtRepository: VtReposito
 
     fun getBlockArea(id: String) {
         launch(action = {
-            val response = vtRepository.getBlockAndArea(id)
+            val response = blockAndAreasVtRepository.getBlockAndArea(id)
             if (response.isSuccessful) {
                 _getBlockArea.postValue(response.body())
             } else {
@@ -61,7 +61,7 @@ class DataAreaViewModel @Inject constructor(private val vtRepository: VtReposito
     fun updateBlockAndArea(id: String, name: String?, description: String?) {
         launch(action = {
             val blockAndAreaModel = BlockAndAreaRequest(name, description)
-            val response = vtRepository.updateBlockAndArea(id, blockAndAreaModel)
+            val response = blockAndAreasVtRepository.updateBlockAndArea(id, blockAndAreaModel)
             if (response.isSuccessful) {
                 _updateBlockAndArea.postValue(response.body())
             } else {

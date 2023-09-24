@@ -7,7 +7,7 @@ import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import retrofit2.Response
 import javax.inject.Inject
 
-class VtRepository @Inject constructor(private val apiService: ApiService) {
+class BlockAndAreasVtRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun getBlockAndAreas(): Response<List<BlockAndAreasResponseItem>> =
         apiService.getBlockAreas()
 
