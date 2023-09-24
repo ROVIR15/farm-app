@@ -134,7 +134,12 @@
     <fragment
         android:id="@+id/dataAreaFragment"
         android:name="com.vt.vt.ui.file_provider.dataarea.DataAreaFragment"
-        android:label="DataAreaFragment" />
+        android:label="DataAreaFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
     <fragment
         android:id="@+id/dataKandangFragment"
         android:name="com.vt.vt.ui.file_provider.datakandang.DataKandangFragment"

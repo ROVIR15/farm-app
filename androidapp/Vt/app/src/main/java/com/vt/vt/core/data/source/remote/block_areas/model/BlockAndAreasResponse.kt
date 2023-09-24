@@ -10,17 +10,19 @@ data class BlockAndAreasResponse(
     @field:SerializedName("status")
     val status: String?,
 
-    // yang dibawah ini belum dipakai
     @field:SerializedName("BlockAndAreasResponse")
     val blockAndAreasResponse: List<BlockAndAreasResponseItem>
 
 )
 
 data class BlockAndAreasResponseItem(
+    @field:SerializedName("id")
+    val id: Int,
     @field:SerializedName("name")
     val name: String,
     @field:SerializedName("description")
     val description: String,
-    @field:SerializedName("id")
-    val id: Int
+
+    @field:SerializedName("sleds")
+    val sleds: List<Any?>? = null
 )

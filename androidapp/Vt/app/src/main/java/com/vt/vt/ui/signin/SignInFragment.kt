@@ -82,7 +82,7 @@ class SignInFragment : Fragment() {
                 signInBtnSignUp.isEnabled = true
                 signInBtnLogin.setBackgroundColor(
                     ContextCompat.getColor(
-                        requireContext(),
+                        requireActivity(),
                         R.color.btn_blue_icon
                     )
                 )

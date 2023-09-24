@@ -1,7 +1,7 @@
 package com.vt.vt.ui.penyimpan_ternak.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -69,10 +69,18 @@ class PenyimpananTernakAdapter(
         override fun onMenuItemClick(item: MenuItem?): Boolean {
             when (item?.itemId) {
                 R.id.menu_edit_penyimpanan_ternak -> {
+                    isUpdate = true
+                    val id = currentList[adapterPosition].id
+                    val bundle = Bundle().apply {
+                        putInt("id", id)
+                    }
+                    itemView.findNavController()
+                        .navigate(R.id.action_penyimpanTernakFragment_to_dataAreaFragment, bundle)
                     return true
                 }
 
                 R.id.menu_delete_penyimpanan_ternak -> {
+                    isUpdate = false
                     AlertDialog.Builder(context)
                         .setTitle("Delete")
                         .setIcon(R.drawable.ic_outline_delete_outline_24)
@@ -98,6 +106,7 @@ class PenyimpananTernakAdapter(
     }
 
     companion object {
+        var isUpdate: Boolean = false
         val TASK_DIFF_CALLBACK: DiffUtil.ItemCallback<BlockAndAreasResponseItem?> =
             object : DiffUtil.ItemCallback<BlockAndAreasResponseItem?>() {
                 override fun areItemsTheSame(

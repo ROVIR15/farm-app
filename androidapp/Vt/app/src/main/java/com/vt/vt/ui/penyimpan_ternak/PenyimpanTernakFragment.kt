@@ -108,6 +108,7 @@ class PenyimpanTernakFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_add_area -> {
+                PenyimpananTernakAdapter.isUpdate = false
                 view?.findNavController()
                     ?.navigate(R.id.action_penyimpanTernakFragment_to_dataAreaFragment)
                 return true

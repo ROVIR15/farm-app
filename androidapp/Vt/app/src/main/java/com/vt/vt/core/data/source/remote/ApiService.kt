@@ -13,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -32,11 +33,22 @@ interface ApiService {
     @GET("api/block-areas")
     suspend fun getBlockAreas(): Response<List<BlockAndAreasResponseItem>>
 
+    @GET("api/block-area/{id}")
+    suspend fun getBlockArea(
+        @Path("id") id: String
+    ): Response<BlockAndAreasResponseItem>
+
     @POST("api/block-area")
     suspend fun createBlockArea(@Body blockAndAreaRequest: BlockAndAreaRequest): Response<BlockAndAreasResponse>
 
     @DELETE("api/block-area/{id}")
     suspend fun deleteBlockArea(
         @Path("id") id: String
+    ): Response<BlockAndAreasResponse>
+
+    @PUT("api/block-area/{id}")
+    suspend fun updateBlockArea(
+        @Path("id") id: String,
+        @Body blockAndAreaRequest: BlockAndAreaRequest
     ): Response<BlockAndAreasResponse>
 }
