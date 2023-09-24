@@ -59,22 +59,26 @@
                 app:layout_constraintStart_toStartOf="@+id/icon_file_photo"
                 app:layout_constraintTop_toBottomOf="@+id/icon_file_photo" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_nama_kandang"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="Nama Kandang"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:hint="Nama Area"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_photo_data_kandang" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_photo_data_kandang">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_nama_kandang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner
                 android:id="@+id/spinner_cage_category"
@@ -90,28 +94,28 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_nama_kandang" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_description"
-                android:layout_width="match_parent"
-                android:layout_height="98dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="top|start"
                 android:hint="Deskripsi"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine"
-                android:maxLines="4"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:scrollHorizontally="false"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_cage_category" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner_cage_category">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_simpan"
@@ -127,7 +131,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_description" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_batal"

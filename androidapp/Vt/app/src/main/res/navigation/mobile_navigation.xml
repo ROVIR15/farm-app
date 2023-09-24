@@ -105,6 +105,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_personalFarmProfileFragment"
             app:destination="@id/personalFarmProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_dataKandangFragment"
+            app:destination="@id/dataKandangFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"

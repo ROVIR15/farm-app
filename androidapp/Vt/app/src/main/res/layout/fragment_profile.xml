@@ -138,6 +138,19 @@
             android:layout_height="2dp"
             android:background="@color/subtle_grey" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profile_animal_add_cage_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Tambah Kandang Baru" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/subtle_grey" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"

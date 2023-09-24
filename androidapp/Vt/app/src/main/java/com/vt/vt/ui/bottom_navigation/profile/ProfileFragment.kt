@@ -38,6 +38,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             farmProfile.setOnClickListener(this@ProfileFragment)
             profileGoodsAndService.setOnClickListener(this@ProfileFragment)
             profileAnimalCageArea.setOnClickListener(this@ProfileFragment)
+            profileAnimalAddCageArea.setOnClickListener(this@ProfileFragment)
         }
 
         observerView()
@@ -100,6 +101,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                     .navigate(R.id.action_navigation_profile_to_detailAreaBlockFragment)
             }
 
+            R.id.profile_animal_add_cage_area -> {
+                v.findNavController()
+                    .navigate(R.id.action_navigation_profile_to_dataKandangFragment)
+            }
         }
     }
 }
