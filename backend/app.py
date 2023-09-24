@@ -16,8 +16,9 @@ from Feature.views import views_feature_bp
 from Record.BCSRecord.views import views_bcs_record_bp
 from Record.WeightRecord.views import views_weight_record_bp
 from Record.HealthRecord.views import views_health_record_bp
-from Record.ConsumptionRecord.views import views_consumption_bp
+from Record.FeedingRecord.views import views_consumption_bp
 
+from Breeds.Breeding.views import views_breeding_bp
 
 from FarmProfile.views import views_farm_profile_bp
 # from Finance.Budget.views import views_budget_bp
@@ -33,7 +34,6 @@ load_dotenv()
 from flask_login import LoginManager
 
 # Model
-from User.models import User as UserModel
 from User.views import views_auth_bp
 
 app = Flask(__name__)
@@ -83,7 +83,8 @@ app.register_blueprint(views_weight_record_bp, url_prefix='/api')
 app.register_blueprint(views_health_record_bp, url_prefix='/api')
 # 11. Consumption Record 
 app.register_blueprint(views_consumption_bp, url_prefix='/api')
-
+# 12. Feeding Record
+app.register_blueprint(views_breeding_bp, url_prefix='/api')
 
 # Finance
 # 10. Budget

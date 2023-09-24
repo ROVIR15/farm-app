@@ -2,8 +2,7 @@ from db_connection import db
 from sqlalchemy import func
 from datetime import datetime
 
-
-class FeedRecord(db.Model):
+class FeedingRecord(db.Model):
     __tablename__ = "consumption_record"
 
     id = db.Column(db.Integer(), primary_key=True)

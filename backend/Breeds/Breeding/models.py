@@ -9,5 +9,5 @@ class Breeding (db.Model):
     livestock_female_id = db.Column(
         db.Integer(), db.ForeignKey('livestock.id'), nullable=False)
     sled_id = db.Column(db.Integer(), db.ForeignKey('sled.id'), nullable=False)
-    is_active = db.Column(db.Bool(), nullable=False)
+    is_active = db.Column(db.Boolean(), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)

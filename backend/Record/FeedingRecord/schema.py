@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 from utils.index import CustomDateTimeField
 
-class HealthRecordSchema(Schema):
+class FeedingRecordSchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
     sku_id = fields.Int(required=True)
     block_area_id = fields.Int(required=True)

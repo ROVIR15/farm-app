@@ -1,16 +1,16 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy.orm import joinedLoad, subqueryload
-from ConsumptionRecord.models import ConsumptionRecord
-from ConsumptionRecord.schema import ConsumptionRecordSchema
+from sqlalchemy.orm import subqueryload
+from Record.FeedingRecord.models import FeedingRecord
+from Record.FeedingRecord.schema import FeedingRecordSchema
 
 views_consumption_bp = Blueprint('views', __name__)
 
-consumption_record_schema = ConsumptionRecordSchema()
-consumption_records_schema = ConsumptionRecordSchema(many=True)
+consumption_record_schema = FeedingRecordSchema()
+consumption_records_schema = FeedingRecordSchema(many=True)
 
 
-@views_consumption_bp.route('/consumption-records', methods=['GET'])
+@views_consumption_bp.route('/feeding-records', methods=['GET'])
 def get_consumption_records():
     # Get if there is argument send by user related with livestock_id
     livestock_id = request.args.get('livestock_id')
@@ -18,9 +18,9 @@ def get_consumption_records():
     try:
         if livestock_id is not None and livestock_id != '':
             # Retrieve all livestock records from the database
-            query = ConsumptionRecord.query.all()
+            query = FeedingRecord.query.all()
         else:
-            query = ConsumptionRecord.query.filter_by(
+            query = FeedingRecord.query.filter_by(
                 livestock_id=livestock_id)
 
         results = []
@@ -29,8 +29,8 @@ def get_consumption_records():
             data = {
                 'id': item.id,
                 'livestock_id': item.livestock_id,
-                'foods_id': item.foods_id,
-                'consumption_record_id': item.consumption_record_id,
+                'sku_id': item.sku_id,
+                'score': item.score_id,
                 'description': item.description,
                 'created_at': item.created_at,
             }
@@ -44,7 +44,7 @@ def get_consumption_records():
         error_message = str(e)
         response = {
             'status': 'error',
-            'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
+            # 'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
         }
 
         return jsonify(response), 500
@@ -54,7 +54,7 @@ def get_consumption_records():
 def get_a_block_area(consumption_record_id):
     try:
         # Retrieve all livestock records from the database
-        query = ConsumptionRecord.query.get(consumption_record_id)
+        query = FeedingRecord.query.get(consumption_record_id)
 
         # Serialize the livestock data using the schema
         result = consumption_record_schema.dump(query)
@@ -66,7 +66,7 @@ def get_a_block_area(consumption_record_id):
         error_message = str(e)
         response = {
             'status': 'error',
-            'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
+            # 'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
         }
 
         return jsonify(response), 500
@@ -91,7 +91,7 @@ def post_block_area():
                 left = item['left']
                 remarks = item['remarks']
 
-                query = ConsumptionRecord(
+                query = FeedingRecord(
                     block_area_id=block_area_id,
                     sku_id=sku_id,
                     score=score,
@@ -104,7 +104,7 @@ def post_block_area():
             # Create a response JSON
             response = {
                 'status': 'success',
-                'message': f'Hello, {name}! Your message "{message}" has been received.'
+                # 'message': f'Hello, {name}! Your message "{message}" has been received.'
             }
 
             return jsonify(response), 200
@@ -115,7 +115,7 @@ def post_block_area():
         error_message = str(e)
         response = {
             'status': 'error',
-            'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
+            # 'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
         }
 
         return jsonify(response), 500
@@ -133,7 +133,7 @@ def update_block_area(consumption_record_id):
         score = data.get('score')
         left = data.get('left')
         remarks = data.get('remarks')
-        consumption_record = ConsumptionRecord.query.get(consumption_record_id)
+        consumption_record = FeedingRecord.query.get(consumption_record_id)
 
         if consumption_record:
             consumption_record.block_area_id = block_area_id
@@ -172,7 +172,7 @@ def update_block_area(consumption_record_id):
 @views_consumption_bp.route('/consumption-record/<int:consumption_record_id>', methods=['DELETE'])
 def delete_block_area(consumption_record_id):
     # Assuming you have a Livestock model and an existing livestock object
-    query = ConsumptionRecord.query.get(consumption_record_id)
+    query = FeedingRecord.query.get(consumption_record_id)
     if query:
         db.session.delete(query)
         db.session.commit()

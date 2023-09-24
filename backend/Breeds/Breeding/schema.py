@@ -7,5 +7,5 @@ class BreedingSchema(Schema):
     livestock_male_id = fields.Int(required=True)
     livestock_female_id = fields.Int(required=True)
     sled_id = fields.Str(required=True)
-    is_active = fields.Bool(required=True)
+    is_active = fields.Boolean(required=True)
     created_at = CustomDateTimeField()

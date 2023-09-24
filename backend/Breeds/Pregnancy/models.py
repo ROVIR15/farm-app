@@ -7,5 +7,5 @@ class Pregnancy (db.Model):
     breeding_id = db.Column(
         db.Integer(), db.ForeignKey('breeding.id'), nullable=False)
     is_active = db.Column(
-        db.Bool(), nullable=False) #db.ForeignKey('breeding.id')
+        db.Boolean(), nullable=False) #db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
