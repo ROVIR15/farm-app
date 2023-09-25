@@ -3,7 +3,6 @@ package com.vt.vt.ui.edit_area_block
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
@@ -59,7 +58,7 @@ class AreaBlockViewModel @Inject constructor(private val sledsVtRepository: Sled
 
     fun updateSledById(id: String, name: String?, description: String?) {
         launch(action = {
-            val sledRequest = SledRequest(name, description)
+            val sledRequest = SledRequest(null, name, description)
             val response = sledsVtRepository.updateSledById(id, sledRequest)
             if (response.isSuccessful) {
                 _updateSledById.postValue(response.body())

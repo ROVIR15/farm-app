@@ -17,7 +17,7 @@ class DataKandangViewModel @Inject constructor(private val sledsVtRepository: Sl
     val createSled: LiveData<SledsResponse> = _createSled
     fun createSled(name: String?, description: String?) {
         launch(action = {
-            val sledRequest = SledRequest(name, description)
+            val sledRequest = SledRequest(null, name, description)
             val response = sledsVtRepository.createSled(sledRequest)
             if (response.isSuccessful) {
                 _createSled.postValue(response.body())

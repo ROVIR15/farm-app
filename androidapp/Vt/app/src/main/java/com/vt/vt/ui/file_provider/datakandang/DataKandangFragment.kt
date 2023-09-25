@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -19,7 +20,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.databinding.FragmentDataKandangBinding
+import com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +32,7 @@ class DataKandangFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val cageDataViewModel by viewModels<DataKandangViewModel>()
+    private val viewModel by viewModels<PenyimpanTernakViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +43,7 @@ class DataKandangFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getAllBlockAndArea()
         with(binding) {
             this.appBarLayout.topAppBar.also { toolbar ->
                 toolbar.title = "Tambah Kandang"
@@ -54,7 +58,6 @@ class DataKandangFragment : Fragment() {
                 cageDataViewModel.createSled(name, description)
             }
         }
-        spinnerAdapter()
         observerView()
     }
 
@@ -64,6 +67,9 @@ class DataKandangFragment : Fragment() {
     }
 
     private fun observerView() {
+        viewModel.allBlockAndAreas.observe(viewLifecycleOwner) { data ->
+            spinnerAdapter(data)
+        }
         cageDataViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 showLoading(isLoading)
@@ -83,16 +89,22 @@ class DataKandangFragment : Fragment() {
         }
     }
 
-    private fun spinnerAdapter() {
-        ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.product_category_array,
-            R.layout.item_spinner
-        ).also { adapter ->
-            adapter.setDropDownViewResource(
-                R.layout.item_spinner
-            )
-            binding.spinnerCageCategory.adapter = adapter
+    private fun spinnerAdapter(data: List<BlockAndAreasResponseItem>) {
+        val item = data.map { it.name }
+        //val itemId = data.map { it.name }
+        val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCageCategory.adapter = adapter
+    }
+
+    private fun selectSpinnerItem(spinner: Spinner, itemToSelect: Int) {
+        val adapter = spinner.adapter
+        for (i in 0 until adapter.count) {
+            val currentItem = adapter.getItem(i) as Int
+            if (currentItem == itemToSelect) {
+                spinner.setSelection(i)
+                break
+            }
         }
     }
 
