@@ -76,7 +76,7 @@ def post_livestock():
     try:
 
         user_id = current_user()
-        farm_profile = FarmProfileHasUsers.query.filter_by(user_id=user_id)
+        farm_profile = FarmProfileHasUsers.query.filter(user_id==user_id).first()
 
         if not farm_profile:
             raise Exception("Cannot find farm profile!")
@@ -90,16 +90,16 @@ def post_livestock():
             db.session.add(product)
             db.session.commit()
 
-            phc = ProductHasCategory(product_id=product['id'], category_id=3)
+            phc = ProductHasCategory(product_id=product.id, category_id=3)
             db.session.add(phc)
             db.session.commit()
 
-            sku = SKU(product_id=product['id'], name=name)
+            sku = SKU(product_id=product.id, name=name)
             db.session.add(sku)
             db.session.commit()
 
             has_livestock = FarmProfileHasLivestock(
-                livestock_id=query.id, farm_profile_id=farm_profile.id)
+                livestock_id=query.id, farm_profile_id=farm_profile.farm_profile_id)
             db.session.add(has_livestock)
             db.session.commit()
 
