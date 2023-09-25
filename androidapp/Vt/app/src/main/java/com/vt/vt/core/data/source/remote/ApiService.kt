@@ -7,10 +7,14 @@ import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterRe
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.products.model.ProductRequest
+import com.vt.vt.core.data.source.remote.products.model.ProductResponse
+import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
 import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
@@ -104,5 +108,32 @@ interface ApiService {
     suspend fun deleteLivestockById(
         @Path("id") id: String
     ): Response<LivestockResponse>
+
+    // Get Categories
+    @GET("api/categories")
+    suspend fun getCategories(): Response<List<CategoriesResponseItem>>
+
+    //    Products
+    @GET("api/products")
+    suspend fun getProducts(): Response<List<ProductResponseItem>>
+
+    @POST("api/product")
+    suspend fun createProduct(@Body productRequest: ProductRequest): Response<ProductResponse>
+
+    @DELETE("api/product/{id}")
+    suspend fun deleteProductById(
+        @Path("id") id: String
+    ): Response<ProductResponse>
+
+    @GET("api/product/{id}")
+    suspend fun getProductById(
+        @Path("id") id: String
+    ): Response<ProductResponseItem>
+
+    @PUT("api/product/{id}")
+    suspend fun updateProductById(
+        @Path("id") id: String,
+        @Body productRequest: ProductRequest
+    ): Response<ProductResponse>
 
 }

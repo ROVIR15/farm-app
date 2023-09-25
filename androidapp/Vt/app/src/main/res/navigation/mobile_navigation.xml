@@ -130,10 +130,15 @@
             app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addDataBarangJasaFragment"
-        android:name="com.vt.vt.ui.file_provider.add_data_barang.AddDataBarangJasaFragment"
+        android:id="@+id/addEditDataBarangJasaFragment"
+        android:name="com.vt.vt.ui.file_provider.add_edit_data_barang.AddEditDataBarangJasaFragment"
         android:label="fragment_data_barang_jasa"
-        tools:layout="@layout/fragment_add_data_barang_jasa" />
+        tools:layout="@layout/fragment_add_edit_data_barang_jasa" >
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/dataAreaFragment"
         android:name="com.vt.vt.ui.file_provider.dataarea.DataAreaFragment"
@@ -292,7 +297,11 @@
         android:id="@+id/dataBarangDanJasaFragment"
         android:name="com.vt.vt.ui.barang_dan_jasa.DataBarangDanJasaFragment"
         android:label="fragment_data_barang_dan_jasa"
-        tools:layout="@layout/fragment_data_barang_dan_jasa" />
+        tools:layout="@layout/fragment_data_barang_dan_jasa" >
+        <action
+            android:id="@+id/action_dataBarangDanJasaFragment_to_addDataBarangJasaFragment"
+            app:destination="@id/addEditDataBarangJasaFragment" />
+    </fragment>
     <fragment
         android:id="@+id/personalProfileFragment"
         android:name="com.vt.vt.ui.profile.personal_profile.PersonalProfileFragment"

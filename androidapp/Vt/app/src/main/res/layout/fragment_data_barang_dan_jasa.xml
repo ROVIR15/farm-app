@@ -83,6 +83,7 @@
                 app:layout_constraintTop_toTopOf="@+id/appCompatTextView28" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listBarangJasa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
@@ -97,4 +98,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

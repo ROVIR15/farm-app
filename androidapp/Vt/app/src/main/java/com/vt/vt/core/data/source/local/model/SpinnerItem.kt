@@ -5,3 +5,9 @@ data class SpinnerItem(val id: Int, val name: String) {
         return name
     }
 }
+
+data class SpinnerCategoriesItem(val id: Int, val name: String) {
+    override fun toString(): String {
+        return name
+    }
+}
