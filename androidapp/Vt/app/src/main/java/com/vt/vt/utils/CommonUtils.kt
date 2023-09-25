@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
-import android.widget.Toast
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils
 import java.io.File
@@ -22,6 +24,19 @@ import java.util.Locale
     matrix.postRotate(angle)
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 }*/
+fun Spinner.selected(action: (position: Int) -> Unit) {
+    this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(
+            parent: AdapterView<*>?, view: View?, position: Int, id: Long
+        ) {
+            action(position)
+        }
+    }
+}
 fun uriToFile(selectedImg: Uri, context: Context): File {
     val contentResolver: ContentResolver = context.contentResolver
     val myFile = createCustomTempFile(context)
