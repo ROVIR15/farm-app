@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.file_provider.add_data_barang.AddDataBarangJasaFragment">
+    tools:context=".ui.file_provider.addlivestock.AddLivestockFragment">
 
     <include
         android:id="@+id/app_bar_layout"
@@ -58,22 +58,26 @@
                 app:layout_constraintStart_toStartOf="@+id/icon_file_photo"
                 app:layout_constraintTop_toBottomOf="@+id/icon_file_photo" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_nama_add_livestock"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:hint="Nama"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_photo_data_area" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_photo_data_area">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_nama_add_livestock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_date_picker"
@@ -83,7 +87,7 @@
                 android:src="@drawable/baseline_date_range_24"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_birth"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_nama_add_livestock" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
 
             <TextView
                 android:id="@+id/tv_birth"
@@ -101,7 +105,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/iv_date_picker"
-                app:layout_constraintTop_toBottomOf="@+id/edt_nama_add_livestock" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
 
             <Spinner
                 android:id="@+id/spinner_gender"
@@ -119,77 +123,79 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_birth" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_country"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="Country"
-                android:inputType="textShortMessage"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spinner_gender" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_description"
-                android:layout_width="match_parent"
-                android:layout_height="98dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="top|start"
-                android:hint="Deskripsi"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine"
-                android:maxLines="4"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:scrollHorizontally="false"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_country" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_simpan"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:hint="Bangsa"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinner_gender">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Deskripsi"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_edit_area_block"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_btn_input_product"
+                android:backgroundTint="@color/btn_blue_icon"
+                android:elevation="2dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Simpan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_description" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_batal"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_error"
+                android:layout_height="58dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Batal"
                 android:textAllCaps="false"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_simpan" />
-
+                app:layout_constraintTop_toBottomOf="@+id/btn_save_edit_area_block"
+                app:strokeColor="@color/red" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

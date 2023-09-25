@@ -2,7 +2,6 @@ package com.vt.vt.ui.file_provider.addlivestock
 
 import android.Manifest
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -30,9 +29,6 @@ import com.vt.vt.utils.createCustomTempFile
 import com.vt.vt.utils.getRotateImage
 import com.vt.vt.utils.uriToFile
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class AddLivestockFragment : Fragment() {
 
@@ -54,19 +50,22 @@ class AddLivestockFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             appBarLayout.topAppBar.also { toolbar ->
-                toolbar.title = "Add Livestock"
+                toolbar.title = "Tambah Livestock"
                 toolbar.setNavigationOnClickListener {
                     it?.findNavController()?.popBackStack()
                 }
             }
             ivDatePicker.setOnClickListener {
-               PickDatesUtils.setupDatePicker(requireActivity(), tvBirth)
+                PickDatesUtils.setupDatePicker(requireActivity(), tvBirth)
             }
             ivPhotoDataArea.setOnClickListener {
                 requestPermissionsIfNeeded()
             }
         }
+        spinnerAdapter()
+    }
 
+    private fun spinnerAdapter() {
         ArrayAdapter.createFromResource(
             requireActivity(),
             R.array.product_category_array,

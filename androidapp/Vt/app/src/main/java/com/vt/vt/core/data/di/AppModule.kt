@@ -15,8 +15,9 @@ import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
 import com.vt.vt.core.data.source.remote.dummy.livestock.LivestockRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.HistoryPeranakanRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
-import com.vt.vt.core.data.source.repository.DataRepository
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
+import com.vt.vt.core.data.source.repository.DataRepository
+import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import com.vt.vt.core.data.source.repository.SledsVtRepository
 import dagger.Module
 import dagger.Provides
@@ -59,11 +60,18 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideVtRepository(apiService: ApiService): BlockAndAreasVtRepository = BlockAndAreasVtRepository(apiService)
+    fun provideVtRepository(apiService: ApiService): BlockAndAreasVtRepository =
+        BlockAndAreasVtRepository(apiService)
 
     @Provides
     @Singleton
-    fun provideSledsVtRepository(apiService: ApiService): SledsVtRepository = SledsVtRepository(apiService)
+    fun provideSledsVtRepository(apiService: ApiService): SledsVtRepository =
+        SledsVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun provideLivestockVtRepository(apiService: ApiService): LivestockVtRepository =
+        LivestockVtRepository(apiService)
 
     @Provides
     @Singleton

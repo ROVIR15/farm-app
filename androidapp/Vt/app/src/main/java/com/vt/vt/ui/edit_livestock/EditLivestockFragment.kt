@@ -9,16 +9,21 @@ import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditLivestockBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditLivestockFragment : Fragment() {
 
     private var _binding: FragmentEditLivestockBinding? = null
     private val binding get() = _binding!!
+    private val editLivestockViewModel by viewModels<EditLivestockViewModel>()
 
+    var receiveId: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,6 +34,9 @@ class EditLivestockFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        receiveId = arguments?.getInt("id").toString()
+        editLivestockViewModel.getLivestockById(receiveId)
+
         with(binding) {
             appBarLayout.topAppBar.also { toolbar ->
                 toolbar.title = "Edit Profile Livestock"
@@ -36,14 +44,52 @@ class EditLivestockFragment : Fragment() {
                     it?.findNavController()?.popBackStack()
                 }
             }
-            binding.ivProfileLivestock.setOnClickListener {
+            ivProfileLivestock.setOnClickListener {
                 showBottomSheetDialog()
+            }
+            btnSaveEditLivestock.setOnClickListener {
+                val name = edtNamaAddLivestock.text.toString().trim()
+                val nation = edtBangsa.text.toString().trim()
+                val gender = 1
+                val description = edtDescription.text.toString().trim()
+                editLivestockViewModel.updateLivestockById(
+                    receiveId,
+                    name,
+                    gender,
+                    nation,
+                    description
+                )
             }
             /* Spinner Adapter */
             adapterSpinner(binding.spinnerGenderUmum)
             adapterSpinner(binding.spinnerKandangUmum)
             adapterSpinner(binding.spinnerPilihLivestockJantan)
             adapterSpinner(binding.spinnerPilihLivestockBetina)
+        }
+        observerView()
+    }
+
+    private fun observerView() {
+        editLivestockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                println("loading")
+            }
+            getLivestockById.observe(viewLifecycleOwner) { livestock ->
+                with(binding) {
+                    appBarLayout.topAppBar.title = "Edit ${livestock?.name}"
+                    edtNamaAddLivestock.setText(livestock?.name.toString())
+                    edtDescription.setText(livestock?.description.toString())
+                    edtBangsa.setText(livestock?.bangsa)
+                }
+            }
+            isUpdateLivestock.observe(viewLifecycleOwner) { livestock ->
+                view?.findNavController()?.popBackStack()
+                Toast.makeText(requireContext(), livestock?.message.toString(), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            isError().observe(viewLifecycleOwner) { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

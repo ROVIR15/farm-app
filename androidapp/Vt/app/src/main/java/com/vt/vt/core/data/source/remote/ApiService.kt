@@ -7,6 +7,10 @@ import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterRe
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
@@ -77,4 +81,28 @@ interface ApiService {
         @Path("id") id: String,
         @Body sledRequest: SledRequest
     ): Response<SledsResponse>
+
+    //    Livestock
+    @GET("api/livestocks")
+    suspend fun getLivestocks(): Response<List<LivestockResponseItem>>
+
+    @GET("api/livestock/{id}")
+    suspend fun getLivestockById(
+        @Path("id") id: String
+    ): Response<LivestockByIdResponse>
+
+    @POST("api/livestock")
+    suspend fun createLivestock(@Body livestockRequest: LivestockRequest): Response<LivestockResponse>
+
+    @PUT("api/livestock/{id}")
+    suspend fun updateLivestockById(
+        @Path("id") id: String,
+        @Body livestockRequest: LivestockRequest
+    ): Response<LivestockResponse>
+
+    @DELETE("api/livestock/{id}")
+    suspend fun deleteLivestockById(
+        @Path("id") id: String
+    ): Response<LivestockResponse>
+
 }

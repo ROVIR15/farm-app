@@ -24,7 +24,6 @@ abstract class BaseViewModel : ViewModel() {
     protected val _isDeleted = MutableLiveData<Event<String>>()
     val isDeleted: LiveData<Event<String>> = _isDeleted
 
-
     protected val isException = MutableLiveData<Exception?>()
     fun observeException(): LiveData<Exception?> = isException
 

@@ -58,22 +58,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_nama_add_livestock"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
                 android:hint="Nama"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_nama_add_livestock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -84,7 +88,7 @@
                 android:orientation="horizontal"
                 android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_nama_add_livestock">
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_date_picker"
@@ -121,39 +125,47 @@
                 app:layout_constraintStart_toEndOf="@+id/linearLayout2"
                 app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_bangsa"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="Country"
-                android:inputType="textShortMessage"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:hint="Bangsa"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_deskripsi"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_bangsa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
                 android:hint="Deskripsi"
-                android:inputType="textShortMessage"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_bangsa" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textView3"
@@ -166,7 +178,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_deskripsi" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
 
             <Spinner
                 android:id="@+id/spinner_kandang_umum"
@@ -185,22 +197,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_area"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout3"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
+                android:layout_height="wrap_content"
                 android:hint="Area"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintBottom_toBottomOf="@+id/spinner_kandang_umum"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="@+id/spinner_kandang_umum" />
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textView4"
@@ -212,7 +228,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_area" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout3" />
 
             <Spinner
                 android:id="@+id/spinner_pilih_livestock_jantan"
