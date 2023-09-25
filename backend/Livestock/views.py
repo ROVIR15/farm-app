@@ -37,7 +37,7 @@ def get_livestocks():
             'descrip tion': item.description,
             'created_at': item.created_at,
         }
-    results.append(data)
+        results.append(data)
     result = livestocks_schema.dump(results)
 
     # Return the serialized data as JSON response
