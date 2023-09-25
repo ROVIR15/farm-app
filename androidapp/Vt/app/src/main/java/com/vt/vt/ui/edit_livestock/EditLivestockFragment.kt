@@ -1,5 +1,6 @@
 package com.vt.vt.ui.edit_livestock
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -72,7 +74,7 @@ class EditLivestockFragment : Fragment() {
     private fun observerView() {
         editLivestockViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) {
-                println("loading")
+                showLoading(it)
             }
             getLivestockById.observe(viewLifecycleOwner) { livestock ->
                 with(binding) {
@@ -126,5 +128,19 @@ class EditLivestockFragment : Fragment() {
 
     fun startGallery() {
         Toast.makeText(requireContext(), "belum ada action ambil gambar", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(state: Boolean) {
+        with(binding) {
+            btnSaveEditLivestock.isEnabled = !state
+            btnCancelEditLivestock.isEnabled = !state
+
+            btnSaveEditLivestock.setBackgroundColor(
+                if (state) Color.GRAY
+                else ContextCompat.getColor(requireActivity(), R.color.btn_blue_icon)
+            )
+
+            loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
+        }
     }
 }

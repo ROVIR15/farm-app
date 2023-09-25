@@ -164,7 +164,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save_edit_area_block"
+                android:id="@+id/btn_save"
                 android:layout_width="0dp"
                 android:layout_height="58dp"
                 android:layout_marginTop="24dp"
@@ -194,8 +194,12 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_save_edit_area_block"
+                app:layout_constraintTop_toBottomOf="@+id/btn_save"
                 app:strokeColor="@color/red" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
