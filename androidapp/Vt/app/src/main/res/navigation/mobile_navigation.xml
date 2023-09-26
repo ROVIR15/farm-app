@@ -164,10 +164,6 @@
         android:label="fragment_display_livestock"
         tools:layout="@layout/fragment_display_livestock" />
     <fragment
-        android:id="@+id/bcsFragment"
-        android:name="com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment"
-        android:label="BcsFragment" />
-    <fragment
         android:id="@+id/detailLivestockFragment"
         android:name="com.vt.vt.ui.detail_livestock.DetailLivestockFragment"
         android:label="fragment_detail_livestock"
@@ -188,15 +184,6 @@
         <action
             android:id="@+id/action_kesehatanFragment_to_bcsFragment"
             app:destination="@id/bcsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/beratBadanFragment"
-        android:name="com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.BeratBadanFragment"
-        android:label="fragment_pakan"
-        tools:layout="@layout/fragment_edit_livestock">
-        <action
-            android:id="@+id/action_beratBadanFragment_to_kesehatanFragment"
-            app:destination="@id/kesehatanFragment" />
     </fragment>
     <fragment
         android:id="@+id/penyimpanTernakFragment"
@@ -441,5 +428,19 @@
         android:name="com.vt.vt.ui.file_provider.addlivestock.AddLivestockFragment"
         android:label="fragment_add_livestock"
         tools:layout="@layout/fragment_add_livestock" />
+    <fragment
+        android:id="@+id/weightFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.WeightFragment"
+        android:label="fragment_weight"
+        tools:layout="@layout/fragment_weight" >
+        <action
+            android:id="@+id/action_weigthFragment_to_kesehatanFragment"
+            app:destination="@id/kesehatanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bcsFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment"
+        android:label="fragment_bcs"
+        tools:layout="@layout/fragment_bcs" />
 
 </navigation>

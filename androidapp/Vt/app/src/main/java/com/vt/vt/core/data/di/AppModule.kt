@@ -22,6 +22,7 @@ import com.vt.vt.core.data.source.repository.DataRepository
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import com.vt.vt.core.data.source.repository.ProductsVtRepository
 import com.vt.vt.core.data.source.repository.SledsVtRepository
+import com.vt.vt.core.data.source.repository.WeightRecordVtRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -88,8 +89,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideBcsRecordVtRepository(apiService: ApiService): BcsRecordVtRepository =
-        BcsRecordVtRepository(apiService)
+    fun provideWeightRecordVtRepository(apiService: ApiService): WeightRecordVtRepository =
+        WeightRecordVtRepository(apiService)
 
     @Provides
     @Singleton

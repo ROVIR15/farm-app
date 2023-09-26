@@ -20,6 +20,7 @@ import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -137,8 +138,11 @@ interface ApiService {
         @Body productRequest: ProductRequest
     ): Response<ProductResponse>
 
-//    BCS RECORD
+    //    BCS RECORD
     @GET("api/bcs-records")
     suspend fun getBcsRecords(): Response<List<BcsRecordResponseItem>>
 
+    // Weight Record
+    @GET("api/weight-records")
+    suspend fun getWeightRecords(): Response<List<WeightRecordResponseItem>>
 }

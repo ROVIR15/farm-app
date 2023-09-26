@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.detail_livestock.tab_layout.beratbadan.BeratBadanFragment">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top|center"
-        android:text="Berat Badan Fragment ATAS" />
+    tools:context=".ui.detail_livestock.tab_layout.beratbadan.WeightFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_berat_badan" />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
+    <include
+        android:id="@+id/data_empty"
+        layout="@layout/data_empty" />
 </androidx.constraintlayout.widget.ConstraintLayout>
