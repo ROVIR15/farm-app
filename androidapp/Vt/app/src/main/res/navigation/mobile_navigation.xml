@@ -178,9 +178,9 @@
     </fragment>
     <fragment
         android:id="@+id/kesehatanFragment"
-        android:name="com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.KesehatanFragment"
+        android:name="com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.HealthRecordsFragment"
         android:label="fragment_kesehatan"
-        tools:layout="@layout/fragment_kesehatan">
+        tools:layout="@layout/fragment_health_records">
         <action
             android:id="@+id/action_kesehatanFragment_to_bcsFragment"
             app:destination="@id/bcsFragment" />

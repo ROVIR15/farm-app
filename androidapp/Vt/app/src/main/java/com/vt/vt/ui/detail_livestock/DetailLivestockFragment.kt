@@ -17,7 +17,7 @@ import com.vt.vt.databinding.FragmentDetailLivestockBinding
 import com.vt.vt.ui.detail_livestock.adapter.ViewPagerDetailLivestockAdapter
 import com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.WeightFragment
-import com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.KesehatanFragment
+import com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.HealthRecordsFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.pakan.PakanFragment
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,7 +70,7 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun setupViewPager() {
         val fragmentList = arrayListOf(
-            WeightFragment(), KesehatanFragment(), BcsFragment(), PakanFragment()
+            WeightFragment(), HealthRecordsFragment(), BcsFragment(), PakanFragment()
         )
         val adapter = ViewPagerDetailLivestockAdapter(
             fragmentList, requireActivity().supportFragmentManager, lifecycle

@@ -9,6 +9,7 @@ import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
+import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
@@ -145,4 +146,8 @@ interface ApiService {
     // Weight Record
     @GET("api/weight-records")
     suspend fun getWeightRecords(): Response<List<WeightRecordResponseItem>>
+
+    // Weight Record
+    @GET("api/health-records")
+    suspend fun getHealthRecords(): Response<List<HealthRecordResponseItem>>
 }

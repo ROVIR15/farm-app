@@ -19,6 +19,7 @@ import com.vt.vt.core.data.source.repository.BcsRecordVtRepository
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import com.vt.vt.core.data.source.repository.CategoriesVtRepository
 import com.vt.vt.core.data.source.repository.DataRepository
+import com.vt.vt.core.data.source.repository.HealthRecordVtRepository
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import com.vt.vt.core.data.source.repository.ProductsVtRepository
 import com.vt.vt.core.data.source.repository.SledsVtRepository
@@ -91,6 +92,10 @@ class AppModule {
     @Singleton
     fun provideWeightRecordVtRepository(apiService: ApiService): WeightRecordVtRepository =
         WeightRecordVtRepository(apiService)
+    @Provides
+    @Singleton
+    fun provideHealthRecordVtRepository(apiService: ApiService): HealthRecordVtRepository =
+        HealthRecordVtRepository(apiService)
 
     @Provides
     @Singleton

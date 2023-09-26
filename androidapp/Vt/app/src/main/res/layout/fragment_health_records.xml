@@ -4,17 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.detail_livestock.tab_layout.kesehatan.KesehatanFragment">
-
-    <TextView
-        android:id="@+id/appCompatTextView16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Kesehatan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".ui.detail_livestock.tab_layout.kesehatan.HealthRecordsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_health_record"
@@ -22,7 +12,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView16"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_kesehatan" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
+    <include
+        android:id="@+id/data_empty"
+        layout="@layout/data_empty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
