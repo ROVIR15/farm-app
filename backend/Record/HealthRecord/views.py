@@ -53,10 +53,22 @@ def get_a_health_record(livestock_id):
 
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = HealthRecord.query.get(livestock_id)
+        query = HealthRecord.query.filter(livestock_id==livestock_id)
 
-        # Serialize the livestock data using the schema
-        result = health_record_schema.dump(query)
+        results = []
+        # Serialize the health record data using the schema
+        for item in query:
+            data = {
+                'id': item.id,
+                'livestock_id': item.livestock_id,
+                'date': item.date,
+                'disease_type': item.disease_type,
+                'treatment_methods': item.treatment_methods,
+                'remarks': item.remarks,
+                'created_at': item.created_at
+            }
+            results.append(data)
+        result = health_many_record_schema.dump(results)
 
         # Return the serialized data as JSON response
         return jsonify(result)

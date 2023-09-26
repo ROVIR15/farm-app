@@ -52,10 +52,23 @@ def get_a_weight_record(livestock_id):
 
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = WeightRecord.query.get(livestock_id)
+        query = WeightRecord.query.filter(livestock_id==livestock_id).all()
 
+        results = []
         # Serialize the livestock data using the schema
-        result = weight_record_schema.dump(query)
+        for item in query:
+            data = {
+                'id': item.id,
+                'livestock_id': item.livestock_id,
+                'date': item.date,
+                'score': item.score,
+                'remarks': item.remarks,
+                'created_at': item.created_at
+            }
+            results.append(data)
+        result = weight_many_record_schema.dump(results)
+
+        # result = weight_record_schema.dump(query)
 
         # Return the serialized data as JSON response
         return jsonify(result)
