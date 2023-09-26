@@ -54,13 +54,15 @@ class EditLivestockFragment : Fragment() {
                 val nation = edtBangsa.text.toString().trim()
                 val gender = 1
                 val description = edtDescription.text.toString().trim()
-                editLivestockViewModel.updateLivestockById(
-                    receiveId,
-                    name,
-                    gender,
-                    nation,
-                    description
-                )
+                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty()) {
+                    editLivestockViewModel.updateLivestockById(
+                        receiveId,
+                        name,
+                        gender,
+                        nation,
+                        description
+                    )
+                }
             }
             /* Spinner Adapter */
             adapterSpinner(binding.spinnerGenderUmum)

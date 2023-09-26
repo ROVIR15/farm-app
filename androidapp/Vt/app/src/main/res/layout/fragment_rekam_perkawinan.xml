@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.rekam_perkawinan.RekamPerkawinanFragment">
 
-    <!-- <include
-         android:id="@+id/app_bar_record_mating"
-         layout="@layout/app_bar_main" />
- -->
-
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -250,21 +244,17 @@
                 android:id="@+id/tabLayoutRecordMating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView25" />
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPagerRecordMating"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tabLayoutRecordMating" />
+                android:layout_marginTop="8dp" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerRecordMating"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="72dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

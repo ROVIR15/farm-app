@@ -4,6 +4,7 @@ import com.vt.vt.core.data.source.remote.auth.model.login.LoginRequest
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
 import com.vt.vt.core.data.source.remote.auth.model.register.request.RegisterRequest
 import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterResponse
+import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
@@ -135,5 +136,9 @@ interface ApiService {
         @Path("id") id: String,
         @Body productRequest: ProductRequest
     ): Response<ProductResponse>
+
+//    BCS RECORD
+    @GET("api/bcs-records")
+    suspend fun getBcsRecords(): Response<List<BcsRecordResponseItem>>
 
 }

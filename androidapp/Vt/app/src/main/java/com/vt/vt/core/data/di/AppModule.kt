@@ -15,6 +15,7 @@ import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
 import com.vt.vt.core.data.source.remote.dummy.livestock.LivestockRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.HistoryPeranakanRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
+import com.vt.vt.core.data.source.repository.BcsRecordVtRepository
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import com.vt.vt.core.data.source.repository.CategoriesVtRepository
 import com.vt.vt.core.data.source.repository.DataRepository
@@ -79,10 +80,17 @@ class AppModule {
     @Singleton
     fun provideCategoriesVtRepository(apiService: ApiService): CategoriesVtRepository =
         CategoriesVtRepository(apiService)
+
     @Provides
     @Singleton
     fun provideProductsVtRepository(apiService: ApiService): ProductsVtRepository =
         ProductsVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun provideBcsRecordVtRepository(apiService: ApiService): BcsRecordVtRepository =
+        BcsRecordVtRepository(apiService)
+
     @Provides
     @Singleton
     fun provideDataStoreManager(@ApplicationContext appContext: Context): SessionPreferencesDataStoreManager =

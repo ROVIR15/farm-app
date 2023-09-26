@@ -66,6 +66,11 @@ class RekamPerkawinanFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
     private fun setupViewPager() {
         val bundle = Bundle()
         val adapter = ViewPagerRecordAnimalMatingAdapter(this, bundle)

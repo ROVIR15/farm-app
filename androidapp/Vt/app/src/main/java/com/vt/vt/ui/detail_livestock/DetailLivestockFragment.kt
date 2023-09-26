@@ -1,5 +1,6 @@
 package com.vt.vt.ui.detail_livestock
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
@@ -17,11 +19,17 @@ import com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.BeratBadanFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.KesehatanFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.pakan.PakanFragment
+import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private var _binding: FragmentDetailLivestockBinding? = null
     private val binding get() = _binding!!
+
+    val editLivestockViewModel by viewModels<EditLivestockViewModel>()
+    private var receiveId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +41,10 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        receiveId = arguments?.getInt("id").toString()
+        editLivestockViewModel.getLivestockById(receiveId)
+
         with(binding) {
             toolbar2.apply {
                 title = "Profile Livestock"
@@ -43,6 +55,17 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
         setupViewPager()
+        observerView()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun observerView() {
+        editLivestockViewModel.apply {
+            getLivestockById.observe(viewLifecycleOwner) { data ->
+                binding.tvTitleLivestock.setText(data?.name)
+                binding.tvBangsaAnimal.setText("Bangsa ${data?.bangsa}")
+            }
+        }
     }
 
     private fun setupViewPager() {
@@ -71,8 +94,10 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_action_edit_profile_livestock -> {
+                val mBundle = Bundle()
+                mBundle.putInt("id", receiveId.toInt())
                 this.findNavController()
-                    .navigate(R.id.action_detailLivestockFragment_to_editLivestockFragment)
+                    .navigate(R.id.action_detailLivestockFragment_to_editLivestockFragment, mBundle)
                 return true
             }
         }

@@ -172,6 +172,10 @@
         android:name="com.vt.vt.ui.detail_livestock.DetailLivestockFragment"
         android:label="fragment_detail_livestock"
         tools:layout="@layout/fragment_detail_livestock">
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_detailLivestockFragment_to_editLivestockFragment"
             app:destination="@id/editLivestockFragment" />

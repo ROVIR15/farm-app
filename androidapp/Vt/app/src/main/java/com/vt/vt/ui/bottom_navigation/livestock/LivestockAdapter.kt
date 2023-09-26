@@ -97,8 +97,11 @@ class LivestockAdapter(
                 }
 
                 R.id.btn_info -> {
+                    val id = currentList[adapterPosition].id
+                    val mBundle = Bundle()
+                    mBundle.putInt("id", id)
                     v.findNavController()
-                        .navigate(R.id.action_navigation_livestock_to_detailLivestockFragment)
+                        .navigate(R.id.action_navigation_livestock_to_detailLivestockFragment, mBundle)
                 }
             }
         }

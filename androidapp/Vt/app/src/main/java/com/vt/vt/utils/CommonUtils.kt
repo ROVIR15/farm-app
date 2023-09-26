@@ -16,6 +16,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 
@@ -37,6 +38,27 @@ fun Spinner.selected(action: (position: Int) -> Unit) {
         }
     }
 }
+
+fun formatDateBcs(dateTime: String?, dateFormats: String?): String {
+    val sdf =
+        SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+            Locale.getDefault()
+        )
+
+    val date = sdf.parse(dateTime!!)
+    val calendar = Calendar.getInstance()
+    calendar.time = date!!
+
+    val output =
+        SimpleDateFormat(
+            dateFormats,
+            Locale("in", "ID")
+        )
+
+    return output.format(calendar.time)
+}
+
 fun uriToFile(selectedImg: Uri, context: Context): File {
     val contentResolver: ContentResolver = context.contentResolver
     val myFile = createCustomTempFile(context)

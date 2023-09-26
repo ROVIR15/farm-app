@@ -4,24 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.detail_livestock.tab_layout.beratbadan.BeratBadanFragment">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="BCS Fragment"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".ui.detail_livestock.tab_layout.bcs.BcsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBcs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_bcs" />
+
+    <include
+        android:id="@+id/data_empty"
+        layout="@layout/data_empty" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
