@@ -50,13 +50,24 @@ def get_bcs_record():
 def get_a_bcs_record(livestock_id):
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = BCSRecord.query.get(livestock_id)
+        query = BCSRecord.query.filter_by(livestock_id=livestock_id)
 
-        # Serialize the livestock data using the schema
-        result = bcs_record_schema.dump(query)
+        results = []
+        # Serialize the bcs record data using the schema
+        for item in query:
+            data = {
+                'id': item.id,
+                'livestock_id': item.livestock_id,
+                'date': item.date,
+                'score': item.score,
+                'remarks': item.remarks,
+                'created_at': item.created_at
+            }
+            results.append(data)
+        result = bcs_many_record_schema.dump(results)
 
         # Return the serialized data as JSON response
-        return jsonify(result)
+        return jsonify(result), 200
     except Exception as e:
         # Handling the exception if storing the data fails
         error_message = str(e)
