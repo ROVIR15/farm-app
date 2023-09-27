@@ -66,7 +66,8 @@ def post_livestock_details():
         # Handling the exception if storing the data fails
         error_message = str(e)
         response = {
-            'status': 'error'
+            'status': 'error',
+            'messsage': error_message
         }
         return jsonify(response), 500
 
