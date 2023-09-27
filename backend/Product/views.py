@@ -7,6 +7,7 @@ from Feature.models import Feature
 from ProductHasCategory.models import ProductHasCategory
 from SKU.models import SKU
 
+from FarmProfile.HasProduct.models import HasProduct
 from ProductHasCategory.schema import ProductHasCategorySchema as ProductSchema
 
 views_product_bp = Blueprint('views_product', __name__)
@@ -17,31 +18,50 @@ products_schema = ProductSchema(many=True)
 
 @views_product_bp.route('/products', methods=['GET'])
 def get_products():
-    # Retrieve all product records from the database
-    query = ProductHasCategory.query.options([
-        subqueryload(ProductHasCategory.product),
-        subqueryload(ProductHasCategory.category),
-        subqueryload(ProductHasCategory.sku)
-    ]).filter(not_(ProductHasCategory.category_id == 3))
 
-    results = []
-    # Serialize the product data using the schema
-    for item in query:
-        data = {
-            'sku_id': item.sku.id,
-            'product_id': item.product_id,
-            'category_id': item.category_id,
-            'product_name': item.product.name,
-            'category_name': item.category.name,
-            'description': item.product.description,
-            'unit_measurement': item.product.unit_measurement
+    # grandparents_with_grandchildren_named_bob = (
+    #     session.query(Parent)
+    #     .filter(Parent.children.any(Child.grandchildren.any(Grandchild.name == "Bob")))
+    #     .options(
+    #         subqueryload(Parent.children),
+    #         subqueryload(Child.grandchildren)
+    #     )
+    #     .all()
+    # )
+
+   try:
+        # Retrieve all product records from the database
+        query = ProductHasCategory.query.options([
+            subqueryload(ProductHasCategory.product),
+            subqueryload(ProductHasCategory.category),
+            subqueryload(ProductHasCategory.sku)
+        ]).filter(not_(ProductHasCategory.category_id == 3))
+
+        results = []
+        # Serialize the product data using the schema
+        for item in query:
+            data = {
+                'sku_id': item.sku.id,
+                'product_id': item.product_id,
+                'category_id': item.category_id,
+                'product_name': item.product.name,
+                'category_name': item.category.name,
+                'description': item.product.description,
+                'unit_measurement': item.product.unit_measurement
+            }
+            results.append(data)
+
+        result = products_schema.dump(results)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry!, Failed to load collection of your product'
         }
-        results.append(data)
-
-    result = products_schema.dump(results)
-
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        return jsonify(response), 500
 
 
 @views_product_bp.route('/product/<int:product_id>', methods=['GET'])
@@ -54,7 +74,7 @@ def get_a_product(product_id):
             subqueryload(ProductHasCategory.product),
             subqueryload(ProductHasCategory.category),
             subqueryload(ProductHasCategory.sku)
-        ]).filter(product_id == 12).first()
+        ]).filter_by(product_id=product_id).first()
 
         if not query:
             response = {
@@ -122,9 +142,19 @@ def post_product():
                     product_id=product_q.id, name=name, feature_id=feature.id)
                 db.session.add(sku_q)
                 db.session.commit()
+
+                fphp = HasProduct(
+                    sku_id=sku_q.id, product_id=product_q.id, feature_id=feature.id)
+                db.session.add(fphp)
+                db.session.commit()
         else:
             sku_q = SKU(product_id=product_q.id, name=name)
             db.session.add(sku_q)
+            db.session.commit()
+
+            fphp = HasProduct(
+                sku_id=sku_q.id, product_id=product_q.id)
+            db.session.add(fphp)
             db.session.commit()
 
         # Create a response JSON
