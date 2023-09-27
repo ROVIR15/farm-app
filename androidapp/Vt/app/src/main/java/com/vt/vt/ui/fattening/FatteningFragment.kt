@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.mikephil.charting.charts.LineChart
@@ -13,6 +14,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentFatteningBinding
 import com.vt.vt.utils.PickDatesUtils
@@ -73,42 +76,61 @@ class FatteningFragment : Fragment(), View.OnClickListener {
 
         val lineData = LineData(dataSets)
 
-        lineChart?.data = lineData
+        lineChart.data = lineData
 
         // Customize X-axis
-        val xAxis = lineChart?.xAxis
+        val xAxis = lineChart.xAxis
         xAxis?.position = XAxis.XAxisPosition.BOTTOM
 
         // Customize Y-axis
-        val yAxisLeft = lineChart?.axisLeft
+        val yAxisLeft = lineChart.axisLeft
         yAxisLeft?.axisMinimum = 0f
 
         // Hide right Y-axis
-        lineChart?.axisRight?.isEnabled = false
+        lineChart.axisRight?.isEnabled = false
 
-        lineChart?.invalidate()
+        lineChart.invalidate()
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.content_fattening_category_height_record -> {
+                showBottomSheet()
                 v.findNavController()
                     .navigate(R.id.action_fatteningFragment_to_rekamBeratBadanFragment)
             }
 
             R.id.content_fattening_category_bcs_record -> {
+                showBottomSheet()
                 v.findNavController().navigate(R.id.action_fatteningFragment_to_rekamBCSFragment)
             }
 
             R.id.content_fattening_category_health_record -> {
+                showBottomSheet()
                 v.findNavController()
                     .navigate(R.id.action_fatteningFragment_to_rekamKesehatanFragment)
             }
 
             R.id.content_fattening_category_food_record -> {
+                showBottomSheet()
                 v.findNavController()
                     .navigate(R.id.action_fatteningFragment_to_penyimpanTernakFragment)
             }
+        }
+    }
+
+    private fun showBottomSheet() {
+        val dialog = BottomSheetDialog(requireActivity())
+        dialog.setContentView(R.layout.bottom_sheet_farm)
+        val spinner = dialog.findViewById<Spinner>(R.id.sp_select_farm)
+        val btnSave = dialog.findViewById<MaterialButton>(R.id.btn_save)
+        val btnCancel = dialog.findViewById<MaterialButton>(R.id.btn_cancel)
+        dialog.show()
+        btnSave?.setOnClickListener {
+            dialog.dismiss()
+        }
+        btnCancel?.setOnClickListener {
+            dialog.dismiss()
         }
     }
 

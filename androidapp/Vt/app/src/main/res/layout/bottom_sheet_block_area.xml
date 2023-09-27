@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:padding="8dp"
-        android:text="Satu langkah lagi!"
+        android:text="Pilih Block/Area"
         android:textAlignment="center"
         android:textColor="@color/text_black"
         android:textSize="24sp" />
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Pilih kandang tempat ternak ini hidup"
+        android:text="Pilih Blok/Area Kandang untuk diberikan pakan"
         android:textAlignment="center" />
 
     <LinearLayout
@@ -46,27 +46,6 @@
             android:layout_height="match_parent"
             android:elevation="2dp" />
     </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:boxBackgroundColor="@color/subtle_grey"
-        app:startIconTint="@color/text_blue">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_block_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:ems="10"
-            android:enabled="false"
-            android:gravity="center_vertical"
-            android:hint="Area"
-            android:inputType="numberDecimal" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
