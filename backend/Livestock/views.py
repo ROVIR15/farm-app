@@ -12,7 +12,7 @@ from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivest
 from FarmProfile.models import FarmProfileHasUsers
 
 
-from auth import login_required, current_user
+from auth import login_required, current_user, current_farm_profile
 
 views_bp = Blueprint('views_livestock', __name__)
 
@@ -24,24 +24,46 @@ livestocks_schema = LivestockSchema(many=True)
 @login_required
 def get_livestocks():
     # Retrieve all livestock records from the database
-    query = Livestock.query.all()
+    farm_profile_id = current_farm_profile()
 
-    results = []
-    # Serialize the livestock data using the schema
-    for item in query:
-        data = {
-            'id': item.id,
-            'name': item.name,
-            'gender': item.gender,
-            'bangsa': item.bangsa,
-            'descrip tion': item.description,
-            'created_at': item.created_at,
+    try:
+        query = FarmProfileHasLivestock.query.options([subqueryload(FarmProfileHasLivestock.livestock)]).filter_by(farm_profile_id=farm_profile_id).all()
+        # query = Livestock.query.all()
+
+        results = []
+        if not query:
+            e = 'You dont have any livestock'
+            response = {
+                'status': 'error',
+                'message': e
+            }
+
+            return jsonify(response)
+        # Serialize the livestock data using the schema
+        for item in query:
+            if hasattr(item, 'livestock'):
+                data = {
+                    'id': item.livestock.id,
+                    'name': item.livestock.name,
+                    'gender': item.livestock.gender,
+                    'bangsa': item.livestock.bangsa,
+                    'description': item.livestock.description,
+                    'created_at': item.livestock.created_at,
+                }
+                results.append(data)
+        
+        result = livestocks_schema.dump(results)
+        # Return the serialized data as JSON response
+        return jsonify(result)
+
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry, Failed to get livestock collections data. Error: {error_message}'
         }
-        results.append(data)
-    result = livestocks_schema.dump(results)
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        return jsonify(response), 500
 
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['GET'])

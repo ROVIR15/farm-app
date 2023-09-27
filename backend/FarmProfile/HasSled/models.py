@@ -11,3 +11,5 @@ class HasSled (db.Model):
     sled_id = db.Column(
         db.Integer(), db.ForeignKey('sled.id'), db.ForeignKey('sled.id'), nullable=False) #db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    sled = db.relationship('Sled', foreign_keys=[sled_id])

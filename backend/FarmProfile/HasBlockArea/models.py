@@ -11,3 +11,5 @@ class HasBlockArea (db.Model):
     block_area_id = db.Column(
         db.Integer(), db.ForeignKey('block_area.id'), nullable=False) #db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    block_area = db.relationship('BlockArea', foreign_keys=[block_area_id])

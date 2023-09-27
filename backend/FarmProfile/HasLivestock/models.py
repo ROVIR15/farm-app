@@ -11,3 +11,5 @@ class HasLivestock (db.Model):
     livestock_id = db.Column(
         db.Integer(), db.ForeignKey('livestock.id'), db.ForeignKey('livestock.id'), nullable=False)  # db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    livestock = db.relationship('Livestock', foreign_keys=[livestock_id])

@@ -7,7 +7,7 @@ from FarmProfile.models import FarmProfileHasUsers
 
 from Sled.schema import SledSchema
 
-from auth import login_required, current_user
+from auth import login_required, current_user, current_farm_profile
 
 views_sled_bp = Blueprint('views_sled', __name__)
 
@@ -18,8 +18,14 @@ sleds_schema = SledSchema(many=True)
 @views_sled_bp.route('/sleds', methods=['GET'])
 @login_required
 def get_sleds():
+
+    farm_profile_id = 5
+
     # Retrieve all livestock records from the database
-    query = Sled.query.options(subqueryload(Sled.block_area)).all()
+    query = FarmProfileHasSled.query.options([subqueryload(
+        FarmProfileHasSled.sled).subqueryload(Sled.block_area)]).filter_by(farm_profile_id=farm_profile_id).all()
+
+    # query = Sled.query.options(subqueryload(Sled.block_area)).all()
 
     try:
         if query:
@@ -27,18 +33,18 @@ def get_sleds():
 
             # Serialize the livestock data using the schema
             for item in query:
-                if item.block_area:
-                    block_area_name = item.block_area.name
-                    block_area_description = item.block_area.description
+                if item.sled.block_area:
+                    block_area_name = item.sled.block_area.name
+                    block_area_description = item.sled.block_area.description
                 else:
                     block_area_name = ""
                     block_area_description = ""
 
                 data = {
-                    'id': item.id,
-                    'block_area_id': item.block_area_id,
-                    'name': item.name,
-                    'description': item.description,
+                    'id': item.sled.id,
+                    'block_area_id': item.sled.block_area_id,
+                    'name': item.sled.name,
+                    'description': item.sled.description,
                     'block_area_name': block_area_name,
                     'block_area_description': block_area_description
                 }
@@ -48,7 +54,13 @@ def get_sleds():
             # Return the serialized data as JSON response
             return jsonify(result)
         else:
-            raise ValueError('Error')
+            response = {
+                'status': 'error',
+                'message': 'You dont have any sled'
+            }
+
+            return jsonify(response)
+
     except Exception as e:
         # Handling the exception if storing the data fails
         error_message = str(e)
