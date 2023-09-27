@@ -5,6 +5,7 @@ import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.StoreLivestockRequest
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -12,6 +13,9 @@ class LivestockVtRepository @Inject constructor(private val apiService: ApiServi
     suspend fun getLivestock(): Response<List<LivestockResponseItem>> = apiService.getLivestocks()
     suspend fun createLivestock(livestockRequest: LivestockRequest): Response<LivestockResponse> =
         apiService.createLivestock(livestockRequest)
+
+    suspend fun storeLivestock(storeLivestockRequest: StoreLivestockRequest): Response<LivestockResponse> =
+        apiService.storeLivestock(storeLivestockRequest)
 
     suspend fun getLivestockById(id: String): Response<LivestockByIdResponse> =
         apiService.getLivestockById(id)

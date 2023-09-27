@@ -30,5 +30,5 @@ data class SledsResponseItem(
     val blockAreaName: String,
 
     @field:SerializedName("block_area_id")
-    val blockAreaId: Any
+    val blockAreaId: Int
 )

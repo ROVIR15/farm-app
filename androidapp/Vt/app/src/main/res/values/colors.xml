@@ -17,6 +17,7 @@
     <color name="subtle_grey">#F3F4F8</color>
     <color name="red">#ef233c</color>
     <!--    Button  -->
+    <color name="stroke_yellow">#EDA600</color>
     <color name="btn_blue_icon">#7C8FF3</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>

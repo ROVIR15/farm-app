@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class LivestockResponse(
 
+    @field:SerializedName("livestock_id")
+    val livestockId: Int,
+
     @field:SerializedName("message")
     val message: String?,
 

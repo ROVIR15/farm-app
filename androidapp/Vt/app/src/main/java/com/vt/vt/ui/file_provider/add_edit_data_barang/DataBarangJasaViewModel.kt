@@ -1,5 +1,6 @@
 package com.vt.vt.ui.file_provider.add_edit_data_barang
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
@@ -52,6 +53,7 @@ class DataBarangJasaViewModel @Inject constructor(private val productsVtReposito
             if (response.isSuccessful) {
                 _getProductEmitter.postValue(response.body())
             } else {
+                Log.e("error", "gagal mendapatkan product id")
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
                 isError.postValue(message)

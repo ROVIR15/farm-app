@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditLivestockBinding
+import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,19 +50,24 @@ class EditLivestockFragment : Fragment() {
             ivProfileLivestock.setOnClickListener {
                 showBottomSheetDialog()
             }
+            var gender = 0
+            spinnerGenderUmum.selected { position ->
+                gender = position
+            }
             btnSaveEditLivestock.setOnClickListener {
                 val name = edtNamaAddLivestock.text.toString().trim()
                 val nation = edtBangsa.text.toString().trim()
-                val gender = 1
                 val description = edtDescription.text.toString().trim()
                 if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty()) {
-                    editLivestockViewModel.updateLivestockById(
-                        receiveId,
-                        name,
-                        gender,
-                        nation,
-                        description
-                    )
+                    if (gender != 0) {
+                        editLivestockViewModel.updateLivestockById(
+                            receiveId,
+                            name,
+                            gender,
+                            nation,
+                            description
+                        )
+                    }
                 }
             }
             /* Spinner Adapter */
@@ -80,10 +86,13 @@ class EditLivestockFragment : Fragment() {
             }
             getLivestockById.observe(viewLifecycleOwner) { livestock ->
                 with(binding) {
-                    appBarLayout.topAppBar.title = "Edit ${livestock?.name}"
-                    edtNamaAddLivestock.setText(livestock?.name.toString())
-                    edtDescription.setText(livestock?.description.toString())
-                    edtBangsa.setText(livestock?.bangsa)
+                    livestock?.let { data ->
+                        appBarLayout.topAppBar.title = "Edit ${data.name}"
+                        edtNamaAddLivestock.setText(data.name)
+                        spinnerGenderUmum.setSelection(data.gender)
+                        edtDescription.setText(data.description)
+                        edtBangsa.setText(data.bangsa)
+                    }
                 }
             }
             isUpdateLivestock.observe(viewLifecycleOwner) { livestock ->
@@ -100,7 +109,7 @@ class EditLivestockFragment : Fragment() {
     private fun adapterSpinner(binding: Spinner) {
         ArrayAdapter.createFromResource(
             requireActivity(),
-            R.array.product_category_array,
+            R.array.gender_animal,
             R.layout.item_spinner
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.item_spinner)

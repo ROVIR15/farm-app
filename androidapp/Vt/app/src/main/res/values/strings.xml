@@ -54,6 +54,14 @@
         <item>B</item>
         <item>C</item>
     </string-array>
+
+    <!--Spinner Gender-->
+    <string-array name="gender_animal">
+        <item>Jenis Hewan</item>
+        <item>Jantan</item>
+        <item>Betina</item>
+    </string-array>
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="tab_text_1_animal_mating_history">Histori</string>

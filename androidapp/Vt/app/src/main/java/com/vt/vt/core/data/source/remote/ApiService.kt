@@ -14,6 +14,7 @@ import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.StoreLivestockRequest
 import com.vt.vt.core.data.source.remote.products.model.ProductRequest
 import com.vt.vt.core.data.source.remote.products.model.ProductResponse
 import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
@@ -100,6 +101,9 @@ interface ApiService {
 
     @POST("api/livestock")
     suspend fun createLivestock(@Body livestockRequest: LivestockRequest): Response<LivestockResponse>
+
+    @POST("api/store-livestock")
+    suspend fun storeLivestock(@Body storeLivestockRequest: StoreLivestockRequest): Response<LivestockResponse>
 
     @PUT("api/livestock/{id}")
     suspend fun updateLivestockById(

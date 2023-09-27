@@ -15,21 +15,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputEditText
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentAddLivestockBinding
+import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.createCustomTempFile
 import com.vt.vt.utils.getRotateImage
+import com.vt.vt.utils.selected
 import com.vt.vt.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -41,6 +47,7 @@ class AddLivestockFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val addLivestockViewModel by viewModels<AddLivestockViewModel>()
+    private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
 
     private var getFile: File? = null
     private lateinit var currentPhotoPath: String
@@ -51,6 +58,7 @@ class AddLivestockFragment : Fragment() {
         _binding = FragmentAddLivestockBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,20 +75,34 @@ class AddLivestockFragment : Fragment() {
             ivPhotoDataArea.setOnClickListener {
                 requestPermissionsIfNeeded()
             }
+            var genderId: Int = 0
+            spinnerGender.selected {
+                genderId = it
+            }
             btnSave.setOnClickListener {
-                println("heieiieieie")
                 val name = edtNamaAddLivestock.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
                 val bangsa = edtCountry.text.toString().trim()
                 if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty()) {
-                    addLivestockViewModel.createLivestock(name, description, 1, bangsa)
+                    if (genderId != 0) {
+                        addLivestockViewModel.createLivestock(
+                            name, description,
+                            genderId, bangsa
+                        )
+                    } else {
+                        Toast.makeText(requireActivity(), "Pilih Jenis Hewan", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
+            btnBatal.setOnClickListener {
+                view.findNavController().popBackStack()
+            }
         }
-        spinnerAdapter()
+        spinnerGenderAdapter()
         observerView()
     }
 
@@ -89,9 +111,17 @@ class AddLivestockFragment : Fragment() {
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
             }
-            createLivestock.observe(viewLifecycleOwner) {
-                view?.findNavController()?.popBackStack()
-                Toast.makeText(requireActivity(), it.message.toString(), Toast.LENGTH_SHORT).show()
+            createLivestock.observe(viewLifecycleOwner) { data ->
+                showBottomSheetAddLivestock(data.livestockId)
+                Toast.makeText(requireActivity(), data.message.toString(), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            storeLivestock.observe(viewLifecycleOwner) {
+                Toast.makeText(
+                    requireContext(),
+                    "Menambahkan Livestock Berhasil",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -99,18 +129,71 @@ class AddLivestockFragment : Fragment() {
         }
     }
 
-    private fun spinnerAdapter() {
-        ArrayAdapter.createFromResource(
-            requireActivity(), R.array.product_category_array, R.layout.item_spinner
-        ).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.item_spinner)
-            binding.spinnerGender.adapter = adapter
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showBottomSheetAddLivestock(livestockId: Int) {
+        val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
+        dialog.setContentView(R.layout.bottom_sheet_livestock)
+        val progressBar = dialog.findViewById<ProgressBar>(R.id.progressBarLivestock)
+        val edtBlockArea = dialog.findViewById<TextInputEditText>(R.id.et_block_area)
+        val spinnerAddCage = dialog.findViewById<Spinner>(R.id.sp_select_categories)
+        val btnSave = dialog.findViewById<AppCompatButton>(R.id.btn_save)
+        val btnCancel = dialog.findViewById<AppCompatButton>(R.id.btn_cancel)
+
+        var id = 0
+        var blockId = 0
+
+        detailAreaBlockViewModel.apply {
+            getSleds()
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+            sledItems.observe(viewLifecycleOwner) { sleds ->
+                val namesArray = sleds.map { data ->
+                    data.name
+                }.toTypedArray()
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinnerAddCage?.adapter = adapter
+                spinnerAddCage?.selected { position ->
+                    edtBlockArea?.setText(sleds[position].blockAreaName)
+                    id = sleds[position].id
+                    blockId = sleds[position].blockAreaId
+                }
+
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        dialog.show()
+        btnSave?.setOnClickListener {
+            addLivestockViewModel.storeLivestock(livestockId, id, blockId)
+            dialog.dismiss()
+        }
+        btnCancel?.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun showBottomSheetDialog() {
+        val dialog = BottomSheetDialog(requireActivity())
+        dialog.setContentView(R.layout.bottom_sheet_open_camera_gallery)
+        val btnCamera = dialog.findViewById<RelativeLayout>(R.id.rl_camera)
+        val btnGallery = dialog.findViewById<RelativeLayout>(R.id.rl_gallery)
+        dialog.show()
+        btnCamera?.setOnClickListener {
+            startCamera()
+            dialog.dismiss()
+        }
+        btnGallery?.setOnClickListener {
+            startGallery()
+            dialog.dismiss()
+        }
     }
 
     private val requestPermissions =
@@ -154,22 +237,6 @@ class AddLivestockFragment : Fragment() {
             requestPermissions.launch(permissions.toTypedArray())
         } else {
             showBottomSheetDialog()
-        }
-    }
-
-    private fun showBottomSheetDialog() {
-        val dialog = BottomSheetDialog(requireActivity())
-        dialog.setContentView(R.layout.bottom_sheet_open_camera_gallery)
-        val btnCamera = dialog.findViewById<RelativeLayout>(R.id.rl_camera)
-        val btnGallery = dialog.findViewById<RelativeLayout>(R.id.rl_gallery)
-        dialog.show()
-        btnCamera?.setOnClickListener {
-            startCamera()
-            dialog.dismiss()
-        }
-        btnGallery?.setOnClickListener {
-            startGallery()
-            dialog.dismiss()
         }
     }
 
@@ -231,6 +298,15 @@ class AddLivestockFragment : Fragment() {
             }
         }
 
+    private fun spinnerGenderAdapter() {
+        ArrayAdapter.createFromResource(
+            requireActivity(), R.array.gender_animal, R.layout.item_spinner
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.item_spinner)
+            binding.spinnerGender.adapter = adapter
+        }
+    }
+
     private fun showLoading(state: Boolean) {
         with(binding) {
             btnSave.isEnabled = !state
@@ -241,7 +317,7 @@ class AddLivestockFragment : Fragment() {
                 else ContextCompat.getColor(requireActivity(), R.color.btn_blue_icon)
             )
 
-            loading.progressBar?.visibility = if (state) View.VISIBLE else View.GONE
+            loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }
 
