@@ -20,7 +20,13 @@ data class BcsRecordResponseItem(
     val date: String? = null,
 
     @field:SerializedName("score")
-    val score: Float? = null,
+    val score: Double? = null,
+
+    @field:SerializedName("grow")
+    val grow: String = "0 %",
+
+    @field:SerializedName("prev_score")
+    val prevScore: Double = 0.0,
 
     @field:SerializedName("livestock_id")
     val livestockId: Int? = null,

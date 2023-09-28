@@ -1,5 +1,6 @@
 package com.vt.vt.ui.detail_livestock.tab_layout.bcs
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -23,10 +24,12 @@ class BcsRecordAdapter :
 
     inner class ViewHolder(private val binding: ItemBcsBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bindTo(data: BcsRecordResponseItem) {
             binding.tvItemDateBcs.text = data.date
-            binding.tvItemValueBcsSekarang.text = data.score.toString()
-            binding.tvItemValueBcsSebelumnya.text = data.score.toString()
+            binding.tvItemValueBcsSekarang.text = "${data.score} Kg"
+            binding.tvItemValueBcsSebelumnya.text = "${data.prevScore} Kg"
+            binding.tvGrow.text = data.grow
         }
     }
 

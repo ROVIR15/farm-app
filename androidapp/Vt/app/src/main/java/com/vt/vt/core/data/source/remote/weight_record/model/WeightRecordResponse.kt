@@ -22,6 +22,12 @@ data class WeightRecordResponseItem(
     @field:SerializedName("score")
     val score: Double? = null,
 
+    @field:SerializedName("grow")
+    val grow: String = "0 %",
+
+    @field:SerializedName("prev_score")
+    val prevScore: Double = 0.0,
+
     @field:SerializedName("livestock_id")
     val livestockId: Int? = null,
 

@@ -29,7 +29,8 @@ class ListWeightRecordAdapter :
             with(binding) {
                 tvItemDateBeratBadan.text = data.date
                 tvItemValueBeratSekarang.text = "${data.score} Kg"
-                tvItemValueBeratSebelumnya.text = "${data.score} Kg"
+                tvItemValueBeratSebelumnya.text = "${data.prevScore} Kg"
+                tvGrow.text = data.grow
             }
         }
     }
