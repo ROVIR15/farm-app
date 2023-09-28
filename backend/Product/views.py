@@ -29,7 +29,7 @@ def get_products():
     #     .all()
     # )
 
-   try:
+    try:
         # Retrieve all product records from the database
         query = ProductHasCategory.query.options([
             subqueryload(ProductHasCategory.product),
@@ -55,6 +55,7 @@ def get_products():
 
         # Return the serialized data as JSON response
         return jsonify(result)
+
     except Exception as e:
         error_message = str(e)
         response = {
