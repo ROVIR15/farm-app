@@ -281,6 +281,10 @@
         android:name="com.vt.vt.ui.detail_area_block.DetailAreaBlockFragment"
         android:label="fragment_detail_area_block"
         tools:layout="@layout/fragment_detail_area_block">
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_detailAreaBlockFragment_to_editAreaBlockFragment"
             app:destination="@id/editAreaBlockFragment" />

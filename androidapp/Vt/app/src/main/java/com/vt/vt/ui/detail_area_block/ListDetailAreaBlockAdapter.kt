@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
 import com.vt.vt.databinding.ItemDetailAreaBlockBinding
 import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
@@ -21,7 +22,7 @@ class ListDetailAreaBlockAdapter(
     private val context: Context,
     private val viewModel: AreaBlockViewModel
 ) :
-    ListAdapter<SledsResponseItem, ListDetailAreaBlockAdapter.ViewHolder>(
+    ListAdapter<Sleds, ListDetailAreaBlockAdapter.ViewHolder>(
         DIFF_CALLBACK
     ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,10 +39,9 @@ class ListDetailAreaBlockAdapter(
     inner class ViewHolder(private val binding: ItemDetailAreaBlockBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         PopupMenu.OnMenuItemClickListener {
-        fun bindTo(sleds: SledsResponseItem) {
+        fun bindTo(sleds: Sleds) {
             with(binding) {
-                tvTitleAnimalCage.text = sleds.name
-                descriptionItemDetailAreaBlock.text = sleds.description
+                tvTitleAnimalCage.text = sleds.id.toString()
                 btnOptionsDetailArea.setOnClickListener(this@ViewHolder)
             }
         }
@@ -97,77 +97,21 @@ class ListDetailAreaBlockAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<SledsResponseItem?> =
-            object : DiffUtil.ItemCallback<SledsResponseItem?>() {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Sleds?> =
+            object : DiffUtil.ItemCallback<Sleds?>() {
                 override fun areItemsTheSame(
-                    oldItem: SledsResponseItem,
-                    newItem: SledsResponseItem
+                    oldItem: Sleds,
+                    newItem: Sleds
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: SledsResponseItem,
-                    newItem: SledsResponseItem
+                    oldItem: Sleds,
+                    newItem: Sleds
                 ): Boolean {
                     return oldItem == newItem
                 }
             }
     }
 }
-
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val view =
-//            ItemDetailAreaBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        return ViewHolder(view)
-//    }
-//
-//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        holder.bindTo(animalCage[position])
-//    }
-//
-//    override fun getItemCount(): Int {
-//        return animalCage.size
-//    }
-//
-//    inner class ViewHolder(private val binding: ItemDetailAreaBlockBinding) :
-//        RecyclerView.ViewHolder(binding.root) {
-//        fun bindTo(animalCage: AnimalCage) {
-//            with(binding) {
-//                tvTitleAnimalCage.text = animalCage.title
-//                descriptionItemDetailAreaBlock.text = animalCage.description
-//                btnOptionsDetailArea.setOnClickListener(this@ListDetailAreaBlockAdapter)
-//            }
-//        }
-//    }
-//
-//    override fun onClick(v: View?) {
-//        when (v?.id) {
-//            R.id.btn_options_detail_area -> {
-//                val popup = PopupMenu(v.context, v)
-//                popup.inflate(R.menu.menu_options_detail_area_block)
-//                popup.setOnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.menu_edit_animal_cage -> {
-//                            // navigation controller here
-//                            v.findNavController()
-//                                .navigate(R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment)
-//                            true
-//                        }
-//
-//                        R.id.menu_delete_livestock -> {
-//                            // navigation controller here
-//                            Toast.makeText(v.context, "no action", Toast.LENGTH_SHORT).show()
-//                            true
-//                        }
-//
-//                        else -> {
-//                            false
-//                        }
-//                    }
-//                }
-//                popup.show()
-//            }
-//        }
-//    }
-

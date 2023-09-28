@@ -24,5 +24,10 @@ data class BlockAndAreasResponseItem(
     val description: String,
 
     @field:SerializedName("sleds")
-    val sleds: List<Any?>? = null
+    val sleds: List<Sleds>
+)
+
+data class Sleds(
+    @field:SerializedName("id")
+    val id: Int,
 )

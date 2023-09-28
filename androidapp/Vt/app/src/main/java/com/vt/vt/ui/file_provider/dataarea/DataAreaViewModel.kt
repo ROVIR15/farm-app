@@ -17,8 +17,8 @@ class DataAreaViewModel @Inject constructor(private val blockAndAreasVtRepositor
     private val _createBlockAndArea = MutableLiveData<BlockAndAreasResponse?>()
     val isCreatedBlockAndArea: LiveData<BlockAndAreasResponse?> = _createBlockAndArea
 
-    private val _getBlockArea = MutableLiveData<BlockAndAreasResponseItem?>()
-    val getBlockArea: LiveData<BlockAndAreasResponseItem?> = _getBlockArea
+    private val _getBlockArea = MutableLiveData<BlockAndAreasResponseItem>()
+    val getBlockArea: LiveData<BlockAndAreasResponseItem> = _getBlockArea
 
     private val _updateBlockAndArea = MutableLiveData<BlockAndAreasResponse?>()
     val isUpdatedBlockAndArea: LiveData<BlockAndAreasResponse?> = _updateBlockAndArea

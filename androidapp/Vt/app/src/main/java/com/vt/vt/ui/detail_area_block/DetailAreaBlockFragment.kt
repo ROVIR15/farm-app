@@ -10,15 +10,17 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
 import com.vt.vt.databinding.FragmentDetailAreaBlockBinding
 import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
+import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +32,8 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     private val detailAreaBlockViewModel: DetailAreaBlockViewModel by viewModels()
     private val areaBlockViewModel by viewModels<AreaBlockViewModel>()
 
+    private val dataAreaViewModel by viewModels<DataAreaViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +44,10 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val receiveId = arguments?.getInt("id")
+        dataAreaViewModel.getBlockArea(receiveId.toString())
+
         with(binding) {
             appBarDetailAreaBlock.topAppBar.apply {
                 title = "Detail Area/Block Name"
@@ -62,13 +70,18 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     }
 
     private fun observeView() {
-        detailAreaBlockViewModel.getSleds()
-        detailAreaBlockViewModel.apply {
-            observeLoading().observe(viewLifecycleOwner) { isLoading ->
-                showLoading(isLoading)
+        dataAreaViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                showLoading(it)
             }
-            sledItems.observe(viewLifecycleOwner) { sleds ->
-                setupRecyclerView(sleds)
+            getBlockArea.observe(viewLifecycleOwner) { blockArea ->
+                with(binding) {
+                    tvBlockName.text = blockArea?.name.toString()
+                    tvDescBlockArea.text = blockArea?.description.toString()
+                }
+                binding.dataEmpty.isEmpty.isVisible = blockArea.sleds.isEmpty()
+                setupRecyclerView(blockArea.sleds)
+
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -121,7 +134,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
         }
     }
 
-    private fun setupRecyclerView(data: List<SledsResponseItem>) {
+    private fun setupRecyclerView(data: List<Sleds>) {
         val adapter = ListDetailAreaBlockAdapter(requireContext(), areaBlockViewModel)
         adapter.submitList(data)
         binding.recyclerViewListDetailArea.apply {

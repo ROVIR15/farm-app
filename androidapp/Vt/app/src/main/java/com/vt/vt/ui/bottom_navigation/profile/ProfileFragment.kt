@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentProfileBinding
-import com.vt.vt.ui.detail_area_block.ListDetailAreaBlockAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

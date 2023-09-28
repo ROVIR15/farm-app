@@ -55,13 +55,23 @@ class PenyimpananTernakAdapter(
                         putInt("id", id)
                     }
                     v.findNavController()
-                        .navigate(R.id.action_penyimpanTernakFragment_to_pemberianTernakFragment, mBundle)
+                        .navigate(
+                            R.id.action_penyimpanTernakFragment_to_pemberianTernakFragment,
+                            mBundle
+                        )
                 }
 
                 R.id.btn_see_all_area -> {
                     isUpdate = false
+                    val id = currentList[adapterPosition].id
+                    mBundle = Bundle().apply {
+                        putInt("id", id)
+                    }
                     v.findNavController()
-                        .navigate(R.id.action_penyimpanTernakFragment_to_detailAreaBlockFragment)
+                        .navigate(
+                            R.id.action_penyimpanTernakFragment_to_detailAreaBlockFragment,
+                            mBundle
+                        )
                 }
 
                 R.id.btn_options -> {
