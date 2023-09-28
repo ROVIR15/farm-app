@@ -70,7 +70,7 @@ class RekamBCSFragment : Fragment() {
             getLivestockById.observe(viewLifecycleOwner) { livestock ->
                 with(binding) {
                     tvTitleLivestock.text = livestock?.name.toString()
-                    tvBangsaAnimal.text = "/ livestock?.bangsa.toString()"
+                    tvBangsaAnimal.text = "/ ${livestock?.bangsa.toString()}"
                     tvDescriptionLivestock.text = livestock?.description.toString()
                     when (livestock?.gender) {
                         1 -> {
