@@ -1,14 +1,11 @@
 package com.vt.vt.ui.pemberian_ternak.vitamin
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.vt.vt.R
-import com.vt.vt.databinding.FragmentKimiaBinding
 import com.vt.vt.databinding.FragmentVitaminBinding
 
 class VitaminFragment : Fragment() {
@@ -25,6 +22,7 @@ class VitaminFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveBlockId = arguments?.getInt("blockId")
         with(binding) {
             appBarVitamin.topAppBar.apply {
                 title = "Vitamin"
@@ -33,12 +31,9 @@ class VitaminFragment : Fragment() {
                 }
             }
             btnSimpanVitamin.setOnClickListener {
-                if (editTextRekamPemberianVitamin.text.isNullOrEmpty()) {
-                    Toast.makeText(requireContext(), "Isi Pemberian Vitamin", Toast.LENGTH_SHORT).show()
-                } else {
-                    view.findNavController()
-                        .navigate(R.id.action_vitaminFragment_to_tambahanFragment)
-                }
+            }
+            btnBatalVitamin.setOnClickListener {
+                view.findNavController().popBackStack()
             }
         }
     }

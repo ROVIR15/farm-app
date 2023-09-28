@@ -14,6 +14,8 @@ class PemberianTernakFragment : Fragment() {
     private var _binding: FragmentPemberianTernakBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mBundle: Bundle
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -23,6 +25,12 @@ class PemberianTernakFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveBlockId = arguments?.getInt("id")
+
+        mBundle = Bundle().apply {
+            receiveBlockId?.let { putInt("blockId", it) }
+        }
+
         with(binding) {
             this.appBarLayout.topAppBar.apply {
                 title = "Pemberian Ternak"
@@ -32,19 +40,19 @@ class PemberianTernakFragment : Fragment() {
             }
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setOnClickListener {
                 view.findNavController()
-                    .navigate(R.id.action_pemberianTernakFragment_to_hijauanFragment)
+                    .navigate(R.id.action_pemberianTernakFragment_to_hijauanFragment, mBundle)
             }
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.setOnClickListener {
                 view.findNavController()
-                    .navigate(R.id.action_pemberianTernakFragment_to_kimiaFragment)
+                    .navigate(R.id.action_pemberianTernakFragment_to_kimiaFragment, mBundle)
             }
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.setOnClickListener {
                 view.findNavController()
-                    .navigate(R.id.action_pemberianTernakFragment_to_vitaminFragment)
+                    .navigate(R.id.action_pemberianTernakFragment_to_vitaminFragment, mBundle)
             }
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setOnClickListener {
                 view.findNavController()
-                    .navigate(R.id.action_pemberianTernakFragment_to_tambahanFragment)
+                    .navigate(R.id.action_pemberianTernakFragment_to_tambahanFragment, mBundle)
             }
         }
     }

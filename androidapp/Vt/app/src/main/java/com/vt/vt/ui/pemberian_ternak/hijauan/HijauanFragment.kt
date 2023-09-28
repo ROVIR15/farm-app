@@ -27,6 +27,8 @@ class HijauanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveBlockId = arguments?.getInt("blockId")
+
         with(binding) {
             appBarHijauan.topAppBar.apply {
                 title = "Hijauan"
@@ -35,17 +37,10 @@ class HijauanFragment : Fragment() {
                 }
             }
             btnSimpanHijauan.setOnClickListener {
-                if (editTextRekamBeratBadan.text.isNullOrEmpty()) {
-                    Toast.makeText(requireContext(), "Isi Pemberian Hijauan", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    val mBundle = Bundle()
-                    value = editTextRekamBeratBadan.text.toString().trim().toInt()
-                    value?.let { mBundle.putInt(PemberianTernakFragment.EXTRA_CARD_NUMBER_ONE, it) }
 
-                    view.findNavController()
-                        .navigate(R.id.action_hijauanFragment_to_kimiaFragment)
-                }
+            }
+            btnBatalHijauan.setOnClickListener {
+                view.findNavController().popBackStack()
             }
         }
     }

@@ -23,6 +23,7 @@ class PenyimpananTernakAdapter(
 ) : ListAdapter<BlockAndAreasResponseItem, PenyimpananTernakAdapter.ViewHolder>(
     TASK_DIFF_CALLBACK
 ) {
+    private lateinit var mBundle: Bundle
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             ItemPenyimpanTernakBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -48,11 +49,17 @@ class PenyimpananTernakAdapter(
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.btn_rekam -> {
+                    isUpdate = false
+                    val id = currentList[adapterPosition].id
+                    mBundle = Bundle().apply {
+                        putInt("id", id)
+                    }
                     v.findNavController()
-                        .navigate(R.id.action_penyimpanTernakFragment_to_pemberianTernakFragment)
+                        .navigate(R.id.action_penyimpanTernakFragment_to_pemberianTernakFragment, mBundle)
                 }
 
                 R.id.btn_see_all_area -> {
+                    isUpdate = false
                     v.findNavController()
                         .navigate(R.id.action_penyimpanTernakFragment_to_detailAreaBlockFragment)
                 }
@@ -71,11 +78,11 @@ class PenyimpananTernakAdapter(
                 R.id.menu_edit_penyimpanan_ternak -> {
                     isUpdate = true
                     val id = currentList[adapterPosition].id
-                    val bundle = Bundle().apply {
+                    mBundle = Bundle().apply {
                         putInt("id", id)
                     }
                     itemView.findNavController()
-                        .navigate(R.id.action_penyimpanTernakFragment_to_dataAreaFragment, bundle)
+                        .navigate(R.id.action_penyimpanTernakFragment_to_dataAreaFragment, mBundle)
                     return true
                 }
 

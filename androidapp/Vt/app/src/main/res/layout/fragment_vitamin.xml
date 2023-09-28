@@ -55,15 +55,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/content_home_subtitle" />
 
-            <Spinner
-                android:id="@+id/spinner"
+            <LinearLayout
+                android:id="@+id/linearLayout19"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:entries="@array/dropdown_items"
-                android:prompt="@string/dropdown_prompt"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_calendar_grey"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView">
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:entries="@array/dropdown_items"
+                    android:prompt="@string/dropdown_prompt" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title_vitamin"
@@ -78,7 +89,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout19" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editText_rekam_pemberian_vitamin"
@@ -101,30 +112,30 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_simpan_vitamin"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/bg_btn_input_product"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Lanjutkan"
+                android:layout_height="58dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/btn_blue_icon"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Simpan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                app:cornerRadius="8dp"
+                app:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editText_rekam_pemberian_vitamin" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_batal_vitamin"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_error"
+                android:layout_height="58dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Batal"
                 android:textAllCaps="false"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"

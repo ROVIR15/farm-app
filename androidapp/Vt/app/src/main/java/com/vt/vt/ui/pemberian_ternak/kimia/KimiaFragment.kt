@@ -24,6 +24,7 @@ class KimiaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveBlockId = arguments?.getInt("blockId")
         with(binding) {
             appBarKimia.topAppBar.apply {
                 title = "Kimia"
@@ -32,13 +33,9 @@ class KimiaFragment : Fragment() {
                 }
             }
             btnSimpanKimia.setOnClickListener {
-                if (editTextRekamPemberianKimia.text.isNullOrEmpty()) {
-                    Toast.makeText(requireContext(), "Isi Pemberian Kimia", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    view.findNavController()
-                        .navigate(R.id.action_kimiaFragment_to_vitaminFragment)
-                }
+            }
+            btnBatalKimia.setOnClickListener {
+                view.findNavController().popBackStack()
             }
         }
     }

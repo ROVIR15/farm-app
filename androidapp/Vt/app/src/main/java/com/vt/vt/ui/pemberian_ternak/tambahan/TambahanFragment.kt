@@ -26,6 +26,7 @@ class TambahanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveBlockId = arguments?.getInt("blockId")
         with(binding) {
             appBarHijauan.topAppBar.apply {
                 title = "Pakan Tambahan"
@@ -34,13 +35,10 @@ class TambahanFragment : Fragment() {
                 }
             }
             btnSimpanTambahan.setOnClickListener {
-                if (!editTextRekamPemberianTambahan.text.isNullOrEmpty()) {
-                    view.findNavController()
-                        .navigate(R.id.action_tambahanFragment_to_pemberianTernakFragment)
-                } else {
-                    Toast.makeText(requireContext(), "Isi Pemberian Tambahan", Toast.LENGTH_SHORT)
-                        .show()
-                }
+
+            }
+            btnBatalTambahan.setOnClickListener {
+                view.findNavController().popBackStack()
             }
         }
     }

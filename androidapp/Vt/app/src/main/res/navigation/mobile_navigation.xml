@@ -217,7 +217,7 @@
     <fragment
         android:id="@+id/rekamKesehatanFragment"
         android:name="com.vt.vt.ui.rekam_kesehatan.RekamKesehatanFragment"
-        android:label="RekamKesehatanFragment" >
+        android:label="RekamKesehatanFragment">
         <argument
             android:name="livestockId"
             android:defaultValue="0"
@@ -288,7 +288,7 @@
     <fragment
         android:id="@+id/rekamBCSFragment"
         android:name="com.vt.vt.ui.rekam_bcs.RekamBCSFragment"
-        android:label="RekamBCSFragment" >
+        android:label="RekamBCSFragment">
         <argument
             android:name="livestockId"
             android:defaultValue="0"
@@ -380,17 +380,20 @@
             android:name="com.vt.vt.ui.pemberian_ternak.vitamin.VitaminFragment"
             android:label="fragment_vitamin"
             tools:layout="@layout/fragment_vitamin">
-            <action
-                android:id="@+id/action_vitaminFragment_to_tambahanFragment"
-                app:destination="@id/tambahanFragment"
-                app:popUpTo="@id/vitaminFragment"
-                app:popUpToInclusive="true" />
+            <argument
+                android:name="blockId"
+                android:defaultValue="0"
+                app:argType="integer" />
         </fragment>
         <fragment
             android:id="@+id/tambahanFragment"
             android:name="com.vt.vt.ui.pemberian_ternak.tambahan.TambahanFragment"
             android:label="fragment_tambahan"
             tools:layout="@layout/fragment_tambahan">
+            <argument
+                android:name="blockId"
+                android:defaultValue="0"
+                app:argType="integer" />
             <action
                 android:id="@+id/action_tambahanFragment_to_pemberianTernakFragment"
                 app:destination="@id/pemberianTernakFragment"
@@ -402,17 +405,20 @@
             android:name="com.vt.vt.ui.pemberian_ternak.hijauan.HijauanFragment"
             android:label="fragment_hijauan"
             tools:layout="@layout/fragment_hijauan">
-            <action
-                android:id="@+id/action_hijauanFragment_to_kimiaFragment"
-                app:destination="@id/kimiaFragment"
-                app:popUpTo="@id/hijauanFragment"
-                app:popUpToInclusive="true" />
+            <argument
+                android:name="blockId"
+                android:defaultValue="0"
+                app:argType="integer" />
         </fragment>
         <fragment
             android:id="@+id/pemberianTernakFragment"
             android:name="com.vt.vt.ui.pemberian_ternak.PemberianTernakFragment"
             android:label="fragment_pemberian_ternak"
             tools:layout="@layout/fragment_pemberian_ternak">
+            <argument
+                android:name="id"
+                android:defaultValue="0"
+                app:argType="integer" />
             <action
                 android:id="@+id/action_pemberianTernakFragment_to_hijauanFragment"
                 app:destination="@id/hijauanFragment" />
@@ -431,11 +437,10 @@
             android:name="com.vt.vt.ui.pemberian_ternak.kimia.KimiaFragment"
             android:label="fragment_kimia"
             tools:layout="@layout/fragment_kimia">
-            <action
-                android:id="@+id/action_kimiaFragment_to_vitaminFragment"
-                app:destination="@id/vitaminFragment"
-                app:popUpTo="@id/kimiaFragment"
-                app:popUpToInclusive="true" />
+            <argument
+                android:name="blockId"
+                android:defaultValue="0"
+                app:argType="integer" />
         </fragment>
     </navigation>
     <fragment
