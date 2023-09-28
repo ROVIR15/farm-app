@@ -1,28 +1,28 @@
-package com.vt.vt.ui.rekam_berat_badan
+package com.vt.vt.ui.rekam_bcs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponse
-import com.vt.vt.core.data.source.repository.WeightRecordVtRepository
+import com.vt.vt.core.data.source.repository.BcsRecordVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
-class RekamBeratBadanViewModel @Inject constructor(private val weightRecordVtRepository: WeightRecordVtRepository) :
+class RekamBCSViewModel @Inject constructor(private val bcsRecordVtRepository: BcsRecordVtRepository) :
     BaseViewModel() {
 
-    private val _createWeightRecordEmitter = MutableLiveData<WeightRecordResponse>()
-    val createWeightRecordEmitter: LiveData<WeightRecordResponse> = _createWeightRecordEmitter
+    private val _createBcsRecordEmitter = MutableLiveData<BcsRecordResponse>()
+    val createBcsRecordEmitter: LiveData<BcsRecordResponse> = _createBcsRecordEmitter
 
-    fun createWeightRecordById(livestockId: Int?, date: String?, score: Double?, remarks: String?) {
+    fun createBcsRecordById(livestockId: Int?, date: String?, score: Double?, remarks: String?) {
         launch(action = {
             val request = LivestockRecordRequest(date, score, livestockId, remarks)
-            val response = weightRecordVtRepository.createWeightRecordById(request)
+            val response = bcsRecordVtRepository.createBcsRecordById(request)
             if (response.isSuccessful) {
-                _createWeightRecordEmitter.postValue(response.body())
+                _createBcsRecordEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")

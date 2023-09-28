@@ -114,7 +114,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_guideline" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editText_rekam_berat_badan"
+                android:id="@+id/editText_rekam_bcs"
                 android:layout_width="112dp"
                 android:layout_height="112dp"
                 android:layout_marginTop="12dp"
@@ -123,46 +123,51 @@
                 android:gravity="center"
                 android:hint="..."
                 android:inputType="number"
-                android:maxLength="3"
+                android:maxLength="6"
                 android:textColor="@color/black"
                 android:textSize="48sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_rekam_bcs" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_simpan_rekam_bcs"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/bg_btn_input_product"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Rekam BCS"
+                android:layout_height="58dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/btn_blue_icon"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Simpan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                app:cornerRadius="8dp"
+                app:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText_rekam_berat_badan" />
+                app:layout_constraintTop_toBottomOf="@+id/editText_rekam_bcs" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_batal_rekam_bcs"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_error"
+                android:layout_height="58dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Batal"
                 android:textAllCaps="false"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_simpan_rekam_bcs" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_simpan_rekam_bcs"
+                app:strokeColor="@color/red" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

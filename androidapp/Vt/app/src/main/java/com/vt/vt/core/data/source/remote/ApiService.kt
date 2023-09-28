@@ -4,13 +4,17 @@ import com.vt.vt.core.data.source.remote.auth.model.login.LoginRequest
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
 import com.vt.vt.core.data.source.remote.auth.model.register.request.RegisterRequest
 import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterResponse
+import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponse
 import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
+import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordRequest
+import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponse
 import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
@@ -22,7 +26,6 @@ import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordRequest
 import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponse
 import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
 import retrofit2.Response
@@ -149,14 +152,20 @@ interface ApiService {
     @GET("api/bcs-records")
     suspend fun getBcsRecords(): Response<List<BcsRecordResponseItem>>
 
+    @POST("api/bcs-record")
+    suspend fun createBcsRecord(@Body livestockRecordRequest: LivestockRecordRequest): Response<BcsRecordResponse>
+
     // Weight Record
     @GET("api/weight-records")
     suspend fun getWeightRecords(): Response<List<WeightRecordResponseItem>>
 
     @POST("api/weight-record")
-    suspend fun createWeightRecord(@Body weightRecordRequest: WeightRecordRequest): Response<WeightRecordResponse>
+    suspend fun createWeightRecord(@Body livestockRecordRequest: LivestockRecordRequest): Response<WeightRecordResponse>
 
     // Health Record
     @GET("api/health-records")
     suspend fun getHealthRecords(): Response<List<HealthRecordResponseItem>>
+
+    @POST("api/health-record")
+    suspend fun createHealthRecord(@Body healthRecordRequest: HealthRecordRequest): Response<HealthRecordResponse>
 }

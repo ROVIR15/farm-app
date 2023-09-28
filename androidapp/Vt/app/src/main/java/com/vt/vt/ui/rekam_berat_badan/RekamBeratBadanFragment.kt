@@ -1,5 +1,6 @@
 package com.vt.vt.ui.rekam_berat_badan
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentRekamBeratBadanBinding
+import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import com.vt.vt.utils.getCurrentDate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ class RekamBeratBadanFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val rekamBeratBadanViewModel by viewModels<RekamBeratBadanViewModel>()
+    private val livestockViewModel by viewModels<EditLivestockViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,12 +60,43 @@ class RekamBeratBadanFragment : Fragment() {
                     Toast.makeText(requireActivity(), "Lengkapi Kolom", Toast.LENGTH_SHORT).show()
                 }
             }
-            btnBatalRekamBeratBadan.setOnClickListener {}
+            btnBatalRekamBeratBadan.setOnClickListener {
+                view.findNavController().popBackStack()
+            }
         }
         observerView()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observerView() {
+        livestockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                showLoading(it)
+            }
+            getLivestockById.observe(viewLifecycleOwner) { livestock ->
+                with(binding) {
+                    tvTitleLivestock.text = livestock?.name.toString()
+                    tvBangsaAnimal.text = "/ livestock?.bangsa.toString()"
+                    tvDescriptionLivestock.text = livestock?.description.toString()
+                    when (livestock?.gender) {
+                        1 -> {
+                            tvDetailLivestockAnimalGender.text = "Jantan / "
+                        }
+
+                        2 -> {
+                            tvDetailLivestockAnimalGender.text = "Betina / "
+                        }
+
+                        else -> {
+                            tvDetailLivestockAnimalGender.text = "None / "
+                        }
+                    }
+                }
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
         rekamBeratBadanViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
