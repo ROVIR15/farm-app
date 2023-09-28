@@ -16,31 +16,37 @@ import javax.inject.Inject
 class DataBarangJasaViewModel @Inject constructor(private val productsVtRepository: ProductsVtRepository) :
     BaseViewModel() {
 
-    private val _createProduct = MutableLiveData<ProductResponse?>()
-    val isCreatedProduct: LiveData<ProductResponse?> = _createProduct
+    private val _createProduct = MutableLiveData<ProductResponse>()
+    val isCreatedProduct: LiveData<ProductResponse> = _createProduct
 
     private val _getProductEmitter = MutableLiveData<ProductResponseItem?>()
     val getProductEmitter: LiveData<ProductResponseItem?> = _getProductEmitter
 
     private val _updateProductEmitter = MutableLiveData<ProductResponse?>()
     val isUpdatedEmitter: LiveData<ProductResponse?> = _updateProductEmitter
-    fun createBlockAndArea(
-        categoryId: Int?,
-        name: String?,
-        description: String?,
-        unitMeasurement: String?
+    fun createProduct(
+        categoryId: Int, name: String, description: String, unitMeasurement: String
     ) {
         launch(action = {
             val productsRequest = ProductRequest(categoryId, unitMeasurement, name, description)
             val response = productsVtRepository.createProducts(productsRequest)
             if (response.isSuccessful) {
                 _createProduct.postValue(response.body())
+            } else if (response.code() == 500) {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                Log.e("barang error", "error viewmodel 500 ${message.toString()}")
+                Log.e("barang error", "error viewmodel 500 ${response.body()?.status}")
+                Log.e("barang error", "error viewmodel 500 ${response.body()?.message}")
+
             } else {
+                Log.e("barang error", "error ${response.body()}")
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
                 isError.postValue(message.toString())
             }
         }, error = { networkError ->
+            Log.e("barang error", "can'r create")
             if (networkError.isNetworkError) {
                 isError.postValue("No Internet Connection")
             }
@@ -66,11 +72,7 @@ class DataBarangJasaViewModel @Inject constructor(private val productsVtReposito
     }
 
     fun updateBarangJasa(
-        id: String,
-        categoryId: Int?,
-        name: String?,
-        description: String?,
-        unitMeasurement: String?
+        id: String, categoryId: Int, name: String, description: String, unitMeasurement: String
     ) {
         launch(action = {
             val productRequest = ProductRequest(categoryId, unitMeasurement, name, description)

@@ -22,6 +22,7 @@ import com.vt.vt.core.data.source.remote.livestock.model.StoreLivestockRequest
 import com.vt.vt.core.data.source.remote.products.model.ProductRequest
 import com.vt.vt.core.data.source.remote.products.model.ProductResponse
 import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
+import com.vt.vt.core.data.source.remote.profile.model.ProfileResponse
 import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
@@ -168,4 +169,8 @@ interface ApiService {
 
     @POST("api/health-record")
     suspend fun createHealthRecord(@Body healthRecordRequest: HealthRecordRequest): Response<HealthRecordResponse>
+
+    //    Profile
+    @GET("api/profile")
+    suspend fun getProfileUser(): Response<ProfileResponse>
 }

@@ -38,7 +38,7 @@ class AddEditDataBarangJasaFragment : Fragment() {
     private val categoriesViewModel by viewModels<CategoriesViewModel>()
 
     private var spinnerItems: MutableList<SpinnerCategoriesItem> = mutableListOf()
-    private var categoryId: Int? = null
+    private var categoryId: Int = 1
 
     private var receiveId: String = ""
     override fun onCreateView(
@@ -52,6 +52,7 @@ class AddEditDataBarangJasaFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("BARANG JASA ", "IS EDIT ? ${IS_UPDATE_DATA}")
         if (IS_UPDATE_DATA) {
             receiveId = arguments?.getInt("id").toString()
             dataBarangDanJasaViewModel.getProductById(receiveId)
@@ -70,12 +71,13 @@ class AddEditDataBarangJasaFragment : Fragment() {
                 requestPermissionsIfNeeded()
             }
             spinnerProductCategory.selected { position ->
+//                categoryId = 0
                 categoryId = spinnerItems[position].id
             }
             btnSimpan.setOnClickListener {
                 val name = edtNamaBarang.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
-                val satuan = edtSatuan.text.toString().trim() + " pcs"
+                val satuan = edtSatuan.text.toString().trim()
                 if (name.isNotEmpty() && description.isNotEmpty() && satuan.isNotEmpty()) {
                     if (IS_UPDATE_DATA) {
                         dataBarangDanJasaViewModel.updateBarangJasa(
@@ -86,7 +88,7 @@ class AddEditDataBarangJasaFragment : Fragment() {
                             satuan
                         )
                     } else {
-                        dataBarangDanJasaViewModel.createBlockAndArea(
+                        dataBarangDanJasaViewModel.createProduct(
                             categoryId,
                             name,
                             description,
@@ -109,6 +111,8 @@ class AddEditDataBarangJasaFragment : Fragment() {
             }
             isCreatedProduct.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
+                Log.e("barang error", "error view 500 ${it?.message.toString()}")
+                Toast.makeText(requireContext(), it?.status, Toast.LENGTH_SHORT).show()
             }
             getProductEmitter.observe(viewLifecycleOwner) { data ->
                 with(binding) {
@@ -125,6 +129,7 @@ class AddEditDataBarangJasaFragment : Fragment() {
                     .show()
             }
             isError().observe(viewLifecycleOwner) {
+                Log.e("barang error", "error view")
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }

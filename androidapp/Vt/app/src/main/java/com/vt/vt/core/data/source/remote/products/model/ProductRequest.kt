@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName
 data class ProductRequest(
 
 	@field:SerializedName("category_id")
-	val categoryId: Int? = null,
+	val categoryId: Int,
 
 	@field:SerializedName("unit_measurement")
-	val unitMeasurement: String? = null,
+	val unitMeasurement: String,
 
 	@field:SerializedName("name")
-	val name: String? = null,
+	val name: String,
 
 	@field:SerializedName("description")
-	val description: String? = null
+	val description: String
 )
