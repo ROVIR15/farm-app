@@ -10,6 +10,8 @@ from SKU.models import SKU
 from FarmProfile.HasProduct.models import HasProduct
 from ProductHasCategory.schema import ProductHasCategorySchema as ProductSchema
 
+from auth import login_required, current_farm_profile
+
 views_product_bp = Blueprint('views_product', __name__)
 
 product_schema = ProductSchema()
@@ -122,6 +124,8 @@ def post_product():
     description = data.get('description')
     feature1 = data.get('feature1')
 
+    farm_profile_id = current_farm_profile()
+
     try:
         product_q = Product(name=name, unit_measurement=unit_measurement,
                             description=description)
@@ -145,7 +149,7 @@ def post_product():
                 db.session.commit()
 
                 fphp = HasProduct(
-                    sku_id=sku_q.id, product_id=product_q.id, feature_id=feature.id)
+                    sku_id=sku_q.id, product_id=product_q.id, feature_id=feature.id, farm_profile_id=farm_profile_id)
                 db.session.add(fphp)
                 db.session.commit()
         else:
@@ -154,7 +158,7 @@ def post_product():
             db.session.commit()
 
             fphp = HasProduct(
-                sku_id=sku_q.id, product_id=product_q.id)
+                sku_id=sku_q.id, product_id=product_q.id, farm_profile_id=farm_profile_id)
             db.session.add(fphp)
             db.session.commit()
 
