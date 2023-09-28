@@ -56,9 +56,12 @@ def get_breedings():
                 for item in list_of_breeding:
                     result = {
                         "id": item.breedings.id,
+                        "name": f'Breeding #{item.breedings.id}',
                         "farm_profile_id": item.farm_profile_id,
                         "livestock_male_id": item.breedings.livestock_male_id,
                         "livestock_female_id": item.breedings.livestock_female_id,
+                        "livestock_male_name": item.breedings.livestock_male.name,
+                        "livestock_female_name": item.breedings.livestock_female.name,
                         "sled_id": item.breedings.sled_id,
                         "is_active": item.breedings.is_active
                     }
@@ -81,7 +84,7 @@ def get_breedings():
 @views_breeding_bp.route('/breeding/<int:breeding_id>', methods=['GET'])
 def get_a_breeding(breeding_id):
     try:
-        query = Breeding.query.get(breeding_id)
+        query = Breeding.query.options([subqueryload(Breeding.livestock_male), subqueryload(Breeding.livestock_female)]).get(breeding_id)
 
         if not query:
             raise Exception('Breeding data not found!')
@@ -120,6 +123,8 @@ def post_new_breeding():
         db.session.add(query)
         db.session.commit()
 
+        if not query:
+            raise Exception('Failed to store data')
         # Move Livestock to the same sled
         # Find existing colleciton on block_area_sled_livestock
         male_query = BlockAreaSledLivestock.query.filter_by(
@@ -168,7 +173,8 @@ def post_new_breeding():
 
         # Create a response JSON
         response = {
-            'status': 'success'
+            'status': 'success',
+            'breeding_id': query.id
         }
 
         return jsonify(response), 200
@@ -279,7 +285,7 @@ def put_pregnancy(breeding_id):
 
     try:
         # Find collection preganancy based on breeding_id
-        query = Pregnancy.query.get(breeding_id)
+        query = Pregnancy.query.filter_by(breeding_id=breeding_id).first()
 
         if query:
             query.is_active = is_active

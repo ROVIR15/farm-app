@@ -108,7 +108,7 @@ def post_block_area():
             # Create a response JSON
             response = {
                 'status': 'success',
-                # 'message': f'Hello, {name}! Your message "{message}" has been received.'
+                'message': f'Hello! Your Feeding has been recorded.'
             }
 
             return jsonify(response), 200

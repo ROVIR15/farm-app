@@ -11,3 +11,6 @@ class Breeding (db.Model):
     sled_id = db.Column(db.Integer(), db.ForeignKey('sled.id'), nullable=False)
     is_active = db.Column(db.Boolean(), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    livestock_male = db.relationship('Livestock', foreign_keys=[livestock_male_id])
+    livestock_female = db.relationship('Livestock', foreign_keys=[livestock_female_id])

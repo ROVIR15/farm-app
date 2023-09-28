@@ -12,3 +12,10 @@ class LivestockSchema(Schema):
     weight_records = fields.Nested(WeightRecordSchema, allow_none=True, many=True)
     bcs_records = fields.Nested(BCSRecordSchema, allow_none=True, many=True)
     health_records = fields.Nested(HealthRecordSchema, allow_none=True, many=True)
+
+class LivestockSchema_new(Schema):
+    id = fields.Int(primary_key=True, dump_only=True)
+    name = fields.Str(required=True)
+    gender = fields.Int(required=True)
+    bangsa = fields.Str(required=True)
+    description = fields.Str(required=True)
