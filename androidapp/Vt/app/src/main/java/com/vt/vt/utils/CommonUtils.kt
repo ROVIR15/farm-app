@@ -39,6 +39,16 @@ fun Spinner.selected(action: (position: Int) -> Unit) {
     }
 }
 
+fun getCurrentDate(): String {
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH) + 1  // Months are 0-based
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    return "$year-$month-$day"
+}
+
+
 fun formatDateBcs(dateTime: String?, dateFormats: String?): String {
     val sdf =
         SimpleDateFormat(

@@ -133,7 +133,7 @@
         android:id="@+id/addEditDataBarangJasaFragment"
         android:name="com.vt.vt.ui.file_provider.add_edit_data_barang.AddEditDataBarangJasaFragment"
         android:label="fragment_data_barang_jasa"
-        tools:layout="@layout/fragment_add_edit_data_barang_jasa" >
+        tools:layout="@layout/fragment_add_edit_data_barang_jasa">
         <argument
             android:name="id"
             android:defaultValue="0"
@@ -217,7 +217,12 @@
     <fragment
         android:id="@+id/rekamKesehatanFragment"
         android:name="com.vt.vt.ui.rekam_kesehatan.RekamKesehatanFragment"
-        android:label="RekamKesehatanFragment" />
+        android:label="RekamKesehatanFragment" >
+        <argument
+            android:name="livestockId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/breedingFragment"
         android:name="com.vt.vt.ui.breeding.BreedingFragment"
@@ -283,12 +288,17 @@
     <fragment
         android:id="@+id/rekamBCSFragment"
         android:name="com.vt.vt.ui.rekam_bcs.RekamBCSFragment"
-        android:label="RekamBCSFragment" />
+        android:label="RekamBCSFragment" >
+        <argument
+            android:name="livestockId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/dataBarangDanJasaFragment"
         android:name="com.vt.vt.ui.barang_dan_jasa.DataBarangDanJasaFragment"
         android:label="fragment_data_barang_dan_jasa"
-        tools:layout="@layout/fragment_data_barang_dan_jasa" >
+        tools:layout="@layout/fragment_data_barang_dan_jasa">
         <action
             android:id="@+id/action_dataBarangDanJasaFragment_to_addDataBarangJasaFragment"
             app:destination="@id/addEditDataBarangJasaFragment" />
@@ -326,7 +336,12 @@
         android:id="@+id/rekamBeratBadanFragment"
         android:name="com.vt.vt.ui.rekam_berat_badan.RekamBeratBadanFragment"
         android:label="fragment_rekam_berat_badan"
-        tools:layout="@layout/fragment_rekam_berat_badan" />
+        tools:layout="@layout/fragment_rekam_berat_badan">
+        <argument
+            android:name="livestockId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/editAreaBlockFragment"
         android:name="com.vt.vt.ui.edit_area_block.EditAreaBlockFragment"
@@ -432,7 +447,7 @@
         android:id="@+id/weightFragment"
         android:name="com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.WeightFragment"
         android:label="fragment_weight"
-        tools:layout="@layout/fragment_weight" >
+        tools:layout="@layout/fragment_weight">
         <action
             android:id="@+id/action_weigthFragment_to_kesehatanFragment"
             app:destination="@id/kesehatanFragment" />

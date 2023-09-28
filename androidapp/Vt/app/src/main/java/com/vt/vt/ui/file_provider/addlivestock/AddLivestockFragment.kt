@@ -166,7 +166,11 @@ class AddLivestockFragment : Fragment() {
 
             }
             isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    it ?: "Unkown Error",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

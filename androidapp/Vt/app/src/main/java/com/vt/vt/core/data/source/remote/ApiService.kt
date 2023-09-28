@@ -22,6 +22,8 @@ import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordRequest
+import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponse
 import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
 import retrofit2.Response
 import retrofit2.http.Body
@@ -151,7 +153,10 @@ interface ApiService {
     @GET("api/weight-records")
     suspend fun getWeightRecords(): Response<List<WeightRecordResponseItem>>
 
-    // Weight Record
+    @POST("api/weight-record")
+    suspend fun createWeightRecord(@Body weightRecordRequest: WeightRecordRequest): Response<WeightRecordResponse>
+
+    // Health Record
     @GET("api/health-records")
     suspend fun getHealthRecords(): Response<List<HealthRecordResponseItem>>
 }

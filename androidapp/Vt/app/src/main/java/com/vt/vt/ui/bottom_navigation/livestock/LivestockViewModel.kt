@@ -31,6 +31,7 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
                 isError.postValue(message.toString())
             }
         }, error = { networkError ->
+            isError.postValue("You don't have any livestock")
             if (networkError.isNetworkError) {
                 isError.postValue("No Internet Connection")
             }
