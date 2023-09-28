@@ -12,6 +12,8 @@ from sqlalchemy import and_
 views_auth_bp = Blueprint('views_auth', __name__)
 
 # Registration route
+
+
 @views_auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     data = request.json
@@ -109,7 +111,31 @@ def login():
 @login_required
 def api_profile():
     user_id = current_user()
-    return jsonify({"status": user_id}), 200
+    try:
+        query = User.query.get(user_id)
+
+        if not query:
+            response = {
+                'status': 'error',
+                'message': f'user cannot be found!'
+            }
+            return jsonify(response), 404
+
+        response = {
+            'name': query.username,
+            'email': query.email,
+            'date': "2022-03-01"
+        }
+        return jsonify({"status": "success", "message": response}), 200
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Failed to proceed your request! due to error: {error_message}'
+        }
+
+        return jsonify(response), 500
+
 
 # Logout route (protected API)
 
