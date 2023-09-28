@@ -12,7 +12,7 @@ from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivest
 from FarmProfile.models import FarmProfileHasUsers
 
 
-from auth import login_required, current_user, current_farm_profile
+from auth import login_required, current_farm_profile
 
 views_bp = Blueprint('views_livestock', __name__)
 
@@ -96,11 +96,9 @@ def post_livestock():
     description = data.get('description')
 
     try:
+        farm_profile_id = current_farm_profile()
 
-        user_id = current_user()
-        farm_profile = FarmProfileHasUsers.query.filter(user_id==user_id).first()
-
-        if not farm_profile:
+        if not farm_profile_id:
             raise Exception("Cannot find farm profile!")
         else:
             query = Livestock(name=name, gender=gender,
@@ -121,7 +119,7 @@ def post_livestock():
             db.session.commit()
 
             has_livestock = FarmProfileHasLivestock(
-                livestock_id=query.id, farm_profile_id=farm_profile.farm_profile_id)
+                livestock_id=query.id, farm_profile_id=farm_profile_id)
             db.session.add(has_livestock)
             db.session.commit()
 
