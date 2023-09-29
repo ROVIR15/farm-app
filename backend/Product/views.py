@@ -19,6 +19,7 @@ products_schema = ProductSchema(many=True)
 
 
 @views_product_bp.route('/products', methods=['GET'])
+@login_required
 def get_products():
 
     # grandparents_with_grandchildren_named_bob = (
@@ -68,6 +69,7 @@ def get_products():
 
 
 @views_product_bp.route('/product/<int:product_id>', methods=['GET'])
+@login_required
 def get_a_product(product_id):
 
     try:
@@ -113,6 +115,7 @@ def get_a_product(product_id):
 
 
 @views_product_bp.route('/product', methods=['POST'])
+@login_required
 def post_product():
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -182,6 +185,7 @@ def post_product():
 
 
 @views_product_bp.route('/product/<int:product_id>', methods=['PUT'])
+@login_required
 def update_product(product_id):
     data = request.get_json()  # Get the JSON data from the request body
 
@@ -216,6 +220,7 @@ def update_product(product_id):
 
 
 @views_product_bp.route('/product/<int:product_id>', methods=['DELETE'])
+@login_required
 def delete_product(product_id):
     # Assuming you have a Product model and an existing product object
     product = Product.query.get(product_id)
