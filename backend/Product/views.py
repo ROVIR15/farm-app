@@ -130,6 +130,15 @@ def post_product():
     farm_profile_id = current_farm_profile()
 
     try:
+        if not farm_profile_id:
+            response = {
+                'status': 'error',
+                'message': f'Sorry, {name}! Failed to store product data. Error: Not found farm_profile_id'
+            }
+
+            return jsonify(response), 404
+            
+
         product_q = Product(name=name, unit_measurement=unit_measurement,
                             description=description)
         db.session.add(product_q)
@@ -139,6 +148,16 @@ def post_product():
             category_id=category_id, product_id=product_q.id)
         db.session.add(phc)
         db.session.commit()
+
+        sku_q = SKU(product_id=product_q.id, name=name)
+        db.session.add(sku_q)
+        db.session.commit()
+
+        fphp = HasProduct(
+            sku_id=sku_q.id, product_id=product_q.id, farm_profile_id=farm_profile_id)
+        db.session.add(fphp)
+        db.session.commit()
+
 
         if feature1:
             for item in feature1:
