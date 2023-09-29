@@ -1,5 +1,7 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
+
+from sqlalchemy import desc
 from sqlalchemy.orm import subqueryload, joinedload
 from Sled.models import Sled
 from FarmProfile.HasSled.models import HasSled as FarmProfileHasSled
@@ -19,11 +21,11 @@ sleds_schema = SledSchema(many=True)
 @login_required
 def get_sleds():
 
-    farm_profile_id = 5
+    farm_profile_id = current_farm_profile()
 
     # Retrieve all livestock records from the database
     query = FarmProfileHasSled.query.options([subqueryload(
-        FarmProfileHasSled.sled).subqueryload(Sled.block_area)]).filter_by(farm_profile_id=farm_profile_id).all()
+        FarmProfileHasSled.sled).subqueryload(Sled.block_area)]).filter_by(farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasSled.sled_id)).all()
 
     # query = Sled.query.options(subqueryload(Sled.block_area)).all()
 

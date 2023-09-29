@@ -13,7 +13,7 @@ class BCSRecord(db.Model):
     remarks = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
-    livestock = db.relationship('Livestock', back_populates='bcs_records', lazy=True)
+    livestock = db.relationship('Livestock', foreign_keys=[livestock_id], lazy=True)
 
     def __repr__(self):
         return f'<BCSRecord {self.name}>'

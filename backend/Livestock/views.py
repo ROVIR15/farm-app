@@ -1,5 +1,6 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
+from sqlalchemy import desc
 from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
 from Livestock.schema import LivestockSchema
@@ -27,7 +28,7 @@ def get_livestocks():
     farm_profile_id = current_farm_profile()
 
     try:
-        query = FarmProfileHasLivestock.query.options([subqueryload(FarmProfileHasLivestock.livestock)]).filter_by(farm_profile_id=farm_profile_id).all()
+        query = FarmProfileHasLivestock.query.options([subqueryload(FarmProfileHasLivestock.livestock)]).filter_by(farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasLivestock.livestock_id)).all()
         # query = Livestock.query.all()
 
         results = []
@@ -69,18 +70,30 @@ def get_livestocks():
 @views_bp.route('/livestock/<int:livestock_id>', methods=['GET'])
 @login_required
 def get_a_livestock(livestock_id):
-    # Retrieve all livestock records from the database
-    query = Livestock.query.options([
-        subqueryload(Livestock.weight_records),
-        subqueryload(Livestock.bcs_records),
-        subqueryload(Livestock.health_records)
-    ]).get(livestock_id)
 
-    # Serialize the livestock data using the schema
-    result = livestock_schema.dump(query)
+    try:
+        # Retrieve all livestock records from the database
+        query = Livestock.query.options([
+            subqueryload(Livestock.weight_records),
+            subqueryload(Livestock.bcs_records),
+            subqueryload(Livestock.health_records)
+        ]).get(livestock_id)
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        # Serialize the livestock data using the schema
+        result = livestock_schema.dump(query)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to get {livestock_id} livestock data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
 
 
 @views_bp.route('/livestock', methods=['POST'])

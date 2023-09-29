@@ -159,30 +159,30 @@ def post_product():
         db.session.commit()
 
 
-        if feature1:
-            for item in feature1:
-                feature = Feature(type=item.type, name=item.name)
-                db.session.add(product_q)
-                db.session.commit()
+        # if feature1:
+        #     for item in feature1:
+        #         feature = Feature(type=item.type, name=item.name)
+        #         db.session.add(product_q)
+        #         db.session.commit()
 
-                sku_q = SKU(
-                    product_id=product_q.id, name=name, feature_id=feature.id)
-                db.session.add(sku_q)
-                db.session.commit()
+        #         sku_q = SKU(
+        #             product_id=product_q.id, name=name, feature_id=feature.id)
+        #         db.session.add(sku_q)
+        #         db.session.commit()
 
-                fphp = HasProduct(
-                    sku_id=sku_q.id, product_id=product_q.id, feature_id=feature.id, farm_profile_id=farm_profile_id)
-                db.session.add(fphp)
-                db.session.commit()
-        else:
-            sku_q = SKU(product_id=product_q.id, name=name)
-            db.session.add(sku_q)
-            db.session.commit()
+        #         fphp = HasProduct(
+        #             sku_id=sku_q.id, product_id=product_q.id, feature_id=feature.id, farm_profile_id=farm_profile_id)
+        #         db.session.add(fphp)
+        #         db.session.commit()
+        # else:
+        #     sku_q = SKU(product_id=product_q.id, name=name)
+        #     db.session.add(sku_q)
+        #     db.session.commit()
 
-            fphp = HasProduct(
-                sku_id=sku_q.id, product_id=product_q.id, farm_profile_id=farm_profile_id)
-            db.session.add(fphp)
-            db.session.commit()
+        #     fphp = HasProduct(
+        #         sku_id=sku_q.id, product_id=product_q.id, farm_profile_id=farm_profile_id)
+        #     db.session.add(fphp)
+        #     db.session.commit()
 
         # Create a response JSON
         response = {

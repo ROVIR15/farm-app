@@ -1,5 +1,6 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
+from sqlalchemy import desc
 from sqlalchemy.orm import subqueryload
 from BlockArea.models import BlockArea
 from FarmProfile.HasBlockArea.models import HasBlockArea as FarmProfileHasBlockArea
@@ -24,7 +25,7 @@ def get_block_areas():
     
     try:
         query = FarmProfileHasBlockArea.query.options(
-            subqueryload(FarmProfileHasBlockArea.block_area)).filter_by(farm_profile_id=farm_profile_id).all()
+            subqueryload(FarmProfileHasBlockArea.block_area)).filter_by(farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasBlockArea.block_area_id)).all()
         results = []
 
         if not query:
