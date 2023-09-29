@@ -18,7 +18,7 @@ bcs_many_record_schema = BCSRecordSchema(many=True)
 def get_bcs_record():
     try:
         # Retrieve all bc records from database
-        query = BCSRecord.query.all()
+        query = BCSRecord.query.order_by(desc(BCSRecord.created_at)).all()
 
         results = []
         # Serialize the bcs record data using the schema

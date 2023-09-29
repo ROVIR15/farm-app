@@ -18,7 +18,7 @@ def get_health_record():
 
     try:
         # Retrieve all health records from database
-        query = HealthRecord.query.all()
+        query = HealthRecord.query.order_by(desc(HealthRecord.created_at)).all()
 
         results = []
         # Serialize the health record data using the schema

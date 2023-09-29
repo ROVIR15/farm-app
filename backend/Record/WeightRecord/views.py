@@ -18,7 +18,7 @@ def get_weight_record():
 
     try:
         # Retrieve all bc records from database
-        query = WeightRecord.query.all()
+        query = WeightRecord.query.order_by(desc(WeightRecord.created_at)).all()
 
         results = []
         # Serialize the weight record data using the schema
