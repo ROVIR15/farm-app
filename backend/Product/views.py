@@ -125,7 +125,7 @@ def post_product():
     category_id = data.get('category_id')
     unit_measurement = data.get('unit_measurement')
     description = data.get('description')
-    feature1 = data.get('feature1')
+    # feature1 = data.get('feature1')
 
     farm_profile_id = current_farm_profile()
 
