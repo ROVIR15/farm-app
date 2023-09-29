@@ -3,6 +3,8 @@ from flask import Blueprint, request, jsonify
 from Record.BCSRecord.models import BCSRecord
 from Record.BCSRecord.schema import BCSRecordSchema
 
+from sqlalchemy import desc
+
 from auth import login_required
 
 views_bcs_record_bp = Blueprint('views_bcs_record', __name__)
@@ -50,7 +52,7 @@ def get_bcs_record():
 def get_a_bcs_record(livestock_id):
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = BCSRecord.query.filter_by(livestock_id=livestock_id)
+        query = BCSRecord.query.filter_by(livestock_id=livestock_id).order_by(desc(BCSRecord.created_at))
 
         results = []
         # Serialize the bcs record data using the schema

@@ -1,5 +1,6 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
+from sqlalchemy import desc
 from Record.WeightRecord.models import WeightRecord
 from Record.WeightRecord.schema import WeightRecordSchema
 
@@ -52,7 +53,7 @@ def get_a_weight_record(livestock_id):
 
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = WeightRecord.query.filter(livestock_id==livestock_id).all()
+        query = WeightRecord.query.filter_by(livestock_id=livestock_id).order_by(desc(WeightRecord.created_at))
 
         results = []
         # Serialize the livestock data using the schema

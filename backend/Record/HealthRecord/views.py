@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from Record.HealthRecord.models import HealthRecord
 from Record.HealthRecord.schema import HealthRecordSchema
 
+from sqlalchemy import desc
 from auth import login_required
 
 views_health_record_bp = Blueprint('views_health_record', __name__)
@@ -53,7 +54,7 @@ def get_a_health_record(livestock_id):
 
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = HealthRecord.query.filter(livestock_id==livestock_id)
+        query = HealthRecord.query.filter_by(livestock_id=livestock_id).order_by(desc(HealthRecord.created_at))
 
         results = []
         # Serialize the health record data using the schema
