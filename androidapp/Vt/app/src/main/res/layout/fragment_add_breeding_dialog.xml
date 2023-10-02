@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.rekam_perkawinan.dialog.AddBreedingDialogFragment">
+
+    <View
+        android:layout_width="48dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_center_line_bottom_sheet" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:padding="8dp"
+        android:text="Tambah History"
+        android:textAlignment="center"
+        android:textColor="@color/text_black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Selamat atas kehamilan livestock Anda, silahkan menambahkan tanggal lahir livestock baru ini."
+        android:textAlignment="center" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_name_animal_child"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="Nama"
+        android:inputType="textPersonName"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/bg_calendar_grey"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_date_picker_animal_child"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_baseline_calendar_24" />
+
+            <TextView
+                android:id="@+id/tv_animal_child_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Isi Tanggal..."
+                android:paddingHorizontal="16dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_calendar_grey"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/spinner_gender_animal_child"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Spinner
+        android:id="@+id/spinner_bangsa_animal_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:inputType="textPersonName"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/bg_calendar_grey"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/spinner_cage_animal_child"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_area_animal_child"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Area"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_description_animal_child"
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edt_normal"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="top|start"
+        android:hint="Deskripsi"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:scrollHorizontally="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save_animal_child"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/btn_blue_icon"
+        android:elevation="2dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Simpan"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:cornerRadius="8dp"
+        app:elevation="1dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel_animal_child"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Batal"
+        android:textAllCaps="false"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:strokeColor="@color/red" />
+
+</LinearLayout>
