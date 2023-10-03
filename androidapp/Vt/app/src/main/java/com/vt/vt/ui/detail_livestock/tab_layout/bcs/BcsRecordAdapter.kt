@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.BcsRecordsItem
 import com.vt.vt.databinding.ItemBcsBinding
 
 class BcsRecordAdapter :
-    ListAdapter<BcsRecordResponseItem, BcsRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<BcsRecordsItem, BcsRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemBcsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,27 +26,27 @@ class BcsRecordAdapter :
     inner class ViewHolder(private val binding: ItemBcsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bindTo(data: BcsRecordResponseItem) {
+        fun bindTo(data: BcsRecordsItem) {
             binding.tvItemDateBcs.text = data.date
             binding.tvItemValueBcsSekarang.text = "${data.score} Kg"
-            binding.tvItemValueBcsSebelumnya.text = "${data.prevScore} Kg"
-            binding.tvGrow.text = data.grow
+            binding.tvItemValueBcsSebelumnya.text = "${0} Kg"
+            binding.tvGrow.text = "0 %"
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<BcsRecordResponseItem?> =
-            object : DiffUtil.ItemCallback<BcsRecordResponseItem?>() {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<BcsRecordsItem?> =
+            object : DiffUtil.ItemCallback<BcsRecordsItem?>() {
                 override fun areItemsTheSame(
-                    oldItem: BcsRecordResponseItem,
-                    newItem: BcsRecordResponseItem
+                    oldItem: BcsRecordsItem,
+                    newItem: BcsRecordsItem
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: BcsRecordResponseItem,
-                    newItem: BcsRecordResponseItem
+                    oldItem: BcsRecordsItem,
+                    newItem: BcsRecordsItem
                 ): Boolean {
                     return oldItem == newItem
                 }

@@ -16,6 +16,8 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditLivestockBinding
+import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
+import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +27,7 @@ class EditLivestockFragment : Fragment() {
     private var _binding: FragmentEditLivestockBinding? = null
     private val binding get() = _binding!!
     private val editLivestockViewModel by viewModels<EditLivestockViewModel>()
+    private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
 
     var receiveId: String = ""
     override fun onCreateView(
@@ -46,6 +49,9 @@ class EditLivestockFragment : Fragment() {
                 toolbar.setNavigationOnClickListener {
                     it?.findNavController()?.popBackStack()
                 }
+            }
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvBreedingDate)
             }
             ivProfileLivestock.setOnClickListener {
                 showBottomSheetDialog()
@@ -72,7 +78,6 @@ class EditLivestockFragment : Fragment() {
             }
             /* Spinner Adapter */
             adapterSpinner(binding.spinnerGenderUmum)
-            adapterSpinner(binding.spinnerKandangUmum)
             adapterSpinner(binding.spinnerPilihLivestockJantan)
             adapterSpinner(binding.spinnerPilihLivestockBetina)
         }
@@ -85,9 +90,22 @@ class EditLivestockFragment : Fragment() {
                 showLoading(it)
             }
             getLivestockById.observe(viewLifecycleOwner) { livestock ->
+                detailAreaBlockViewModel.getSleds()
+                detailAreaBlockViewModel.sledItems.observe(viewLifecycleOwner) { sleds ->
+                    val namesArray = sleds.map { data ->
+                        data.name
+                    }.toTypedArray()
+                    val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.spinnerKandangUmum.adapter = adapter
+                    binding.spinnerKandangUmum.selected { position ->
+                        binding.edtArea.setText(sleds[position].blockAreaName)
+                    }
+                }
                 with(binding) {
                     livestock?.let { data ->
                         appBarLayout.topAppBar.title = "Edit ${data.name}"
+                        title.text = data.name
                         edtNamaAddLivestock.setText(data.name)
                         spinnerGenderUmum.setSelection(data.gender)
                         edtDescription.setText(data.description)

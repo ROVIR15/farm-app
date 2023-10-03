@@ -20,7 +20,7 @@ data class ProductResponseItem(
     val categoryName: String? = null,
 
     @field:SerializedName("category_id")
-    val categoryId: Int? = null,
+    val categoryId: Int,
 
     @field:SerializedName("unit_measurement")
     val unitMeasurement: String? = null,

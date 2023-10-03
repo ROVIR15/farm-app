@@ -21,7 +21,7 @@ class PersonalProfileFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentPersonalProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val profileViewModel by viewModels<ProfileViewModel>()
+    private val personalProfileViewModel by viewModels<PersonalProfileViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +46,7 @@ class PersonalProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observerView() {
-        profileViewModel.apply {
+        personalProfileViewModel.apply {
             getProfile()
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
@@ -55,7 +55,7 @@ class PersonalProfileFragment : Fragment(), View.OnClickListener {
                 with(binding) {
                     edtEditNamePersonalProfile.setText(profile.message?.name)
                     edtEditEmailPersonalProfile.setText(profile.message?.email)
-                    tvDatePersonalProfile.setText(profile.message?.date)
+                    tvDatePersonalProfile.text = profile.message?.date
                 }
             }
             isError().observe(viewLifecycleOwner) {

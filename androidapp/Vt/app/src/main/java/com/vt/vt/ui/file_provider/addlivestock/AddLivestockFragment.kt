@@ -49,6 +49,8 @@ class AddLivestockFragment : Fragment() {
     private val addLivestockViewModel by viewModels<AddLivestockViewModel>()
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
 
+    private var id = 0
+    private var blockId = 0
     private var getFile: File? = null
     private lateinit var currentPhotoPath: String
 
@@ -70,7 +72,7 @@ class AddLivestockFragment : Fragment() {
                 }
             }
             ivDatePicker.setOnClickListener {
-                PickDatesUtils.setupDatePicker(requireActivity(), tvBirth)
+                PickDatesUtils.datePickToEdittext(requireActivity(), tvBirth as TextInputEditText)
             }
             ivPhotoDataArea.setOnClickListener {
                 requestPermissionsIfNeeded()
@@ -134,6 +136,39 @@ class AddLivestockFragment : Fragment() {
         _binding = null
     }
 
+    private fun observerViewBottomSheet(
+        spinner: Spinner,
+        textInputEditText: TextInputEditText,
+        progressBar: ProgressBar
+    ) {
+        detailAreaBlockViewModel.apply {
+            getSleds()
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+            sledItems.observe(viewLifecycleOwner) { sleds ->
+                val namesArray = sleds.map { data ->
+                    data.name
+                }.toTypedArray()
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = adapter
+                spinner.selected { position ->
+                    textInputEditText.setText(sleds[position].blockAreaName)
+                    id = sleds[position].id
+                    blockId = sleds[position].blockAreaId
+                }
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(
+                    requireContext(),
+                    it ?: "Unkown Error",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
     private fun showBottomSheetAddLivestock(livestockId: Int) {
         val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
         dialog.setContentView(R.layout.bottom_sheet_livestock)
@@ -143,35 +178,8 @@ class AddLivestockFragment : Fragment() {
         val btnSave = dialog.findViewById<AppCompatButton>(R.id.btn_save)
         val btnCancel = dialog.findViewById<AppCompatButton>(R.id.btn_cancel)
 
-        var id = 0
-        var blockId = 0
-
-        detailAreaBlockViewModel.apply {
-            getSleds()
-            observeLoading().observe(viewLifecycleOwner) { isLoading ->
-                progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-            sledItems.observe(viewLifecycleOwner) { sleds ->
-                val namesArray = sleds.map { data ->
-                    data.name
-                }.toTypedArray()
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinnerAddCage?.adapter = adapter
-                spinnerAddCage?.selected { position ->
-                    edtBlockArea?.setText(sleds[position].blockAreaName)
-                    id = sleds[position].id
-                    blockId = sleds[position].blockAreaId
-                }
-
-            }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(
-                    requireContext(),
-                    it ?: "Unkown Error",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        if (progressBar != null && edtBlockArea != null && spinnerAddCage != null) {
+            observerViewBottomSheet(spinnerAddCage, edtBlockArea, progressBar)
         }
 
         dialog.show()
@@ -182,6 +190,7 @@ class AddLivestockFragment : Fragment() {
         btnCancel?.setOnClickListener {
             dialog.dismiss()
         }
+
     }
 
     private fun showBottomSheetDialog() {

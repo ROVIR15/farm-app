@@ -1,15 +1,18 @@
 package com.vt.vt.ui.bottom_navigation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentHomeBinding
+import com.vt.vt.ui.profile.personal_profile.PersonalProfileViewModel
 import com.vt.vt.ui.signin.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,11 +23,10 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val signInViewModel: SignInViewModel by viewModels()
+    private val personalProfileViewModel: PersonalProfileViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,8 +38,7 @@ class HomeFragment : Fragment() {
 
         signInViewModel.loginState.observe(viewLifecycleOwner) { user ->
             if (user.token.isBlank() or user.token.isEmpty()) {
-                view.findNavController()
-                    .navigate(R.id.action_navigation_home_to_signInFragment)
+                view.findNavController().navigate(R.id.action_navigation_home_to_signInFragment)
             }
         }
 
@@ -61,7 +62,23 @@ class HomeFragment : Fragment() {
                 it.findNavController().navigate(R.id.action_navigation_home_to_fatteningFragment)
             }
         }
+        observerView()
+    }
 
+    @SuppressLint("SetTextI18n")
+    private fun observerView() {
+        personalProfileViewModel.apply {
+            getProfile()
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                binding.contentHome.loading.progressBar.isVisible = isLoading
+            }
+            getProfileEmitter.observe(viewLifecycleOwner) { data ->
+                binding.contentHome.contentHomeGreeting.text = "Hello, ${data.message?.name}👋"
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

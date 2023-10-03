@@ -7,7 +7,7 @@
     android:layout_gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".ui.daftar_perkawinan.dialog.AddListBreedingDialogFragment">
+    tools:context=".ui.daftar_perkawinan.bottom_sheet_dialog.AddListBreedingDialogFragment">
 
     <View
         android:layout_width="48dp"

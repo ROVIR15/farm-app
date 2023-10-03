@@ -30,6 +30,4 @@ class DetailAreaBlockViewModel @Inject constructor(private val sledsVtRepository
             }
         })
     }
-
-
 }

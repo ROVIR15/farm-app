@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val dataRepository: DataRepository) :
+class PersonalProfileViewModel @Inject constructor(private val dataRepository: DataRepository) :
     BaseViewModel() {
 
     private val _getProfileEmitter = MutableLiveData<ProfileResponse>()

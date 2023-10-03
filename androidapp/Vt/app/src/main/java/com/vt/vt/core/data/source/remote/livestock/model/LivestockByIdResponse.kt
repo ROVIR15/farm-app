@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class LivestockByIdResponse(
 
-    @field:SerializedName("weight_records")
-    val weightRecords: List<WeightRecordsItem>,
+    @field:SerializedName("id")
+    val id: Int,
 
-    @field:SerializedName("bcs_records")
-    val bcsRecords: List<BcsRecordsItem>,
+    @field:SerializedName("name")
+    val name: String,
 
     @field:SerializedName("bangsa")
     val bangsa: String,
@@ -16,14 +16,14 @@ data class LivestockByIdResponse(
     @field:SerializedName("gender")
     val gender: Int,
 
-    @field:SerializedName("name")
-    val name: String,
-
     @field:SerializedName("description")
     val description: String,
 
-    @field:SerializedName("id")
-    val id: Int,
+    @field:SerializedName("weight_records")
+    val weightRecords: List<WeightRecordsItem>,
+
+    @field:SerializedName("bcs_records")
+    val bcsRecords: List<BcsRecordsItem>,
 
     @field:SerializedName("health_records")
     val healthRecords: List<HealthRecordsItem>
@@ -38,10 +38,10 @@ data class HealthRecordsItem(
     val livestockId: Int,
 
     @field:SerializedName("treatment_methods")
-    val treatmentMethods: Any, // tipe data null
+    val treatmentMethods: String? = null, // tipe data null
 
     @field:SerializedName("disease_type")
-    val diseaseType: Any, // tipe data null
+    val diseaseType: String? = null, // tipe data null
 
     @field:SerializedName("created_at")
     val createdAt: String,
@@ -59,7 +59,7 @@ data class WeightRecordsItem(
     val date: String,
 
     @field:SerializedName("score")
-    val score: Float,
+    val score: Double,
 
     @field:SerializedName("livestock_id")
     val livestockId: Int,
@@ -80,7 +80,7 @@ data class BcsRecordsItem(
     val date: String,
 
     @field:SerializedName("score")
-    val score: Float,
+    val score: Double,
 
     @field:SerializedName("livestock_id")
     val livestockId: Int,

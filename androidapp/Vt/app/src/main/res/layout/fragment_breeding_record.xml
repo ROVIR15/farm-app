@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.rekam_perkawinan.RekamPerkawinanFragment">
+    tools:context=".ui.rekam_perkawinan.BreedingRecordFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +21,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="?attr/actionBarSize">
+                android:layout_marginTop="?attr/actionBarSize"
+                android:padding="16dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/appCompatTextView23"
@@ -61,8 +62,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/roboto_regular"
-                        android:hint="Isi Tanggal..."
                         android:paddingHorizontal="16dp"
+                        android:textAlignment="center"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -79,40 +80,52 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/appCompatTextView23" />
 
-                <Spinner
-                    android:id="@+id/spinner_stall_record_mating"
+                <LinearLayout
+                    android:id="@+id/linearLayout622"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/bg_calendar_grey"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                    <Spinner
+                        android:id="@+id/spinner_stall_record_mating"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout22"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_edt_normal"
-                    android:fontFamily="@font/roboto_regular"
-                    android:inputType="textPersonName"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline7"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edt_area"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_edt_normal"
-                    android:fontFamily="@font/roboto_regular"
-                    android:hint="Area"
-                    android:inputType="textPersonName"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/spinner_stall_record_mating"
+                    app:boxBackgroundColor="@color/subtle_grey"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout622"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/guideline7"
-                    app:layout_constraintTop_toTopOf="@+id/spinner_stall_record_mating" />
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout622"
+                    app:startIconTint="@color/text_blue">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center_vertical"
+                        android:hint="Area"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/text_black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/textView7"
@@ -125,42 +138,46 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_stall_record_mating" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout622" />
 
-                <Spinner
-                    android:id="@+id/spinner_choose_male_livestock_record_mating"
+                <LinearLayout
+                    android:id="@+id/linearLayout63"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_edt_normal"
-                    android:fontFamily="@font/roboto_regular"
-                    android:inputType="textPersonName"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/bg_calendar_grey"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-                <Spinner
-                    android:id="@+id/spinner_choose_female_livestock_record_mating"
+                    <Spinner
+                        android:id="@+id/spinner_choose_male_livestock_record_mating"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout64"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_alignParentStart="true"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_edt_normal"
-                    android:fontFamily="@font/roboto_regular"
-                    android:inputType="textPersonName"
+                    android:background="@drawable/bg_calendar_grey"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_choose_male_livestock_record_mating" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout63">
+
+                    <Spinner
+                        android:id="@+id/spinner_choose_female_livestock_record_mating"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView8"
@@ -173,7 +190,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_choose_female_livestock_record_mating" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout64" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/appCompatTextView24"

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentProfileBinding
+import com.vt.vt.ui.profile.personal_profile.PersonalProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val personalProfileViewModel: PersonalProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,23 +44,18 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         }
 
         observerView()
-        profileViewModel.getUser()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observerView() {
-        profileViewModel.isError().observe(viewLifecycleOwner) { error ->
-            Toast.makeText(requireActivity(), error.toString(), Toast.LENGTH_SHORT).show()
-        }
-        profileViewModel.observeLoading().observe(viewLifecycleOwner) {
+        personalProfileViewModel.getProfile()
+        personalProfileViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        profileViewModel.getUser.observe(viewLifecycleOwner) {
-            binding.tvProfileUsername.text = it?.username
+        personalProfileViewModel.getProfileEmitter.observe(viewLifecycleOwner) {
+            binding.tvProfileUsername.text = it?.message?.name
+        }
+        personalProfileViewModel.isError().observe(viewLifecycleOwner) { error ->
+            Toast.makeText(requireActivity(), error.toString(), Toast.LENGTH_SHORT).show()
         }
         profileViewModel.isLogout.observe(viewLifecycleOwner) {
             view?.findNavController()?.navigate(R.id.action_navigation_profile_to_signInFragment)
@@ -78,7 +75,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.personal_profile -> {
@@ -98,7 +94,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
             R.id.profile_animal_cage_area -> {
                 v.findNavController()
-                    .navigate(R.id.action_navigation_profile_to_detailAreaBlockFragment)
+                    .navigate(R.id.action_navigation_profile_to_penyimpanTernakFragment)
             }
 
             R.id.profile_animal_add_cage_area -> {
@@ -107,4 +103,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

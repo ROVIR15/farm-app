@@ -14,17 +14,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
 import com.vt.vt.databinding.ItemDetailAreaBlockBinding
 import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
 
 class ListDetailAreaBlockAdapter(
-    private val context: Context,
-    private val viewModel: AreaBlockViewModel
-) :
-    ListAdapter<Sleds, ListDetailAreaBlockAdapter.ViewHolder>(
-        DIFF_CALLBACK
-    ) {
+    private val context: Context, private val viewModel: AreaBlockViewModel
+) : ListAdapter<Sleds, ListDetailAreaBlockAdapter.ViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             ItemDetailAreaBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,7 +38,8 @@ class ListDetailAreaBlockAdapter(
         PopupMenu.OnMenuItemClickListener {
         fun bindTo(sleds: Sleds) {
             with(binding) {
-                tvTitleAnimalCage.text = sleds.id.toString()
+                tvTitleAnimalCage.text = sleds.name
+                descriptionItemDetailAreaBlock.text = sleds.description
                 btnOptionsDetailArea.setOnClickListener(this@ViewHolder)
             }
         }
@@ -64,17 +62,14 @@ class ListDetailAreaBlockAdapter(
                     val bundle = Bundle().apply {
                         putInt("id", id)
                     }
-                    itemView.findNavController()
-                        .navigate(
-                            R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment,
-                            bundle
-                        )
+                    itemView.findNavController().navigate(
+                        R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment, bundle
+                    )
                     return true
                 }
 
                 R.id.menu_delete_animal_cage -> {
-                    AlertDialog.Builder(context)
-                        .setTitle("Delete")
+                    AlertDialog.Builder(context).setTitle("Delete")
                         .setIcon(R.drawable.ic_outline_delete_outline_24)
                         .setMessage("Are you sure delete this Information")
                         .setPositiveButton("Yes") { dialog, _ ->
@@ -83,12 +78,9 @@ class ListDetailAreaBlockAdapter(
                                 sledItems.id.toString()
                             )
                             dialog.dismiss()
-                        }
-                        .setNegativeButton("No") { dialog, _ ->
+                        }.setNegativeButton("No") { dialog, _ ->
                             dialog.dismiss()
-                        }
-                        .create()
-                        .show()
+                        }.create().show()
                     return true
                 }
             }
@@ -100,18 +92,17 @@ class ListDetailAreaBlockAdapter(
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<Sleds?> =
             object : DiffUtil.ItemCallback<Sleds?>() {
                 override fun areItemsTheSame(
-                    oldItem: Sleds,
-                    newItem: Sleds
+                    oldItem: Sleds, newItem: Sleds
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: Sleds,
-                    newItem: Sleds
+                    oldItem: Sleds, newItem: Sleds
                 ): Boolean {
                     return oldItem == newItem
                 }
             }
     }
 }
+

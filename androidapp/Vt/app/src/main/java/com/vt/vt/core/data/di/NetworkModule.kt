@@ -46,8 +46,8 @@ class NetworkModule {
             OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .cookieJar(provideCookies())
-                .authenticator { _, response ->
-                    val newRequest = response.request.newBuilder()
+                .addInterceptor { chain ->
+                    val newRequest = chain.request().newBuilder()
                     var token: String?
                     runBlocking {
                         try {
@@ -60,8 +60,8 @@ class NetworkModule {
                         } catch (e: Exception) {
                             Log.e("NetworkError", e.message.toString())
                         }
-                        newRequest.build()
                     }
+                    chain.proceed(newRequest.build())
                 }
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)

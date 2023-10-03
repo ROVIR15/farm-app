@@ -15,10 +15,12 @@ import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
 import com.vt.vt.core.data.source.remote.dummy.livestock.LivestockRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.HistoryPeranakanRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
-import com.vt.vt.core.data.source.repository.BcsRecordVtRepository
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
+import com.vt.vt.core.data.source.repository.BreedingVtRepository
 import com.vt.vt.core.data.source.repository.CategoriesVtRepository
 import com.vt.vt.core.data.source.repository.DataRepository
+import com.vt.vt.core.data.source.repository.FarmProfileVtRepository
+import com.vt.vt.core.data.source.repository.FeedingVtRepository
 import com.vt.vt.core.data.source.repository.HealthRecordVtRepository
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import com.vt.vt.core.data.source.repository.ProductsVtRepository
@@ -92,10 +94,25 @@ class AppModule {
     @Singleton
     fun provideWeightRecordVtRepository(apiService: ApiService): WeightRecordVtRepository =
         WeightRecordVtRepository(apiService)
+
     @Provides
     @Singleton
     fun provideHealthRecordVtRepository(apiService: ApiService): HealthRecordVtRepository =
         HealthRecordVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun provideFarmProfileVtRepository(apiService: ApiService): FarmProfileVtRepository =
+        FarmProfileVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun provideFeedingVtRepository(apiService: ApiService): FeedingVtRepository =
+        FeedingVtRepository(apiService)
+    @Provides
+    @Singleton
+    fun provideBreedingVtRepository(apiService: ApiService): BreedingVtRepository =
+        BreedingVtRepository(apiService)
 
     @Provides
     @Singleton

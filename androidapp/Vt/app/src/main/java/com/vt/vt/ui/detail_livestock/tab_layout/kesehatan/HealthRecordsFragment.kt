@@ -9,8 +9,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.HealthRecordsItem
 import com.vt.vt.databinding.FragmentHealthRecordsBinding
+import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +20,7 @@ class HealthRecordsFragment : Fragment() {
     private var _binding: FragmentHealthRecordsBinding? = null
     private val binding get() = _binding!!
 
-    private val healthRecordViewModel by viewModels<HealthRecordViewModel>()
+    private val livestockViewModel by viewModels<EditLivestockViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,26 +31,29 @@ class HealthRecordsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveId = arguments?.getInt("livestockId")
+        livestockViewModel.getLivestockById(receiveId.toString())
         observerView()
     }
 
     private fun observerView() {
-        healthRecordViewModel.apply {
-            getListHealthRecords()
-            observeLoading().observe(viewLifecycleOwner) { isLoading ->
-                showLoading(isLoading)
+        livestockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                showLoading(it)
             }
-            healthRecordsEmitter.observe(viewLifecycleOwner) { data ->
-                binding.dataEmpty.isEmpty.isVisible = data.isEmpty()
-                listHealthRecords(data)
+            getLivestockById.observe(viewLifecycleOwner) { livestock ->
+                livestock?.let { data ->
+                    binding.dataEmpty.isEmpty.isVisible = data.healthRecords.isEmpty()
+                    listHealthRecords(data.healthRecords)
+                }
             }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            isError().observe(viewLifecycleOwner) { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun listHealthRecords(data: List<HealthRecordResponseItem>) {
+    private fun listHealthRecords(data: List<HealthRecordsItem>) {
         val adapter = ListHealthRecordAdapter()
         adapter.submitList(data)
         with(binding) {

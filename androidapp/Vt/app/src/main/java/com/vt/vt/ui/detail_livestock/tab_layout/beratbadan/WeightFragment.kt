@@ -9,8 +9,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.WeightRecordsItem
 import com.vt.vt.databinding.FragmentWeightBinding
+import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,8 @@ class WeightFragment : Fragment() {
     private var _binding: FragmentWeightBinding? = null
     private val binding get() = _binding!!
 
-    private val weightRecordViewModel by viewModels<WeightRecordViewModel>()
+    private val livestockViewModel by viewModels<EditLivestockViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -28,26 +30,29 @@ class WeightFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveId = arguments?.getInt("livestockId")
+        livestockViewModel.getLivestockById(receiveId.toString())
         observerView()
     }
 
     private fun observerView() {
-        weightRecordViewModel.apply {
-            getWeightRecords()
-            observeLoading().observe(viewLifecycleOwner) { isLoading ->
-                showLoading(isLoading)
+        livestockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                showLoading(it)
             }
-            weightRecordEmitter.observe(viewLifecycleOwner) { data ->
-                binding.dataEmpty.isEmpty.isVisible = data.isEmpty()
-                listWeigth(data)
+            getLivestockById.observe(viewLifecycleOwner) { livestock ->
+                livestock?.let { data ->
+                    binding.dataEmpty.isEmpty.isVisible = data.weightRecords.isEmpty()
+                    listWeigth(data.weightRecords)
+                }
             }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            isError().observe(viewLifecycleOwner) { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun listWeigth(data: List<WeightRecordResponseItem>) {
+    private fun listWeigth(data: List<WeightRecordsItem>) {
         val adapter = ListWeightRecordAdapter()
         adapter.submitList(data)
         with(binding) {

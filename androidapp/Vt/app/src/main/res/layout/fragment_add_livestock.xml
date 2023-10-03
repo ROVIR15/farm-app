@@ -24,8 +24,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_photo_data_area"
-                android:layout_width="match_parent"
-                android:layout_height="368dp"
+                android:layout_width="298dp"
+                android:layout_height="358dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/bg_file_photo"
                 android:clipToOutline="true"
@@ -81,47 +81,60 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/baseline_date_range_24"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_birth"
+                app:layout_constraintBottom_toBottomOf="@+id/outlined_text_input_layout20"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
+                app:layout_constraintTop_toTopOf="@+id/outlined_text_input_layout20" />
 
-            <TextView
-                android:id="@+id/tv_birth"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout20"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="start|center"
-                android:paddingHorizontal="16dp"
-                android:text="Birth"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:hint="Pilih Tanggal"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/iv_date_picker"
-                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout">
 
-            <Spinner
-                android:id="@+id/spinner_gender"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/linearSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:background="@drawable/bg_outline_box"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_birth" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout20">
+
+                <Spinner
+                    android:id="@+id/spinner_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outlined_text_input_layout1"
@@ -134,7 +147,7 @@
                 app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spinner_gender">
+                app:layout_constraintTop_toBottomOf="@id/linearSpinner">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_country"

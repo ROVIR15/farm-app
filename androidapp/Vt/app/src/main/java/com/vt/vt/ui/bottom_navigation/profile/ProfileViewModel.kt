@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
-import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,31 +18,6 @@ class ProfileViewModel @Inject constructor(
     BaseViewModel() {
     private val _logoutEmitter = MutableLiveData<LoginResponse?>()
     val isLogout: LiveData<LoginResponse?> = _logoutEmitter
-
-    private val _getUserEmitter = MutableLiveData<UserResponse?>()
-    val getUser: LiveData<UserResponse?> = _getUserEmitter
-    fun getUser() {
-        launch(
-            action = {
-                val response = dataRepository.getUser()
-                if (response.isSuccessful) {
-                    _getUserEmitter.postValue(response.body())
-                } else {
-                    val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
-                    val message = errorBody.getString("message")
-                    isError.postValue(message)
-                }
-            },
-            error = { networkError ->
-                if (networkError.isNetworkError) {
-                    isError.postValue("No Internet Connection")
-                }
-                if (networkError.isBadRequest) {
-                    isError.postValue("Your request couldn't be processed")
-                }
-            }
-        )
-    }
 
     fun logout() {
         launch(

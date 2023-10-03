@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.HealthRecordsItem
 import com.vt.vt.databinding.ItemKesehatanBinding
 
 class ListHealthRecordAdapter :
-    ListAdapter<HealthRecordResponseItem, ListHealthRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<HealthRecordsItem, ListHealthRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemKesehatanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
@@ -22,7 +23,7 @@ class ListHealthRecordAdapter :
 
     inner class ViewHolder(private val binding: ItemKesehatanBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindTo(data: HealthRecordResponseItem) {
+        fun bindTo(data: HealthRecordsItem) {
             with(binding) {
                 tvDateHealthRecord.text = data.date
                 tvDescriptionHealthRecord.text = data.remarks
@@ -31,18 +32,18 @@ class ListHealthRecordAdapter :
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<HealthRecordResponseItem?> =
-            object : DiffUtil.ItemCallback<HealthRecordResponseItem?>() {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<HealthRecordsItem?> =
+            object : DiffUtil.ItemCallback<HealthRecordsItem?>() {
                 override fun areItemsTheSame(
-                    oldItem: HealthRecordResponseItem,
-                    newItem: HealthRecordResponseItem
+                    oldItem: HealthRecordsItem,
+                    newItem: HealthRecordsItem
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: HealthRecordResponseItem,
-                    newItem: HealthRecordResponseItem
+                    oldItem: HealthRecordsItem,
+                    newItem: HealthRecordsItem
                 ): Boolean {
                     return oldItem == newItem
                 }

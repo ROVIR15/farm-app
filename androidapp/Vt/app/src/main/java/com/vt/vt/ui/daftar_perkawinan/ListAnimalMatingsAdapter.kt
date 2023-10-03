@@ -1,18 +1,21 @@
 package com.vt.vt.ui.daftar_perkawinan
 
+import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.AnimalMatings
+import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
 import com.vt.vt.databinding.ItemListAnimalMatingsBinding
 
-class ListAnimalMatingsAdapter(private val animalMatings: List<AnimalMatings>) :
-    RecyclerView.Adapter<ListAnimalMatingsAdapter.ViewHolder>(), View.OnClickListener {
-
+class ListAnimalMatingsAdapter :
+    ListAdapter<BreedingResponseItem, ListAnimalMatingsAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             ItemListAnimalMatingsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,31 +23,58 @@ class ListAnimalMatingsAdapter(private val animalMatings: List<AnimalMatings>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(animalMatings[position])
+        val data = getItem(position)
+        holder.bindTo(data)
     }
-
-    override fun getItemCount(): Int = animalMatings.size
 
     inner class ViewHolder(private val binding: ItemListAnimalMatingsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bindTo(data: AnimalMatings) {
-            binding.tvNameItemAnimalMating.text = data.pasangan
-            binding.tvCreatedAtItemListAnimalMatings.text = data.createdAt
-            binding.btnUpdateList.setOnClickListener(this@ListAnimalMatingsAdapter)
-            binding.btnDeleteList.setOnClickListener(this@ListAnimalMatingsAdapter)
+        RecyclerView.ViewHolder(binding.root),
+        View.OnClickListener {
+        @SuppressLint("SetTextI18n")
+        fun bindTo(data: BreedingResponseItem) {
+            binding.tvNameItemAnimalMating.text = "${data.name} #${data.id} "
+            binding.btnUpdateList.setOnClickListener(this)
+            binding.btnDeleteList.setOnClickListener(this)
         }
+
+        override fun onClick(v: View?) {
+            when (v?.id) {
+                R.id.btn_update_list -> {
+                    val getId = currentList[adapterPosition].id
+                    val mBundle = Bundle()
+                    mBundle.putInt("id", getId)
+                    v.findNavController()
+                        .navigate(
+                            R.id.action_listAnimalMatingsFragment_to_breedingRecordFragment,
+                            mBundle
+                        )
+                }
+
+                R.id.btn_delete_list -> {
+                    Toast.makeText(v.context, "no action", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_update_list -> {
-                v.findNavController()
-                    .navigate(R.id.action_listAnimalMatingsFragment_to_rekamPerkawinanFragment)
-            }
 
-            R.id.btn_delete_list -> {
-                Toast.makeText(v.context, "no action", Toast.LENGTH_SHORT).show()
+    companion object {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<BreedingResponseItem?> =
+            object : DiffUtil.ItemCallback<BreedingResponseItem?>() {
+                override fun areItemsTheSame(
+                    oldItem: BreedingResponseItem,
+                    newItem: BreedingResponseItem
+                ): Boolean {
+                    return oldItem.id == newItem.id
+                }
+
+                override fun areContentsTheSame(
+                    oldItem: BreedingResponseItem,
+                    newItem: BreedingResponseItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

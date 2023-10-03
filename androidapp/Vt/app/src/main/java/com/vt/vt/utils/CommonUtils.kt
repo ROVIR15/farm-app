@@ -49,10 +49,10 @@ fun getCurrentDate(): String {
 }
 
 
-fun formatDateBcs(dateTime: String?, dateFormats: String?): String {
+fun formatDate(dateTime: String?, dateFormats: String?): String {
     val sdf =
         SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
             Locale.getDefault()
         )
 

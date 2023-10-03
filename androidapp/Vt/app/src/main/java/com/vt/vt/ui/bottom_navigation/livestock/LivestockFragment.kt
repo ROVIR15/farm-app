@@ -29,12 +29,12 @@ class LivestockFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        livestockViewModel.getLivestocks()
         observerView()
     }
 
     private fun observerView() {
         livestockViewModel.apply {
-            getLivestocks()
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 showLoading(isLoading)
             }

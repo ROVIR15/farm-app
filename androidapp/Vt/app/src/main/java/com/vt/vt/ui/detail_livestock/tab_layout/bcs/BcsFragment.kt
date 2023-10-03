@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.model.BcsRecordsItem
 import com.vt.vt.databinding.FragmentBcsBinding
+import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +20,7 @@ class BcsFragment : Fragment() {
     private var _binding: FragmentBcsBinding? = null
     private val binding get() = _binding!!
 
-    private val bcsViewModel by viewModels<BcsViewModel>()
+    private val livestockViewModel by viewModels<EditLivestockViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,26 +31,30 @@ class BcsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveId = arguments?.getInt("livestockId")
+        livestockViewModel.getLivestockById(receiveId.toString())
         observerView()
     }
 
     private fun observerView() {
-        bcsViewModel.apply {
-            getBcsRecords()
+        livestockViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
             }
-            bcsEmitter.observe(viewLifecycleOwner) { data ->
-                binding.dataEmpty.isEmpty.isVisible = data.isEmpty()
-                listBcsRecord(data)
+            getLivestockById.observe(viewLifecycleOwner) { livestock ->
+                livestock?.let { data ->
+                    binding.dataEmpty.isEmpty.isVisible = data.bcsRecords.isEmpty()
+                    listBcsRecord(data.bcsRecords)
+                }
             }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            isError().observe(viewLifecycleOwner) { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun listBcsRecord(data: List<BcsRecordResponseItem>) {
+
+    private fun listBcsRecord(data: List<BcsRecordsItem>) {
         val adapter = BcsRecordAdapter()
         adapter.submitList(data)
         with(binding) {

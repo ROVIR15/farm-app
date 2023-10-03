@@ -43,7 +43,6 @@ class LivestockAdapter(
             binding.btnInfo.setOnClickListener(this)
         }
 
-
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.btn_options_item_livestock -> {

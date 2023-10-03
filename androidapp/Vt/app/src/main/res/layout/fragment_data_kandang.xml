@@ -24,8 +24,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_photo_data_kandang"
-                android:layout_width="298dp"
-                android:layout_height="348dp"
+                android:layout_width="328dp"
+                android:layout_height="358dp"
                 android:layout_marginTop="16dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/bg_file_photo"
@@ -80,22 +80,29 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spinner_cage_category"
+            <LinearLayout
+                android:id="@+id/linearSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="8dp"
-                android:spinnerMode="dialog"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:background="@drawable/bg_outline_box"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout">
+
+                <Spinner
+                    android:id="@+id/spinner_cage_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outlined_text_input_layout2"
@@ -108,7 +115,7 @@
                 app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_cage_category">
+                app:layout_constraintTop_toBottomOf="@+id/linearSpinner">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_description"

@@ -59,7 +59,6 @@ class DataBarangJasaViewModel @Inject constructor(private val productsVtReposito
             if (response.isSuccessful) {
                 _getProductEmitter.postValue(response.body())
             } else {
-                Log.e("error", "gagal mendapatkan product id")
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
                 isError.postValue(message)

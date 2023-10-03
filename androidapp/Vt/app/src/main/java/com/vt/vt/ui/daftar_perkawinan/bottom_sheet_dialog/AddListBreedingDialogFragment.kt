@@ -1,4 +1,4 @@
-package com.vt.vt.ui.daftar_perkawinan.dialog
+package com.vt.vt.ui.daftar_perkawinan.bottom_sheet_dialog
 
 import android.graphics.Color
 import android.os.Bundle

@@ -27,7 +27,7 @@
                     android:layout_width="220dp"
                     android:layout_height="220dp"
                     android:layout_marginTop="8dp"
-                    android:src="@mipmap/ic_user_profile"
+                    android:src="@drawable/photo"
                     app:layout_collapseMode="parallax"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +41,7 @@
                     android:padding="8dp"
                     android:text="Livestock Name"
                     android:textAlignment="center"
+                    android:textColor="@color/text_black"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/iv_detail_livestock"
@@ -52,8 +53,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:text=" Jantan \"
+                    android:maxLength="8"
+                    android:paddingVertical="8dp"
                     android:textAlignment="textEnd"
+                    android:textColor="@color/text_black"
                     app:layout_constraintEnd_toStartOf="@+id/tv_birth_animal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_livestock" />
@@ -63,7 +66,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:text=" 1 Tahun 6 Bulan \"
+                    android:padding="8dp"
+                    android:text="| 1 Tahun 6 Bulan |"
+                    android:textColor="@color/text_black"
                     app:layout_constraintEnd_toEndOf="@+id/tv_title_livestock"
                     app:layout_constraintStart_toStartOf="@+id/tv_title_livestock"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_livestock" />
@@ -73,7 +78,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:text=" Bangsa Arabic"
+                    android:maxLength="8"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/text_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tv_birth_animal"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_livestock" />
@@ -82,9 +89,10 @@
                     android:id="@+id/tv_description_livestock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="12dp"
+                    android:padding="8dp"
                     android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
                     android:textAlignment="center"
+                    android:textColor="@color/text_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_birth_animal" />
@@ -132,4 +140,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="48dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.vt.vt.core.data.source.remote.livestock.model.WeightRecordsItem
 import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
 import com.vt.vt.databinding.ItemBeratBadanBinding
 
 class ListWeightRecordAdapter :
-    ListAdapter<WeightRecordResponseItem, ListWeightRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<WeightRecordsItem, ListWeightRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemBeratBadanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,29 +26,29 @@ class ListWeightRecordAdapter :
     inner class ViewHolder(private val binding: ItemBeratBadanBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bindTo(data: WeightRecordResponseItem) {
+        fun bindTo(data: WeightRecordsItem) {
             with(binding) {
                 tvItemDateBeratBadan.text = data.date
                 tvItemValueBeratSekarang.text = "${data.score} Kg"
-                tvItemValueBeratSebelumnya.text = "${data.prevScore} Kg"
-                tvGrow.text = data.grow
+                tvItemValueBeratSebelumnya.text = "${null} Kg"
+//                tvGrow.text = data.grow
             }
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<WeightRecordResponseItem?> =
-            object : DiffUtil.ItemCallback<WeightRecordResponseItem?>() {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<WeightRecordsItem?> =
+            object : DiffUtil.ItemCallback<WeightRecordsItem?>() {
                 override fun areItemsTheSame(
-                    oldItem: WeightRecordResponseItem,
-                    newItem: WeightRecordResponseItem
+                    oldItem: WeightRecordsItem,
+                    newItem: WeightRecordsItem
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: WeightRecordResponseItem,
-                    newItem: WeightRecordResponseItem
+                    oldItem: WeightRecordsItem,
+                    newItem: WeightRecordsItem
                 ): Boolean {
                     return oldItem == newItem
                 }

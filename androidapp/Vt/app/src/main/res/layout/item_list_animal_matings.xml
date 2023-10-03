@@ -17,50 +17,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
-            android:padding="4dp"
-            android:text="Ditambahkan Pada"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:text="Dibuat pada tanggal"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:paddingHorizontal="4dp"
-            android:text="12 June 2023"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textStyle="bold" />
+            android:text="12 Januari 2023"
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="4dp"
-            android:background="@color/black_overlay" />
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name_item_animal_mating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:padding="4dp"
-            android:text="Pasangan #001"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginTop="8dp"
+            android:text="Title"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_createdAt_item_list_animal_matings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:paddingHorizontal="4dp"
-            android:text="Aktif sejak 12 Desember 2023"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textStyle="bold" />
+            android:text="Aktif pada 20 Agustus 2023"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="end"
             android:orientation="horizontal">
 
@@ -88,5 +80,4 @@
                 android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

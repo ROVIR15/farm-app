@@ -9,7 +9,12 @@ import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
+import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
+import com.vt.vt.core.data.source.remote.farm_profile.model.FarmProfileResponse
+import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
+import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordResponse
 import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordRequest
 import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponse
 import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
@@ -23,7 +28,6 @@ import com.vt.vt.core.data.source.remote.products.model.ProductRequest
 import com.vt.vt.core.data.source.remote.products.model.ProductResponse
 import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
 import com.vt.vt.core.data.source.remote.profile.model.ProfileResponse
-import com.vt.vt.core.data.source.remote.profile.model.UserResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
@@ -44,8 +48,9 @@ interface ApiService {
     @POST("login")
     suspend fun doLogin(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
+    //    Profile
     @GET("api/profile")
-    suspend fun getUser(): Response<UserResponse>
+    suspend fun getProfileUser(): Response<ProfileResponse>
 
     @POST("api/logout")
     suspend fun doLogout(): Response<LoginResponse>
@@ -170,7 +175,19 @@ interface ApiService {
     @POST("api/health-record")
     suspend fun createHealthRecord(@Body healthRecordRequest: HealthRecordRequest): Response<HealthRecordResponse>
 
-    //    Profile
-    @GET("api/profile")
-    suspend fun getProfileUser(): Response<ProfileResponse>
+    //    Farm Profile
+    @GET("api/farm-profile")
+    suspend fun getFarmProfile(): Response<FarmProfileResponse>
+
+    //    Farm Profile
+    @POST("api/feeding-record")
+    suspend fun createFeedingRecord(@Body feedingRecordRequest: FeedingRecordRequest): Response<FeedingRecordResponse>
+
+    // Breeding
+    @GET("api/breedings")
+    suspend fun getBreedings(): Response<List<BreedingResponseItem>>
+
+    @GET("api/breeding/{id}")
+    suspend fun getBreedingById(@Path("id") id: String): Response<BreedingByIdResponse>
+
 }

@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -15,10 +17,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentDetailLivestockBinding
 import com.vt.vt.ui.detail_livestock.adapter.ViewPagerDetailLivestockAdapter
-import com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment
-import com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.WeightFragment
-import com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.HealthRecordsFragment
-import com.vt.vt.ui.detail_livestock.tab_layout.pakan.PakanFragment
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,12 +26,11 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private var _binding: FragmentDetailLivestockBinding? = null
     private val binding get() = _binding!!
 
-    val editLivestockViewModel by viewModels<EditLivestockViewModel>()
+    private val editLivestockViewModel by viewModels<EditLivestockViewModel>()
     private var receiveId: String = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailLivestockBinding.inflate(inflater, container, false)
         return binding.root
@@ -61,19 +58,43 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     @SuppressLint("SetTextI18n")
     private fun observerView() {
         editLivestockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                binding.loading.progressBar.isVisible = it
+            }
             getLivestockById.observe(viewLifecycleOwner) { data ->
-                binding.tvTitleLivestock.setText(data?.name)
-                binding.tvBangsaAnimal.setText("Bangsa ${data?.bangsa}")
+                binding.tvTitleLivestock.text = data?.name
+                when (data?.gender) {
+                    1 -> {
+                        binding.tvDetailLivestockAnimalGender.text = "Jantan"
+                    }
+
+                    2 -> {
+                        binding.tvDetailLivestockAnimalGender.text = "Betina"
+                    }
+
+                    else -> {
+                        binding.tvDetailLivestockAnimalGender.text = ""
+                    }
+                }
+                binding.tvBangsaAnimal.text = "${data?.bangsa}"
+                binding.tvDescriptionLivestock.text = data?.description
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun setupViewPager() {
-        val fragmentList = arrayListOf(
-            WeightFragment(), HealthRecordsFragment(), BcsFragment(), PakanFragment()
+        val fragmentBundles = arrayListOf(
+            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
+            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
+            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
+            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
         )
+
         val adapter = ViewPagerDetailLivestockAdapter(
-            fragmentList, requireActivity().supportFragmentManager, lifecycle
+            fragmentBundles, requireActivity().supportFragmentManager, lifecycle
         )
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -103,6 +124,4 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
         return false
     }
-
-
 }

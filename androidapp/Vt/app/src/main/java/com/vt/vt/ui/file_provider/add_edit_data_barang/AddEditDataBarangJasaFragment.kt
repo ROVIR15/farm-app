@@ -25,7 +25,6 @@ import com.vt.vt.core.data.source.local.model.SpinnerCategoriesItem
 import com.vt.vt.core.data.source.remote.categories.viewmodel.CategoriesViewModel
 import com.vt.vt.databinding.FragmentAddEditDataBarangJasaBinding
 import com.vt.vt.ui.barang_dan_jasa.DataBarangDanJasaFragment.Companion.IS_UPDATE_DATA
-import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -70,10 +69,7 @@ class AddEditDataBarangJasaFragment : Fragment() {
             ivPhotoDataBarangJasa.setOnClickListener {
                 requestPermissionsIfNeeded()
             }
-            spinnerProductCategory.selected { position ->
-//                categoryId = 0
-                categoryId = spinnerItems[position].id
-            }
+
             btnSimpan.setOnClickListener {
                 val name = edtNamaBarang.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
@@ -115,12 +111,17 @@ class AddEditDataBarangJasaFragment : Fragment() {
                 Toast.makeText(requireContext(), it?.status, Toast.LENGTH_SHORT).show()
             }
             getProductEmitter.observe(viewLifecycleOwner) { data ->
-                with(binding) {
-                    binding.appBarLayout.topAppBar.title = "Edit Barang Jasa"
-                    edtNamaBarang.setText(data?.productName)
-                    spinnerProductCategory.selected { data?.categoryId }
-                    edtSatuan.setText(data?.unitMeasurement)
-//                    edtDescription.setText(data?.unitMeasurement)
+                categoriesViewModel.categoriesEmitter.observe(viewLifecycleOwner) { category ->
+                    with(binding) {
+                        binding.appBarLayout.topAppBar.title = "Edit Barang Jasa"
+                        edtNamaBarang.setText(data?.productName)
+                        val desiredCategoryId = data?.categoryId
+                        val desirePosition = category.indexOfFirst {
+                            it.id == desiredCategoryId
+                        }
+                        binding.spinnerProductCategory.setSelection(desirePosition)
+                        edtSatuan.setText(data?.unitMeasurement)
+                    }
                 }
             }
             isUpdatedEmitter.observe(viewLifecycleOwner) { data ->

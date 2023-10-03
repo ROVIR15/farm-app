@@ -48,6 +48,10 @@ class PenyimpanTernakFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 setOnMenuItemClickListener(this@PenyimpanTernakFragment)
             }
         }
+        observerView()
+    }
+
+    private fun observerView() {
         livestockStorage.getAllBlockAndArea()
 
         livestockStorage.observeLoading().observe(viewLifecycleOwner) { isLoading ->

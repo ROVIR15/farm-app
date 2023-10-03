@@ -19,4 +19,12 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/item_list_animal_matings" />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
+    <include
+        android:id="@+id/data_empty"
+        layout="@layout/data_empty" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -39,7 +39,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="Hello Jane👋"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Lets’s find your dream job"
+                android:text="Lets’s take care of your livestock"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -260,4 +260,8 @@
                 app:layout_constraintGuide_begin="365dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

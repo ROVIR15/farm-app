@@ -38,6 +38,7 @@ class RekamBeratBadanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val receiveId = arguments?.getInt("livestockId")
+        livestockViewModel.getLivestockById(receiveId.toString())
 
         with(binding) {
             appBarLayout.topAppBar.apply {
@@ -76,19 +77,19 @@ class RekamBeratBadanFragment : Fragment() {
             getLivestockById.observe(viewLifecycleOwner) { livestock ->
                 with(binding) {
                     tvTitleLivestock.text = livestock?.name.toString()
-                    tvBangsaAnimal.text = "/ ${livestock?.bangsa.toString()}"
+                    tvBangsaAnimal.text = livestock?.bangsa.toString()
                     tvDescriptionLivestock.text = livestock?.description.toString()
                     when (livestock?.gender) {
                         1 -> {
-                            tvDetailLivestockAnimalGender.text = "Jantan / "
+                            tvDetailLivestockAnimalGender.text = "Jantan"
                         }
 
                         2 -> {
-                            tvDetailLivestockAnimalGender.text = "Betina / "
+                            tvDetailLivestockAnimalGender.text = "Betina"
                         }
 
                         else -> {
-                            tvDetailLivestockAnimalGender.text = "None / "
+                            tvDetailLivestockAnimalGender.text = "None"
                         }
                     }
                 }
