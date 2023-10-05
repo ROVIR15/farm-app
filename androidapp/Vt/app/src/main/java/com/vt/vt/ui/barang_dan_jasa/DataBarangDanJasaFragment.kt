@@ -55,6 +55,9 @@ class DataBarangDanJasaFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             productsEmitter.observe(viewLifecycleOwner) { products ->
                 setRecyclerView(products)
             }
+            isDeletedProduct.observe(viewLifecycleOwner) {
+                getAllProducts()
+            }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
@@ -62,7 +65,7 @@ class DataBarangDanJasaFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private fun setRecyclerView(data: List<ProductResponseItem>) {
-        val adapter = ListBarangDanJasaAdapter()
+        val adapter = ListBarangDanJasaAdapter(listBarangDanJasaViewModel)
         adapter.submitList(data)
         with(binding) {
             listBarangJasa.layoutManager =
@@ -91,14 +94,6 @@ class DataBarangDanJasaFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun showLoading(state: Boolean) {
         with(binding) {
-//            btnSaveEditLivestock.isEnabled = !state
-//            btnCancelEditLivestock.isEnabled = !state
-//
-//            btnSaveEditLivestock.setBackgroundColor(
-//                if (state) Color.GRAY
-//                else ContextCompat.getColor(requireActivity(), R.color.btn_blue_icon)
-//            )
-
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -14,7 +15,7 @@ import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
 import com.vt.vt.databinding.ItemBarangDanJasaBinding
 
-class ListBarangDanJasaAdapter :
+class ListBarangDanJasaAdapter(private val viewModel: ListBarangDanJasaViewModel) :
     ListAdapter<ProductResponseItem, ListBarangDanJasaAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -67,7 +68,18 @@ class ListBarangDanJasaAdapter :
 
                 R.id.menu_delete -> {
                     DataBarangDanJasaFragment.IS_UPDATE_DATA = false
-                    println("delete products")
+                    AlertDialog.Builder(itemView.context).setTitle("Delete")
+                        .setIcon(R.drawable.ic_outline_delete_outline_24)
+                        .setMessage("Are you sure delete this Information")
+                        .setPositiveButton("Yes") { dialog, _ ->
+                            val productId = currentList[adapterPosition]
+                            viewModel.deleteProduct(
+                                productId.productId.toString()
+                            )
+                            dialog.dismiss()
+                        }.setNegativeButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }.create().show()
                     return true
                 }
             }
