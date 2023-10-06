@@ -58,15 +58,22 @@ def get_a_bcs_record(livestock_id):
         results = []
         # Serialize the bcs record data using the schema
         for item in query:
+            _growth = item.score - prev_score if prev_score is not None else 0
+            percentage = (_growth / item.score) * 100
+
             data = {
                 'id': item.id,
                 'livestock_id': item.livestock_id,
                 'date': item.date,
                 'score': item.score,
+                'prev_score': prev_score if prev_score is not None else 0,
                 'remarks': item.remarks,
-                'created_at': item.created_at
+                'created_at': item.created_at,
+                'growth': f'{percentage}%'
             }
             results.append(data)
+            prev_score: item.score
+
         result = bcs_many_record_schema.dump(results)
 
         # Return the serialized data as JSON response
