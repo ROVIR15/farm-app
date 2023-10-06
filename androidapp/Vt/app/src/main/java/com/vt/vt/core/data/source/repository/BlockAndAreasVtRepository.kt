@@ -18,6 +18,7 @@ class BlockAndAreasVtRepository @Inject constructor(private val apiService: ApiS
         apiService.deleteBlockArea(id)
 
     suspend fun getBlockAndArea(id: String) = apiService.getBlockArea(id)
+    suspend fun getBlockAndAreaInfoById(id: String) = apiService.getBlockAreaInfo(id)
 
     suspend fun updateBlockAndArea(
         id: String,

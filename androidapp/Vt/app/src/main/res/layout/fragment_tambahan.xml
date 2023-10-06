@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_zone_ternak"
+                android:id="@+id/tv_block_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -34,15 +34,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/content_home_subtitle"
+                android:id="@+id/tv_block_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
                 android:text="6 Kandang, 6 Ekor Ternak"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/tv_zone_ternak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_zone_ternak" />
+                app:layout_constraintStart_toStartOf="@+id/tv_block_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_block_name" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView"
@@ -53,7 +53,7 @@
                 android:text="Pilih Tambahan"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/content_home_subtitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_block_info" />
 
             <LinearLayout
                 android:id="@+id/linearLayout17"
@@ -145,4 +145,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

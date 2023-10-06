@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -41,6 +42,7 @@ class HijauanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveBlockId = arguments?.getInt("blockId")
+        pemberianTernakViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveHijauanId = arguments?.getInt("feedCategoryHijauanId")
 
         with(binding) {
@@ -79,9 +81,19 @@ class HijauanFragment : Fragment() {
 
     private fun observerView() {
         pemberianTernakViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                binding.loading.progressBar.isVisible = isLoading
+            }
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+            blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
+                binding.tvBlockName.text = data.name
+                binding.tvInfo.text = data.info
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
         listBarangDanJasaViewModel.apply {

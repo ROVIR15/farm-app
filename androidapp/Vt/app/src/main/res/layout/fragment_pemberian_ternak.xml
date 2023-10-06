@@ -17,4 +17,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

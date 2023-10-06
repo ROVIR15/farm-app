@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -40,6 +41,7 @@ class TambahanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveBlockId = arguments?.getInt("blockId")
+        pemberianTernakViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveTambahanId = arguments?.getInt("feedCategoryTambahanId")
 
         with(binding) {
@@ -75,9 +77,23 @@ class TambahanFragment : Fragment() {
 
     private fun observerView() {
         pemberianTernakViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                binding.loading.progressBar.isVisible = isLoading
+            }
+            blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
+                binding.tvBlockName.text = data.name
+                binding.tvBlockInfo.text = data.info
+            }
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
-                Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    it.message.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
         listBarangDanJasaViewModel.apply {

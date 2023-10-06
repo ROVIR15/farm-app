@@ -9,6 +9,7 @@ import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.block_areas.model.BlockAreaInfoResponse
 import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
 import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
@@ -63,6 +64,11 @@ interface ApiService {
     suspend fun getBlockArea(
         @Path("id") id: String
     ): Response<BlockAndAreasResponseItem>
+
+    @GET("api/block-area-info/{id}")
+    suspend fun getBlockAreaInfo(
+        @Path("id") id: String
+    ): Response<BlockAreaInfoResponse>
 
     @POST("api/block-area")
     suspend fun createBlockArea(@Body blockAndAreaRequest: BlockAndAreaRequest): Response<BlockAndAreasResponse>

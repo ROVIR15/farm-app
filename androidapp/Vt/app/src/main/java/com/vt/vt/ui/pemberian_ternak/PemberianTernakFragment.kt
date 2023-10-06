@@ -1,14 +1,18 @@
 package com.vt.vt.ui.pemberian_ternak
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentPemberianTernakBinding
+import com.vt.vt.ui.profile.personal_profile.PersonalProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +24,7 @@ class PemberianTernakFragment : Fragment() {
     private lateinit var mBundle: Bundle
 
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
+    private val personalProfileViewModel by viewModels<PersonalProfileViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,15 +47,7 @@ class PemberianTernakFragment : Fragment() {
                 putInt("feedCategoryTambahanId", 4)
             }
         }
-
-        val feedCategoryHijauanId = arguments?.getInt("feedCategoryHijauanId")
-        val receiveblockId = arguments?.getInt("blockAreaId")
-        val receiveSkuId = arguments?.getInt("skuId")
-        val receiveDate = arguments?.getString("date")
-        val receiveLeft = arguments?.getInt("left")
-        val receiveRemarks = arguments?.getInt("remarks")
-        val receiveScoreHijauan = arguments?.getInt("scoreHijauan")
-
+        observewView()
         with(binding) {
             this.appBarLayout.topAppBar.apply {
                 title = "Pemberian Ternak"
@@ -77,13 +74,23 @@ class PemberianTernakFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun observewView() {
+        personalProfileViewModel.getProfile()
+        personalProfileViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
+            binding.loading.progressBar.isVisible = isLoading
+        }
+        personalProfileViewModel.getProfileEmitter.observe(viewLifecycleOwner) { data ->
+            binding.contentPemberianMakanTernak.tvUsernameGreetings.text =
+                "Hello, ${data.message?.name}👋"
+        }
+        personalProfileViewModel.isError().observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-    companion object {
-        val EXTRA_CARD_NUMBER_ONE = "EXTRA_CARD_NUMBER_ONE"
-    }
-
 }
