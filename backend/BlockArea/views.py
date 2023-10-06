@@ -60,6 +60,42 @@ def get_block_areas():
         return jsonify(response), 500
 
 
+@views_block_area_bp.route('/block-area-info/<int:block_area_id>', methods=['GET'])
+@login_required
+def get_a_block_area_info(block_area_id):
+
+    try:
+        # Retrieve all livestock records from the database
+        query = BlockArea.query.options([
+            subqueryload(BlockArea.sleds),
+            subqueryload(BlockArea.livestock)]).get(block_area_id)
+
+        # Get the count of sleds and livestock for the BlockArea
+        sleds_count = len(query.sleds) if query.sleds else 0
+        livestock_count = len(query.livestock) if query.livestock else 0
+
+        result = {
+            'id': query.id,
+            'name': query.name,
+            'info': f'{sleds_count} Kandang, {livestock_count} Ekor',
+            'description': query.description,
+        }
+
+        # Serialize the livestock data using the schema
+        result = block_area_schema.dump(result)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to get collections of block area due to {error_message}'
+        }
+        return jsonify(response), 500
+
+
 @views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['GET'])
 @login_required
 def get_a_block_area(block_area_id):
@@ -70,9 +106,14 @@ def get_a_block_area(block_area_id):
             subqueryload(BlockArea.sleds),
             subqueryload(BlockArea.livestock)]).get(block_area_id)
 
+        # Get the count of sleds and livestock for the BlockArea
+        sleds_count = len(query.sleds) if query.sleds else 0
+        livestock_count = len(query.livestock) if query.livestock else 0
+
         result = {
             'id': query.id,
             'name': query.name,
+            'info': f'{sleds_count} Kandang, {livestock_count} Ekor',
             'description': query.description,
             'sleds': query.sleds,
             'livestock': []

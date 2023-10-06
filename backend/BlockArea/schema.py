@@ -10,6 +10,7 @@ class SledSchema(Schema):
 class BlockAreaSchema(Schema):
   id = fields.Int(primary_key=True, dump_only=True)
   name = fields.Str(required=True)
+  info = fields.Str(required=False)
   description = fields.Str(required=False)
   sleds = fields.Nested(SledSchema, many=True)
   livestock = fields.Nested(LivestockSchema_new, many=True)
