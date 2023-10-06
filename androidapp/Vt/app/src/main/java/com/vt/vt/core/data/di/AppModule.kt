@@ -11,8 +11,8 @@ import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.AnimalCageReposi
 import com.vt.vt.core.data.source.remote.dummy.list_animal_cage.IAnimalCage
 import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.AnimalMatingsRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.list_animal_matings.IAnimalMatings
-import com.vt.vt.core.data.source.remote.dummy.livestock.ILivestock
-import com.vt.vt.core.data.source.remote.dummy.livestock.LivestockRepositoryImpl
+import com.vt.vt.core.data.source.remote.dummy.livestock.IPakan
+import com.vt.vt.core.data.source.remote.dummy.livestock.PakanRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.HistoryPeranakanRepositoryImpl
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
@@ -43,7 +43,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideInterfaceLivestock(): ILivestock = LivestockRepositoryImpl()
+    fun provideInterfaceLivestock(): IPakan = PakanRepositoryImpl()
 
     @Provides
     @Singleton
