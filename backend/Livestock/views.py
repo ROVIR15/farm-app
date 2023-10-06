@@ -25,6 +25,7 @@ livestocks_schema = LivestockSchema(many=True)
 livestock_schema_new = LivestockSchema_new()
 livestocks_schema_new = LivestockSchema_new(many=True)
 
+
 @views_bp.route('/livestocks', methods=['GET'])
 @login_required
 def get_livestocks():
@@ -49,7 +50,7 @@ def get_livestocks():
         for item in query:
             if hasattr(item, 'livestock'):
                 date_obj = item.livestock.created_at
-            
+
                 # Format the date as "DD MMMM YYYY"
                 formatted_date = date_obj.strftime("%d %B %Y")
 
@@ -97,10 +98,71 @@ def get_a_livestock(livestock_id):
             'bangsa': query.bangsa,
             'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
             'description': query.description,
-            'bcs_records': query.bcs_records,
-            'weight_records': query.weight_records,
+            'bcs_records': [],
+            'weight_records': [],
             'health_records': query.health_records
         }
+
+        results_bcs_records = []
+        results_weight_records = []
+        prev_score = None
+
+        if isinstance(query.bcs_records, list):
+            for current_record in query.bcs_records:
+                data_bcs = {
+                    'id': current_record.id,
+                    'livestock_id': current_record.livestock_id,
+                    'date': current_record.date,
+                    'score': current_record.score,
+                    'remarks': current_record.remarks,
+                    'created_at': current_record.created_at
+                }
+
+                if prev_score is not None:
+                    growth = current_record.score - prev_score
+                    percentage = (growth / prev_score) * 100
+                    # Format the percentage with two decimal places
+                    data_bcs['growth'] = f'{percentage:.2f}%'
+                    # Format the percentage with two decimal places
+                    data_bcs['prev_score'] = prev_score if prev_score is not None else 0
+                else:
+                    # Format the percentage with two decimal places
+                    data_bcs['growth'] = f'{0:.2f}%'
+                    # Format the percentage with two decimal places
+                    data_bcs['prev_score'] = 0
+
+                results_bcs_records.append(data_bcs)
+                prev_score = current_record.score  # Update prev_score for the next iteration
+
+        if isinstance(query.weight_records, list):
+            for current_record in query.bcs_records:
+                data_weight = {
+                    'id': current_record.id,
+                    'livestock_id': current_record.livestock_id,
+                    'date': current_record.date,
+                    'score': current_record.score,
+                    'remarks': current_record.remarks,
+                    'created_at': current_record.created_at
+                }
+
+                if prev_score is not None:
+                    growth = current_record.score - prev_score
+                    percentage = (growth / prev_score) * 100
+                    # Format the percentage with two decimal places
+                    data_weight['growth'] = f'{percentage:.2f}%'
+                    # Format the percentage with two decimal places
+                    data_weight['prev_score'] = prev_score if prev_score is not None else 0
+                else:
+                    # Format the percentage with two decimal places
+                    data_weight['growth'] = f'{0:.2f}%'
+                    # Format the percentage with two decimal places
+                    data_weight['prev_score'] = 0
+
+                results_weight_records.append(data_weight)
+                prev_score = current_record.score  # Update prev_score for the next iteration
+
+        result['bcs_records'] = results_bcs_records[::-1]
+        result['weight_records'] = results_weight_records[::-1]
 
         # Serialize the livestock data using the schema
         result = livestock_schema.dump(result)

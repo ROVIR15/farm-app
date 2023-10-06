@@ -1,4 +1,4 @@
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, asc
 from datetime import datetime, timedelta
 from db_connection import db
 
@@ -19,11 +19,11 @@ class Livestock (db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     # info = db.relationship('BlockAreaSledLivestock', backref='livestock', lazy=True)
 
-    weight_records = db.relationship('WeightRecord', back_populates='livestock', order_by=desc(
+    weight_records = db.relationship('WeightRecord', back_populates='livestock', order_by=asc(
         WeightRecord.created_at), lazy=True)
-    bcs_records = db.relationship('BCSRecord', back_populates='livestock', order_by=desc(
+    bcs_records = db.relationship('BCSRecord', back_populates='livestock', order_by=asc(
         BCSRecord.created_at), lazy=True)
-    health_records = db.relationship('HealthRecord', back_populates='livestock', order_by=desc(
+    health_records = db.relationship('HealthRecord', back_populates='livestock', order_by=asc(
         HealthRecord.created_at), lazy=True)
 
     def get_gender_label(self):
