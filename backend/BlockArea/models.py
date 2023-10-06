@@ -13,6 +13,7 @@ class BlockArea (db.Model):
 
     sleds = db.relationship('Sled', back_populates='block_area', lazy=True)
     livestock = db.relationship('BlockAreaSledLivestock', back_populates='block_area', lazy=True)
+    feeding_records = db.relationship('FeedingRecord', back_populates='block_area', lazy=True)
 
     def __repr__(self):
         return f'<BlockArea {self.name}>'

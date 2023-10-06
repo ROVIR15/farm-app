@@ -1,10 +1,11 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy import desc
+from sqlalchemy import func, desc
 from sqlalchemy.orm import subqueryload
 from BlockArea.models import BlockArea
 from FarmProfile.HasBlockArea.models import HasBlockArea as FarmProfileHasBlockArea
 from FarmProfile.models import FarmProfileHasUsers
+from Record.FeedingRecord.models import FeedingRecord
 from BlockArea.schema import BlockAreaSchema
 
 from auth import login_required, current_user, current_farm_profile
@@ -66,9 +67,7 @@ def get_a_block_area_info(block_area_id):
 
     try:
         # Retrieve all livestock records from the database
-        query = BlockArea.query.options([
-            subqueryload(BlockArea.sleds),
-            subqueryload(BlockArea.livestock)]).get(block_area_id)
+        query = BlockArea.query.get(block_area_id)
 
         # Get the count of sleds and livestock for the BlockArea
         sleds_count = len(query.sleds) if query.sleds else 0
@@ -106,6 +105,51 @@ def get_a_block_area(block_area_id):
             subqueryload(BlockArea.sleds),
             subqueryload(BlockArea.livestock)]).get(block_area_id)
 
+        columns_to_select = [
+            FeedingRecord.feed_category,
+            FeedingRecord.block_area_id,
+            func.to_char(FeedingRecord.created_at, 'DD Mon YYYY').label('day'),
+            func.sum(FeedingRecord.score).label('total_score')
+        ]
+ 
+        query2 = FeedingRecord.query \
+            .with_entities(*columns_to_select) \
+            .filter_by(block_area_id=block_area_id) \
+            .group_by(FeedingRecord.feed_category, FeedingRecord.block_area_id, func.to_char(FeedingRecord.created_at, 'DD Mon YYYY')) \
+            .order_by(desc(func.to_char(FeedingRecord.created_at, 'DD Mon YYYY'))) \
+            .all()
+
+        
+        # Create a dictionary to group data by 'day'
+        day_map = {}
+
+        results_data = []
+        for item in query2:
+            day = item.day
+            feed_category = item.feed_category
+            total_score = item.total_score
+
+            result = {
+                'day': day,
+                'block_area_id': item.block_area_id,
+                'feed_list': []
+            }
+
+            if day not in day_map:
+                day_map[day] = {
+                    "day": day,
+                    "block_area_id": item.block_area_id,
+                    "feed_list": []
+                }
+
+            day_map[day]["feed_list"].append({
+                "feed_category": feed_category,
+                "total_score": total_score
+            })
+
+            result.update(day_map[day])  # Use update to add items from day_map to result dictionary
+            results_data.append(result)
+
         # Get the count of sleds and livestock for the BlockArea
         sleds_count = len(query.sleds) if query.sleds else 0
         livestock_count = len(query.livestock) if query.livestock else 0
@@ -116,7 +160,8 @@ def get_a_block_area(block_area_id):
             'info': f'{sleds_count} Kandang, {livestock_count} Ekor',
             'description': query.description,
             'sleds': query.sleds,
-            'livestock': []
+            'livestock': [],
+            'feeding_records': []
         }
 
         livestock_list = []
@@ -135,6 +180,7 @@ def get_a_block_area(block_area_id):
                 livestock_list.append(_temp)
 
         result['livestock'] = livestock_list
+        result['feeding_records'] = results_data
 
         # Serialize the livestock data using the schema
         result = block_area_schema.dump(result)

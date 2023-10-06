@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields
 from Livestock.schema import LivestockSchema_new
+from Record.FeedingRecord.schema import FeedListSchema
 
 class SledSchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
@@ -14,3 +15,4 @@ class BlockAreaSchema(Schema):
   description = fields.Str(required=False)
   sleds = fields.Nested(SledSchema, many=True)
   livestock = fields.Nested(LivestockSchema_new, many=True)
+  feeding_records = fields.Nested(FeedListSchema, many=True)

@@ -11,3 +11,12 @@ class FeedingRecordSchema(Schema):
     left = fields.Int(required=True)
     remarks = fields.Str(required=True)
     created_at = CustomDateTimeField()
+
+class FeedItemSchema(Schema):
+    feed_category = fields.Integer()
+    total_score = fields.Float()
+
+class FeedListSchema(Schema):
+    block_area_id = fields.Integer()
+    day = fields.Str(required=True)
+    feed_list = fields.List(fields.Nested(FeedItemSchema))
