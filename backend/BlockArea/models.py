@@ -12,6 +12,7 @@ class BlockArea (db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
     sleds = db.relationship('Sled', back_populates='block_area', lazy=True)
+    livestock = db.relationship('BlockAreaSledLivestock', back_populates='block_area', lazy=True)
 
     def __repr__(self):
         return f'<BlockArea {self.name}>'

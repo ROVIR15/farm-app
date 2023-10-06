@@ -22,7 +22,7 @@ def get_block_areas():
     # query = BlockArea.query.all()
     # query = BlockArea.query.options(subqueryload(BlockArea.sleds)).all()
     farm_profile_id = current_farm_profile()
-    
+
     try:
         query = FarmProfileHasBlockArea.query.options(
             subqueryload(FarmProfileHasBlockArea.block_area)).filter_by(farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasBlockArea.block_area_id)).all()
@@ -34,7 +34,7 @@ def get_block_areas():
                 'message': 'You dont have any block area'
             }
             return jsonify(response), 404
-        
+
         # Serialize the livestock data using the schema
         for item in query:
             if hasattr(item, 'block_area'):
@@ -63,16 +63,41 @@ def get_block_areas():
 @views_block_area_bp.route('/block-area/<int:block_area_id>', methods=['GET'])
 @login_required
 def get_a_block_area(block_area_id):
-    # Retrieve all livestock records from the database
-    query = BlockArea.query.options(
-        subqueryload(BlockArea.sleds)).get(block_area_id)
 
-    # Serialize the livestock data using the schema
-    result = block_area_schema.dump(query)
+    try:
+        # Retrieve all livestock records from the database
+        query = BlockArea.query.options([
+            subqueryload(BlockArea.sleds), 
+            subqueryload(BlockArea.livestock)]).get(block_area_id)
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        result = {
+            'id': query.id,
+            'name': query.name,
+            'description': query.description,
+            'sleds': query.sleds,
+            'livestock': []
+        }
 
+        livestock_list = []
+        if isinstance(query.livestock, list):
+            for item in query.livestock:
+                livestock_list.append(item.livestock)
+        
+        result['livestock'] = livestock_list
+
+        # Serialize the livestock data using the schema
+        result = block_area_schema.dump(result)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to get collections of block area due to {error_message}'
+        }
+        return jsonify(response), 500
 
 @views_block_area_bp.route('/block-area', methods=['POST'])
 @login_required
