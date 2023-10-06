@@ -6,8 +6,9 @@ from Record.HealthRecord.schema import HealthRecordSchema
 class LivestockSchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
     name = fields.Str(required=True)
-    gender = fields.Int(required=True)
+    gender = fields.Str(required=True)
     bangsa = fields.Str(required=True)
+    info = fields.Str(required=False)
     description = fields.Str(required=True)
     weight_records = fields.Nested(WeightRecordSchema, allow_none=True, many=True)
     bcs_records = fields.Nested(BCSRecordSchema, allow_none=True, many=True)
@@ -16,6 +17,8 @@ class LivestockSchema(Schema):
 class LivestockSchema_new(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
     name = fields.Str(required=True)
-    gender = fields.Int(required=True)
+    gender = fields.Str(required=True)
     bangsa = fields.Str(required=True)
     description = fields.Str(required=True)
+    info = fields.Str(required=False)
+    created_at = fields.Str(required=True)

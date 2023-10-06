@@ -1,15 +1,17 @@
 from sqlalchemy import func, desc
-from datetime import datetime
+from datetime import datetime, timedelta
 from db_connection import db
 
 from Record.WeightRecord.models import WeightRecord
 from Record.BCSRecord.models import BCSRecord
 from Record.HealthRecord.models import HealthRecord
 
+
 class Livestock (db.Model):
     __tablename__ = "livestock"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    birth_date = db.Column(db.Date(), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     gender = db.Column(db.Integer, nullable=False)
     bangsa = db.Column(db.String(50), nullable=False)
@@ -17,9 +19,45 @@ class Livestock (db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     # info = db.relationship('BlockAreaSledLivestock', backref='livestock', lazy=True)
 
-    weight_records = db.relationship('WeightRecord', back_populates='livestock', order_by=desc(WeightRecord.created_at), lazy=True)
-    bcs_records = db.relationship('BCSRecord', back_populates='livestock', order_by=desc(BCSRecord.created_at), lazy=True)
-    health_records = db.relationship('HealthRecord', back_populates='livestock', order_by=desc(HealthRecord.created_at), lazy=True)
+    weight_records = db.relationship('WeightRecord', back_populates='livestock', order_by=desc(
+        WeightRecord.created_at), lazy=True)
+    bcs_records = db.relationship('BCSRecord', back_populates='livestock', order_by=desc(
+        BCSRecord.created_at), lazy=True)
+    health_records = db.relationship('HealthRecord', back_populates='livestock', order_by=desc(
+        HealthRecord.created_at), lazy=True)
+
+    def get_gender_label(self):
+        gender_mapping = {1: 'Jantan', 2: 'Betina'}
+        return gender_mapping.get(self.gender, None)
+
+    def formatted_created_date(self):
+        # Convert the date string to a datetime object
+        date_obj = datetime.strptime(self.created_at, "%Y-%m-%dT%H:%M:%S.%f")
+
+        # Format the date as "DD MMMM YYYY"
+        formatted_date = date_obj.strftime("%d %B %Y")
+
+        return formatted_date
+
+    def calculate_age(self):
+        current_date = datetime.now().date()
+        age = current_date - self.birth_date
+
+        print(current_date, self.birth_date)
+    
+        years = age.days // 365
+        remaining_days = age.days % 365
+        months = remaining_days // 30
+    
+        if years > 0 and months > 0:
+            return f"{years} Tahun {months} Bulan"
+        elif years > 0:
+            return f"{years} Tahun"
+        elif months > 0:
+            return f"{months} Bulan"
+        else:
+            return "Kurang dari sebulan"
+
 
 def __repr__(self):
     return f'<Livestock {self.name}>'

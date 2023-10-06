@@ -4,6 +4,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
 from Livestock.schema import LivestockSchema
+from Livestock.schema import LivestockSchema_new
 
 from ProductHasCategory.models import ProductHasCategory
 from Product.models import Product
@@ -12,6 +13,9 @@ from SKU.models import SKU
 from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
 from FarmProfile.models import FarmProfileHasUsers
 
+from utils.index import formatted_created_date
+
+from datetime import datetime
 
 from auth import login_required, current_farm_profile
 
@@ -20,6 +24,8 @@ views_bp = Blueprint('views_livestock', __name__)
 livestock_schema = LivestockSchema()
 livestocks_schema = LivestockSchema(many=True)
 
+livestock_schema_new = LivestockSchema_new()
+livestocks_schema_new = LivestockSchema_new(many=True)
 
 @views_bp.route('/livestocks', methods=['GET'])
 @login_required
@@ -28,7 +34,8 @@ def get_livestocks():
     farm_profile_id = current_farm_profile()
 
     try:
-        query = FarmProfileHasLivestock.query.options([subqueryload(FarmProfileHasLivestock.livestock)]).filter_by(farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasLivestock.livestock_id)).all()
+        query = FarmProfileHasLivestock.query.options([subqueryload(FarmProfileHasLivestock.livestock)]).filter_by(
+            farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasLivestock.livestock_id)).all()
         # query = Livestock.query.all()
 
         results = []
@@ -43,17 +50,23 @@ def get_livestocks():
         # Serialize the livestock data using the schema
         for item in query:
             if hasattr(item, 'livestock'):
+                date_obj = item.livestock.created_at
+            
+                # Format the date as "DD MMMM YYYY"
+                formatted_date = date_obj.strftime("%d %B %Y")
+
                 data = {
                     'id': item.livestock.id,
                     'name': item.livestock.name,
                     'gender': item.livestock.gender,
                     'bangsa': item.livestock.bangsa,
+                    'info': f'{item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                     'description': item.livestock.description,
-                    'created_at': item.livestock.created_at,
+                    'created_at': formatted_date,
                 }
                 results.append(data)
-        
-        result = livestocks_schema.dump(results)
+
+        result = livestocks_schema_new.dump(results)
         # Return the serialized data as JSON response
         return jsonify(result)
 
@@ -79,8 +92,20 @@ def get_a_livestock(livestock_id):
             subqueryload(Livestock.health_records)
         ]).get(livestock_id)
 
+        result = {
+            'id': query.id,
+            'name': query.name,
+            'gender': query.gender,
+            'bangsa': query.bangsa,
+            'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+            'description': query.description,
+            'bcs_records': query.bcs_records,
+            'weight_records': query.weight_records,
+            'health_records': query.health_records
+        }
+
         # Serialize the livestock data using the schema
-        result = livestock_schema.dump(query)
+        result = livestock_schema.dump(result)
 
         # Return the serialized data as JSON response
         return jsonify(result)
@@ -104,6 +129,7 @@ def post_livestock():
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
+    birth_date = data.get('birth_date')
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
@@ -114,12 +140,13 @@ def post_livestock():
         if not farm_profile_id:
             raise Exception("Cannot find farm profile!")
         else:
-            query = Livestock(name=name, gender=gender,
+            query = Livestock(name=name, gender=gender, birth_date=birth_date,
                               bangsa=bangsa, description=description)
             db.session.add(query)
             db.session.commit()
 
-            product = Product(name=name, unit_measurement="ekor", description="none")
+            product = Product(
+                name=name, unit_measurement="ekor", description="none")
             db.session.add(product)
             db.session.commit()
 
