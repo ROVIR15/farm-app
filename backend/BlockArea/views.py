@@ -8,7 +8,7 @@ from FarmProfile.models import FarmProfileHasUsers
 from Record.FeedingRecord.models import FeedingRecord
 from BlockArea.schema import BlockAreaSchema
 
-from utils.get_feed_category_label import get_feed_category_label
+from utils.index import get_feed_category_label, remove_duplicates
 
 from auth import login_required, current_user, current_farm_profile
 
@@ -181,7 +181,7 @@ def get_a_block_area(block_area_id):
                 livestock_list.append(_temp)
 
         result['livestock'] = livestock_list
-        result['feeding_records'] = results_data
+        result['feeding_records'] = remove_duplicates(results_data, 'day')
 
         # Serialize the livestock data using the schema
         result = block_area_schema.dump(result)

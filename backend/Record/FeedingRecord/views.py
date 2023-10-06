@@ -5,7 +5,7 @@ from sqlalchemy.orm import subqueryload
 from Record.FeedingRecord.models import FeedingRecord
 from Record.FeedingRecord.schema import FeedingRecordSchema
 
-from utils.get_feed_category_label import get_feed_category_label
+from utils.index import get_feed_category_label, remove_duplicates
 
 views_consumption_bp = Blueprint('views', __name__)
 
@@ -102,6 +102,8 @@ def get_a_consumption_record(block_area_id):
 
             result.update(day_map[day])            
             results.append(result)
+
+        results = remove_duplicates(results, 'day')
 
         # Serialize the livestock data using the schema
         # result = consumption_records_schema.dump(query)
