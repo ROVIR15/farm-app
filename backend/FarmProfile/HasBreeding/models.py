@@ -12,4 +12,6 @@ class HasBreeding (db.Model):
         db.Integer(), db.ForeignKey('breeding.id'), nullable=False)  # db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
-    breedings = db.relationship('Breeding', backref='farm_profile_has_breeding')
+    breedings = db.relationship(
+        'Breeding', backref='farm_profile_has_breeding')
+

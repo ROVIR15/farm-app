@@ -20,6 +20,10 @@ class FeedingRecord(db.Model):
     # livestock = db.relationship('Sled', back_populates='block_area', lazy=True)
     block_area = db.relationship('BlockArea', back_populates='feeding_records', lazy=True)
 
+    def get_feed_category_label(self):
+        feed_category_mapping = {1: 'Hijauan', 2: 'Konsentrat', 3: 'Vitamin', 4: 'Tambahan'}
+        return feed_category_mapping.get(self.feed_category, None)
+
     def __repr__(self):
         return f'<HealthRecord {self.name}>'
 

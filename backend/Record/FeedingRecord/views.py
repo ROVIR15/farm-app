@@ -5,6 +5,8 @@ from sqlalchemy.orm import subqueryload
 from Record.FeedingRecord.models import FeedingRecord
 from Record.FeedingRecord.schema import FeedingRecordSchema
 
+from utils.get_feed_category_label import get_feed_category_label
+
 views_consumption_bp = Blueprint('views', __name__)
 
 consumption_record_schema = FeedingRecordSchema()
@@ -94,7 +96,7 @@ def get_a_consumption_record(block_area_id):
                 }
 
             day_map[day]["feed_list"].append({
-                "feed_category": feed_category,
+                "feed_category": get_feed_category_label(feed_category),
                 "total_score": total_score
             })
 

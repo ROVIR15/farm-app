@@ -13,7 +13,7 @@ class FeedingRecordSchema(Schema):
     created_at = CustomDateTimeField()
 
 class FeedItemSchema(Schema):
-    feed_category = fields.Integer()
+    feed_category = fields.Str()
     total_score = fields.Float()
 
 class FeedListSchema(Schema):

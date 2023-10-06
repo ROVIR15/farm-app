@@ -8,6 +8,8 @@ from FarmProfile.models import FarmProfileHasUsers
 from Record.FeedingRecord.models import FeedingRecord
 from BlockArea.schema import BlockAreaSchema
 
+from utils.get_feed_category_label import get_feed_category_label
+
 from auth import login_required, current_user, current_farm_profile
 
 views_block_area_bp = Blueprint('views_block_area', __name__)
@@ -119,7 +121,6 @@ def get_a_block_area(block_area_id):
             .order_by(desc(func.to_char(FeedingRecord.created_at, 'DD Mon YYYY'))) \
             .all()
 
-        
         # Create a dictionary to group data by 'day'
         day_map = {}
 
@@ -143,7 +144,7 @@ def get_a_block_area(block_area_id):
                 }
 
             day_map[day]["feed_list"].append({
-                "feed_category": feed_category,
+                "feed_category": get_feed_category_label(feed_category),
                 "total_score": total_score
             })
 
