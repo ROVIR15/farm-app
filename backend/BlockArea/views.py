@@ -82,7 +82,7 @@ def get_a_block_area(block_area_id):
         if isinstance(query.livestock, list):
             for item in query.livestock:
                 livestock = item.livestock
-                result = {
+                _temp = {
                     'id': livestock.id,
                     'name': livestock.name,
                     'gender': livestock.gender,
@@ -91,7 +91,7 @@ def get_a_block_area(block_area_id):
                     'description': livestock.description,
                     'created_at': livestock.created_at.strftime("%d %B %Y")
                 }
-                livestock_list.append(result)
+                livestock_list.append(_temp)
 
         result['livestock'] = livestock_list
 
