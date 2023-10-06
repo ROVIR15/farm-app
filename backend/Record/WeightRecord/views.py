@@ -56,17 +56,31 @@ def get_a_weight_record(livestock_id):
         query = WeightRecord.query.filter_by(livestock_id=livestock_id).order_by(desc(WeightRecord.created_at))
 
         results = []
-        # Serialize the livestock data using the schema
-        for item in query:
+        prev_score = None  # Initialize prev_score to None
+
+        for current_record in query:
             data = {
-                'id': item.id,
-                'livestock_id': item.livestock_id,
-                'date': item.date,
-                'score': item.score,
-                'remarks': item.remarks,
-                'created_at': item.created_at
+                'id': current_record.id,
+                'livestock_id': current_record.livestock_id,
+                'date': current_record.date,
+                'score': current_record.score,
+                'remarks': current_record.remarks,
+                'created_at': current_record.created_at
             }
+
+            if prev_score is not None:
+                growth = current_record.score - prev_score
+                percentage = (growth / prev_score) * 100
+                data['growth'] = f'{percentage:.2f}%'  # Format the percentage with two decimal places
+                data['prev_score'] = prev_score if prev_score is not None else 0 # Format the percentage with two decimal places
+            else:
+                data['growth'] = f'{0:.2f}%'  # Format the percentage with two decimal places
+                data['prev_score'] = 0  # Format the percentage with two decimal places
+
             results.append(data)
+            prev_score = current_record.score  # Update prev_score for the next iteration
+
+        results = results[::-1]
         result = weight_many_record_schema.dump(results)
 
         # result = weight_record_schema.dump(query)
