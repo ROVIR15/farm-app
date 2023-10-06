@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from Record.BCSRecord.models import BCSRecord
 from Record.BCSRecord.schema import BCSRecordSchema
 
-from sqlalchemy import desc
+from sqlalchemy import desc, asc
 
 from auth import login_required
 
@@ -52,28 +52,34 @@ def get_bcs_record():
 def get_a_bcs_record(livestock_id):
     try:
         # Retrieve BCS Record based on livestock_id from the database
-        query = BCSRecord.query.filter_by(livestock_id=livestock_id).order_by(desc(BCSRecord.created_at))
+        query = BCSRecord.query.filter_by(livestock_id=livestock_id).order_by(asc(BCSRecord.created_at))
 
-        prev_score =  None
         results = []
-        # Serialize the bcs record data using the schema
-        for item in query:
-            _growth = item.score - prev_score if prev_score is not None else 0
-            percentage = (_growth / item.score) * 100
+        prev_score = None  # Initialize prev_score to None
 
+        for current_record in query:
             data = {
-                'id': item.id,
-                'livestock_id': item.livestock_id,
-                'date': item.date,
-                'score': item.score,
-                'prev_score': prev_score if prev_score is not None else 0,
-                'remarks': item.remarks,
-                'created_at': item.created_at,
-                'growth': f'{percentage}%'
+                'id': current_record.id,
+                'livestock_id': current_record.livestock_id,
+                'date': current_record.date,
+                'score': current_record.score,
+                'remarks': current_record.remarks,
+                'created_at': current_record.created_at
             }
-            results.append(data)
-            prev_score: item.score
 
+            if prev_score is not None:
+                growth = current_record.score - prev_score
+                percentage = (growth / prev_score) * 100
+                data['growth'] = f'{percentage:.2f}%'  # Format the percentage with two decimal places
+                data['prev_score'] = prev_score if prev_score is not None else 0 # Format the percentage with two decimal places
+            else:
+                data['growth'] = f'{0:.2f}%'  # Format the percentage with two decimal places
+                data['prev_score'] = 0  # Format the percentage with two decimal places
+
+            results.append(data)
+            prev_score = current_record.score  # Update prev_score for the next iteration
+
+        results = results[::-1]
         result = bcs_many_record_schema.dump(results)
 
         # Return the serialized data as JSON response
