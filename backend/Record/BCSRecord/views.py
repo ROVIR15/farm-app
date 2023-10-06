@@ -54,6 +54,7 @@ def get_a_bcs_record(livestock_id):
         # Retrieve BCS Record based on livestock_id from the database
         query = BCSRecord.query.filter_by(livestock_id=livestock_id).order_by(desc(BCSRecord.created_at))
 
+        prev_score =  None
         results = []
         # Serialize the bcs record data using the schema
         for item in query:
