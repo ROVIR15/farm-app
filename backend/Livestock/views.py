@@ -13,8 +13,6 @@ from SKU.models import SKU
 from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
 from FarmProfile.models import FarmProfileHasUsers
 
-from utils.index import formatted_created_date
-
 from datetime import datetime
 
 from auth import login_required, current_farm_profile
