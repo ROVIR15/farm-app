@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.databinding.FragmentAreaListLivestockBinding
+import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +21,9 @@ class AreaListLivestockFragment : Fragment() {
     private var _binding: FragmentAreaListLivestockBinding? = null
     private val binding get() = _binding!!
     private val dataAreaViewModel by viewModels<DataAreaViewModel>()
+    private val livestockViewModel by viewModels<LivestockViewModel>()
+
+    private var receiveId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,7 +34,7 @@ class AreaListLivestockFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveId = arguments?.getInt("areaBlockId")
+        receiveId = arguments?.getInt("areaBlockId")
         dataAreaViewModel.getBlockArea(receiveId.toString())
         observerView()
     }
@@ -53,10 +57,32 @@ class AreaListLivestockFragment : Fragment() {
                     .show()
             }
         }
+        livestockViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                binding.loading.progressBar.isVisible = it
+            }
+            isDeleted.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { eventMessage ->
+                    Toast.makeText(
+                        requireActivity(),
+                        eventMessage,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+            deleteLivestock.observe(viewLifecycleOwner) {
+                dataAreaViewModel.getBlockArea(receiveId.toString())
+            }
+            isError().observe(viewLifecycleOwner) { errorMessage ->
+                Toast.makeText(requireActivity(), errorMessage.toString(), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun listAreaLivestock(data: List<LivestockResponseItem>?) {
-        val adapter = AreaListLivestockAdapter()
+        val adapter = AreaListLivestockAdapter(livestockViewModel)
         adapter.submitList(data)
         binding.listBlockLivestock.adapter = adapter
         binding.listBlockLivestock.layoutManager =

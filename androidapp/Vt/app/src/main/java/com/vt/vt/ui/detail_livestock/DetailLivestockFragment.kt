@@ -63,20 +63,7 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
             getLivestockById.observe(viewLifecycleOwner) { data ->
                 binding.tvTitleLivestock.text = data?.name
-                when (data?.gender) {
-                    1 -> {
-                        binding.tvDetailLivestockAnimalGender.text = "Jantan"
-                    }
-
-                    2 -> {
-                        binding.tvDetailLivestockAnimalGender.text = "Betina"
-                    }
-
-                    else -> {
-                        binding.tvDetailLivestockAnimalGender.text = ""
-                    }
-                }
-                binding.tvBangsaAnimal.text = "${data?.bangsa}"
+                binding.tvInfo.text = data?.info
                 binding.tvDescriptionLivestock.text = data?.description
             }
             isError().observe(viewLifecycleOwner) {

@@ -15,7 +15,6 @@ data class LivestockResponse(
 
     @field:SerializedName("LivestockResponse")
     val livestockResponse: List<LivestockResponseItem>
-
 )
 
 data class LivestockResponseItem(
@@ -23,6 +22,10 @@ data class LivestockResponseItem(
     val id: Int,
     @field:SerializedName("bangsa")
     val bangsa: String,
+    @field:SerializedName("created_at")
+    val createdAt: String,
+    @field:SerializedName("info")
+    val info: String,
     @field:SerializedName("gender")
     val gender: Int,
     @field:SerializedName("description")

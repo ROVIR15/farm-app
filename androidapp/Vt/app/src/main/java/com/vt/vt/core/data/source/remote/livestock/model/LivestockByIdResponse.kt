@@ -10,6 +10,9 @@ data class LivestockByIdResponse(
     @field:SerializedName("name")
     val name: String,
 
+    @field:SerializedName("info")
+    val info: String,
+
     @field:SerializedName("bangsa")
     val bangsa: String,
 
@@ -61,6 +64,12 @@ data class WeightRecordsItem(
     @field:SerializedName("score")
     val score: Double,
 
+    @field:SerializedName("growth")
+    val growth: String,
+
+    @field:SerializedName("prev_score")
+    val prevScore: Double,
+
     @field:SerializedName("livestock_id")
     val livestockId: Int,
 
@@ -79,14 +88,20 @@ data class BcsRecordsItem(
     @field:SerializedName("date")
     val date: String,
 
-    @field:SerializedName("score")
-    val score: Double,
-
     @field:SerializedName("livestock_id")
     val livestockId: Int,
 
     @field:SerializedName("created_at")
     val createdAt: String,
+
+    @field:SerializedName("growth")
+    val growth: String,
+
+    @field:SerializedName("prev_score")
+    val prevScore: Double,
+
+    @field:SerializedName("score")
+    val score: Double,
 
     @field:SerializedName("id")
     val id: Int,

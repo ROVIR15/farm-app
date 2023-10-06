@@ -1,13 +1,13 @@
 package com.vt.vt.ui.detail_livestock.tab_layout.beratbadan
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.core.data.source.remote.livestock.model.WeightRecordsItem
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
 import com.vt.vt.databinding.ItemBeratBadanBinding
 
 class ListWeightRecordAdapter :
@@ -30,8 +30,8 @@ class ListWeightRecordAdapter :
             with(binding) {
                 tvItemDateBeratBadan.text = data.date
                 tvItemValueBeratSekarang.text = "${data.score} Kg"
-                tvItemValueBeratSebelumnya.text = "${null} Kg"
-//                tvGrow.text = data.grow
+                tvItemValueBeratSebelumnya.text = "${data.prevScore} Kg"
+                binding.tvGrow.text = data.growth
             }
         }
     }

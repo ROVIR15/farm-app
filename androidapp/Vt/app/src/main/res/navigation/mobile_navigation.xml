@@ -286,6 +286,15 @@
         <action
             android:id="@+id/action_detailAreaBlockFragment_to_dataKandangFragment"
             app:destination="@id/dataKandangFragment" />
+        <action
+            android:id="@+id/action_detailAreaBlockFragment_to_editLivestockFragment"
+            app:destination="@id/editLivestockFragment" />
+        <action
+            android:id="@+id/action_detailAreaBlockFragment_to_fatteningFragment"
+            app:destination="@id/fatteningFragment" />
+        <action
+            android:id="@+id/action_detailAreaBlockFragment_to_detailLivestockFragment"
+            app:destination="@id/detailLivestockFragment" />
     </fragment>
     <fragment
         android:id="@+id/rekamBCSFragment"

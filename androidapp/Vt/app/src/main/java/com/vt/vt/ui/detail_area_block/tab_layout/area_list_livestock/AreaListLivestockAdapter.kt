@@ -1,19 +1,22 @@
 package com.vt.vt.ui.detail_area_block.tab_layout.area_list_livestock
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.databinding.ItemLivestockByBlockAreaBinding
+import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 
-class AreaListLivestockAdapter :
+class AreaListLivestockAdapter(private val livestockViewModel: LivestockViewModel) :
     ListAdapter<LivestockResponseItem, AreaListLivestockAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,9 +38,12 @@ class AreaListLivestockAdapter :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         PopupMenu.OnMenuItemClickListener {
         fun bindTo(data: LivestockResponseItem) {
+            binding.tvDateContent.text = data.createdAt
             binding.textViewTitle.text = data.name
-            binding.textViewSubtitle.text = data.description
+            binding.textViewSubtitle.text = data.info
             binding.btnOptionsItemLivestock.setOnClickListener(this)
+            binding.btnRecord.setOnClickListener(this)
+            binding.btnInfo.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
@@ -48,6 +54,22 @@ class AreaListLivestockAdapter :
                     popup.setOnMenuItemClickListener(this)
                     popup.show()
                 }
+
+                R.id.btn_record -> {
+                    itemView.findNavController()
+                        .navigate(R.id.action_detailAreaBlockFragment_to_fatteningFragment)
+                }
+
+                R.id.btn_info -> {
+                    val id = currentList[adapterPosition].id
+                    val mBundle = Bundle()
+                    mBundle.putInt("id", id)
+                    itemView.findNavController()
+                        .navigate(
+                            R.id.action_detailAreaBlockFragment_to_detailLivestockFragment,
+                            mBundle
+                        )
+                }
             }
         }
 
@@ -55,6 +77,13 @@ class AreaListLivestockAdapter :
             when (item?.itemId) {
                 R.id.menu_edit -> {
                     val getId = currentList[adapterPosition].id
+                    val mBundle = Bundle()
+                    mBundle.putInt("id", getId)
+                    itemView.findNavController()
+                        .navigate(
+                            R.id.action_detailAreaBlockFragment_to_editLivestockFragment,
+                            mBundle
+                        )
                     return true
                 }
 
@@ -64,6 +93,7 @@ class AreaListLivestockAdapter :
                         .setIcon(R.drawable.ic_outline_delete_outline_24)
                         .setMessage("Are you sure delete this Information")
                         .setPositiveButton("Yes") { dialog, _ ->
+                            livestockViewModel.deleteLivestockById(getId.toString())
                             dialog.dismiss()
                         }.setNegativeButton("No") { dialog, _ ->
                             dialog.dismiss()

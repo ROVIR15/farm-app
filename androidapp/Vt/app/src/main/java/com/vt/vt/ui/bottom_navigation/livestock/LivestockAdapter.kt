@@ -37,7 +37,7 @@ class LivestockAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(livestock: LivestockResponseItem) {
             binding.textViewTitle.text = livestock.name
-            binding.textViewSubtitle.text = "1 tahun 6 bulan, ${livestock.bangsa}"
+            binding.textViewSubtitle.text = livestock.info
             binding.btnOptionsItemLivestock.setOnClickListener(this)
             binding.btnRecord.setOnClickListener(this)
             binding.btnInfo.setOnClickListener(this)
@@ -100,7 +100,10 @@ class LivestockAdapter(
                     val mBundle = Bundle()
                     mBundle.putInt("id", id)
                     v.findNavController()
-                        .navigate(R.id.action_navigation_livestock_to_detailLivestockFragment, mBundle)
+                        .navigate(
+                            R.id.action_navigation_livestock_to_detailLivestockFragment,
+                            mBundle
+                        )
                 }
             }
         }

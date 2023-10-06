@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.BcsRecordsItem
 import com.vt.vt.databinding.ItemBcsBinding
+import com.vt.vt.utils.formatDate
 
 class BcsRecordAdapter :
     ListAdapter<BcsRecordsItem, BcsRecordAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -27,10 +27,11 @@ class BcsRecordAdapter :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bindTo(data: BcsRecordsItem) {
-            binding.tvItemDateBcs.text = data.date
+            val createdAt = formatDate(data.createdAt, "dd-MMMM-yyyy")
+            binding.tvItemDateBcs.text = createdAt
             binding.tvItemValueBcsSekarang.text = "${data.score} Kg"
-            binding.tvItemValueBcsSebelumnya.text = "${0} Kg"
-            binding.tvGrow.text = "0 %"
+            binding.tvItemValueBcsSebelumnya.text = "${data.prevScore} Kg"
+            binding.tvGrow.text = data.growth
         }
     }
 
