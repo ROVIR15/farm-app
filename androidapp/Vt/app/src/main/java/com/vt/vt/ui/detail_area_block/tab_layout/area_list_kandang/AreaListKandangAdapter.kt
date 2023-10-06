@@ -1,4 +1,4 @@
-package com.vt.vt.ui.detail_area_block
+package com.vt.vt.ui.detail_area_block.tab_layout.area_list_kandang
 
 import android.content.Context
 import android.os.Bundle
@@ -17,9 +17,9 @@ import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
 import com.vt.vt.databinding.ItemDetailAreaBlockBinding
 import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
 
-class ListDetailAreaBlockAdapter(
+class AreaListKandangAdapter(
     private val context: Context, private val viewModel: AreaBlockViewModel
-) : ListAdapter<Sleds, ListDetailAreaBlockAdapter.ViewHolder>(
+) : ListAdapter<Sleds, AreaListKandangAdapter.ViewHolder>(
     DIFF_CALLBACK
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

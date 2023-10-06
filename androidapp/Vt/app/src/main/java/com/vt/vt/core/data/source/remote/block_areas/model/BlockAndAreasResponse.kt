@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.block_areas.model
 
 import com.google.gson.annotations.SerializedName
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 
 data class BlockAndAreasResponse(
 
@@ -24,7 +25,10 @@ data class BlockAndAreasResponseItem(
     val description: String,
 
     @field:SerializedName("sleds")
-    val sleds: List<Sleds>? = null
+    val sleds: List<Sleds>? = null,
+
+    @field:SerializedName("livestock")
+    val livestocks: List<LivestockResponseItem>? = null
 )
 
 data class Sleds(

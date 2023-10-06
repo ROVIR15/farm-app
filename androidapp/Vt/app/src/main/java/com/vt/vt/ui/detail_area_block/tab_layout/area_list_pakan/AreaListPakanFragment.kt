@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.vt.vt.databinding.FragmentAreaListPakanBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AreaListPakanFragment : Fragment() {
 
     private var _binding: FragmentAreaListPakanBinding? = null

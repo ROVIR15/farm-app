@@ -25,6 +25,8 @@ data class LivestockResponseItem(
     val bangsa: String,
     @field:SerializedName("gender")
     val gender: Int,
+    @field:SerializedName("description")
+    val description: String,
     @field:SerializedName("name")
     val name: String
 )

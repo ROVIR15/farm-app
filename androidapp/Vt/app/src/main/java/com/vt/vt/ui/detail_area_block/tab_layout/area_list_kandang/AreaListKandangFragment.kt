@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
 import com.vt.vt.databinding.FragmentAreaListKandangBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
-import com.vt.vt.ui.detail_area_block.ListDetailAreaBlockAdapter
 import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,7 +75,7 @@ class AreaListKandangFragment : Fragment() {
     }
 
     private fun setupRecyclerView(data: List<Sleds>?) {
-        val adapter = ListDetailAreaBlockAdapter(requireContext(), areaBlockViewModel)
+        val adapter = AreaListKandangAdapter(requireContext(), areaBlockViewModel)
         adapter.submitList(data)
         with(binding) {
             recyclerViewListDetailArea.layoutManager =

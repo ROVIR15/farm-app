@@ -4,13 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.databinding.FragmentAreaListLivestockBinding
+import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AreaListLivestockFragment : Fragment() {
 
     private var _binding: FragmentAreaListLivestockBinding? = null
     private val binding get() = _binding!!
+    private val dataAreaViewModel by viewModels<DataAreaViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,7 +30,39 @@ class AreaListLivestockFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveId = arguments?.getInt("areaBlockId")
+        dataAreaViewModel.getBlockArea(receiveId.toString())
+        observerView()
     }
+
+    private fun observerView() {
+        dataAreaViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) {
+                binding.loading.progressBar.isVisible = it
+            }
+            getBlockArea.observe(viewLifecycleOwner) { data ->
+                binding.dataEmpty.isEmpty.isVisible = data.sleds.isNullOrEmpty()
+                listAreaLivestock(data.livestocks)
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(
+                    requireActivity(),
+                    it.toString(),
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        }
+    }
+
+    private fun listAreaLivestock(data: List<LivestockResponseItem>?) {
+        val adapter = AreaListLivestockAdapter()
+        adapter.submitList(data)
+        binding.listBlockLivestock.adapter = adapter
+        binding.listBlockLivestock.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
