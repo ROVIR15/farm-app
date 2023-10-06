@@ -36,6 +36,7 @@ class LivestockAdapter(
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         @SuppressLint("SetTextI18n")
         fun bind(livestock: LivestockResponseItem) {
+            binding.tvDateContent.text = livestock.createdAt
             binding.textViewTitle.text = livestock.name
             binding.textViewSubtitle.text = livestock.info
             binding.btnOptionsItemLivestock.setOnClickListener(this)
