@@ -67,7 +67,7 @@ def get_a_block_area(block_area_id):
     try:
         # Retrieve all livestock records from the database
         query = BlockArea.query.options([
-            subqueryload(BlockArea.sleds), 
+            subqueryload(BlockArea.sleds),
             subqueryload(BlockArea.livestock)]).get(block_area_id)
 
         result = {
@@ -81,8 +81,18 @@ def get_a_block_area(block_area_id):
         livestock_list = []
         if isinstance(query.livestock, list):
             for item in query.livestock:
-                livestock_list.append(item.livestock)
-        
+                livestock = item.livestock
+                result = {
+                    'id': livestock.id,
+                    'name': livestock.name,
+                    'gender': livestock.gender,
+                    'bangsa': livestock.bangsa,
+                    'info': f'{livestock.get_gender_label()} | {livestock.calculate_age()} | Bangsa {livestock.bangsa}',
+                    'description': livestock.description,
+                    'created_at': livestock.created_at.strftime("%d %B %Y")
+                }
+                livestock_list.append(result)
+
         result['livestock'] = livestock_list
 
         # Serialize the livestock data using the schema
@@ -98,6 +108,7 @@ def get_a_block_area(block_area_id):
             'message': f'Sorry! Failed to get collections of block area due to {error_message}'
         }
         return jsonify(response), 500
+
 
 @views_block_area_bp.route('/block-area', methods=['POST'])
 @login_required
