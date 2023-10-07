@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.livestock.model
 
 import com.google.gson.annotations.SerializedName
+import com.vt.vt.core.data.source.remote.block_areas.model.FeedingRecordsItem
 
 data class LivestockByIdResponse(
 
@@ -29,7 +30,10 @@ data class LivestockByIdResponse(
     val bcsRecords: List<BcsRecordsItem>,
 
     @field:SerializedName("health_records")
-    val healthRecords: List<HealthRecordsItem>
+    val healthRecords: List<HealthRecordsItem>,
+
+    @field:SerializedName("feeding_records")
+    val feedingRecords: List<FeedingRecordsItem>? = null,
 )
 
 data class HealthRecordsItem(
