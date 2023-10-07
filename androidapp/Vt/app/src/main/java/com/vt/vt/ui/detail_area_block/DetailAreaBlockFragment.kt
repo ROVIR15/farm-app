@@ -15,7 +15,6 @@ import com.vt.vt.R
 import com.vt.vt.databinding.FragmentDetailAreaBlockBinding
 import com.vt.vt.ui.detail_area_block.adapter.ViewPagerDetailAreaBlockAdapter
 import com.vt.vt.ui.detail_area_block.bottom_sheet_dialog.AddAreaBlockDialogFragment
-import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +39,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
         super.onViewCreated(view, savedInstanceState)
 
         receiveId = arguments?.getInt("id").toString()
+        println("receiveId ${receiveId}")
         dataAreaViewModel.getBlockArea(receiveId)
 
         with(binding) {
@@ -55,19 +55,18 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     }
 
     private fun observeView() {
-        dataAreaViewModel.apply {
-            observeLoading().observe(viewLifecycleOwner) {
-                showLoading(it)
+        dataAreaViewModel.observeLoading().observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+        dataAreaViewModel.getBlockArea.observe(viewLifecycleOwner) { blockArea ->
+            println("block area name ${blockArea.name}")
+            with(binding) {
+                tvBlockName.text = blockArea?.name.toString()
+                tvDescBlockArea.text = blockArea?.description.toString()
             }
-            getBlockArea.observe(viewLifecycleOwner) { blockArea ->
-                with(binding) {
-                    tvBlockName.text = blockArea?.name.toString()
-                    tvDescBlockArea.text = blockArea?.description.toString()
-                }
-            }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
-            }
+        }
+        dataAreaViewModel.isError().observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

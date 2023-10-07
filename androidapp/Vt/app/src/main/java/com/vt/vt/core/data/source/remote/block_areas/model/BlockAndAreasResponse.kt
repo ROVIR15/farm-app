@@ -19,8 +19,10 @@ data class BlockAndAreasResponse(
 data class BlockAndAreasResponseItem(
     @field:SerializedName("id")
     val id: Int,
+
     @field:SerializedName("name")
     val name: String,
+
     @field:SerializedName("description")
     val description: String,
 
@@ -28,7 +30,31 @@ data class BlockAndAreasResponseItem(
     val sleds: List<Sleds>? = null,
 
     @field:SerializedName("livestock")
-    val livestocks: List<LivestockResponseItem>? = null
+    val livestocks: List<LivestockResponseItem>? = null,
+
+    @field:SerializedName("feeding_records")
+    val feedingRecords: List<FeedingRecordsItem>? = null,
+)
+
+data class FeedListItem(
+
+    @field:SerializedName("feed_category")
+    val feedCategory: String? = null,
+
+    @field:SerializedName("total_score")
+    val totalScore: Double? = null
+)
+
+data class FeedingRecordsItem(
+
+    @field:SerializedName("block_area_id")
+    val blockAreaId: Int? = null,
+
+    @field:SerializedName("day")
+    val day: String? = null,
+
+    @field:SerializedName("feed_list")
+    val feedList: List<FeedListItem>
 )
 
 data class Sleds(
@@ -45,3 +71,24 @@ data class Sleds(
     @field:SerializedName("block_area_id")
     val blockAreaId: Int
 )
+//
+//data class FeedingRecordItemResponse(
+//
+//    @field:SerializedName("block_area_id")
+//    val blockAreaId: Int,
+//
+//    @field:SerializedName("day")
+//    val day: String,
+//
+//    @field:SerializedName("feed_list")
+//    val feedList: List<FeedItemResponse>
+//)
+//
+//data class FeedItemResponse(
+//
+//    @field:SerializedName("feed_category")
+//    val feedCategory: String,
+//
+//    @field:SerializedName("total_score")
+//    val totalScore: Int,
+//)

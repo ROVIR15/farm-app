@@ -45,13 +45,16 @@ class DataAreaViewModel @Inject constructor(private val blockAndAreasVtRepositor
         launch(action = {
             val response = blockAndAreasVtRepository.getBlockAndArea(id)
             if (response.isSuccessful) {
+                println("success ${response.body()}")
                 _getBlockArea.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
+                println("failed ${response.body()}")
                 isError.postValue(message)
             }
         }, error = { networkError ->
+            println("failed network ${networkError.isNetworkError}")
             if (networkError.isNetworkError) {
                 isError.postValue("No Internet Connection")
             }

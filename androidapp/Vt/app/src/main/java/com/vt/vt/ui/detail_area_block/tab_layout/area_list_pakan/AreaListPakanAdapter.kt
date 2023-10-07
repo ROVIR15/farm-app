@@ -2,12 +2,14 @@ package com.vt.vt.ui.detail_area_block.tab_layout.area_list_pakan
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.dummy.livestock.Pakan
+import com.vt.vt.core.data.source.remote.block_areas.model.FeedingRecordsItem
 import com.vt.vt.databinding.ItemPakanBinding
 
-class AreaListPakanAdapter(private val pakan: List<Pakan>) :
-    RecyclerView.Adapter<AreaListPakanAdapter.ViewHolder>() {
+class AreaListPakanAdapter() :
+    ListAdapter<FeedingRecordsItem, AreaListPakanAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemPakanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -15,20 +17,43 @@ class AreaListPakanAdapter(private val pakan: List<Pakan>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(pakan[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = pakan.size
 
     inner class ViewHolder(private val binding: ItemPakanBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Pakan) {
-            binding.tvItemDate.text = data.createdAt
-            binding.tvScoreHijauan.text = data.scoreHijauan.toString()
-            binding.tvScoreVitamin.text = data.scoreHijauan.toString()
-            binding.tvScoreKosentrat.text = data.scoreHijauan.toString()
-            binding.tvTambahanScore.text = data.scoreHijauan.toString()
+        fun bind(data: FeedingRecordsItem) {
+            binding.tvItemDate.text = data.day
+            val scoreTextViewMap = mapOf(
+                "Hijauan" to binding.tvScoreHijauan,
+                "Konsentrat" to binding.tvScoreKosentrat,
+                "Vitamin" to binding.tvScoreVitamin,
+                "Tambahan" to binding.tvTambahanScore
+            )
+
+            for (feedItem in data.feedList) {
+                val feedCategory = feedItem.feedCategory
+                val totalScore = feedItem.totalScore
+
+                scoreTextViewMap[feedCategory]?.text = totalScore.toString()
+            }
         }
     }
 
+    companion object {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<FeedingRecordsItem?> =
+            object : DiffUtil.ItemCallback<FeedingRecordsItem?>() {
+                override fun areItemsTheSame(
+                    oldItem: FeedingRecordsItem, newItem: FeedingRecordsItem
+                ): Boolean {
+                    return oldItem.blockAreaId == newItem.blockAreaId
+                }
+
+                override fun areContentsTheSame(
+                    oldItem: FeedingRecordsItem, newItem: FeedingRecordsItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
+            }
+    }
 }
