@@ -192,7 +192,7 @@ def get_a_livestock(livestock_id):
                 prev_score = current_record.score  # Update prev_score for the next iteration
 
         if isinstance(query.weight_records, list):
-            for current_record in query.bcs_records:
+            for current_record in query.weight_records:
                 data_weight = {
                     'id': current_record.id,
                     'livestock_id': current_record.livestock_id,

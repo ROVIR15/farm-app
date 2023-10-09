@@ -40,10 +40,11 @@ class Livestock (db.Model):
         return formatted_date
 
     def calculate_age(self):
+        if self.birth_date is None:
+            return "1 Tahun 6 BUlan"
+
         current_date = datetime.now().date()
         age = current_date - self.birth_date
-
-        print(current_date, self.birth_date)
     
         years = age.days // 365
         remaining_days = age.days % 365
