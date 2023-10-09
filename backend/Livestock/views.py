@@ -247,7 +247,7 @@ def post_livestock():
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
-    birth_date = data.get('birth_date')
+    birth_date = "2022-02-12"
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
