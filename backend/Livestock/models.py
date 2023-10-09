@@ -41,7 +41,7 @@ class Livestock (db.Model):
 
     def calculate_age(self):
         if self.birth_date is None:
-            return "1 Tahun 6 BUlan"
+            return "Please defined birth date of the livestock"
 
         current_date = datetime.now().date()
         age = current_date - self.birth_date
