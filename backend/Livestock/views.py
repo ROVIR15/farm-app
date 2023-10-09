@@ -247,7 +247,7 @@ def post_livestock():
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
-    birth_date = "2022-02-12"
+    # birth_date = "2022-02-12"
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
@@ -258,7 +258,7 @@ def post_livestock():
         if not farm_profile_id:
             raise Exception("Cannot find farm profile!")
         else:
-            query = Livestock(name=name, gender=gender, birth_date=birth_date,
+            query = Livestock(name=name, gender=gender,
                               bangsa=bangsa, description=description)
             db.session.add(query)
             db.session.commit()
