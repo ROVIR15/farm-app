@@ -20,9 +20,15 @@ class AddLivestockViewModel @Inject constructor(private val livestockVtRepositor
     private val _storeLivestock = MutableLiveData<LivestockResponse>()
     val storeLivestock: LiveData<LivestockResponse> = _storeLivestock
 
-    fun createLivestock(name: String?, description: String?, gender: Int, bangsa: String?) {
+    fun createLivestock(
+        name: String?,
+        birthDate: String?,
+        description: String?,
+        gender: Int,
+        bangsa: String?,
+    ) {
         launch(action = {
-            val livestockRequest = LivestockRequest(bangsa, gender, name, description)
+            val livestockRequest = LivestockRequest(bangsa, gender, name, birthDate, description)
             val response = livestockVtRepository.createLivestock(livestockRequest)
             if (response.isSuccessful) {
                 _createLivestock.postValue(response.body())

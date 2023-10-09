@@ -17,6 +17,9 @@ data class LivestockByIdResponse(
     @field:SerializedName("bangsa")
     val bangsa: String,
 
+    @field:SerializedName("birth_date")
+    val birthDate: String,
+
     @field:SerializedName("gender")
     val gender: Int,
 

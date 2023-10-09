@@ -34,6 +34,7 @@ import com.vt.vt.databinding.FragmentAddLivestockBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.createCustomTempFile
+import com.vt.vt.utils.formatDateDefault
 import com.vt.vt.utils.getRotateImage
 import com.vt.vt.utils.selected
 import com.vt.vt.utils.uriToFile
@@ -61,7 +62,6 @@ class AddLivestockFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
@@ -81,14 +81,17 @@ class AddLivestockFragment : Fragment() {
             spinnerGender.selected {
                 genderId = it
             }
+
             btnSave.setOnClickListener {
                 val name = edtNamaAddLivestock.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
                 val bangsa = edtCountry.text.toString().trim()
-                if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty()) {
+                val birthDate = tvBirth.text.toString().trim()
+                val createdAt = formatDateDefault(birthDate)
+                if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty() && createdAt.isNotEmpty()) {
                     if (genderId != 0) {
                         addLivestockViewModel.createLivestock(
-                            name, description,
+                            name, createdAt, description,
                             genderId, bangsa
                         )
                     } else {

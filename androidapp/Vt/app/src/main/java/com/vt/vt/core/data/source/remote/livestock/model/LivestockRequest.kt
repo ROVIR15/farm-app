@@ -5,14 +5,17 @@ import com.google.gson.annotations.SerializedName
 data class LivestockRequest(
 
     @field:SerializedName("bangsa")
-val bangsa: String?,
+    val bangsa: String?,
 
-@field:SerializedName("gender")
-val gender: Int,
+    @field:SerializedName("gender")
+    val gender: Int,
 
-@field:SerializedName("name")
-val name: String?,
+    @field:SerializedName("name")
+    val name: String?,
 
-@field:SerializedName("description")
-val description: String?
+    @field:SerializedName("birth_date")
+    val birthDate: String?,
+
+    @field:SerializedName("description")
+    val description: String?
 )

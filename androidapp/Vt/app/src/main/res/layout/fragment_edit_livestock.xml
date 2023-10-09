@@ -121,7 +121,7 @@
                     android:src="@drawable/ic_baseline_calendar_24" />
 
                 <TextView
-                    android:id="@+id/tv_breeding_date"
+                    android:id="@+id/tvDateLivestock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

@@ -18,6 +18,7 @@ import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditLivestockBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatDateDefault
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,7 +52,7 @@ class EditLivestockFragment : Fragment() {
                 }
             }
             ivDatePicker.setOnClickListener {
-                PickDatesUtils.setupDatePicker(requireActivity(), tvBreedingDate)
+                PickDatesUtils.setupDatePicker(requireActivity(), tvDateLivestock)
             }
             ivProfileLivestock.setOnClickListener {
                 showBottomSheetDialog()
@@ -64,14 +65,17 @@ class EditLivestockFragment : Fragment() {
                 val name = edtNamaAddLivestock.text.toString().trim()
                 val nation = edtBangsa.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
-                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty()) {
+                val birthDate = tvDateLivestock.text.toString().trim()
+                val createdAt = formatDateDefault(birthDate)
+                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty()) {
                     if (gender != 0) {
                         editLivestockViewModel.updateLivestockById(
                             receiveId,
                             name,
                             gender,
                             nation,
-                            description
+                            description,
+                            createdAt
                         )
                     }
                 }
@@ -110,6 +114,7 @@ class EditLivestockFragment : Fragment() {
                         spinnerGenderUmum.setSelection(data.gender)
                         edtDescription.setText(data.description)
                         edtBangsa.setText(data.bangsa)
+                        tvDateLivestock.setText(data.birthDate)
                     }
                 }
             }

@@ -39,10 +39,10 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
         name: String?,
         gender: Int,
         nation: String?,
-        description: String?
+        description: String?, birthDate: String?
     ) {
         launch(action = {
-            val livestockRequest = LivestockRequest(nation, gender, name, description)
+            val livestockRequest = LivestockRequest(nation, gender, name, birthDate, description)
             val response = livestockVtRepository.updateLivestockById(id, livestockRequest)
             if (response.isSuccessful) {
                 _updateLivestock.postValue(response.body())

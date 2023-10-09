@@ -47,7 +47,18 @@ fun getCurrentDate(): String {
 
     return "$year-$month-$day"
 }
+fun formatDateDefault(inputDate: String): String {
+    val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    val outputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
+    return try {
+        val date = inputDateFormat.parse(inputDate)
+        outputDateFormat.format(date!!)
+    } catch (e: Exception) {
+        // Handle parsing or formatting exceptions
+        inputDate // Return the original input if an exception occurs
+    }
+}
 
 fun formatDate(dateTime: String?, dateFormats: String?): String {
     val sdf =
