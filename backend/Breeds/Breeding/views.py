@@ -19,7 +19,7 @@ from FarmProfile.HasBreeding.models import HasBreeding
 
 from BlockAreaSledLivestock.models import BlockAreaSledLivestock
 
-from auth import current_farm_profile
+from auth import current_farm_profile, login_required
 
 from Breeds.Breeding.schema import BreedingSchema
 from Breeds.BreedingHistory.schema import BreedingHistorySchema
@@ -38,6 +38,7 @@ lambing_records_schema = LambingSchema(many=True)
 
 
 @views_breeding_bp.route('/breedings', methods=['GET'])
+@login_required
 def get_breedings():
     try:
         farm_profile_id = current_farm_profile()
@@ -46,7 +47,7 @@ def get_breedings():
 
         results = []
         if not query and not hasattr(query, 'breedings'):
-            raise Exception("Error")
+            return jsonify([]), 200
         else:
             list_of_breeding = query
 
