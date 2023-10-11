@@ -1,11 +1,9 @@
 from marshmallow import Schema, fields
 from utils.index import CustomDateTimeField
+# from BlockArea.schema import BlockAreaSchema
 
-from Livestock.schema import LivestockSchema_new
-
-class LambingSchema(Schema):
+class PregnancySchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
     breeding_id = fields.Int(required=True)
-    livestock_id = fields.Int(required=True)
+    is_active = fields.Boolean(required=True)
     created_at = CustomDateTimeField()
-    livestock = fields.Nested(LivestockSchema_new, allow_none=False)

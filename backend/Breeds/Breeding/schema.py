@@ -1,6 +1,10 @@
 from marshmallow import Schema, fields
 from utils.index import CustomDateTimeField
 from Livestock.schema import LivestockSchema_new
+from Livestock.schema import LivestockSchema_new
+from Breeds.Pregnancy.schema import PregnancySchema
+from Breeds.Lambing.schema import LambingSchema
+from Breeds.BreedingHistory.schema import BreedingHistorySchema
 # from BlockArea.schema import BlockAreaSchema
 
 class BreedingSchema(Schema):
@@ -17,6 +21,11 @@ class BreedingSchema(Schema):
     livestock_male = fields.Nested(LivestockSchema_new, required=False)
     livestock_female = fields.Nested(LivestockSchema_new, required=False)
 
-    created_at = CustomDateTimeField()
+    pregnancy = fields.Nested(PregnancySchema, required=False)
+    lambing = fields.Nested(LambingSchema, many=True, required=False)
+    breeding_history = fields.Nested(BreedingHistorySchema, many=True, required=False)
+    # breeding_status = fields.Nested(BreedingHistorySchema, required=False)
+
+    created_at = fields.Str(required=True)
 
 

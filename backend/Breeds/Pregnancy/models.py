@@ -9,3 +9,5 @@ class Pregnancy (db.Model):
     is_active = db.Column(
         db.Boolean(), nullable=False) #db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    breeding = db.relationship('Breeding', foreign_keys=[breeding_id], lazy=True)

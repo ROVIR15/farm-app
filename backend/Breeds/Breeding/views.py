@@ -1,6 +1,9 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload
+
+from datetime import datetime
+
 from Breeds.Breeding.models import Breeding
 from Breeds.BreedingHistory.models import BreedingHistory
 from Breeds.BreedingStatus.models import BreedingStatus
@@ -45,16 +48,18 @@ def get_breedings():
         query = HasBreeding.query.options([subqueryload(HasBreeding.breedings)]).filter_by(
             farm_profile_id=farm_profile_id).all()
 
+        print(farm_profile_id)
         results = []
-        if not query and not hasattr(query, 'breedings'):
+        if not query:
             return jsonify([]), 200
         else:
+            print(len(query))
             list_of_breeding = query
-
             if not isinstance(list_of_breeding, list):
                 raise Exception("Not found any breeding record")
             else:
                 for item in list_of_breeding:
+                    date = item.created_at.strftime("%d %b %Y")
                     result = {
                         "id": item.breedings.id,
                         "name": f'Breeding #{item.breedings.id}',
@@ -64,7 +69,8 @@ def get_breedings():
                         "livestock_male_name": item.breedings.livestock_male.name,
                         "livestock_female_name": item.breedings.livestock_female.name,
                         "sled_id": item.breedings.sled_id,
-                        "is_active": item.breedings.is_active
+                        "is_active": item.breedings.is_active,
+                        "created_at": date
                     }
                     results.append(result)
                 result = breeding_records_schema.dump(results)
@@ -85,12 +91,56 @@ def get_breedings():
 @views_breeding_bp.route('/breeding/<int:breeding_id>', methods=['GET'])
 def get_a_breeding(breeding_id):
     try:
-        query = Breeding.query.options([subqueryload(Breeding.livestock_male), subqueryload(Breeding.livestock_female)]).get(breeding_id)
+        query = Breeding.query.options([
+                    subqueryload(Breeding.livestock_male),
+                    subqueryload(Breeding.livestock_female),
+                    subqueryload(Breeding.lambing),
+                    subqueryload(Breeding.breeding_history),
+                    subqueryload(Breeding.breeding_status)
+                ]) \
+                .get(breeding_id)
+
+        query_preg = Pregnancy.query.filter_by(breeding_id=breeding_id).first()
+
+        lambing = []
+        for item in query.lambing:
+            date_obj = item.livestock.created_at
+            # Format the date as "DD MMMM YYYY"
+            formatted_date = date_obj.strftime("%d %B %Y")
+            __temp = {
+                "id": item.id,
+                "breeding_id": item.breeding_id,
+                "livestock": {
+                    'id': item.livestock.id,
+                    'name': item.livestock.name,
+                    'gender': item.livestock.gender,
+                    'birth_date': item.livestock.birth_date,
+                    'bangsa': item.livestock.bangsa,
+                    'info': f'{item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
+                    'description': item.livestock.description,
+                    'created_at': formatted_date,
+                },
+                "created_at": item.created_at
+            }
+
+            lambing.append(__temp)
+
+        result = {
+            "id": query.id,
+            "is_active": query.is_active,
+            "sled_id": query.id,
+            "created_at": query.created_at,
+            "lambing": lambing,
+            "pregnancy": query_preg,
+            "livestock_male": query.livestock_male,
+            "livestock_female": query.livestock_female,
+            "breeding_history": query.breeding_history
+        }
 
         if not query:
             raise Exception('Breeding data not found!')
 
-        result = breeding_record_schema.dump(query)
+        result = breeding_record_schema.dump(result)
 
         return jsonify(result), 200
 
@@ -109,18 +159,21 @@ def get_a_breeding(breeding_id):
 def post_new_breeding():
     data = request.get_json()  # Get the JSON data from request body
 
-    # Process the data or perform any desired operations
-    livestock_male_id = data.get('livestock_male_id')
-    livestock_female_id = data.get('livestock_female_id')
-    sled_id = data.get('sled_id')
-    block_area_id = data.get('block_area_id')
-
     try:
+        # Process the data or perform any desired operations
+        livestock_male_id = data.get('livestock_male_id')
+        livestock_female_id = data.get('livestock_female_id')
+        date = data.get('date') if data.get(
+            'date') is not None else "2023-10-10"
+        sled_id = data.get('sled_id')
+        block_area_id = data.get('block_area_id')
+
         # Store data to breeding colleciton
         query = Breeding(livestock_male_id=livestock_male_id,
                          livestock_female_id=livestock_female_id,
                          sled_id=sled_id,
-                         is_active=True)
+                         is_active=True,
+                         date=date)
         db.session.add(query)
         db.session.commit()
 
@@ -175,7 +228,8 @@ def post_new_breeding():
         # Create a response JSON
         response = {
             'status': 'success',
-            'breeding_id': query.id
+            'breeding_id': query.id,
+            'farm_profile': store_breeding.id
         }
 
         return jsonify(response), 200
@@ -371,10 +425,10 @@ def delete_lambing(lambing_id):
 
             db.session.delete(basl)
             db.session.commit()
-            
+
             db.session.delete(livestock_info)
             db.session.commit()
-            
+
             db.session.delete(query)
             db.session.commit()
         else:
@@ -414,9 +468,11 @@ def post_lambing():
     block_area_id = data.get('block_area_id')
     sled_id = data.get('sled_id')
     breeding_id = data.get('breeding_id')
+    # Get the current date
+    birth_date = "2023-09-08" if data.get('birth_date') is None else data.get('birth_date')
 
     try:
-        query = Livestock(name=name, gender=gender,
+        query = Livestock(name=name, gender=gender, birth_date=birth_date,
                           bangsa=bangsa, description=description)
         db.session.add(query)
         db.session.commit()
@@ -451,7 +507,7 @@ def post_lambing():
 
         # Make record on breeding_history as the couple giving birth
         query2 = BreedingHistory(breeding_id=breeding_id,
-                                 remarks=f'This breeding couple has given birth of {len(data)} lambs')
+                                 remarks=f'This breeding couple has given birth of {1} lambs')
         db.session.add(query2)
         db.session.commit()
 
@@ -468,6 +524,13 @@ def post_lambing():
                                  remarks=f'This breeding couple has done')
         db.session.add(query4)
         db.session.commit()
+
+
+        breeding = Breeding.query.get(breeding_id)
+
+        if breeding:
+            breeding.is_active = False
+            db.session.commit()
 
         response = {
             'status': 'Success'
