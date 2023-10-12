@@ -11,7 +11,11 @@ import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAreaInfoResponse
 import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
+import com.vt.vt.core.data.source.remote.breeding.BreedingResponse
 import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
+import com.vt.vt.core.data.source.remote.breeding.create.CreateBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
 import com.vt.vt.core.data.source.remote.farm_profile.model.FarmProfileResponse
 import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
@@ -196,4 +200,11 @@ interface ApiService {
     @GET("api/breeding/{id}")
     suspend fun getBreedingById(@Path("id") id: String): Response<BreedingByIdResponse>
 
+    @POST("api/breeding")
+    suspend fun createBreeding(@Body breedingRequest: CreateBreedingRequest): Response<BreedingResponse>
+    @POST("api/breeding-history")
+    suspend fun createHistoryBreeding(@Body historyBreedingRequest: HistoryBreedingRequest): Response<BreedingResponse>
+
+    @POST("api/breeding/lambing")
+    suspend fun createLambing(@Body lambingRequest: LambingRequest): Response<BreedingResponse>
 }

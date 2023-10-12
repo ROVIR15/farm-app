@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.rekam_perkawinan.tab_layout.history_animal_mating.HistoryAnimalMatingFragment">
+    tools:context=".ui.rekam_perkawinan.tab_layout.lambing_breeding.LambingsBreedingFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_animal_mating_history"
+        android:id="@+id/rv_lembing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_kesehatan" />
+        tools:listitem="@layout/item_lembing" />
 
     <include
         android:id="@+id/loading"

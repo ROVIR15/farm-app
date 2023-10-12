@@ -18,7 +18,7 @@ import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditLivestockBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.formatDateDefault
+import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,7 +66,7 @@ class EditLivestockFragment : Fragment() {
                 val nation = edtBangsa.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
                 val birthDate = tvDateLivestock.text.toString().trim()
-                val createdAt = formatDateDefault(birthDate)
+                val createdAt = formatterDateFromCalendar(birthDate)
                 if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty()) {
                     if (gender != 0) {
                         editLivestockViewModel.updateLivestockById(

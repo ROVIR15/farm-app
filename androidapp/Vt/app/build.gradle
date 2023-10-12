@@ -72,6 +72,7 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:$datastore_version"
     implementation "androidx.datastore:datastore-preferences-core:$datastore_version"
     implementation "androidx.annotation:annotation:$androidx_anotation_version"
+    implementation 'androidx.preference:preference:1.2.1'
 
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"

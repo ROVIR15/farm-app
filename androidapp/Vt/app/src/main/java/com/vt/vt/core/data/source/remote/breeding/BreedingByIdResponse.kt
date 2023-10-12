@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.breeding
 
 import com.google.gson.annotations.SerializedName
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 
 data class BreedingByIdResponse(
 
@@ -13,6 +14,12 @@ data class BreedingByIdResponse(
     @field:SerializedName("livestock_female")
     val livestockFemale: LivestockFemale? = null,
 
+    @field:SerializedName("breeding_history")
+    val breedingHistory: List<BreedingHistoryItem>? = null,
+
+    @field:SerializedName("lambing")
+    val lambing: List<LambingItem>? = null,
+
     @field:SerializedName("is_active")
     val isActive: Boolean,
 
@@ -24,6 +31,9 @@ data class BreedingByIdResponse(
 
     @field:SerializedName("livestock_male")
     val livestockMale: LivestockMale? = null,
+
+    @field:SerializedName("pregnancy")
+    val pregnancy: Pregnancy,
 
     @field:SerializedName("livestock_female_id")
     val livestockFemaleId: Int? = null,
@@ -69,4 +79,46 @@ data class LivestockMale(
 
     @field:SerializedName("id")
     val id: Int? = null
+)
+
+data class BreedingHistoryItem(
+    @field:SerializedName("created_at")
+    val createdAt: String? = null,
+
+    @field:SerializedName("breeding_id")
+    val breedingId: Int? = null,
+
+    @field:SerializedName("id")
+    val id: Int,
+
+    @field:SerializedName("remarks")
+    val remarks: String? = null,
+)
+
+data class LambingItem(
+    @field:SerializedName("created_at")
+    val createdAt: String? = null,
+
+    @field:SerializedName("breeding_id")
+    val breedingId: Int? = null,
+
+    @field:SerializedName("id")
+    val id: Int,
+
+    @field:SerializedName("livestock")
+    val livestock: LivestockResponseItem,
+)
+
+data class Pregnancy(
+    @field:SerializedName("created_at")
+    val createdAt: String? = null,
+
+    @field:SerializedName("breeding_id")
+    val breedingId: Int? = null,
+
+    @field:SerializedName("id")
+    val id: Int,
+
+    @field:SerializedName("is_active")
+    val isActive: Boolean
 )

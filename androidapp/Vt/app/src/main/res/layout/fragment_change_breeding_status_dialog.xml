@@ -7,21 +7,22 @@
     android:layout_gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".ui.rekam_perkawinan.dialog.AddHistoryBreedingDialogFragment">
+    tools:context=".ui.rekam_perkawinan.dialog.ChangeBreedingStatusDialogFragment">
+
 
     <View
         android:layout_width="48dp"
-        android:layout_height="4dp"
+        android:layout_height="5dp"
         android:layout_gravity="center"
         android:background="@drawable/bg_center_line_bottom_sheet" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarAnimalMating"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:elevation="3dp"
+        android:elevation="2dp"
         android:indeterminate="true"
         android:indeterminateTint="@color/black"
         android:padding="8dp"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:padding="8dp"
-        android:text="Tambah History"
+        android:text="Perubahan Status Perkawinan"
         android:textAlignment="center"
         android:textColor="@color/text_black"
         android:textSize="24sp" />
@@ -41,26 +42,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Selamat atas kehamilan livestock Anda, silahkan menambahkan tanggal lahir livestock baru ini."
+        android:text="Infokan perubahan status perkawinan dari sebuah hewan ternak."
         android:textAlignment="center" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_outline_box"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_calendar_grey"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:paddingVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_date_picker_history_animal_mating"
+            android:id="@+id/iv_date_picker_animal_matings"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_baseline_calendar_24" />
 
         <TextView
-            android:id="@+id/tv_history_animal_mating_date"
+            android:id="@+id/tv_add_animal_mating_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -70,43 +76,52 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <Spinner
-        android:id="@+id/spinner_history_animal_mating"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/bg_edt_normal"
-        android:fontFamily="@font/roboto_regular"
-        android:inputType="textPersonName"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="8dp"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlined_text_input_layout10"
+        android:id="@+id/linearLayout5"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:boxBackgroundColor="@color/subtle_grey"
+        app:startIconTint="@color/text_blue">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_area_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ems="10"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:hint="Kategori"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlined_text_input_layout2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:hint="Deskripsi"
         app:boxStrokeColor="@color/btn_blue_icon"
         app:hintTextColor="@color/text_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_rekam_kesehatan">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_description_history_animal_mating"
+            android:id="@+id/edt_description"
             android:layout_width="match_parent"
             android:layout_height="98dp"
-            android:imeOptions="actionDone"
-            android:gravity="start|top"
+            android:gravity="start"
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_save_animal_mating"
+        android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_marginTop="24dp"
@@ -118,10 +133,13 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:cornerRadius="8dp"
-        app:elevation="1dp" />
+        app:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_cancel_animal_mating"
+        android:id="@+id/btn_batal"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="58dp"
@@ -131,6 +149,8 @@
         android:textColor="@color/red"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save"
         app:strokeColor="@color/red" />
-
 </LinearLayout>

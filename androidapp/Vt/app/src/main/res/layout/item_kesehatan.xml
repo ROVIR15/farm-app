@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="16dp"
+    android:paddingHorizontal="8dp"
     android:paddingBottom="8dp">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
-        android:padding="8dp"
+        android:paddingHorizontal="8dp"
         android:text="Catatan Kesehatan"
         android:textColor="@color/text_black"
         android:textSize="18sp"
@@ -22,7 +22,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_date_health_record"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
         android:gravity="end|center"
         android:padding="8dp"

@@ -34,7 +34,7 @@ import com.vt.vt.databinding.FragmentAddLivestockBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.createCustomTempFile
-import com.vt.vt.utils.formatDateDefault
+import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.getRotateImage
 import com.vt.vt.utils.selected
 import com.vt.vt.utils.uriToFile
@@ -77,27 +77,18 @@ class AddLivestockFragment : Fragment() {
             ivPhotoDataArea.setOnClickListener {
                 requestPermissionsIfNeeded()
             }
-            var genderId: Int = 0
-            spinnerGender.selected {
-                genderId = it
-            }
 
             btnSave.setOnClickListener {
                 val name = edtNamaAddLivestock.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
                 val bangsa = edtCountry.text.toString().trim()
                 val birthDate = tvBirth.text.toString().trim()
-                val createdAt = formatDateDefault(birthDate)
-                if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty() && createdAt.isNotEmpty()) {
-                    if (genderId != 0) {
+                val createdAt = formatterDateFromCalendar(birthDate)
+                val genderId = spinnerGender.selectedItemId.toInt()
+                if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty() && createdAt.isNotEmpty() && genderId != 0) {
                         addLivestockViewModel.createLivestock(
                             name, createdAt, description,
-                            genderId, bangsa
-                        )
-                    } else {
-                        Toast.makeText(requireActivity(), "Pilih Jenis Hewan", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                            genderId, bangsa)
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
@@ -132,11 +123,6 @@ class AddLivestockFragment : Fragment() {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observerViewBottomSheet(
@@ -337,4 +323,8 @@ class AddLivestockFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -47,7 +47,7 @@ fun getCurrentDate(): String {
 
     return "$year-$month-$day"
 }
-fun formatDateDefault(inputDate: String): String {
+fun formatterDateFromCalendar(inputDate: String): String {
     val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     val outputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -64,6 +64,26 @@ fun formatDate(dateTime: String?, dateFormats: String?): String {
     val sdf =
         SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
+            Locale.getDefault()
+        )
+
+    val date = sdf.parse(dateTime!!)
+    val calendar = Calendar.getInstance()
+    calendar.time = date!!
+
+    val output =
+        SimpleDateFormat(
+            dateFormats,
+            Locale("in", "ID")
+        )
+
+    return output.format(calendar.time)
+}
+
+fun formatDateBreeding(dateTime: String?, dateFormats: String?): String {
+    val sdf =
+        SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss.SSSSSS",
             Locale.getDefault()
         )
 

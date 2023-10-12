@@ -30,7 +30,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="start|center"
-                    android:paddingHorizontal="16dp"
                     android:text="Tanggal \nPerkawinan"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
@@ -72,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
                     android:text="Kandang dan Area"
                     android:textSize="18sp"
@@ -96,7 +94,8 @@
                     <Spinner
                         android:id="@+id/spinner_stall_record_mating"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:clickable="false" />
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -132,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
                     android:text="Pasangan"
                     android:textSize="18sp"
@@ -153,10 +151,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-                    <Spinner
-                        android:id="@+id/spinner_choose_male_livestock_record_mating"
+                    <TextView
+                        android:id="@+id/tv_livestock_male"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/text_black" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -173,10 +173,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout63">
 
-                    <Spinner
-                        android:id="@+id/spinner_choose_female_livestock_record_mating"
+                    <TextView
+                        android:id="@+id/tv_livestock_female"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/text_black" />
                 </LinearLayout>
 
                 <TextView
@@ -184,7 +186,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
                     android:text="Kehamilan"
                     android:textSize="18sp"
@@ -197,7 +198,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:paddingHorizontal="16dp"
                     android:text="Hamil"
                     android:textColor="@color/text_black"
                     android:textSize="18sp"
@@ -210,7 +210,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:paddingHorizontal="16dp"
                     android:text="Menandai Ternak sedang hamil"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -273,5 +272,9 @@
         android:layout_height="match_parent"
         android:layout_marginTop="72dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

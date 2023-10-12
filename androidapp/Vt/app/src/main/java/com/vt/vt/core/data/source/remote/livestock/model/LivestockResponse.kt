@@ -24,10 +24,12 @@ data class LivestockResponseItem(
     val bangsa: String,
     @field:SerializedName("created_at")
     val createdAt: String,
+    @field:SerializedName("birth_date")
+    val birthDate: String,
     @field:SerializedName("info")
     val info: String,
     @field:SerializedName("gender")
-    val gender: Int,
+    val gender: String,
     @field:SerializedName("description")
     val description: String,
     @field:SerializedName("name")

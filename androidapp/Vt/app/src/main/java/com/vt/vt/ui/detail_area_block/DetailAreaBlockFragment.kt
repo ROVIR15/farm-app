@@ -39,7 +39,6 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
         super.onViewCreated(view, savedInstanceState)
 
         receiveId = arguments?.getInt("id").toString()
-        println("receiveId ${receiveId}")
         dataAreaViewModel.getBlockArea(receiveId)
 
         with(binding) {

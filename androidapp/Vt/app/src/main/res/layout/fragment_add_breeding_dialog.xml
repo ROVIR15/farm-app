@@ -15,6 +15,18 @@
         android:layout_gravity="center"
         android:background="@drawable/bg_center_line_bottom_sheet" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="3dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        android:padding="8dp"
+        android:visibility="gone" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,20 +43,25 @@
         android:padding="8dp"
         android:text="Selamat atas kehamilan livestock Anda, silahkan menambahkan tanggal lahir livestock baru ini."
         android:textAlignment="center" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edt_name_animal_child"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlined_text_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/bg_edt_normal"
-        android:fontFamily="@font/roboto_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:hint="Nama"
-        android:inputType="textPersonName"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        app:boxStrokeColor="@color/btn_blue_icon"
+        app:hintTextColor="@color/text_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearSpinner">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_name_animal_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textShortMessage" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -56,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:background="@drawable/bg_calendar_grey"
+            android:background="@drawable/bg_outline_box"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
@@ -75,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/text_black"
                 android:fontFamily="@font/roboto_regular"
                 android:hint="Isi Tanggal..."
                 android:paddingHorizontal="16dp"
@@ -87,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            android:background="@drawable/bg_calendar_grey"
+            android:background="@drawable/bg_outline_box"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
@@ -97,25 +115,29 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Spinner
-                android:id="@+id/spinner_gender_animal_child"
+                android:id="@+id/spinner_gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Spinner
-        android:id="@+id/spinner_bangsa_animal_child"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlined_text_input_layout1"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_edt_normal"
-        android:fontFamily="@font/roboto_regular"
-        android:inputType="textPersonName"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="8dp"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:hint="Bangsa"
+        app:boxStrokeColor="@color/btn_blue_icon"
+        app:hintTextColor="@color/text_blue">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textShortMessage" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -127,7 +149,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:background="@drawable/bg_calendar_grey"
+            android:background="@drawable/bg_outline_box"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
@@ -136,55 +158,54 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Spinner
-                android:id="@+id/spinner_cage_animal_child"
+                android:id="@+id/spinner_block"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_text_input_layout10"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
+            android:hint="Area"
+            android:layout_marginStart="4dp"
+            app:boxStrokeColor="@color/btn_blue_icon"
+            app:hintTextColor="@color/text_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout4"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edt_area_animal_child"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtArea"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="Area"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:inputType="textShortMessage" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edt_description_animal_child"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlined_text_input_layout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="98dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_edt_normal"
-        android:fontFamily="@font/roboto_regular"
-        android:gravity="top|start"
-        android:hint="Deskripsi"
-        android:imeOptions="actionDone"
-        android:inputType="textMultiLine"
-        android:maxLines="4"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:scrollHorizontally="false"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:hint="Description"
+        app:boxStrokeColor="@color/btn_blue_icon"
+        app:hintTextColor="@color/text_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearSpinner">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_description"
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:gravity="top|start"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save_animal_child"

@@ -23,7 +23,7 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private var _binding: FragmentListAnimalMatingsBinding? = null
     private val binding get() = _binding!!
 
-    private val listAnimalMatingsViewModel: ListAnimalMatingsViewModel by viewModels()
+    private val listBreedingViewModel: ListBreedingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,36 +43,35 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 inflateMenu(R.menu.menu_goods_and_service)
                 setOnMenuItemClickListener(this@ListAnimalMatingsFragment)
             }
+            refreshPage.setOnRefreshListener {
+                listBreedingViewModel.getAllBreedings()
+                refreshPage.isRefreshing = false
+            }
         }
         observerView()
     }
 
     private fun observerView() {
-        listAnimalMatingsViewModel.getAllBreedings()
-        listAnimalMatingsViewModel.observeLoading().observe(viewLifecycleOwner) {
+        listBreedingViewModel.getAllBreedings()
+        listBreedingViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        listAnimalMatingsViewModel.breedingEmitter.observe(viewLifecycleOwner) { data ->
+        listBreedingViewModel.breedingEmitter.observe(viewLifecycleOwner) { data ->
             binding.dataEmpty.isEmpty.isVisible = data.isEmpty()
             setupRecyclerView(data)
         }
-        listAnimalMatingsViewModel.isError().observe(viewLifecycleOwner) {
+        listBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     private fun setupRecyclerView(data: List<BreedingResponseItem?>) {
         val adapter = ListAnimalMatingsAdapter()
         adapter.submitList(data)
         with(binding) {
+            recyclerViewListAnimalMatings.adapter = adapter
             recyclerViewListAnimalMatings.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-            recyclerViewListAnimalMatings.adapter = adapter
         }
     }
 
@@ -94,6 +93,11 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         with(binding) {
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }
