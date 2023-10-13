@@ -7,6 +7,7 @@ import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
 import com.vt.vt.core.data.source.remote.breeding.BreedingResponse
 import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
 import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
+import com.vt.vt.core.data.source.remote.breeding.pregnancy.PregnancyRequest
 import com.vt.vt.core.data.source.repository.BreedingVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -20,6 +21,9 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
 
     private val _createBreedingEmitter = MutableLiveData<BreedingResponse>()
     val createBreedingEmitter: LiveData<BreedingResponse> = _createBreedingEmitter
+
+    private val _updatePregnancyEmitter = MutableLiveData<BreedingResponse>()
+    val updatePregnancyEmitter: LiveData<BreedingResponse> = _updatePregnancyEmitter
 
     fun getBreedingById(id: String) {
         launch(action = {
@@ -51,6 +55,18 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
             val response = breedingVtRepository.createHistoryBreeding(historyBreedingRequest)
             if (response.isSuccessful) {
                 _createBreedingEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
+    }
+
+    fun updatePregnancy(id:String, createdAt: String, isActive: Boolean ,remarks: String? ){
+        launch(action = {
+            val pregnancyRequest = PregnancyRequest(createdAt, isActive, remarks)
+            val response = breedingVtRepository.updatePregnancy(id, pregnancyRequest)
+            if (response.isSuccessful) {
+                _updatePregnancyEmitter.postValue(response.body())
             } else {
                 isError.postValue(response.message())
             }

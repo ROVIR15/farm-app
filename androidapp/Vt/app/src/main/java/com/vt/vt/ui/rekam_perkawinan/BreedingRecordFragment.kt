@@ -61,6 +61,7 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 }
                 setOnMenuItemClickListener(this@BreedingRecordFragment)
             }
+            swithMaterialRecordMating.isChecked = originalToggleState
             swithMaterialRecordMating.setOnClickListener {
                 if (!originalToggleState) {
                     showDialogAnimalPregnant()
@@ -107,7 +108,7 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 binding.tvLivestockMale.text = breeding.livestockMale?.name.toString()
                 binding.tvLivestockFemale.text = breeding.livestockFemale?.name.toString()
                 binding.swithMaterialRecordMating.isChecked = breeding.pregnancy.isActive
-                originalToggleState = breeding.isActive
+                originalToggleState = breeding.pregnancy.isActive
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -134,6 +135,9 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun showDialogAnimalPregnant() {
         val bottomSheetAnimalPregnant = AddAnimalPregnantFragment()
+        val mBundle = Bundle()
+        receiveId?.let { mBundle.putInt("breedingId", it) }
+        bottomSheetAnimalPregnant.arguments = mBundle
         bottomSheetAnimalPregnant.show(
             childFragmentManager, AddAnimalPregnantFragment::class.java.simpleName
         )
@@ -141,6 +145,9 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun showChangesStatusBottomSheet() {
         val changeBreedingStatusDialog = ChangeBreedingStatusDialogFragment()
+        val mBundle = Bundle()
+        receiveId?.let { mBundle.putInt("breedingId", it) }
+        changeBreedingStatusDialog.arguments = mBundle
         changeBreedingStatusDialog.show(
             childFragmentManager, ChangeBreedingStatusDialogFragment::class.java.simpleName
         )
@@ -195,14 +202,8 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     internal var onBottomSheetDialogListener =
         object : AddAnimalPregnantFragment.OnBottomSheetDialogListener {
-            override fun onDateSelected(text: String?) {
-                if (!text.isNullOrEmpty()) {
-                    Toast.makeText(
-                        requireActivity(), "Kehamilan Berhasil $text", Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    binding.swithMaterialRecordMating.isChecked = false
-                }
+            override fun onBottomSheetClose() {
+                recordBreedingViewModel.getBreedingById(receiveId.toString())
             }
         }
 

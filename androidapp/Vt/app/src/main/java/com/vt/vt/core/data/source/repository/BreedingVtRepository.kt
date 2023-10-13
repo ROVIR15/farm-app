@@ -7,6 +7,7 @@ import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
 import com.vt.vt.core.data.source.remote.breeding.create.CreateBreedingRequest
 import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
 import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
+import com.vt.vt.core.data.source.remote.breeding.pregnancy.PregnancyRequest
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -23,5 +24,6 @@ class BreedingVtRepository @Inject constructor(private val apiService: ApiServic
     suspend fun createLambing(lambingRequest: LambingRequest): Response<BreedingResponse> =
         apiService.
         createLambing(lambingRequest)
+    suspend fun updatePregnancy(id: String, pregnancyRequest: PregnancyRequest): Response<BreedingResponse> = apiService.updatePregnancy(id, pregnancyRequest)
 
 }
