@@ -209,15 +209,8 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     internal var changeStatusBreedingListener =
         object : ChangeBreedingStatusDialogFragment.ChangeBreedingStatusListener {
-            override fun onTextSelected(
-                date: String?, categoryText: String?, description: String?
-            ) {
-                if (!date.isNullOrEmpty() && !categoryText.isNullOrEmpty() && !description.isNullOrEmpty()) {
-                    Toast.makeText(requireActivity(), "Kehamilan Telah di Ubah", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    binding.swithMaterialRecordMating.isChecked = true
-                }
+            override fun onBottomSheetClose() {
+                recordBreedingViewModel.getBreedingById(receiveId.toString())
             }
         }
 
