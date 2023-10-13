@@ -315,46 +315,69 @@ def update_livestock(livestock_id):
     bangsa = data.get('bangsa')
     description = data.get('description')
 
-    # Assuming you have a Livestock model and an existing livestock object
-    livestock = Livestock.query.get(livestock_id)
-    if livestock:
-        livestock.name = name
-        livestock.gender = gender
-        livestock.bangsa = bangsa
-        livestock.description = description
-        db.session.commit()
+    try:
+        # Assuming you have a Livestock model and an existing livestock object
+        livestock = Livestock.query.get(livestock_id)
+        if livestock:
+            livestock.name = name
+            livestock.gender = gender
+            livestock.bangsa = bangsa
+            livestock.description = description
+            db.session.commit()
 
-        # Create a response JSON
-        response = {
-            'status': 'success',
-            'message': f'Livestock {livestock_id} has been updated.'
-        }
-        return jsonify(response), 200
-    else:
+            # Create a response JSON
+            response = {
+                'status': 'success',
+                'message': f'Livestock {livestock_id} has been updated.'
+            }
+            return jsonify(response), 200
+        else:
+            response = {
+                'status': 'error',
+                'message': f'Livestock {livestock_id} not found.'
+            }
+            return jsonify(response), 404
+    
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
         response = {
             'status': 'error',
-            'message': f'Livestock {livestock_id} not found.'
+            'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
         }
-        return jsonify(response), 404
+
+        return jsonify(response), 500
 
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['DELETE'])
 @login_required
 def delete_livestock(livestock_id):
-    # Assuming you have a Livestock model and an existing livestock object
-    livestock = Livestock.query.get(livestock_id)
-    if livestock:
-        db.session.delete(livestock)
-        db.session.commit()
 
-        response = {
-            'status': 'success',
-            'message': f'Livestock {livestock_id} has been deleted.'
-        }
-        return jsonify(response), 200
-    else:
+    try:
+        # Assuming you have a Livestock model and an existing livestock object
+        livestock = Livestock.query.get(livestock_id)
+        if livestock:
+            db.session.delete(livestock)
+            db.session.commit()
+
+            response = {
+                'status': 'success',
+                'message': f'Livestock {livestock_id} has been deleted.'
+            }
+            return jsonify(response), 200
+        else:
+            response = {
+                'status': 'error',
+                'message': f'Livestock {livestock_id} not found.'
+            }
+            return jsonify(response), 404
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
         response = {
             'status': 'error',
-            'message': f'Livestock {livestock_id} not found.'
+            'message': f'Sorry! Failed to store livestock data. Error: {error_message}'
         }
-        return jsonify(response), 404
+
+        return jsonify(response), 500
