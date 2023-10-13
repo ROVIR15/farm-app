@@ -49,7 +49,11 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
                 val createAt = formatterDateFromCalendar(formatter)
                 if (createAt.isNotEmpty() && description.isNotEmpty()) {
                     if (receiveId != null) {
-                        recordBreedingViewModel.createHistoryBreeding(createAt, receiveId,description)
+                        recordBreedingViewModel.createHistoryBreeding(
+                            createAt,
+                            receiveId,
+                            description
+                        )
                     }
                     dismiss()
                 } else {
@@ -61,17 +65,19 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
         observerView()
     }
 
-    private fun observerView(){
-        recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner){
+    private fun observerView() {
+        recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner){
-            Toast.makeText(requireContext(), "${it.status} menambahkan catatan", Toast.LENGTH_SHORT).show()
+        recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "${it.status} menambahkan catatan", Toast.LENGTH_SHORT)
+                .show()
         }
-        recordBreedingViewModel.isError().observe(viewLifecycleOwner){
+        recordBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun showLoading(state: Boolean) {
         with(binding) {
             btnSaveAnimalMating.isEnabled = !state

@@ -18,10 +18,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:text="Dibuat pada tanggal"
+            android:paddingVertical="8dp"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/createAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="12 Januari 2023"
@@ -39,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Title"
+            android:paddingVertical="8dp"
             android:textSize="18sp"
             android:textStyle="bold" />
 

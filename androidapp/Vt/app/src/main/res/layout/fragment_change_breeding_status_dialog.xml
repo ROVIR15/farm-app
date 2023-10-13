@@ -17,7 +17,7 @@
         android:background="@drawable/bg_center_line_bottom_sheet" />
 
     <ProgressBar
-        android:id="@+id/progressBarAnimalMating"
+        android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

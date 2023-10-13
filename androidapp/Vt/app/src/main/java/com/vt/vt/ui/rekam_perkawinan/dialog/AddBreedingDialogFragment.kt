@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
+import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.databinding.FragmentAddBreedingDialogBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.ui.rekam_perkawinan.RecordBreedingViewModel
@@ -24,6 +25,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentAddBreedingDialogBinding? = null
     private val binding get() = _binding!!
+    private var onBottomSheetDialogListener: OnBottomSheetListener? = null
 
     private val recordBreedingViewModel by viewModels<RecordBreedingViewModel>()
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
@@ -42,7 +44,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveId = arguments?.getInt("breedingId")
-        with(binding){
+        with(binding) {
             ivDatePickerAnimalChild.setOnClickListener {
                 PickDatesUtils.setupDatePicker(requireActivity(), tvAnimalChildDate)
             }
@@ -53,12 +55,22 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
                 val description = edtDescription.text.toString().trim()
                 val gender = spinnerGender.selectedItemId.toInt()
                 val createAt = formatterDateFromCalendar(tvAnimalChildDate.text.toString().trim())
-                if(name.isNotEmpty() && nation.isNotEmpty() && description.isNotEmpty() && createAt.isNotEmpty() && gender!=0 && blockId!=0 && sledId!= 0){
+                if (name.isNotEmpty() && nation.isNotEmpty() && description.isNotEmpty() && createAt.isNotEmpty() && gender != 0 && blockId != 0 && sledId != 0) {
                     if (receiveId != null) {
-                        recordBreedingViewModel.createLambing(receiveId.toInt(),name, gender, nation, description, blockId, sledId, createAt)
+                        recordBreedingViewModel.createLambing(
+                            receiveId.toInt(),
+                            name,
+                            gender,
+                            nation,
+                            description,
+                            blockId,
+                            sledId,
+                            createAt
+                        )
                     }
-                }else{
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             btnCancelAnimalChild.setOnClickListener { dismiss() }
@@ -66,15 +78,19 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
         observerView()
     }
 
-    private fun observerView(){
-        recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner){
+    private fun observerView() {
+        recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner){
-            Toast.makeText(requireActivity(), "${it.status} menambahkan anak hewan", Toast.LENGTH_SHORT).show()
+        recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                requireActivity(),
+                "${it.status} menambahkan anak hewan",
+                Toast.LENGTH_SHORT
+            ).show()
             dismiss()
         }
-        recordBreedingViewModel.isError().observe(viewLifecycleOwner){
+        recordBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
         detailAreaBlockViewModel.apply {
@@ -126,6 +142,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
             progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

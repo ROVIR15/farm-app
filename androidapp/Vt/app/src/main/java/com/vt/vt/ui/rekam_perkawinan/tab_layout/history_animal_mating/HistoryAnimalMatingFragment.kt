@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.core.data.source.remote.breeding.BreedingHistoryItem
 import com.vt.vt.databinding.FragmentAnimalMatingHistoryBinding
 import com.vt.vt.ui.rekam_perkawinan.RecordBreedingViewModel
@@ -21,6 +22,8 @@ class HistoryAnimalMatingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val recordBreedingViewModel by viewModels<RecordBreedingViewModel>()
+
+    private var receiveId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,7 +34,7 @@ class HistoryAnimalMatingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveId = arguments?.getInt("breedingId")
+        receiveId = arguments?.getInt("breedingId")
         recordBreedingViewModel.getBreedingById(receiveId.toString())
         observerView()
     }

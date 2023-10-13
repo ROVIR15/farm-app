@@ -2,7 +2,6 @@ package com.vt.vt.ui.rekam_perkawinan
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -23,6 +22,7 @@ import com.vt.vt.ui.rekam_perkawinan.dialog.AddBreedingDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.AddHistoryBreedingDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.ChangeBreedingStatusDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.EditBreedingDialogFragment
+import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.utils.formatDateBreeding
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +38,7 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private var receiveId: Int? = null
     private var originalToggleState = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -191,28 +192,20 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         return false
     }
 
+    internal var onBottomSheetDialogListener =
+        object : OnBottomSheetListener {
+            override fun onBottomSheetClose() {
+                recordBreedingViewModel.getBreedingById(receiveId.toString())
+            }
+        }
+
     private fun showLoading(state: Boolean) {
         binding.loading.progressBar.isVisible = state
     }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-    internal var onBottomSheetDialogListener =
-        object : AddAnimalPregnantFragment.OnBottomSheetDialogListener {
-            override fun onBottomSheetClose() {
-                recordBreedingViewModel.getBreedingById(receiveId.toString())
-            }
-        }
-
-    internal var changeStatusBreedingListener =
-        object : ChangeBreedingStatusDialogFragment.ChangeBreedingStatusListener {
-            override fun onBottomSheetClose() {
-                recordBreedingViewModel.getBreedingById(receiveId.toString())
-            }
-        }
 
     companion object {
         private val TAB_TITLES = intArrayOf(

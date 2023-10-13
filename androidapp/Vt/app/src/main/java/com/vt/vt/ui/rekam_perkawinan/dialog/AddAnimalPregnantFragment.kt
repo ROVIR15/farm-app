@@ -15,6 +15,7 @@ import com.vt.vt.R
 import com.vt.vt.databinding.FragmentAddAnimalPregnantBinding
 import com.vt.vt.ui.rekam_perkawinan.BreedingRecordFragment
 import com.vt.vt.ui.rekam_perkawinan.RecordBreedingViewModel
+import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.utils.PickDatesUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,7 @@ class AddAnimalPregnantFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentAddAnimalPregnantBinding? = null
     private val binding get() = _binding!!
-    private var onBottomSheetDialogListener: OnBottomSheetDialogListener? = null
+    private var onBottomSheetDialogListener: OnBottomSheetListener? = null
 
     private val recordBreedingViewModel by viewModels<RecordBreedingViewModel>()
     override fun onCreateView(
@@ -99,8 +100,5 @@ class AddAnimalPregnantFragment : BottomSheetDialogFragment() {
             )
             progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
-    }
-    interface OnBottomSheetDialogListener {
-        fun onBottomSheetClose()
     }
 }

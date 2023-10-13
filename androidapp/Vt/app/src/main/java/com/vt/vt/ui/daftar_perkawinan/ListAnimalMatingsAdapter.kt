@@ -30,9 +30,9 @@ class ListAnimalMatingsAdapter :
     inner class ViewHolder(private val binding: ItemListAnimalMatingsBinding) :
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener {
-        @SuppressLint("SetTextI18n")
         fun bindTo(data: BreedingResponseItem) {
-            binding.tvNameItemAnimalMating.text = "${data.name} #${data.id} "
+            binding.createAt.text =data.createdAt.toString()
+            binding.tvNameItemAnimalMating.text = data.name
             binding.btnUpdateList.setOnClickListener(this)
             binding.btnDeleteList.setOnClickListener(this)
         }
