@@ -31,7 +31,7 @@ load_dotenv()
 # ----------------------------------------- #
 # Auth
 # ----------------------------------------- #
-from flask_login import LoginManager
+# from flask_login import LoginManager
 
 # Model
 from User.views import views_auth_bp
