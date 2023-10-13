@@ -95,7 +95,8 @@ def get_a_livestock(livestock_id):
 
         query_block_area = BlockArea.query.get(
             query_block_area_livestock.block_area_id)
-        livestock_count = len(query_block_area.livestock) if query_block_area.livestock else 0
+        livestock_count = len(
+            query_block_area.livestock) if query_block_area.livestock else 0
 
         columns_to_select = [
             FeedingRecord.feed_category,
@@ -249,7 +250,8 @@ def post_livestock():
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
-    birth_date = data.get('birth_date') if data.get('birth_date') is not None else "2023-01-30"
+    birth_date = data.get('birth_date') if data.get(
+        'birth_date') is not None else "2023-01-30"
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
@@ -337,7 +339,7 @@ def update_livestock(livestock_id):
                 'message': f'Livestock {livestock_id} not found.'
             }
             return jsonify(response), 404
-    
+
     except Exception as e:
         # Handling the exception if storing the data fails
         error_message = str(e)
@@ -355,6 +357,13 @@ def delete_livestock(livestock_id):
 
     try:
         # Assuming you have a Livestock model and an existing livestock object
+        bashl = BlockAreaSledLivestock.query.filter_by(
+            livestock_id=livestock_id).first()
+
+        if bashl:
+            db.session.delete(bashl)
+            db.session.commit()
+
         livestock = Livestock.query.get(livestock_id)
         if livestock:
             db.session.delete(livestock)
