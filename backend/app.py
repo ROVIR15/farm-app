@@ -21,8 +21,8 @@ from Record.FeedingRecord.views import views_consumption_bp
 from Breeds.Breeding.views import views_breeding_bp
 
 from FarmProfile.views import views_farm_profile_bp
-# from Finance.Budget.views import views_budget_bp
-# from Finance.BudgetItem.views import views_budget_item_bp
+from Finance.Budget.views import views_budget_bp
+from Finance.BudgetItem.views import views_budget_item_bp
 # from Finance.BudgetCategory.views import views_budget_category_bp
 
 # Load enviroment variable
@@ -88,9 +88,9 @@ app.register_blueprint(views_breeding_bp, url_prefix='/api')
 
 # Finance
 # 10. Budget
-# app.register_blueprint(views_budget_bp)
+app.register_blueprint(views_budget_bp, url_prefix='/api')
 # 11. Budget Item
-# app.register_blueprint(views_budget_item_bp)
+app.register_blueprint(views_budget_item_bp, url_prefix='/api')
 # 12. Budget Category
 # app.register_blueprint(views_budget_category_bp)
 
