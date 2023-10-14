@@ -1,67 +1,123 @@
 from db_connection import db
+from datetime import datetime
 from flask import Blueprint, request, jsonify
+from sqlalchemy import func, and_
 from sqlalchemy.orm import subqueryload
 from Finance.Budget.models import Budget
+from Finance.BudgetItem.models import BudgetItem
+
 from Finance.Budget.schema import BudgetSchema
+from Finance.BudgetItem.schema import BudgetItemSchema
+
+from FarmProfile.HasBudgetItem.models import HasBudgetItem
+
+from auth import login_required, current_farm_profile
 
 views_budget_bp = Blueprint('views_budget', __name__)
 
-budget_schema = BudgetSchema()
-budgets_schema = BudgetSchema(many=True)
+budget_item_schema = BudgetItemSchema()
+budget_items_schema = BudgetItemSchema(many=True)
 
 
 @views_budget_bp.route('/budget', methods=['GET'])
-def get_budgets():
-    # Retrieve all livestock records from the database
-    query = Budget.query.options(subqueryload(Budget.items)).all()
+@login_required
+def get_budget():
+    month_year = request.args.get('month-year')
 
-    results = []
-    # Serialize the livestock data using the schema
-    for item in query:
-        data = {
-            'id': item.id,
-            'month': item.month,
-            'items': item.sleds
-            # 'created_at': item.created_at,
+    if isinstance(month_year, str):
+        param = month_year.split("-")
+        month = param[0]
+        year = param[1]
+    else:
+        date = datetime.now()
+        month = date.month
+        year = date.year
+
+    try:
+
+        farm_profile_id = current_farm_profile()
+
+        query = HasBudgetItem.query.options([
+            subqueryload(HasBudgetItem.budget_item)
+        ]).filter(
+            and_(
+                HasBudgetItem.budget_item.has(func.extract(
+                    'month', BudgetItem.month_year) == month),
+                HasBudgetItem.budget_item.has(func.extract(
+                    'year', BudgetItem.month_year) == year)
+            )
+        ).filter_by(
+            farm_profile_id=farm_profile_id
+        ).all()
+
+        # # Filter rows by month and year
+        # query = BudgetItem.query.options([
+        #     subqueryload(BudgetItem.budget_category)
+        # ]) \
+        # .filter(
+        #     func.extract('month', BudgetItem.month_year) == month,
+        #     func.extract('year', BudgetItem.month_year) == year
+        # ).all()
+
+        results = []
+        # Serialize the livestock data using the schema
+        for koko in query:
+            item = koko.budget_item
+
+            data = {
+                'id': item.id,
+                'month_year': item.month_year,
+                'budget_category_id': item.budget_category.id,
+                'budget_category_name': item.budget_category.budget_category_name,
+                'month_year': item.month_year,
+                'amount': item.amount,
+                # 'created_at': item.created_at,
+            }
+            results.append(data)
+        # result = budget_items_schema.dump(results)
+
+        # Return the serialized data as JSON response
+        return jsonify(results), 200
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to store livestock data. Error: {error_message}'
         }
-        results.append(data)
-    result = budgets_schema.dump(results)
 
-    # Return the serialized data as JSON response
-    return jsonify(result)
-
-
-@views_budget_bp.route('/budget/<int:budget_id>', methods=['GET'])
-def get_a_budget(budget_id):
-    # Retrieve all livestock records from the database
-    query = Budget.query.options(
-        subqueryload(Budget.sleds)).get(budget_id)
-
-    # Serialize the livestock data using the schema
-    result = budget_schema.dump(query)
-
-    # Return the serialized data as JSON response
-    return jsonify(result)
+        return jsonify(response), 500
 
 
 @views_budget_bp.route('/budget', methods=['POST'])
+@login_required
 def post_budget():
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
-    name = data.get('name')
-    description = data.get('description')
+    budget_category_id = data.get('budget_category_id')
+    month_year = data.get('month_year')
+    amount = data.get('amount')
 
     try:
-        query = Budget(name=name, description=description)
+        farm_profile_id = current_farm_profile()
+
+        query = BudgetItem(budget_category_id=budget_category_id,
+                           amount=amount, month_year=month_year)
         db.session.add(query)
+        db.session.commit()
+
+        queryBI = HasBudgetItem(
+            farm_profile_id=farm_profile_id, budget_item_id=query.id)
+        db.session.add(queryBI)
         db.session.commit()
 
         # Create a response JSON
         response = {
             'status': 'success',
-            # 'message': f'Hello, {name}! Your message "{message}" has been received.'
+            # 'message': f'Hello! Your message "{message}" has been received.'
         }
 
         return jsonify(response), 200
@@ -71,7 +127,7 @@ def post_budget():
         error_message = str(e)
         response = {
             'status': 'error',
-            'message': f'Sorry, {name}! Failed to store livestock data. Error: {error_message}'
+            'message': f'Sorry!, Failed to store livestock data. Error: {error_message}'
         }
 
         return jsonify(response), 500
