@@ -20,6 +20,8 @@ class LambingsBreedingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val recordBreedingViewModel by viewModels<RecordBreedingViewModel>()
+    private var receiveId: Int? = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,7 +32,7 @@ class LambingsBreedingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveId = arguments?.getInt("breedingId")
+        receiveId = arguments?.getInt("breedingId")
         recordBreedingViewModel.getBreedingById(receiveId.toString())
         observerView()
     }
@@ -45,13 +47,17 @@ class LambingsBreedingFragment : Fragment() {
                 setupRecyclerView(breeding.lambing)
             }
         }
+        recordBreedingViewModel.deleteBreedingEmitter.observe(viewLifecycleOwner){
+            recordBreedingViewModel.getBreedingById(receiveId.toString())
+            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+        }
         recordBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupRecyclerView(data: List<LambingItem>?) {
-        val adapter = LambingBreedingAdapter()
+        val adapter = LambingBreedingAdapter(recordBreedingViewModel)
         adapter.submitList(data)
         with(binding) {
             rvLembing.adapter = adapter

@@ -207,6 +207,9 @@ interface ApiService {
     @POST("api/breeding-history")
     suspend fun createHistoryBreeding(@Body historyBreedingRequest: HistoryBreedingRequest): Response<BreedingResponse>
 
+    @DELETE("api/breeding/lambing/{id}")
+    suspend fun deleteLambing(@Path("id") id: String): Response<BreedingResponse>
+
     @POST("api/breeding/lambing")
     suspend fun createLambing(@Body lambingRequest: LambingRequest): Response<BreedingResponse>
 

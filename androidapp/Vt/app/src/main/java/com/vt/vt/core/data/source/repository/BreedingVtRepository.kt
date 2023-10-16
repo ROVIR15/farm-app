@@ -19,8 +19,10 @@ class BreedingVtRepository @Inject constructor(private val apiService: ApiServic
     suspend fun createBreeding(breedingRequest: CreateBreedingRequest): Response<BreedingResponse> =
         apiService.createBreeding(breedingRequest)
     suspend fun createHistoryBreeding(historyBreedingRequest: HistoryBreedingRequest): Response<BreedingResponse> =
-        apiService.
-        createHistoryBreeding(historyBreedingRequest)
+        apiService.createHistoryBreeding(historyBreedingRequest)
+    suspend fun deleteLambing(id: String): Response<BreedingResponse> =
+        apiService.deleteLambing(id)
+
     suspend fun createLambing(lambingRequest: LambingRequest): Response<BreedingResponse> =
         apiService.
         createLambing(lambingRequest)

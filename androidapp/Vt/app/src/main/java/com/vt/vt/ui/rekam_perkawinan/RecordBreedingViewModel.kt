@@ -22,8 +22,12 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
     private val _createBreedingEmitter = MutableLiveData<BreedingResponse>()
     val createBreedingEmitter: LiveData<BreedingResponse> = _createBreedingEmitter
 
+    private val _deleteBreedingEmitter = MutableLiveData<BreedingResponse>()
+    val deleteBreedingEmitter: LiveData<BreedingResponse> = _deleteBreedingEmitter
+
     private val _updatePregnancyEmitter = MutableLiveData<BreedingResponse>()
     val updatePregnancyEmitter: LiveData<BreedingResponse> = _updatePregnancyEmitter
+
 
     fun getBreedingById(id: String) {
         launch(action = {
@@ -55,6 +59,17 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
             val response = breedingVtRepository.createHistoryBreeding(historyBreedingRequest)
             if (response.isSuccessful) {
                 _createBreedingEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
+    }
+
+    fun deleteLambing(id: String){
+        launch(action = {
+            val response = breedingVtRepository.deleteLambing(id)
+            if (response.isSuccessful) {
+                _deleteBreedingEmitter.postValue(response.body())
             } else {
                 isError.postValue(response.message())
             }

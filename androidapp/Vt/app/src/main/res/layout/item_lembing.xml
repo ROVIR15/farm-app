@@ -39,11 +39,11 @@
         android:padding="8dp"
         android:text="August 2, 2023 9:07 AM"
         app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-        app:layout_constraintEnd_toStartOf="@+id/btn_options_detail_area"
+        app:layout_constraintEnd_toStartOf="@+id/btn_options"
         app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_options_detail_area"
+        android:id="@+id/btn_options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
