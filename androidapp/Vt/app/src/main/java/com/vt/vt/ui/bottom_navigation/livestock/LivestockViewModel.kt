@@ -77,7 +77,7 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
 
     fun getLivestocksFemale() {
         launch(action = {
-            val response = livestockVtRepository.getLivestocksMale()
+            val response = livestockVtRepository.getLivestocksFemale()
             if (response.isSuccessful) {
                 _livestocksFemaleEmitter.postValue(response.body())
             } else {
