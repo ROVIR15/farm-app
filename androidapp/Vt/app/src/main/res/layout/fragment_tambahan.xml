@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Blok 3"
                 android:textColor="@color/black"
                 android:textSize="28sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,11 +37,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
-                android:text="6 Kandang, 6 Ekor Ternak"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tv_block_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_block_name" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_outline_box"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_block_info">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_date_picker_animal_pregnant"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_baseline_calendar_24" />
+
+                <TextView
+                    android:id="@+id/tv_show_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="Isi Tanggal..."
+                    android:paddingHorizontal="16dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView"
@@ -53,7 +81,7 @@
                 android:text="Pilih Tambahan"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_block_info" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
             <LinearLayout
                 android:id="@+id/linearLayout17"
@@ -83,7 +111,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Total Pemberian Pakan Tambahan"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,9 +131,10 @@
                 android:gravity="center"
                 android:hint="..."
                 android:inputType="numberDecimal"
-                android:maxLength="6"
+                android:maxLength="5"
                 android:textColor="@color/black"
                 android:textSize="48sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_tambahan" />
 
