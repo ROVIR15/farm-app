@@ -27,4 +27,7 @@ class LivestockVtRepository @Inject constructor(private val apiService: ApiServi
 
     suspend fun deleteLivestockById(id: String): Response<LivestockResponse> =
         apiService.deleteLivestockById(id)
+
+    suspend fun getLivestocksMale(): Response<List<LivestockResponseItem>> = apiService.getLivestocksMale()
+    suspend fun getLivestocksFemale(): Response<List<LivestockResponseItem>> = apiService.getLivestocksFemale()
 }

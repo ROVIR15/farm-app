@@ -46,6 +46,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("register")
@@ -137,6 +138,12 @@ interface ApiService {
     suspend fun deleteLivestockById(
         @Path("id") id: String
     ): Response<LivestockResponse>
+
+    @GET("api/livestocks?gender=1")
+    suspend fun getLivestocksMale(): Response<List<LivestockResponseItem>>
+
+    @GET("api/livestocks?gender=2")
+    suspend fun getLivestocksFemale(): Response<List<LivestockResponseItem>>
 
     // Get Categories
     @GET("api/categories")

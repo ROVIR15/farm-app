@@ -18,6 +18,12 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
     private val _livestockEmitter = MutableLiveData<List<LivestockResponseItem>>()
     val livestockItems: LiveData<List<LivestockResponseItem>> = _livestockEmitter
 
+    private val _livestocksMaleEmitter = MutableLiveData<List<LivestockResponseItem>>()
+    val livestocksMaleEmitter: LiveData<List<LivestockResponseItem>> = _livestocksMaleEmitter
+
+    private val _livestocksFemaleEmitter = MutableLiveData<List<LivestockResponseItem>>()
+    val livestocksFemaleEmitter: LiveData<List<LivestockResponseItem>> = _livestocksFemaleEmitter
+
     private val _deleteLivestock = MutableLiveData<LivestockResponse>()
     val deleteLivestock: LiveData<LivestockResponse> = _deleteLivestock
     fun getLivestocks() {
@@ -44,6 +50,36 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
             if (response.isSuccessful) {
                 _deleteLivestock.postValue(response.body())
                 _isDeleted.postValue(Event(response.body()?.message.toString()))
+            } else {
+                isError.postValue(response.errorBody().toString())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+    fun getLivestocksMale() {
+        launch(action = {
+            val response = livestockVtRepository.getLivestocksMale()
+            if (response.isSuccessful) {
+                _livestocksMaleEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.errorBody().toString())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+    fun getLivestocksFemale() {
+        launch(action = {
+            val response = livestockVtRepository.getLivestocksMale()
+            if (response.isSuccessful) {
+                _livestocksFemaleEmitter.postValue(response.body())
             } else {
                 isError.postValue(response.errorBody().toString())
             }
