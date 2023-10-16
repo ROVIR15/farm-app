@@ -103,7 +103,10 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 }
             }
             livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMales ->
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, livestockMales)
+                val nameArray = livestockMales.map {
+                    it.name
+                }.toTypedArray()
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseMaleAddAnimalMating.selected {position ->
@@ -111,7 +114,10 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 }
             }
             livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, livestockFemales)
+                val nameArray = livestockFemales.map {
+                    it.name
+                }.toTypedArray()
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseFemaleAddAnimalMating.selected {position ->

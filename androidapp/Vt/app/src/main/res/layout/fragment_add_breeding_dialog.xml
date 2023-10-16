@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:padding="8dp"
-        android:text="Tambah History"
+        android:text="Tambah Anak"
         android:textAlignment="center"
         android:textColor="@color/text_black"
         android:textSize="24sp" />
@@ -41,8 +41,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Selamat atas kehamilan livestock Anda, silahkan menambahkan tanggal lahir livestock baru ini."
+        android:text="Selamat ternak anda bertambah satu, silahkan tambahkan informasi tersebut."
         android:textAlignment="center" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/outlined_text_input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
