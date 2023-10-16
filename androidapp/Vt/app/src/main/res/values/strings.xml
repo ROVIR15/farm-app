@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Vt</string>
     <string name="title_home">Home</string>
-    <string name="title_livestock">Livestock</string>
+    <string name="title_livestock">Ternak</string>
     <string name="title_scan">Scan</string>
     <string name="title_keuangan">Keuangan</string>
     <string name="title_profile">Profile</string>
@@ -17,8 +17,8 @@
     <string name="rule_password">"Kata sandi harus mengandung setidaknya satu huruf besar, huruf kecil, angka, simbol, dan tanpa spasi"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tambah_nlivestock">Tambah \n<b>Livestock</b></string>
-    <string name="tambah_nlivestocks">Tambah \n<b>Livestock</b></string>
+    <string name="tambah_nlivestock">Tambah \n<b>Ternak</b></string>
+    <string name="tambah_nlivestocks">Tambah \n<b>Ternak</b></string>
     <string name="tambah_npengeluran">Tambah \n<b>Pengeluaran</b></string>
     <string name="lihat_nlivestock">Lihat \n<b>Livestock</b></string>
     <string name="anggaran_dan_realisasi_nkeuangan">Anggaran dan Realisasi \n<b>Keuangan</b></string>

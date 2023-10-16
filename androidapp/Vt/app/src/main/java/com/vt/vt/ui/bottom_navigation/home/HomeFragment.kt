@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
-
+        personalProfileViewModel.getProfile()
         signInViewModel.loginState.observe(viewLifecycleOwner) { user ->
             if (user.token.isBlank() or user.token.isEmpty()) {
                 view.findNavController().navigate(R.id.action_navigation_home_to_signInFragment)
@@ -68,7 +68,6 @@ class HomeFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun observerView() {
         personalProfileViewModel.apply {
-            getProfile()
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.contentHome.loading.progressBar.isVisible = isLoading
             }
