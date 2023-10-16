@@ -38,6 +38,7 @@ class AreaListKandangAdapter(
         PopupMenu.OnMenuItemClickListener {
         fun bindTo(sleds: Sleds) {
             with(binding) {
+                tvDateItemDetailAreaBlock.text = sleds.createdAt
                 tvTitleAnimalCage.text = sleds.name
                 descriptionItemDetailAreaBlock.text = sleds.description
                 btnOptionsDetailArea.setOnClickListener(this@ViewHolder)

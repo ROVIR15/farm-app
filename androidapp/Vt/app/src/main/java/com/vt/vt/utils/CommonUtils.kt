@@ -47,6 +47,7 @@ fun getCurrentDate(): String {
 
     return "$year-$month-$day"
 }
+
 fun formatterDateFromCalendar(inputDate: String): String {
     val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     val outputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

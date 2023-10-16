@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -43,7 +44,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
 
         with(binding) {
             toolbarDetailArea.apply {
-                title = "Detail Area/Block Name"
+                title = "Detail Area Block Kandang"
                 setNavigationOnClickListener { findNavController().popBackStack() }
                 setOnMenuItemClickListener(this@DetailAreaBlockFragment)
             }
@@ -58,7 +59,6 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
             showLoading(it)
         }
         dataAreaViewModel.getBlockArea.observe(viewLifecycleOwner) { blockArea ->
-            println("block area name ${blockArea.name}")
             with(binding) {
                 tvBlockName.text = blockArea?.name.toString()
                 tvDescBlockArea.text = blockArea?.description.toString()
@@ -70,11 +70,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     }
 
     private fun setupViewPager() {
-        val fragmentBundles = arrayListOf(
-            Bundle().apply { putInt("areaBlockId", receiveId.toInt()) },
-            Bundle().apply { putInt("areaBlockId", receiveId.toInt()) },
-            Bundle().apply { putInt("areaBlockId", receiveId.toInt()) },
-        )
+        val fragmentBundles = Bundle().apply { putInt("areaBlockId", receiveId.toInt()) }
 
         val adapter = ViewPagerDetailAreaBlockAdapter(
             fragmentBundles, requireActivity().supportFragmentManager, lifecycle
@@ -83,7 +79,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Daftar Kandang"
-                1 -> tab.text = "Livestock"
+                1 -> tab.text = "Hewan Ternak"
                 2 -> tab.text = "Pakan"
             }
         }.attach()
@@ -118,9 +114,10 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_edit_area_block -> {
-                Toast.makeText(requireContext(), "no action", Toast.LENGTH_SHORT).show()
-//                v.findNavController()
-//                    .navigate(R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment)
+                val mBundle = Bundle()
+                mBundle.putInt("id", receiveId.toInt())
+                v.findNavController()
+                    .navigate(R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment, mBundle)
             }
         }
     }

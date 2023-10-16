@@ -10,26 +10,25 @@ import com.vt.vt.ui.detail_area_block.tab_layout.area_list_livestock.AreaListLiv
 import com.vt.vt.ui.detail_area_block.tab_layout.area_list_pakan.AreaListPakanFragment
 
 class ViewPagerDetailAreaBlockAdapter(
-    private val fragmentBundle: ArrayList<Bundle>,
+    private val fragmentBundle: Bundle,
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return fragmentBundle.size
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = fragmentBundle[position].getInt("Id").let {
-            when (position) {
-                0 -> AreaListKandangFragment()
-                1 -> AreaListLivestockFragment()
-                2 -> AreaListPakanFragment()
-                else -> throw IllegalArgumentException("Invalid position: $position")
-            }
+        var fragment: Fragment? = null
+        when (position) {
+            0 -> fragment = AreaListKandangFragment()
+            1 -> fragment = AreaListLivestockFragment()
+            2 -> fragment = AreaListPakanFragment()
         }
-        fragment.arguments = fragmentBundle[position]
 
-        return fragment
+        fragment?.arguments = fragmentBundle
+
+        return fragment as Fragment
     }
 }

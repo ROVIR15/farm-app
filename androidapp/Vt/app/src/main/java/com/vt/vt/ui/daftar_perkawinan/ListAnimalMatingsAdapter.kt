@@ -1,6 +1,7 @@
 package com.vt.vt.ui.daftar_perkawinan
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,8 +31,21 @@ class ListAnimalMatingsAdapter :
     inner class ViewHolder(private val binding: ItemListAnimalMatingsBinding) :
         RecyclerView.ViewHolder(binding.root),
         View.OnClickListener {
+        @SuppressLint("SetTextI18n")
         fun bindTo(data: BreedingResponseItem) {
-            binding.createAt.text =data.createdAt.toString()
+            when (data.isActive) {
+                true -> {
+                    binding.tvAnimalActive.text = "Aktif"
+                    binding.tvAnimalActive.setBackgroundResource(R.color.green_grass)
+                }
+
+                false -> {
+                    binding.tvAnimalActive.text = "Tidak Aktif"
+                    binding.tvAnimalActive.setTextColor(Color.RED)
+                    binding.tvAnimalActive.setBackgroundResource(R.color.btn_red)
+                }
+            }
+            binding.createAt.text = data.createdAt.toString()
             binding.tvNameItemAnimalMating.text = data.name
             binding.btnUpdateList.setOnClickListener(this)
             binding.btnDeleteList.setOnClickListener(this)

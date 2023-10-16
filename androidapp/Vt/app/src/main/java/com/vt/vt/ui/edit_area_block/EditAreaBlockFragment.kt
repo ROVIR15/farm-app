@@ -33,6 +33,8 @@ class EditAreaBlockFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        receiveId = arguments?.getInt("id").toString()
+        areaBlockViewModel.getSledById(receiveId)
 
         with(binding) {
             appBarLayout.topAppBar.apply {
@@ -65,9 +67,6 @@ class EditAreaBlockFragment : Fragment() {
     }
 
     private fun observerView() {
-        receiveId = arguments?.getInt("id").toString()
-        areaBlockViewModel.getSledById(receiveId)
-
         areaBlockViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)

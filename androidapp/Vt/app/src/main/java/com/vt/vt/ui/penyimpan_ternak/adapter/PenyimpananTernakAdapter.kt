@@ -39,6 +39,7 @@ class PenyimpananTernakAdapter(
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         PopupMenu.OnMenuItemClickListener {
         fun bindTo(data: BlockAndAreasResponseItem) {
+            binding.tvDateContentPentimpanTernak.text = data.createdAt
             binding.tvTitlePenyimpanTernak.text = data.name
             binding.tvSubtitlePenyimpanTernak.text = data.description
             binding.btnRekam.setOnClickListener(this)

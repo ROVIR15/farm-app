@@ -74,12 +74,6 @@ class DataBarangDanJasaFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_add_goods_and_services -> {
@@ -96,6 +90,11 @@ class DataBarangDanJasaFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         with(binding) {
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     companion object {

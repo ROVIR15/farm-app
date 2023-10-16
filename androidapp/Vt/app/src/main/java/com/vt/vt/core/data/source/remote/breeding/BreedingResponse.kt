@@ -31,7 +31,7 @@ data class BreedingResponseItem(
     val livestockMaleName: String? = null,
 
     @field:SerializedName("is_active")
-    val isActive: Boolean? = null,
+    val isActive: Boolean   ,
 
     @field:SerializedName("sled_id")
     val sledId: String? = null,

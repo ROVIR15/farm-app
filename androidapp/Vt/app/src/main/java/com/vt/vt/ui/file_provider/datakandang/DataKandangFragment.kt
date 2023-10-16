@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -19,10 +20,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
-import com.vt.vt.core.data.source.local.model.SpinnerItem
 import com.vt.vt.databinding.FragmentDataKandangBinding
 import com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakViewModel
-import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +33,6 @@ class DataKandangFragment : Fragment() {
     private val cageDataViewModel by viewModels<DataKandangViewModel>()
     private val viewModel by viewModels<PenyimpanTernakViewModel>()
 
-    private var spinnerItems: MutableList<SpinnerItem> = mutableListOf()
     private var blockAreaId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,9 +53,6 @@ class DataKandangFragment : Fragment() {
                 }
             }
             this.ivPhotoDataKandang.setOnClickListener { requestPermissionsIfNeeded() }
-            binding.spinnerCageCategory.selected { position ->
-                blockAreaId = spinnerItems[position].id
-            }
             btnSimpan.setOnClickListener {
                 val name = edtNamaKandang.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
@@ -72,23 +67,40 @@ class DataKandangFragment : Fragment() {
         observerView()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun observerView() {
         viewModel.apply {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 showLoading(isLoading)
             }
             allBlockAndAreas.observe(viewLifecycleOwner) { data ->
-                for (item in data) {
-                    spinnerItems.add(SpinnerItem(item.id, item.name))
-                }
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, spinnerItems)
+                val blocksArray = data.map {
+                    it.name
+                }.toTypedArray()
+                val prompt = "Select a block"
+                val blocksArrayWithPrompt = arrayOf(prompt) + blocksArray
+                val adapter =
+                    ArrayAdapter(requireActivity(), R.layout.item_spinner, blocksArrayWithPrompt)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerCageCategory.adapter = adapter
+                binding.spinnerCageCategory.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            if (position > 0) {
+                                blockAreaId = data[position - 1].id
+                            } else {
+                                blockAreaId = -1
+                            }
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+                            // Handle when nothing is selected (optional)
+                        }
+                    }
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -183,6 +195,11 @@ class DataKandangFragment : Fragment() {
 
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

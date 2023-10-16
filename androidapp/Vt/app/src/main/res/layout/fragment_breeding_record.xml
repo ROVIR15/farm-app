@@ -91,11 +91,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6">
 
-                    <Spinner
-                        android:id="@+id/spinner_stall_record_mating"
+                    <TextView
+                        android:id="@+id/tv_sled"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="false" />
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -154,8 +154,9 @@
                     <TextView
                         android:id="@+id/tv_livestock_male"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="32dp"
                         android:fontFamily="@font/roboto_regular"
+                        android:gravity="center_vertical"
                         android:textColor="@color/text_black" />
                 </LinearLayout>
 
@@ -176,8 +177,9 @@
                     <TextView
                         android:id="@+id/tv_livestock_female"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
                         android:fontFamily="@font/roboto_regular"
+                        android:gravity="center_vertical"
                         android:textColor="@color/text_black" />
                 </LinearLayout>
 

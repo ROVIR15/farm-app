@@ -23,6 +23,9 @@ data class BlockAndAreasResponseItem(
     @field:SerializedName("name")
     val name: String,
 
+    @field:SerializedName("created_at")
+    val createdAt: String,
+
     @field:SerializedName("description")
     val description: String,
 
@@ -59,6 +62,9 @@ data class FeedingRecordsItem(
 
 data class Sleds(
 
+    @field:SerializedName("created_at")
+    val createdAt: String,
+
     @field:SerializedName("name")
     val name: String,
 
@@ -71,24 +77,3 @@ data class Sleds(
     @field:SerializedName("block_area_id")
     val blockAreaId: Int
 )
-//
-//data class FeedingRecordItemResponse(
-//
-//    @field:SerializedName("block_area_id")
-//    val blockAreaId: Int,
-//
-//    @field:SerializedName("day")
-//    val day: String,
-//
-//    @field:SerializedName("feed_list")
-//    val feedList: List<FeedItemResponse>
-//)
-//
-//data class FeedItemResponse(
-//
-//    @field:SerializedName("feed_category")
-//    val feedCategory: String,
-//
-//    @field:SerializedName("total_score")
-//    val totalScore: Int,
-//)

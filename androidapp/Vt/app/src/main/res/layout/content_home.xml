@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Lets’s take care of your livestock"
+                android:text="Mari mengelola pertanian dan ternak"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"

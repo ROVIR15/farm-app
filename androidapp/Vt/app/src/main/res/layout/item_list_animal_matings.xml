@@ -1,86 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_title_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
+            android:paddingHorizontal="8dp"
             android:text="Dibuat pada tanggal"
-            android:paddingVertical="8dp"
+            android:textColor="@color/text_black"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="8dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/createAt"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
             android:text="12 Januari 2023"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="@color/text_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_date" />
+
+        <TextView
+            android:id="@+id/tv_animal_active"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@color/green_grass"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="Active"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="@color/green_text_button"
+            app:layout_constraintBottom_toBottomOf="@+id/createAt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_title_date" />
 
         <View
+            android:id="@+id/guideline"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createAt" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name_item_animal_mating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:paddingHorizontal="8dp"
             android:text="Title"
-            android:paddingVertical="8dp"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_createdAt_item_list_animal_matings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
             android:text="Aktif pada 20 Agustus 2023"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name_item_animal_mating" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_update_list"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:backgroundTint="@color/btn_blue_icon"
+            android:elevation="2dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete_list"
+            app:layout_constraintTop_toBottomOf="@+id/tv_createdAt_item_list_animal_matings" />
 
-            <Button
-                android:id="@+id/btn_update_list"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="@color/btn_blue_icon"
-                android:elevation="2dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Update"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/btn_delete_list"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Delete"
-                android:textAllCaps="false" />
-        </LinearLayout>
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_delete_list"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Delete"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_update_list" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

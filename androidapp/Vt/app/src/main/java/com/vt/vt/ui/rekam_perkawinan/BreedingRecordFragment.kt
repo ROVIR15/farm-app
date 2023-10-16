@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.vt.vt.R
+import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.databinding.FragmentBreedingRecordBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.ui.rekam_perkawinan.dialog.AddAnimalPregnantFragment
@@ -23,9 +22,7 @@ import com.vt.vt.ui.rekam_perkawinan.dialog.AddBreedingDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.AddHistoryBreedingDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.ChangeBreedingStatusDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.EditBreedingDialogFragment
-import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.utils.formatDateBreeding
-import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -87,22 +84,15 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 val desiredSledId = breeding.sledId?.toInt()
                 sledViewModel.sledItems.observe(viewLifecycleOwner) { sled ->
                     with(binding) {
-                        val nameArray = sled.map {
-                            it.name
-                        }.toTypedArray()
-                        val adapter =
-                            ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        spinnerStallRecordMating.adapter = adapter
                         val desiredPosition = sled.indexOfFirst {
                             it.id == desiredSledId
                         }
                         if (desiredPosition != -1) {
-                            spinnerStallRecordMating.selected {
-                                edtArea.setText(sled[desiredPosition].blockAreaName)
-                            }
+                            tvSled.text = sled[desiredPosition].name
+                            edtArea.setText(sled[desiredPosition].blockAreaName)
                         } else {
-                            edtArea.setText("No Data Area Selected ")
+                            tvSled.text = "Kandang Kosong"
+                            edtArea.setText("Area Kosong")
                         }
                     }
                 }
@@ -203,6 +193,7 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private fun showLoading(state: Boolean) {
         binding.loading.progressBar.isVisible = state
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
