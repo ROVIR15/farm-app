@@ -76,9 +76,9 @@ class DataKandangViewModel @Inject constructor(private val sledsVtRepository: Sl
         })
     }
 
-    fun updateSledById(id: String, name: String?, description: String?) {
+    fun updateSledById(id: String, blockAreaId: Int? ,name: String?, description: String?) {
         launch(action = {
-            val sledRequest = SledRequest(null, name, description)
+            val sledRequest = SledRequest(blockAreaId, name, description)
             val response = sledsVtRepository.updateSledById(id, sledRequest)
             if (response.isSuccessful) {
                 _updateSledById.postValue(response.body())

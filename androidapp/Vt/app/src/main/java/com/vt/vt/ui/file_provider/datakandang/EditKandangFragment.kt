@@ -13,8 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditKandangBinding
-import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakViewModel
+import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,10 +26,9 @@ class EditKandangFragment : Fragment() {
     private val sledsViewModel by viewModels<DataKandangViewModel>()
 
     private var sledsId: Int? = null
+    private var blockAreaId: Int? = null
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditKandangBinding.inflate(inflater, container, false)
         return binding.root
@@ -38,7 +37,6 @@ class EditKandangFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sledsId = arguments?.getInt("id")
-        println("sleds $sledsId")
         sledsViewModel.getSledById(sledsId.toString())
         blockAreaViewModel.getAllBlockAndArea()
         with(binding) {
@@ -52,7 +50,9 @@ class EditKandangFragment : Fragment() {
                 val name = edtNamaKandang.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
                 if (name.isNotEmpty() && description.isNotEmpty()) {
-                    sledsViewModel.updateSledById(sledsId.toString(), name, description)
+                    sledsViewModel.updateSledById(
+                        sledsId.toString(), blockAreaId, name, description
+                    )
                 } else {
                     Toast.makeText(requireContext(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
@@ -67,17 +67,19 @@ class EditKandangFragment : Fragment() {
             showLoading(it)
         }
         sledsViewModel.getSledById.observe(viewLifecycleOwner) { sled ->
-            val blockAreaId = sled.blockAreaId
+            val id = sled.blockAreaId
             blockAreaViewModel.allBlockAndAreas.observe(viewLifecycleOwner) { blockArea ->
                 val blocksArray = blockArea.map {
                     it.name
                 }.toTypedArray()
-                val adapter =
-                    ArrayAdapter(requireActivity(), R.layout.item_spinner, blocksArray)
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, blocksArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerCageCategory.adapter = adapter
                 val selectedIndex = blockArea.indexOfFirst {
-                    it.id == blockAreaId
+                    it.id == id
+                }
+                binding.spinnerCageCategory.selected {
+                    blockAreaId = blockArea[it].id
                 }
                 if (selectedIndex != -1) {
                     binding.spinnerCageCategory.setSelection(selectedIndex)

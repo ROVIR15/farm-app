@@ -15,8 +15,6 @@ import com.vt.vt.databinding.FragmentEditBreedingDialogBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.ui.rekam_perkawinan.RecordBreedingViewModel
-import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -109,7 +107,7 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
-                binding.spinnerChooseMaleAddAnimalMating.selected {position ->
+                binding.spinnerChooseMaleAddAnimalMating.selected { position ->
                     livestockMales[position].name
                 }
             }
@@ -120,7 +118,7 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
-                binding.spinnerChooseFemaleAddAnimalMating.selected {position ->
+                binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
                     livestockFemales[position].name
                 }
             }
