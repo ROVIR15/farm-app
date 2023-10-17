@@ -1,5 +1,5 @@
 from db_connection import db
-
+from datetime import datetime
 
 class Sled (db.Model):
     __tablename__ = "sled"
@@ -8,6 +8,7 @@ class Sled (db.Model):
     block_area_id = db.Column(db.Integer(), db.ForeignKey('block_area.id'),nullable=False)
     name = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text())
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
     # Define the `block_area` relationship
     block_area = db.relationship('BlockArea', foreign_keys=[block_area_id], lazy=True)

@@ -40,13 +40,17 @@ def get_block_areas():
 
         # Serialize the livestock data using the schema
         for item in query:
+            date_obj = item.block_area.created_at
+
+            # Format the date as "DD MMMM YYYY"
+            formatted_date = date_obj.strftime("%d %B %Y")
             if hasattr(item, 'block_area'):
                 data = {
                     'id': item.block_area.id,
                     'name': item.block_area.name,
                     'description': item.block_area.description,
                     # 'sleds': item.sleds
-                    # 'created_at': item.created_at,
+                    'created_at': formatted_date,
                 }
                 results.append(data)
         result = blocks_area_schema.dump(results)
@@ -151,6 +155,21 @@ def get_a_block_area(block_area_id):
             result.update(day_map[day])  # Use update to add items from day_map to result dictionary
             results_data.append(result)
 
+        result_sleds = []
+        if isinstance(query.sleds, list):
+            for item in query.sleds:
+                date_obj = item.created_at
+                # Format the date as "DD MMMM YYYY"
+                formatted_date = date_obj.strftime("%d %B %Y")
+                _item = {
+                    "block_area_id": item.block_area_id,
+                    "created_at": formatted_date,
+                    "description": item.description,
+                    "id": item.id,
+                    "name": item.name
+                }
+                result_sleds.append(_item)
+
         # Get the count of sleds and livestock for the BlockArea
         sleds_count = len(query.sleds) if query.sleds else 0
         livestock_count = len(query.livestock) if query.livestock else 0
@@ -160,7 +179,7 @@ def get_a_block_area(block_area_id):
             'name': query.name,
             'info': f'{sleds_count} Kandang, {livestock_count} Ekor',
             'description': query.description,
-            'sleds': query.sleds,
+            'sleds': result_sleds,
             'livestock': [],
             'feeding_records': []
         }

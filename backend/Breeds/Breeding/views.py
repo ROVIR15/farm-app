@@ -48,7 +48,6 @@ def get_breedings():
         query = HasBreeding.query.options([subqueryload(HasBreeding.breedings)]).filter_by(
             farm_profile_id=farm_profile_id).all()
 
-        print(farm_profile_id)
         results = []
         if not query:
             return jsonify([]), 200

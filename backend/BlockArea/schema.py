@@ -7,9 +7,11 @@ class SledSchema(Schema):
     block_area_id = fields.Int(required=True)
     name = fields.Str(required=True)
     description = fields.Str(required=True)
+    created_at = fields.Str(required=True)
 
 class BlockAreaSchema(Schema):
   id = fields.Int(primary_key=True, dump_only=True)
+  created_at = fields.Str(required=True)
   name = fields.Str(required=True)
   info = fields.Str(required=False)
   description = fields.Str(required=False)
