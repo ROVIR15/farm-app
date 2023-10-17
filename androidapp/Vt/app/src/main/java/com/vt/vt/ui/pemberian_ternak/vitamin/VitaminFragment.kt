@@ -14,8 +14,10 @@ import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentVitaminBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
-import com.vt.vt.utils.getCurrentDate
+import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +29,7 @@ class VitaminFragment : Fragment() {
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
 
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
+    private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
     private var skuId: Int = 0
     override fun onCreateView(
@@ -40,7 +43,7 @@ class VitaminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveBlockId = arguments?.getInt("blockId")
-        pemberianTernakViewModel.getBlockAreaInfoById(receiveBlockId.toString())
+        dataAreaBlockViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveVitaminId = arguments?.getInt("feedCategoryVitaminId")
 
         with(binding) {
@@ -50,11 +53,14 @@ class VitaminFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             }
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvShowDate)
+            }
             btnSimpanVitamin.setOnClickListener {
                 val score = editTextRekamPemberianVitamin.text.toString().trim()
-                val currentDate = getCurrentDate()
+                val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
 
-                if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null) {
+                if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && currentDate.isNotEmpty()) {
                     val feedItem = ConsumptionRecordItem(
                         currentDate,
                         score.toDouble(),
@@ -79,10 +85,6 @@ class VitaminFragment : Fragment() {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.loading.progressBar.isVisible = isLoading
             }
-            blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
-                binding.tvBlockName.text = data.name
-                binding.tvBlockInfo.text = data.info
-            }
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(
@@ -95,8 +97,21 @@ class VitaminFragment : Fragment() {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
+        dataAreaBlockViewModel.observeLoading().observe(viewLifecycleOwner) {
+            binding.loading.progressBar.isVisible = it
+        }
+        dataAreaBlockViewModel.blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
+            binding.tvBlockName.text = data.name
+            binding.tvBlockInfo.text = data.info
+        }
+        dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
         listBarangDanJasaViewModel.apply {
             getAllProducts()
+            observeLoading().observe(viewLifecycleOwner) {
+                binding.loading.progressBar.isVisible = it
+            }
             productsEmitter.observe(viewLifecycleOwner) { product ->
                 val namesArray = product.map {
                     it.productName
@@ -107,6 +122,9 @@ class VitaminFragment : Fragment() {
                 val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinner.adapter = adapter
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }

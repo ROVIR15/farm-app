@@ -14,7 +14,8 @@ import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentRekamBeratBadanBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
-import com.vt.vt.utils.getCurrentDate
+import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatterDateFromCalendar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,10 +48,14 @@ class RekamBeratBadanFragment : Fragment() {
                     view.findNavController().popBackStack()
                 }
             }
+
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvShowDate)
+            }
             btnSimpanRekamBeratBadan.setOnClickListener {
                 val score = editTextRekamBeratBadan.text.toString().trim()
-                val date = getCurrentDate()
-                if (score.isNotEmpty()) {
+                val date = formatterDateFromCalendar(tvShowDate.text.toString())
+                if (score.isNotEmpty() && date.isNotEmpty()) {
                     rekamBeratBadanViewModel.createWeightRecordById(
                         receiveId,
                         date,

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
 import com.vt.vt.databinding.FragmentAreaListKandangBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
-import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
+import com.vt.vt.ui.file_provider.datakandang.DataKandangViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +24,7 @@ class AreaListKandangFragment : Fragment() {
 
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
     private val dataAreaViewModel by viewModels<DataAreaViewModel>()
-    private val areaBlockViewModel by viewModels<AreaBlockViewModel>()
+    private val sledsViewModel by viewModels<DataKandangViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,10 +59,10 @@ class AreaListKandangFragment : Fragment() {
                     .show()
             }
         }
-        areaBlockViewModel.deleteSledById.observe(viewLifecycleOwner) {
+        sledsViewModel.deleteSledById.observe(viewLifecycleOwner) {
             detailAreaBlockViewModel.getSleds()
         }
-        areaBlockViewModel.isDeleted.observe(viewLifecycleOwner) {
+        sledsViewModel.isDeleted.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { eventMessage ->
                 Toast.makeText(
                     requireActivity(),
@@ -75,7 +75,7 @@ class AreaListKandangFragment : Fragment() {
     }
 
     private fun setupRecyclerView(data: List<Sleds>?) {
-        val adapter = AreaListKandangAdapter(requireContext(), areaBlockViewModel)
+        val adapter = AreaListKandangAdapter(requireContext(), sledsViewModel)
         adapter.submitList(data)
         with(binding) {
             recyclerViewListDetailArea.layoutManager =

@@ -14,8 +14,10 @@ import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentTambahanBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
-import com.vt.vt.utils.getCurrentDate
+import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +30,7 @@ class TambahanFragment : Fragment() {
 
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
+    private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
     private var skuId: Int = 0
     override fun onCreateView(
@@ -41,7 +44,7 @@ class TambahanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveBlockId = arguments?.getInt("blockId")
-        pemberianTernakViewModel.getBlockAreaInfoById(receiveBlockId.toString())
+        dataAreaBlockViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveTambahanId = arguments?.getInt("feedCategoryTambahanId")
 
         with(binding) {
@@ -51,10 +54,13 @@ class TambahanFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             }
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvShowDate)
+            }
             btnSimpanTambahan.setOnClickListener {
                 val score = editTextRekamPemberianTambahan.text.toString().trim()
-                val currentDate = getCurrentDate()
-                if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null) {
+                val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
+                if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && currentDate.isNotEmpty()) {
                     val feedItem = ConsumptionRecordItem(
                         currentDate,
                         score.toDouble(),
@@ -80,10 +86,6 @@ class TambahanFragment : Fragment() {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.loading.progressBar.isVisible = isLoading
             }
-            blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
-                binding.tvBlockName.text = data.name
-                binding.tvBlockInfo.text = data.info
-            }
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(
@@ -96,8 +98,21 @@ class TambahanFragment : Fragment() {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
+        dataAreaBlockViewModel.observeLoading().observe(viewLifecycleOwner) {
+            binding.loading.progressBar.isVisible = it
+        }
+        dataAreaBlockViewModel.blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
+            binding.tvBlockName.text = data.name
+            binding.tvBlockInfo.text = data.info
+        }
+        dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
         listBarangDanJasaViewModel.apply {
             getAllProducts()
+            observeLoading().observe(viewLifecycleOwner) {
+                binding.loading.progressBar.isVisible = it
+            }
             productsEmitter.observe(viewLifecycleOwner) { product ->
                 val namesArray = product.map {
                     it.productName
@@ -109,6 +124,9 @@ class TambahanFragment : Fragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinner.adapter = adapter
             }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -116,6 +134,4 @@ class TambahanFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

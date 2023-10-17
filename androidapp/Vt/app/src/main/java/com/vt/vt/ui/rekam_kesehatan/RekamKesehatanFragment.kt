@@ -14,7 +14,8 @@ import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentRekamKesehatanBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
-import com.vt.vt.utils.getCurrentDate
+import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatterDateFromCalendar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,9 +45,12 @@ class RekamKesehatanFragment : Fragment() {
                     view.findNavController().popBackStack()
                 }
             }
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvShowDate)
+            }
             btnSimpanRekamKesehatan.setOnClickListener {
                 val description = edtDescriptionRekamKesehatan.text.toString()
-                val date = getCurrentDate()
+                val date = formatterDateFromCalendar(tvShowDate.text.toString())
                 if (description.isNotEmpty() && date.isNotEmpty()) {
                     rekamKesehatanViewModel.createBcsRecordById(receiveId, date, description)
                 } else {

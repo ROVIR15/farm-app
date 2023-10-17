@@ -6,6 +6,7 @@ import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.block_areas.model.BlockAreaInfoResponse
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
@@ -22,6 +23,9 @@ class DataAreaViewModel @Inject constructor(private val blockAndAreasVtRepositor
 
     private val _updateBlockAndArea = MutableLiveData<BlockAndAreasResponse?>()
     val isUpdatedBlockAndArea: LiveData<BlockAndAreasResponse?> = _updateBlockAndArea
+
+    private val _blockAreaInfoByIdEmitter = MutableLiveData<BlockAreaInfoResponse>()
+    val blockAreaInfoByIdEmitter: LiveData<BlockAreaInfoResponse> = _blockAreaInfoByIdEmitter
 
     fun createBlockAndArea(title: String?, description: String?) {
         launch(action = {
@@ -67,6 +71,24 @@ class DataAreaViewModel @Inject constructor(private val blockAndAreasVtRepositor
             val response = blockAndAreasVtRepository.updateBlockAndArea(id, blockAndAreaModel)
             if (response.isSuccessful) {
                 _updateBlockAndArea.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message)
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+
+    fun getBlockAreaInfoById(id: String) {
+        launch(action = {
+            val response = blockAndAreasVtRepository.getBlockAndAreaInfoById(id)
+            if (response.isSuccessful) {
+                _blockAreaInfoByIdEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")

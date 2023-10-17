@@ -11,9 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditAreaBlockBinding
+import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +24,7 @@ class EditAreaBlockFragment : Fragment() {
     private var _binding: FragmentEditAreaBlockBinding? = null
     private val binding get() = _binding!!
 
-    private val areaBlockViewModel by viewModels<AreaBlockViewModel>()
+    private val areaBlockViewModel by viewModels<DataAreaViewModel>()
     private var receiveId: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,7 +36,7 @@ class EditAreaBlockFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         receiveId = arguments?.getInt("id").toString()
-        areaBlockViewModel.getSledById(receiveId)
+        areaBlockViewModel.getBlockAreaInfoById(receiveId)
 
         with(binding) {
             appBarLayout.topAppBar.apply {
@@ -49,21 +51,14 @@ class EditAreaBlockFragment : Fragment() {
                 val name = edtNamaAreaBlock.text.toString().trim()
                 val description = edtDescAreaBlock.text.toString().trim()
                 if (name.isNotEmpty() && description.isNotEmpty()) {
-                    areaBlockViewModel.updateSledById(receiveId, name, description)
+                    areaBlockViewModel.updateBlockAndArea(receiveId, name, description)
                 } else {
                     Toast.makeText(requireContext(), "Lengkapi Kolom ", Toast.LENGTH_SHORT).show()
                 }
             }
-            btnCancelEditAreaBlock.setOnClickListener {
-
-            }
+            btnCancelEditAreaBlock.setOnClickListener { findNavController().popBackStack() }
         }
         observerView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     private fun observerView() {
@@ -71,12 +66,12 @@ class EditAreaBlockFragment : Fragment() {
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
             }
-            getSledById.observe(viewLifecycleOwner) { item ->
+            blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { item ->
                 binding.appBarLayout.topAppBar.title = "Edit ${item.name}"
                 binding.edtNamaAreaBlock.setText(item.name)
                 binding.edtDescAreaBlock.setText(item.description)
             }
-            updateSledById.observe(viewLifecycleOwner) { update ->
+            isUpdatedBlockAndArea.observe(viewLifecycleOwner) { update ->
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(requireContext(), update?.message.toString(), Toast.LENGTH_SHORT)
                     .show()
@@ -96,7 +91,6 @@ class EditAreaBlockFragment : Fragment() {
                 if (state) Color.GRAY
                 else ContextCompat.getColor(requireActivity(), R.color.btn_blue_icon)
             )
-
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }
@@ -114,4 +108,10 @@ class EditAreaBlockFragment : Fragment() {
             dialog.dismiss()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }

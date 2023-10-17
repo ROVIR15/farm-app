@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PenyimpanTernakViewModel @Inject constructor(private val blockAndAreasVtRepository: BlockAndAreasVtRepository) :
     BaseViewModel() {
-    //val allBlockAndAreas = vtRepository.getAreasAndBlock().asLiveData()
     private val _blockAndAreasEmitter = MutableLiveData<List<BlockAndAreasResponseItem>>()
     val allBlockAndAreas: LiveData<List<BlockAndAreasResponseItem>> = _blockAndAreasEmitter
 

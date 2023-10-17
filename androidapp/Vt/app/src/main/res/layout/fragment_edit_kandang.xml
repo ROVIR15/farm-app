@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:overScrollMode="always"
-    tools:context=".ui.rekam_kesehatan.RekamKesehatanFragment">
+    tools:context=".ui.file_provider.datakandang.EditKandangFragment">
 
     <include
         android:id="@+id/app_bar_layout"
@@ -16,126 +15,118 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:overScrollMode="always"
+        android:padding="12dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="12dp">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_detail_livestock"
-                android:layout_width="98dp"
-                android:layout_height="98dp"
-                android:layout_marginTop="14dp"
-                android:src="@drawable/photo"
+                android:id="@+id/iv_photo_data_kandang"
+                android:layout_width="298dp"
+                android:layout_height="358dp"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_file_photo"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_file_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="112dp"
+                android:src="@drawable/ic_baseline_file_upload_24"
+                app:layout_constraintEnd_toEndOf="@+id/iv_photo_data_kandang"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="@+id/iv_photo_data_kandang"
+                app:layout_constraintTop_toTopOf="@+id/iv_photo_data_kandang" />
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title_livestock"
+                android:id="@+id/tv_upload_file_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_regular"
-                android:padding="8dp"
-                android:text="Livestock Name"
-                android:textAlignment="center"
+                android:text="Upload Gambar"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/iv_detail_livestock"
-                app:layout_constraintTop_toTopOf="@+id/iv_detail_livestock" />
+                app:layout_constraintEnd_toEndOf="@+id/icon_file_photo"
+                app:layout_constraintHorizontal_bias="0.486"
+                app:layout_constraintStart_toStartOf="@+id/icon_file_photo"
+                app:layout_constraintTop_toBottomOf="@+id/icon_file_photo" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_info"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:maxLength="24"
-                android:paddingHorizontal="8dp"
-                android:text=" | 1 Tahun 6 Bulan |"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_title_livestock"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_livestock" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_description_livestock"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                android:textAlignment="textStart"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_detail_livestock"
-                app:layout_constraintTop_toBottomOf="@+id/tv_info" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/bg_outline_box"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
+                android:hint="Nama Kandang"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_detail_livestock">
+                app:layout_constraintTop_toBottomOf="@+id/iv_photo_data_kandang">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_date_picker"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_baseline_calendar_24" />
-
-                <TextView
-                    android:id="@+id/tv_show_date"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_nama_kandang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:hint="Isi Tanggal..."
-                    android:paddingHorizontal="16dp"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                    android:inputType="textShortMessage" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title_rekam_kesehatan"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/linearSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/roboto_bold"
-                android:padding="8dp"
-                android:text="Catatan Kesehatan"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_outline_box"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout">
+
+                <Spinner
+                    android:id="@+id/spinner_cage_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outlined_text_input_layout2"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Deskripsi"
+                android:layout_marginTop="8dp"
+                android:hint="Deskripsi Kandang"
                 app:boxStrokeColor="@color/btn_blue_icon"
                 app:hintTextColor="@color/text_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_rekam_kesehatan">
+                app:layout_constraintTop_toBottomOf="@+id/linearSpinner">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_description_rekam_kesehatan"
+                    android:id="@+id/edt_description"
                     android:layout_width="match_parent"
-                    android:layout_height="98dp"
-                    android:gravity="start"
+                    android:layout_height="wrap_content"
                     android:inputType="textMultiLine" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_simpan_rekam_kesehatan"
+                android:id="@+id/btn_simpan"
                 android:layout_width="0dp"
                 android:layout_height="58dp"
                 android:layout_marginTop="24dp"
@@ -153,7 +144,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_batal_rekam_kesehatan"
+                android:id="@+id/btn_batal"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="58dp"
@@ -165,9 +156,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_simpan_rekam_kesehatan" />
-
+                app:layout_constraintTop_toBottomOf="@+id/btn_simpan"
+                app:strokeColor="@color/red" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <include

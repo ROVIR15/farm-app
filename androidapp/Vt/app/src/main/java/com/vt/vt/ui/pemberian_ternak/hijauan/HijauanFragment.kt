@@ -14,8 +14,10 @@ import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentHijauanBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
-import com.vt.vt.utils.getCurrentDate
+import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,8 +28,8 @@ class HijauanFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
-
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
+    private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
     private var value: Int? = 0
     private var skuId: Int = 0
@@ -42,7 +44,7 @@ class HijauanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveBlockId = arguments?.getInt("blockId")
-        pemberianTernakViewModel.getBlockAreaInfoById(receiveBlockId.toString())
+        dataAreaBlockViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveHijauanId = arguments?.getInt("feedCategoryHijauanId")
 
         with(binding) {
@@ -52,13 +54,15 @@ class HijauanFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             }
-
+            ivDate.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvShowDate)
+            }
             btnSimpanHijauan.setOnClickListener {
                 val score = editTextValueHijauan.text.toString().trim()
-                val currentDate = getCurrentDate()
-                if (score.isNotEmpty()) {
+                val date = formatterDateFromCalendar(tvShowDate.text.toString().trim())
+                if (score.isNotEmpty() && date.isNotEmpty()) {
                     val feedItem = ConsumptionRecordItem(
-                        currentDate,
+                        date,
                         score.toDouble(),
                         receiveHijauanId,
                         0,
@@ -88,16 +92,25 @@ class HijauanFragment : Fragment() {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
             }
-            blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
-                binding.tvBlockName.text = data.name
-                binding.tvInfo.text = data.info
-            }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
+        dataAreaBlockViewModel.observeLoading().observe(viewLifecycleOwner) {
+            binding.loading.progressBar.isVisible = it
+        }
+        dataAreaBlockViewModel.blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
+            binding.tvBlockName.text = data.name
+            binding.tvInfo.text = data.info
+        }
+        dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
         listBarangDanJasaViewModel.apply {
             getAllProducts()
+            observeLoading().observe(viewLifecycleOwner) {
+                binding.loading.progressBar.isVisible = it
+            }
             productsEmitter.observe(viewLifecycleOwner) { product ->
                 val namesArray = product.map {
                     it.productName
@@ -108,6 +121,9 @@ class HijauanFragment : Fragment() {
                 val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinner.adapter = adapter
+            }
+            isError().observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }

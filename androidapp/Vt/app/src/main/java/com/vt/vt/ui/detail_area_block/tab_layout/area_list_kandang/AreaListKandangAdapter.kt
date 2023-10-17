@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.block_areas.model.Sleds
 import com.vt.vt.databinding.ItemDetailAreaBlockBinding
-import com.vt.vt.ui.edit_area_block.AreaBlockViewModel
+import com.vt.vt.ui.file_provider.datakandang.DataKandangViewModel
 
 class AreaListKandangAdapter(
-    private val context: Context, private val viewModel: AreaBlockViewModel
+    private val context: Context, private val viewModel: DataKandangViewModel
 ) : ListAdapter<Sleds, AreaListKandangAdapter.ViewHolder>(
     DIFF_CALLBACK
 ) {
@@ -64,7 +64,7 @@ class AreaListKandangAdapter(
                         putInt("id", id)
                     }
                     itemView.findNavController().navigate(
-                        R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment, bundle
+                        R.id.action_detailAreaBlockFragment_to_editKandangFragment, bundle
                     )
                     return true
                 }

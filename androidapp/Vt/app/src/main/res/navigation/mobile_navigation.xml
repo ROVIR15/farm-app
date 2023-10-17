@@ -295,6 +295,9 @@
         <action
             android:id="@+id/action_detailAreaBlockFragment_to_detailLivestockFragment"
             app:destination="@id/detailLivestockFragment" />
+        <action
+            android:id="@+id/action_detailAreaBlockFragment_to_editKandangFragment"
+            app:destination="@id/editKandangFragment" />
     </fragment>
     <fragment
         android:id="@+id/rekamBCSFragment"
@@ -508,7 +511,7 @@
         android:id="@+id/breedingRecordFragment"
         android:name="com.vt.vt.ui.rekam_perkawinan.BreedingRecordFragment"
         android:label="fragment_breeding_record"
-        tools:layout="@layout/fragment_breeding_record" >
+        tools:layout="@layout/fragment_breeding_record">
         <argument
             android:name="id"
             android:defaultValue="0"
@@ -519,5 +522,15 @@
         android:name="com.vt.vt.ui.detail_area_block.bottom_sheet_dialog.AddAreaBlockDialogFragment"
         android:label="fragment_add_area_block_dialog"
         tools:layout="@layout/fragment_add_area_block_dialog" />
+    <fragment
+        android:id="@+id/editKandangFragment"
+        android:name="com.vt.vt.ui.file_provider.datakandang.EditKandangFragment"
+        android:label="fragment_edit_kandang"
+        tools:layout="@layout/fragment_edit_kandang">
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

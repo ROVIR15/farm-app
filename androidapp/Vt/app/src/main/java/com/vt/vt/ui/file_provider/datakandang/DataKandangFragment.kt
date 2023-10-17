@@ -98,7 +98,7 @@ class DataKandangFragment : Fragment() {
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {
-                            // Handle when nothing is selected (optional)
+
                         }
                     }
             }

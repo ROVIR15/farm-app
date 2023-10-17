@@ -14,7 +14,8 @@ import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentRekamBCSBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
-import com.vt.vt.utils.getCurrentDate
+import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.formatterDateFromCalendar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,10 +46,13 @@ class RekamBCSFragment : Fragment() {
                 title = "Rekam BCS"
                 setNavigationOnClickListener { findNavController().popBackStack() }
             }
+            ivDatePicker.setOnClickListener {
+                PickDatesUtils.setupDatePicker(requireActivity(), tvShowDate)
+            }
             btnSimpanRekamBcs.setOnClickListener {
                 val score = editTextRekamBcs.text.toString().trim()
-                val date = getCurrentDate()
-                if (score.isNotEmpty())
+                val date = formatterDateFromCalendar(tvShowDate.text.toString())
+                if (score.isNotEmpty() && date.isNotEmpty())
                     rekamBCSViewModel.createBcsRecordById(receiveId, date, score.toDouble(), "None")
                 else {
                     Toast.makeText(requireActivity(), "Lengkapi Kolom", Toast.LENGTH_SHORT).show()
