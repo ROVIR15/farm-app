@@ -47,7 +47,7 @@ lambing_records_schema = LambingSchema(many=True)
 def get_breedings():
     try:
         farm_profile_id = current_farm_profile()
-        query = HasBreeding.query.options([subqueryload(HasBreeding.breedings)]) \
+        query = HasBreeding.query.options([subqueryload(HasBreeding.breedings).subqueryload(Breeding.breeding_status)]) \
                 .filter_by(
                     farm_profile_id=farm_profile_id
                 ) \
@@ -447,14 +447,15 @@ def delete_lambing(lambing_id):
                 livestock_id=query.livestock_id).first()
             livestock_info = Livestock.query.get(query.livestock_id)
 
+            db.session.delete(query)
+            db.session.commit()
+
             db.session.delete(basl)
             db.session.commit()
 
             db.session.delete(livestock_info)
             db.session.commit()
 
-            db.session.delete(query)
-            db.session.commit()
         else:
             response = {
                 'status': 'error',
@@ -465,6 +466,7 @@ def delete_lambing(lambing_id):
 
         response = {
             'status': 'success',
+            'message': 'Lambing has been deleted!'
         }
 
         return jsonify(response), 200

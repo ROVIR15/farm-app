@@ -360,15 +360,15 @@ def delete_livestock(livestock_id):
         bashl = BlockAreaSledLivestock.query.filter_by(
             livestock_id=livestock_id).first()
 
-        if bashl:
+        livestock = Livestock.query.get(livestock_id)
+
+        print(bashl, livestock)
+        if livestock and bashl:
             db.session.delete(bashl)
             db.session.commit()
-
-        livestock = Livestock.query.get(livestock_id)
-        if livestock:
             db.session.delete(livestock)
             db.session.commit()
-
+            
             response = {
                 'status': 'success',
                 'message': f'Livestock {livestock_id} has been deleted.'
