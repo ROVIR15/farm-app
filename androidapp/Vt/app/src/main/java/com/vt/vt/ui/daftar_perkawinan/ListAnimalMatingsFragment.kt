@@ -60,13 +60,20 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             binding.dataEmpty.isEmpty.isVisible = data.isEmpty()
             setupRecyclerView(data)
         }
+        listBreedingViewModel.deleteBreedingEmitter.observe(viewLifecycleOwner) { data ->
+            Toast.makeText(requireActivity(), data.message, Toast.LENGTH_SHORT).show()
+            binding.refreshPage.setOnRefreshListener {
+                listBreedingViewModel.getAllBreedings()
+                binding.refreshPage.isRefreshing = false
+            }
+        }
         listBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupRecyclerView(data: List<BreedingResponseItem?>) {
-        val adapter = ListAnimalMatingsAdapter()
+        val adapter = ListAnimalMatingsAdapter(listBreedingViewModel)
         adapter.submitList(data)
         with(binding) {
             recyclerViewListAnimalMatings.adapter = adapter

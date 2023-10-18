@@ -21,6 +21,9 @@ class ListBreedingViewModel @Inject constructor(private val breedingVtRepository
     private val _createBreedingEmitter = MutableLiveData<BreedingResponse>()
     val createBreedingEmitter: LiveData<BreedingResponse> = _createBreedingEmitter
 
+    private val _deleteBreedingEmitter = MutableLiveData<BreedingResponse>()
+    val deleteBreedingEmitter: LiveData<BreedingResponse> = _deleteBreedingEmitter
+
     fun getAllBreedings() {
         launch(action = {
             val response = breedingVtRepository.getAllBreedings()
@@ -54,6 +57,23 @@ class ListBreedingViewModel @Inject constructor(private val breedingVtRepository
             val response = breedingVtRepository.createBreeding(breedingRequest)
             if (response.isSuccessful) {
                 _createBreedingEmitter.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message.toString())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+    fun deleteBreedingById(id: String) {
+        launch(action = {
+            val response = breedingVtRepository.deleteBreedingById(id)
+            if (response.isSuccessful) {
+                _deleteBreedingEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")

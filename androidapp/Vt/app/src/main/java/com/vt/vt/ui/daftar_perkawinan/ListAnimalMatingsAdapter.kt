@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,7 +15,7 @@ import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
 import com.vt.vt.databinding.ItemListAnimalMatingsBinding
 
-class ListAnimalMatingsAdapter :
+class ListAnimalMatingsAdapter(private val listBreedingViewModel: ListBreedingViewModel) :
     ListAdapter<BreedingResponseItem, ListAnimalMatingsAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -36,6 +36,7 @@ class ListAnimalMatingsAdapter :
             when (data.isActive) {
                 true -> {
                     binding.tvAnimalActive.text = "Aktif"
+                    binding.tvAnimalActive.setTextColor(Color.GREEN)
                     binding.tvAnimalActive.setBackgroundResource(R.color.green_grass)
                 }
 
@@ -65,7 +66,16 @@ class ListAnimalMatingsAdapter :
                 }
 
                 R.id.btn_delete_list -> {
-                    Toast.makeText(v.context, "no action", Toast.LENGTH_SHORT).show()
+                    AlertDialog.Builder(itemView.context).setTitle("Delete")
+                        .setIcon(R.drawable.ic_outline_delete_outline_24)
+                        .setMessage("Are you sure delete this Information")
+                        .setPositiveButton("Yes") { dialog, _ ->
+                            val breedingId = currentList[adapterPosition].id
+                            listBreedingViewModel.deleteBreedingById(breedingId.toString())
+                            dialog.dismiss()
+                        }.setNegativeButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }.create().show()
                 }
             }
         }

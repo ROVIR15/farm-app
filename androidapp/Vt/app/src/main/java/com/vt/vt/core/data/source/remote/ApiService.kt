@@ -210,6 +210,8 @@ interface ApiService {
 
     @POST("api/breeding")
     suspend fun createBreeding(@Body breedingRequest: CreateBreedingRequest): Response<BreedingResponse>
+    @DELETE("api/breeding/{id}")
+    suspend fun deleteBreedingById(@Path("id") id: String): Response<BreedingResponse>
 
     @POST("api/breeding-history")
     suspend fun createHistoryBreeding(@Body historyBreedingRequest: HistoryBreedingRequest): Response<BreedingResponse>
