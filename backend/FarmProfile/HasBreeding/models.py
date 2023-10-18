@@ -1,4 +1,6 @@
 from db_connection import db
+from sqlalchemy import asc, desc
+from Breeds.Breeding.models import Breeding
 from datetime import datetime
 
 
@@ -13,5 +15,5 @@ class HasBreeding (db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
     breedings = db.relationship(
-        'Breeding', backref='farm_profile_has_breeding')
+        'Breeding', foreign_keys=[breeding_id], order_by=desc(Breeding.id))
 

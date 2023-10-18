@@ -19,7 +19,8 @@ class Breeding (db.Model):
 
     livestock_male = db.relationship('Livestock', foreign_keys=[livestock_male_id])
     livestock_female = db.relationship('Livestock', foreign_keys=[livestock_female_id])
-    pregnancy = db.relationship('Pregnancy', back_populates='breeding', order_by=desc(Pregnancy.id))
-    breeding_status = db.relationship('BreedingStatus', back_populates='breeding', order_by=desc(BreedingStatus.id))
-    breeding_history = db.relationship('BreedingHistory', back_populates='breeding', order_by=desc(BreedingHistory.id))
+    pregnancy = db.relationship('Pregnancy', back_populates='breeding', order_by=desc(Pregnancy.id), cascade="all, delete")
+    breeding_status = db.relationship('BreedingStatus', back_populates='breeding', order_by=desc(BreedingStatus.id), cascade="all, delete")
+    breeding_history = db.relationship('BreedingHistory', back_populates='breeding', order_by=desc(BreedingHistory.id), cascade="all, delete")
     lambing = db.relationship('Lambing', back_populates='breeding')
+    sled = db.relationship('Sled', foreign_keys=[sled_id])

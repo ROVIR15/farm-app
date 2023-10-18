@@ -5,6 +5,7 @@ from sqlalchemy import func, and_
 from sqlalchemy.orm import subqueryload
 from Finance.Budget.models import Budget
 from Finance.BudgetItem.models import BudgetItem
+from Finance.Expenditure.models import Expenditure
 
 from Finance.Budget.schema import BudgetSchema
 from Finance.BudgetItem.schema import BudgetItemSchema
@@ -59,10 +60,23 @@ def get_budget():
         #     func.extract('year', BudgetItem.month_year) == year
         # ).all()
 
+        columns_to_select = [
+            Expenditure.budget_category_id,
+            func.sum(Expenditure.amount).label('total_expenditure')
+        ]
+
         results = []
         # Serialize the livestock data using the schema
         for koko in query:
             item = koko.budget_item
+
+            expenditure_ = Expenditure.query \
+                            .with_entities(*columns_to_select) \
+                            .filter_by(budget_category_id=item.budget_category.id) \
+                            .group_by(Expenditure.budget_category_id) \
+                            .all()
+            
+            spent = expenditure_[0].total_expenditure if isinstance(expenditure_, list) and len(expenditure_) > 0 else 0;
 
             data = {
                 'id': item.id,
@@ -71,6 +85,7 @@ def get_budget():
                 'budget_category_name': item.budget_category.budget_category_name,
                 'month_year': item.month_year,
                 'amount': item.amount,
+                'expenditure': spent
                 # 'created_at': item.created_at,
             }
             results.append(data)

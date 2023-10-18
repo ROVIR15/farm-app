@@ -9,6 +9,8 @@ class BudgetItem (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     month_year = db.Column(db.Date, nullable=False)
     budget_category_id = db.Column(db.Integer, db.ForeignKey('budget_category.id'), nullable=False)
+    budget_sub_category_id = db.Column(db.Integer, nullable=False)
+    # budget_sub_category_id = db.Column(db.Integer, db.ForeignKey('budget_sub_categories.id'), nullable=False)
     amount = db.Column(Numeric(precision=10, scale=4), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 

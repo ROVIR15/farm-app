@@ -1,5 +1,6 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
+from sqlalchemy import desc
 from sqlalchemy.orm import subqueryload
 
 from datetime import datetime
@@ -9,6 +10,7 @@ from Breeds.BreedingHistory.models import BreedingHistory
 from Breeds.BreedingStatus.models import BreedingStatus
 from Breeds.Pregnancy.models import Pregnancy
 from Breeds.Lambing.models import Lambing
+from Sled.models import Sled
 
 from Livestock.models import Livestock
 from BlockAreaSledLivestock.models import BlockAreaSledLivestock
@@ -45,14 +47,16 @@ lambing_records_schema = LambingSchema(many=True)
 def get_breedings():
     try:
         farm_profile_id = current_farm_profile()
-        query = HasBreeding.query.options([subqueryload(HasBreeding.breedings)]).filter_by(
-            farm_profile_id=farm_profile_id).all()
-
+        query = HasBreeding.query.options([subqueryload(HasBreeding.breedings)]) \
+                .filter_by(
+                    farm_profile_id=farm_profile_id
+                ) \
+                .order_by(desc(HasBreeding.breeding_id)) \
+                .all()
         results = []
         if not query:
             return jsonify([]), 200
         else:
-            print(len(query))
             list_of_breeding = query
             if not isinstance(list_of_breeding, list):
                 raise Exception("Not found any breeding record")
@@ -95,7 +99,8 @@ def get_a_breeding(breeding_id):
                     subqueryload(Breeding.livestock_female),
                     subqueryload(Breeding.lambing),
                     subqueryload(Breeding.breeding_history),
-                    subqueryload(Breeding.breeding_status)
+                    subqueryload(Breeding.breeding_status),
+                    subqueryload(Breeding.sled).subqueryload(Sled.block_area)
                 ]) \
                 .get(breeding_id)
 
@@ -124,16 +129,36 @@ def get_a_breeding(breeding_id):
 
             lambing.append(__temp)
 
+        status_breeding = query.breeding_status[0] if isinstance(query.breeding_status, list) and len(query.breeding_status) else None
+
+        if query.sled.block_area:
+            block_area_name = query.sled.block_area.name
+            block_area_description = query.sled.block_area.description
+        else:
+            block_area_name = ""
+            block_area_description = ""
+
+        sled_ = {
+            'id': query.sled.id,
+            'block_area_id': query.sled.block_area_id,
+            'name': query.sled.name,
+            'description': query.sled.description,
+            'block_area_name': block_area_name,
+            'block_area_description': block_area_description
+        }
+
         result = {
             "id": query.id,
             "is_active": query.is_active,
-            "sled_id": query.id,
+            "sled_id": query.sled_id,
             "created_at": query.created_at,
             "lambing": lambing,
             "pregnancy": query_preg,
             "livestock_male": query.livestock_male,
             "livestock_female": query.livestock_female,
-            "breeding_history": query.breeding_history
+            "breeding_history": query.breeding_history,
+            "breeding_status": status_breeding,
+            "sled": sled_
         }
 
         if not query:
@@ -550,19 +575,28 @@ def post_lambing():
 @views_breeding_bp.route('/breeding/<int:id>', methods=['DELETE'])
 def delete_breeding(id):
     # Assuming the system has bcs record model and an existing bcs_record object
-    query = Breeding.query.get(id)
-    if query:
-        db.session.delete(query)
-        db.session.commit()
+    try:
+        query = Breeding.query.get(id)
+        if query:
+            db.session.delete(query)
+            db.session.commit()
 
-        response = {
-            'status': 'success',
-            'message': f'Breeding {id} has been deleted.'
-        }
-        return jsonify(response), 200
-    else:
+            response = {
+                'status': 'success',
+                'message': f'Breeding {id} has been deleted.'
+            }
+            return jsonify(response), 200
+        else:
+            response = {
+                'status': 'error',
+                'message':  f'Breeding {id} not found.'
+            }
+            return jsonify(response), 404
+    except Exception as e:
+        error_message = str(e)
         response = {
             'status': 'error',
-            'message':  f'Breeding {id} not found.'
+            'message': f'Sorry error, due to {error_message}'
         }
-        return jsonify(response), 404
+
+        return jsonify(response), 500

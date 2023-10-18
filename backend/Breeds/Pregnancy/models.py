@@ -10,4 +10,4 @@ class Pregnancy (db.Model):
         db.Boolean(), nullable=False) #db.ForeignKey('breeding.id')
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
-    breeding = db.relationship('Breeding', foreign_keys=[breeding_id], lazy=True)
+    breeding = db.relationship('Breeding', foreign_keys=[breeding_id], back_populates='pregnancy', lazy=True)

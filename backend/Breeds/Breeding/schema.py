@@ -5,7 +5,9 @@ from Livestock.schema import LivestockSchema_new
 from Breeds.Pregnancy.schema import PregnancySchema
 from Breeds.Lambing.schema import LambingSchema
 from Breeds.BreedingHistory.schema import BreedingHistorySchema
+from Breeds.BreedingStatus.schema import BreedingStatusSchema
 # from BlockArea.schema import BlockAreaSchema
+from Sled.schema import SledSchema
 
 class BreedingSchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
@@ -24,7 +26,8 @@ class BreedingSchema(Schema):
     pregnancy = fields.Nested(PregnancySchema, required=False)
     lambing = fields.Nested(LambingSchema, many=True, required=False)
     breeding_history = fields.Nested(BreedingHistorySchema, many=True, required=False)
-    # breeding_status = fields.Nested(BreedingHistorySchema, required=False)
+    sled = fields.Nested(SledSchema, required=False)
+    breeding_status = fields.Nested(BreedingStatusSchema, required=False)
 
     created_at = fields.Str(required=True)
 
