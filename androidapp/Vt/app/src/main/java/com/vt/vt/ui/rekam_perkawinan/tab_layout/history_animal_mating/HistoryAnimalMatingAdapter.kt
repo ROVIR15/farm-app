@@ -30,6 +30,7 @@ class HistoryAnimalMatingAdapter :
             binding.tvDescriptionHealthRecord.text = data.remarks
         }
     }
+
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<BreedingHistoryItem> =
             object : DiffUtil.ItemCallback<BreedingHistoryItem>() {

@@ -25,9 +25,7 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
     private val recordBreedingViewModel by viewModels<RecordBreedingViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddHistoryBreedingDialogBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,8 +37,7 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
         with(binding) {
             ivDatePickerHistoryAnimalMating.setOnClickListener {
                 PickDatesUtils.setupDatePicker(
-                    requireActivity(),
-                    tvHistoryAnimalMatingDate
+                    requireActivity(), tvHistoryAnimalMatingDate
                 )
             }
             btnSaveAnimalMating.setOnClickListener {
@@ -50,12 +47,9 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
                 if (createAt.isNotEmpty() && description.isNotEmpty()) {
                     if (receiveId != null) {
                         recordBreedingViewModel.createHistoryBreeding(
-                            createAt,
-                            receiveId,
-                            description
+                            createAt, receiveId, description
                         )
                     }
-                    dismiss()
                 } else {
                     Toast.makeText(requireActivity(), "Lengkapi Kolom", Toast.LENGTH_SHORT).show()
                 }
@@ -69,9 +63,13 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
         recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "${it.status} menambahkan catatan", Toast.LENGTH_SHORT)
-                .show()
+        recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner) { isCreated ->
+            Toast.makeText(
+                requireContext(),
+                "${isCreated.status} menambahkan catatan",
+                Toast.LENGTH_SHORT
+            ).show()
+            dismiss()
         }
         recordBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

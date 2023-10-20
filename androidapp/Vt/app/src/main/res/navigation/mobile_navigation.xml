@@ -516,6 +516,9 @@
             android:name="id"
             android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_breedingRecordFragment_to_editLivestockFragment"
+            app:destination="@id/editLivestockFragment" />
     </fragment>
     <dialog
         android:id="@+id/addAreaBlockDialogFragment"

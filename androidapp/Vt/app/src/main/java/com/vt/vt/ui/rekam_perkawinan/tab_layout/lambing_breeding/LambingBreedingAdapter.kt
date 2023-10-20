@@ -1,11 +1,13 @@
 package com.vt.vt.ui.rekam_perkawinan.tab_layout.lambing_breeding
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +59,13 @@ class LambingBreedingAdapter(private val viewModel: RecordBreedingViewModel) :
         override fun onMenuItemClick(item: MenuItem?): Boolean {
             when (item?.itemId) {
                 R.id.menu_edit -> {
+                    val id = currentList[adapterPosition].livestock.id
+                    val mBundle = Bundle()
+                    mBundle.putInt("id", id)
+                    itemView.findNavController().navigate(
+                        R.id.action_breedingRecordFragment_to_editLivestockFragment,
+                        mBundle
+                    )
                     return true
                 }
 

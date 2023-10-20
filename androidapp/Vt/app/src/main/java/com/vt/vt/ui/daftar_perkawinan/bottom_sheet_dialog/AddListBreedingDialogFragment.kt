@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -51,18 +50,13 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
             }
             btnSaveAddAnimalMating.setOnClickListener {
                 val createdAt = tvAddAnimalMatingDate.text.toString().trim()
-                if (createdAt.isNotEmpty()) {
-                    listBreedingViewModel.createBreeding(
-                        createdAt,
-                        livestockMaleId,
-                        livestockFemaleId,
-                        sledId,
-                        blockId
-                    )
-                } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                listBreedingViewModel.createBreeding(
+                    createdAt,
+                    livestockMaleId,
+                    livestockFemaleId,
+                    sledId,
+                    blockId
+                )
             }
             btnCancelAddAnimalMating.setOnClickListener {
                 dismiss()
@@ -120,7 +114,7 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
         livestockViewModel.apply {
             getLivestocks()
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
-               showLoading(isLoading)
+                showLoading(isLoading)
             }
             livestockItems.observe(viewLifecycleOwner) { livestock ->
                 val (namesArrayMale, namesArrayFemale) = livestock.partition { it.gender == "1" }

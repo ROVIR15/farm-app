@@ -58,21 +58,28 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
         listBreedingViewModel.breedingEmitter.observe(viewLifecycleOwner) { data ->
             binding.dataEmpty.isEmpty.isVisible = data.isEmpty()
-            setupRecyclerView(data)
+            if (data != null) {
+                setupRecyclerView(data)
+            }
         }
         listBreedingViewModel.deleteBreedingEmitter.observe(viewLifecycleOwner) { data ->
             Toast.makeText(requireActivity(), data.message, Toast.LENGTH_SHORT).show()
-            binding.refreshPage.setOnRefreshListener {
-                listBreedingViewModel.getAllBreedings()
-                binding.refreshPage.isRefreshing = false
-            }
+            listBreedingViewModel.getAllBreedings()
+        }
+        listBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                requireContext(),
+                "${it.status} menambahkan perkawinan",
+                Toast.LENGTH_SHORT
+            ).show()
+            listBreedingViewModel.getAllBreedings()
         }
         listBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setupRecyclerView(data: List<BreedingResponseItem?>) {
+    private fun setupRecyclerView(data: List<BreedingResponseItem>) {
         val adapter = ListAnimalMatingsAdapter(listBreedingViewModel)
         adapter.submitList(data)
         with(binding) {

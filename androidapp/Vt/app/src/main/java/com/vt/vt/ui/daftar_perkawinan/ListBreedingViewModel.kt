@@ -15,8 +15,8 @@ import javax.inject.Inject
 class ListBreedingViewModel @Inject constructor(private val breedingVtRepository: BreedingVtRepository) :
     BaseViewModel() {
 
-    private val _breedingEmitter = MutableLiveData<List<BreedingResponseItem?>>()
-    val breedingEmitter: LiveData<List<BreedingResponseItem?>> = _breedingEmitter
+    private val _breedingEmitter = MutableLiveData<List<BreedingResponseItem>>()
+    val breedingEmitter: LiveData<List<BreedingResponseItem>> = _breedingEmitter
 
     private val _createBreedingEmitter = MutableLiveData<BreedingResponse>()
     val createBreedingEmitter: LiveData<BreedingResponse> = _createBreedingEmitter
@@ -40,7 +40,7 @@ class ListBreedingViewModel @Inject constructor(private val breedingVtRepository
     }
 
     fun createBreeding(
-        createAt: String,
+        createAt: String?,
         livestockMaleId: Int,
         livestockFemaleId: Int,
         sledId: Int,

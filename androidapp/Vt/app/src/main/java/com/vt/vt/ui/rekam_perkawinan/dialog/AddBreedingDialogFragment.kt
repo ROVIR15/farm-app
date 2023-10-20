@@ -33,9 +33,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
     private var sledId: Int = 0
     private var blockId: Int = 0
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddBreedingDialogBinding.inflate(inflater, container, false)
         return binding.root
@@ -84,9 +82,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
         }
         recordBreedingViewModel.createBreedingEmitter.observe(viewLifecycleOwner) {
             Toast.makeText(
-                requireActivity(),
-                "${it.status} menambahkan anak hewan",
-                Toast.LENGTH_SHORT
+                requireActivity(), "${it.status} menambahkan anak hewan", Toast.LENGTH_SHORT
             ).show()
             dismiss()
         }
@@ -113,9 +109,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(
-                    requireContext(),
-                    it ?: "Unkown Error",
-                    Toast.LENGTH_SHORT
+                    requireContext(), it ?: "Unkown Error", Toast.LENGTH_SHORT
                 ).show()
             }
         }

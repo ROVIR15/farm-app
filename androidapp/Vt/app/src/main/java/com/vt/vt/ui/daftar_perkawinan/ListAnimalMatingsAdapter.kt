@@ -14,19 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
 import com.vt.vt.databinding.ItemListAnimalMatingsBinding
-import com.vt.vt.ui.daftar_perkawinan.bottom_sheet_dialog.ListAnimalMatingDiffUtils
 
 class ListAnimalMatingsAdapter(private val listBreedingViewModel: ListBreedingViewModel) :
     ListAdapter<BreedingResponseItem, ListAnimalMatingsAdapter.ViewHolder>(DIFF_CALLBACK) {
-
-    private val breedings = ArrayList<BreedingResponseItem>()
-    fun setBreeding(newBreeding: List<BreedingResponseItem>) {
-        val diffCallback = ListAnimalMatingDiffUtils(breedings, newBreeding)
-        val diffBreeding = DiffUtil.calculateDiff(diffCallback)
-        breedings.clear()
-        breedings.addAll(newBreeding)
-        diffBreeding.dispatchUpdatesTo(this)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
