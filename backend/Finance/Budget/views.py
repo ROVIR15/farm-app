@@ -6,11 +6,16 @@ from sqlalchemy.orm import subqueryload
 from Finance.Budget.models import Budget
 from Finance.BudgetItem.models import BudgetItem
 from Finance.Expenditure.models import Expenditure
+from Finance.Income.models import Income
 
 from Finance.Budget.schema import BudgetSchema
+from Finance.Expenditure.schema import ExpenditureSchema
 from Finance.BudgetItem.schema import BudgetItemSchema
 
+from decimal import Decimal
+
 from FarmProfile.HasBudgetItem.models import HasBudgetItem
+from FarmProfile.HasIncome.models import HasIncome
 
 from auth import login_required, current_farm_profile
 
@@ -19,6 +24,7 @@ views_budget_bp = Blueprint('views_budget', __name__)
 budget_item_schema = BudgetItemSchema()
 budget_items_schema = BudgetItemSchema(many=True)
 
+expenditures_schema = ExpenditureSchema(many=True)
 
 @views_budget_bp.route('/budget', methods=['GET'])
 @login_required
@@ -39,7 +45,7 @@ def get_budget():
         farm_profile_id = current_farm_profile()
 
         query = HasBudgetItem.query.options([
-            subqueryload(HasBudgetItem.budget_item)
+            subqueryload(HasBudgetItem.budget_item).subqueryload(BudgetItem.expenditures)
         ]).filter(
             and_(
                 HasBudgetItem.budget_item.has(func.extract(
@@ -51,14 +57,31 @@ def get_budget():
             farm_profile_id=farm_profile_id
         ).all()
 
-        # # Filter rows by month and year
-        # query = BudgetItem.query.options([
-        #     subqueryload(BudgetItem.budget_category)
-        # ]) \
-        # .filter(
-        #     func.extract('month', BudgetItem.month_year) == month,
-        #     func.extract('year', BudgetItem.month_year) == year
-        # ).all()
+        income_query = HasIncome.query \
+                        .filter(
+                            and_(
+                                HasIncome.income.has(func.extract(
+                                    'month', Income.date) == month),
+                                HasIncome.income.has(func.extract(
+                                    'year', Income.date) == year)
+                            )
+                        ).filter_by(
+                            farm_profile_id=farm_profile_id
+                        ).all()
+
+        results_income = []
+        if isinstance(income_query, list) and income_query:
+            for item in income_query:
+                item_ = item.income
+
+                data = {
+                    'id': item_.id,
+                    'income_category_id': item_.income_category_id,
+                    'date': item_.date,
+                    'amount': item_.amount,
+                    'remarks': item_.remarks
+                }
+                results_income.append(data)
 
         columns_to_select = [
             Expenditure.budget_category_id,
@@ -66,17 +89,29 @@ def get_budget():
         ]
 
         results = []
+
+        total_budget_amount = 0
+        total_expenditure = 0
+
         # Serialize the livestock data using the schema
         for koko in query:
             item = koko.budget_item
 
-            expenditure_ = Expenditure.query \
-                            .with_entities(*columns_to_select) \
-                            .filter_by(budget_category_id=item.budget_category.id) \
-                            .group_by(Expenditure.budget_category_id) \
-                            .all()
+            total_expenditure_on_category = 0
+            expenditures = None
             
-            spent = expenditure_[0].total_expenditure if isinstance(expenditure_, list) and len(expenditure_) > 0 else 0;
+            if item.expenditures and isinstance(item.expenditures, list):
+                expenditures = expenditures_schema.dump(item.expenditures)
+                # Use a list comprehension to extract the 'amount' values from the dictionaries
+                amounts = [item["amount"] for item in expenditures]
+
+                # Calculate the total expenditure by summing the amounts
+                total_expenditure_on_category = sum(amounts)
+                total_expenditure = total_expenditure + total_expenditure_on_category
+
+            total_budget_amount = total_budget_amount + item.amount
+
+            budget_left_ = Decimal(item.amount) - Decimal(total_expenditure)
 
             data = {
                 'id': item.id,
@@ -84,15 +119,27 @@ def get_budget():
                 'budget_category_id': item.budget_category.id,
                 'budget_category_name': item.budget_category.budget_category_name,
                 'month_year': item.month_year,
-                'amount': item.amount,
-                'expenditure': spent
+                'budget_amount': item.amount,
+                'total_expenditure': total_expenditure,
+                'left': budget_left_
                 # 'created_at': item.created_at,
             }
             results.append(data)
-        # result = budget_items_schema.dump(results)
+
+        budget_left = Decimal(total_budget_amount) - Decimal(total_expenditure)
+
+        response = {
+            'month_year': month_year,
+            'total_budget_amount': total_budget_amount,
+            'total_expenditure': total_expenditure,
+            'budget_left': budget_left,
+            'status': 'Lebih dari budget' if (budget_left) < 0 else 'Aman',
+            'budget_breakdown': results,
+            'incomes': results_income
+        }
 
         # Return the serialized data as JSON response
-        return jsonify(results), 200
+        return jsonify(response), 200
 
     except Exception as e:
         # Handling the exception if storing the data fails

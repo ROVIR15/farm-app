@@ -362,7 +362,6 @@ def delete_livestock(livestock_id):
 
         livestock = Livestock.query.get(livestock_id)
 
-        print(bashl, livestock)
         if livestock and bashl:
             db.session.delete(bashl)
             db.session.commit()

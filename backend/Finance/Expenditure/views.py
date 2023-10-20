@@ -1,55 +1,41 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy import and_, func
 from sqlalchemy.orm import subqueryload
-from datetime import datetime
 from Finance.BudgetRevision.models import BudgetRevision
 from Finance.BudgetItem.models import BudgetItem
 from Finance.BudgetItem.schema import BudgetItemSchema
-from Finance.Expenditure.schema import ExpenditureSchema
+from Finance.Expenditure.models import Expenditure
 
-from FarmProfile.HasBudgetItem.models import HasBudgetItem
+from FarmProfile.HasExpenditure.models import HasExpenditure
+from Finance.Expenditure.schema import ExpenditureSchema
 
 from auth import login_required, current_farm_profile
 
-views_budget_item_bp = Blueprint('views_budget_item', __name__)
+views_expenditure_bp = Blueprint('views_expenditure', __name__)
 
 budget_item_schema = BudgetItemSchema()
 budget_items_schema = BudgetItemSchema(many=True)
-expenditures_schema = ExpenditureSchema(many=True)
 
+expenditure_item_schema = ExpenditureSchema()
 
-@views_budget_item_bp.route('/budget-item/<int:budget_item_id>', methods=['GET'])
+@views_expenditure_bp.route('/expenditure/<int:expenditure_id>', methods=['GET'])
 @login_required
-def get_a_budget_item(budget_item_id):
-    month_year = request.args.get('month-year')
-
-    if isinstance(month_year, str):
-        param = month_year.split("-")
-        month = param[0]
-        year = param[1]
-    else:
-        date = datetime.now()
-        month = date.month
-        year = date.year
-
+def get_a_expenditure(expenditure_id):
     try:
-        query = BudgetItem.query \
-            .options(subqueryload(BudgetItem.expenditures)) \
-            .filter(
-                and_(
-                    func.extract(
-                        'month', BudgetItem.month_year) == month,
-                    func.extract(
-                        'year', BudgetItem.month_year) == year,
-                    BudgetItem.id == budget_item_id
-                )
-            ) \
-            .first()
+        query = Expenditure.query.get(expenditure_id)
 
-        response = budget_item_schema.dump(query)
+        if not query:
+            response = {
+                'status': 'error',
+                'message': f'Sorry! Expenditure {expenditure_id} not found!'
+            }
 
-        return jsonify(response), 200
+            return jsonify(response), 404
+
+
+        result = expenditure_item_schema.dump(query)
+
+        return jsonify(result), 200
 
     except Exception as e:
         # Handling the exception if storing the data fails
@@ -61,30 +47,36 @@ def get_a_budget_item(budget_item_id):
 
         return jsonify(response), 500
 
-
-@views_budget_item_bp.route('/budget-item', methods=['POST'])
+@views_expenditure_bp.route('/expenditure', methods=['POST'])
 @login_required
-def post_budget():
+def post_expenditure():
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
+    date = data.get('date')
     budget_category_id = data.get('budget_category_id')
+    budget_sub_category_id = data.get('budget_sub_category_id')
+    sku_id = data.get('sku_id')
     amount = data.get('amount')
-    month_year = data.get('month_year')
+    remarks = data.get('remarks')
 
     try:
 
         farm_profile_id = current_farm_profile()
 
-        query = BudgetItem(
-            budget_category_id=budget_category_id, amount=amount, month_year=month_year)
+        query = Expenditure(
+            date=date,
+            budget_category_id=budget_category_id, 
+            budget_sub_category_id=budget_sub_category_id, 
+            sku_id=sku_id, 
+            amount=amount, 
+            remarks=remarks)
         db.session.add(query)
         db.session.commit()
 
-        queryBI = HasBudgetItem(
-            farm_profile_id=farm_profile_id, budget_item_id=query.id)
-        db.session.add(queryBI)
+        queryExpenditure = HasExpenditure(farm_profile_id=farm_profile_id, expenditure_id=query.id)
+        db.session.add(queryExpenditure)
         db.session.commit()
 
         # Create a response JSON
@@ -106,45 +98,42 @@ def post_budget():
         return jsonify(response), 500
 
 
-@views_budget_item_bp.route('/budget-item/<int:budget_item_id>', methods=['PUT'])
+@views_expenditure_bp.route('/expenditure/<int:expenditure_id>', methods=['PUT'])
 @login_required
-def update_budget(budget_item_id):
+def update_expenditure(expenditure_id):
     data = request.get_json()  # Get the JSON data from the request body
 
     # Process the data or perform any desired operations
     # For example, you can access specific fields from the JSON data
+    date = data.get('date')
     budget_category_id = data.get('budget_category_id')
-    month_year = data.get('month_year')
-    to_amount = data.get('amount')
-    notes = 'none'
+    budget_sub_category_id = data.get('budget_sub_category_id')
+    sku_id = data.get('sku_id')
+    amount = data.get('amount')
+    remarks = data.get('remarks')
 
     # Create new budget revision based on revised item;
     try:
         # Assuming you have a Livestock model and an existing livestock object
-        budget_item = BudgetItem.query.get(budget_item_id)
-        if budget_item:
-            budget_item.amount = to_amount
-            budget_item.budget_category_id = budget_category_id
+        expenditure = Expenditure.query.get(expenditure_id)
+        if expenditure:
+            expenditure.date = date 
+            expenditure.budget_category_id = budget_category_id 
+            expenditure.budget_sub_category_id = budget_sub_category_id 
+            expenditure.sku_id = sku_id 
+            expenditure.amount = amount 
+            expenditure.remarks = remarks
             db.session.commit()
 
-            query = BudgetRevision(
-                month_year=month_year,
-                budget_category_id=budget_category_id,
-                from_amount=budget_item.amount,  # get last budget amount and stored as from_amount
-                to_amount=to_amount,
-                notes=notes)
-            db.session.add(query)
-            db.session.commit()
-            # Create a response JSON
             response = {
                 'status': 'success',
-                'message': f'Budget Item {budget_item_id} has been updated.'
+                'message': f'Expenditure {expenditure_id} has been updated.'
             }
             return jsonify(response), 200
         else:
             response = {
                 'status': 'error',
-                'message': f'Budget Item {budget_item_id} not found.'
+                'message': f'Expenditure {expenditure_id} not found.'
             }
             return jsonify(response), 404
 
@@ -158,27 +147,26 @@ def update_budget(budget_item_id):
 
         return jsonify(response), 500
 
-
-@views_budget_item_bp.route('/budget-item/<int:budget_item_id>', methods=['DELETE'])
+@views_expenditure_bp.route('/expenditure/<int:expenditure_id>', methods=['DELETE'])
 @login_required
-def delete_budget(budget_item_id):
+def delete_expenditure(expenditure_id):
     # Assuming you have a Livestock model and an existing livestock object
 
     try:
-        query = BudgetItem.query.get(budget_item_id)
+        query = Expenditure.query.get(expenditure_id)
         if query:
             db.session.delete(query)
             db.session.commit()
 
             response = {
                 'status': 'success',
-                'message': f'Budget Item {budget_item_id} has been deleted.'
+                'message': f'Expenditure {expenditure_id} has been deleted.'
             }
             return jsonify(response), 200
         else:
             response = {
                 'status': 'error',
-                'message': f'Budget Item {budget_item_id} not found.'
+                'message': f'Expenditure {expenditure_id} not found.'
             }
             return jsonify(response), 404
 
