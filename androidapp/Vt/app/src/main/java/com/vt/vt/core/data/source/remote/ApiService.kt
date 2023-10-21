@@ -17,6 +17,8 @@ import com.vt.vt.core.data.source.remote.breeding.create.CreateBreedingRequest
 import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
 import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
 import com.vt.vt.core.data.source.remote.breeding.pregnancy.PregnancyRequest
+import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
+import com.vt.vt.core.data.source.remote.budget.BudgetResponse
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
 import com.vt.vt.core.data.source.remote.farm_profile.model.FarmProfileResponse
 import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
@@ -225,4 +227,10 @@ interface ApiService {
     @PUT("api/pregnancy/{id}")
     suspend fun updatePregnancy(@Path("id") id: String, @Body pregnancyRequest: PregnancyRequest): Response<BreedingResponse>
 
+    // Budget
+    @GET("api/budget")
+    suspend fun getBudgetByMonth(@Query("month-year") monthYear: String): Response<BudgetResponse>
+
+    @GET("api/budget-item/{id}")
+    suspend fun getBudgetById(@Path("id") id: String): Response<BudgetItemResponse>
 }

@@ -30,14 +30,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Budget"
+            android:text="Anggaran"
             android:textAppearance="?android:attr/textAppearance"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_tv_categories" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/item_nilai_realisasi"
+            android:id="@+id/tvBudgetValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
@@ -54,14 +54,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Expenses"
+            android:text="Pengeluaran"
             android:textAppearance="?android:attr/textAppearance"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/item_nilai_total_realisasi_dan_anggaran"
+            android:id="@+id/tvExpensesValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
@@ -71,7 +71,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/appCompatTextView5"
-            app:layout_constraintTop_toBottomOf="@+id/item_nilai_realisasi" />
+            app:layout_constraintTop_toBottomOf="@+id/tvBudgetValue" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

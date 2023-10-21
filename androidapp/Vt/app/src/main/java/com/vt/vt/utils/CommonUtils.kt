@@ -15,6 +15,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -25,6 +28,13 @@ import java.util.Locale
     matrix.postRotate(angle)
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 }*/
+fun Any.convertRupiah(): String {
+    val localId = Locale("in", "ID")
+    val formatter = NumberFormat.getCurrencyInstance(localId)
+    val strFormat = formatter.format(this)
+    return strFormat
+}
+
 fun Spinner.selected(action: (position: Int) -> Unit) {
     this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -37,15 +47,6 @@ fun Spinner.selected(action: (position: Int) -> Unit) {
             action(position)
         }
     }
-}
-
-fun getCurrentDate(): String {
-    val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH) + 1  // Months are 0-based
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-    return "$year-$month-$day"
 }
 
 fun formatterDateFromCalendar(inputDate: String): String {
@@ -100,6 +101,12 @@ fun formatDateBreeding(dateTime: String?, dateFormats: String?): String {
 
     return output.format(calendar.time)
 }
+
+fun formatAsIDR(amount: Int): String {
+    val format = DecimalFormat("###,###", DecimalFormatSymbols(Locale("id", "ID")))
+    return format.format(amount.toLong())
+}
+
 
 fun uriToFile(selectedImg: Uri, context: Context): File {
     val contentResolver: ContentResolver = context.contentResolver

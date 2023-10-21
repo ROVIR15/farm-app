@@ -205,6 +205,10 @@
         android:name="com.vt.vt.ui.anggaran.AnggaranFragment"
         android:label="fragment_anggaran"
         tools:layout="@layout/fragment_anggaran">
+        <argument
+            android:name="id"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_anggaranFragment_to_addPengeluaranFragment"
             app:destination="@id/addPengeluaranFragment" />

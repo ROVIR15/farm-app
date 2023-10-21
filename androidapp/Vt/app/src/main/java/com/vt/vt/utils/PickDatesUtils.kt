@@ -28,6 +28,24 @@ object PickDatesUtils {
         datePickerDialog.show()
     }
 
+    fun pickMonthAndYear(context: Context, dateTextView: TextView, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+
+        val datePickerDialog = DatePickerDialog(
+            context,
+            { _, year, month, date ->
+                val dateFormat = SimpleDateFormat("MM-yyyy", Locale.getDefault())
+                calendar.set(year, month, date)
+                dateTextView.text = dateFormat.format(calendar.time)
+                onDateSelected(dateFormat.format(calendar.time))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.show()
+    }
+
     fun datePickToEdittext(context: Context, textInputEditText: TextInputEditText) {
         val calendar = Calendar.getInstance()
 

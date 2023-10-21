@@ -17,6 +17,7 @@ import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.Histor
 import com.vt.vt.core.data.source.remote.dummy.tablayout.historyperanakan.IHistoryPeranakan
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import com.vt.vt.core.data.source.repository.BreedingVtRepository
+import com.vt.vt.core.data.source.repository.BudgetVtRepository
 import com.vt.vt.core.data.source.repository.CategoriesVtRepository
 import com.vt.vt.core.data.source.repository.DataRepository
 import com.vt.vt.core.data.source.repository.FarmProfileVtRepository
@@ -109,10 +110,16 @@ class AppModule {
     @Singleton
     fun provideFeedingVtRepository(apiService: ApiService): FeedingVtRepository =
         FeedingVtRepository(apiService)
+
     @Provides
     @Singleton
     fun provideBreedingVtRepository(apiService: ApiService): BreedingVtRepository =
         BreedingVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun providesBudgetVtRepository(apiService: ApiService): BudgetVtRepository =
+        BudgetVtRepository(apiService)
 
     @Provides
     @Singleton

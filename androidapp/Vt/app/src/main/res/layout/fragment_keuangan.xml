@@ -44,9 +44,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/roboto_bold"
                     android:hint="Isi Tanggal..."
                     android:paddingHorizontal="16dp"
+                    android:textColor="@color/text_black"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -79,12 +80,13 @@
                         android:text="Sisa Anggaran" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvBudgetLeft"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:padding="8dp"
-                        android:text="Rp. 15.000.000" />
+                        android:text="Rp.000" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -117,23 +119,25 @@
                         android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_total_budget_amount"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_bold"
                             android:padding="8dp"
-                            android:text="Rp. 16.000.000"
+                            android:text="Rp.000"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_total_expenditure"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_bold"
                             android:padding="8dp"
-                            android:text="Rp. 16.000.000"
+                            android:text="Rp.000"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -148,7 +152,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/roboto_bold"
                 android:padding="8dp"
-                android:text="Pengeluaran"
+                android:text="Anggaran"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -178,4 +182,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
+    <include
+        android:id="@+id/isEmpty"
+        layout="@layout/data_empty" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

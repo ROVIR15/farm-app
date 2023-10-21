@@ -47,9 +47,11 @@
                 app:startIconTint="@color/text_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amountBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:focusable="false"
                     android:background="@drawable/bg_calendar_grey"
                     android:ems="10"
                     android:gravity="center_vertical"
@@ -94,6 +96,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
+    <include
+        android:id="@+id/data_empty"
+        layout="@layout/data_empty" />
 
     <include
         android:id="@+id/footer_anggaran_form"
