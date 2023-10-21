@@ -53,8 +53,13 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
             }
             btnSaveAddAnimalMating.setOnClickListener {
                 val blockArea = edtAreaEditBreeding.text.toString().trim()
+                println("blcok 1 $blockArea")
+                println("blcok 2 $getSled")
+                println("blcok 3 $getLivestockMale")
+                println("blcok 4 $getLivestockFemale")
                 if (blockArea.isNotEmpty() && !getSled.isNullOrEmpty() && !getLivestockMale.isNullOrEmpty() && !getLivestockFemale.isNullOrEmpty()) {
-                    println("hore")
+                    Toast.makeText(requireActivity(), "UPDATE (API) BELOM ADA", Toast.LENGTH_SHORT)
+                        .show()
                     // PUT API HERE...
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
@@ -108,7 +113,7 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseMaleAddAnimalMating.selected { position ->
-                    livestockMales[position].name
+                    getLivestockMale = livestockMales[position].name
                 }
             }
             livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->
@@ -119,7 +124,7 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
-                    livestockFemales[position].name
+                   getLivestockFemale = livestockFemales[position].name
                 }
             }
         }

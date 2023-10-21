@@ -30,8 +30,8 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
 
     private var sledId: Int = 0
     private var blockId: Int = 0
-    private var livestockMaleId: Int = 0
-    private var livestockFemaleId: Int = 0
+    private var livestockMale: String? = null
+    private var livestockFemale: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +44,9 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        livestockViewModel.getLivestocks()
+        livestockViewModel.getLivestocksMale()
+        livestockViewModel.getLivestocksFemale()
         with(binding) {
             ivDatePickerAnimalMatings.setOnClickListener {
                 PickDatesUtils.setupDatePicker(requireActivity(), tvAddAnimalMatingDate)
@@ -52,8 +55,8 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
                 val createdAt = tvAddAnimalMatingDate.text.toString().trim()
                 listBreedingViewModel.createBreeding(
                     createdAt,
-                    livestockMaleId,
-                    livestockFemaleId,
+                    livestockMale,
+                    livestockFemale,
                     sledId,
                     blockId
                 )
@@ -112,32 +115,30 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
             }
         }
         livestockViewModel.apply {
-            getLivestocks()
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 showLoading(isLoading)
             }
-            livestockItems.observe(viewLifecycleOwner) { livestock ->
-                val (namesArrayMale, namesArrayFemale) = livestock.partition { it.gender == "1" }
-                    .let { (male, female) ->
-                        male.map { it.name }.toTypedArray() to female.map { it.name }.toTypedArray()
-                    }
-
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArrayMale)
+            livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMales ->
+                val nameArray = livestockMales.map {
+                    it.name
+                }.toTypedArray()
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
-
-                val femaleAdapter =
-                    ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArrayFemale)
-                femaleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerChooseFemaleAddAnimalMating.adapter = femaleAdapter
-
                 binding.spinnerChooseMaleAddAnimalMating.selected { position ->
-                    livestockMaleId = livestock[position].id
+                    livestockMale = livestockMales[position].name
                 }
+            }
+            livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->
+                val nameArray = livestockFemales.map {
+                    it.name
+                }.toTypedArray()
+                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
-                    livestockFemaleId = livestock[position].id
+                    livestockFemale = livestockFemales[position].name
                 }
-
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(
