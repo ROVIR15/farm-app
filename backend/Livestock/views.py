@@ -36,6 +36,7 @@ livestocks_schema_new = LivestockSchema_new(many=True)
 @login_required
 def get_livestocks():
     # Retrieve all livestock records from the database
+    gender = request.args.get('gender')
     farm_profile_id = current_farm_profile()
 
     try:
@@ -51,6 +52,12 @@ def get_livestocks():
             }
 
             return jsonify(response)
+
+        def gender_filter_(_param):
+            if 'gender' in _param:
+                if int(_param['gender']) == int(gender):
+                    return _param
+
         # Serialize the livestock data using the schema
         for item in query:
             if hasattr(item, 'livestock'):
@@ -63,6 +70,7 @@ def get_livestocks():
                     'id': item.livestock.id,
                     'name': item.livestock.name,
                     'gender': item.livestock.gender,
+                    'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
                     'birth_date': item.livestock.birth_date,
                     'bangsa': item.livestock.bangsa,
                     'info': f'{item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
@@ -70,6 +78,11 @@ def get_livestocks():
                     'created_at': formatted_date,
                 }
                 results.append(data)
+
+        if gender is not None:
+            results = filter(gender_filter_, results)
+            results = list(results)
+            print(results)
 
         result = livestocks_schema_new.dump(results)
         # Return the serialized data as JSON response
