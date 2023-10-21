@@ -35,7 +35,7 @@ def get_a_budget_item(budget_item_id):
 
     try:
         query = BudgetItem.query \
-            .options(subqueryload(BudgetItem.expenditures)) \
+            .options(subqueryload(BudgetItem.budget_category), subqueryload(BudgetItem.expenditures)) \
             .filter(
                 and_(
                     func.extract(
@@ -47,7 +47,17 @@ def get_a_budget_item(budget_item_id):
             ) \
             .first()
 
-        response = budget_item_schema.dump(query)
+
+        results = {
+            'id': query.id,
+            'amount': query.amount,
+            'created_at': query.created_at,
+            'expenditures': query.expenditures,
+            'budget_category_id': query.budget_category_id,
+            'budget_category_name': query.budget_category.budget_category_name
+        }
+
+        response = budget_item_schema.dump(results)
 
         return jsonify(response), 200
 
