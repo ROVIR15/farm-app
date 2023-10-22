@@ -192,6 +192,12 @@ def post_new_breeding():
         sled_id = data.get('sled_id')
         block_area_id = data.get('block_area_id')
 
+        # Convert the input date to a datetime object
+        input_date_object = datetime.strptime(date, "%d-%m-%Y")
+
+        # Format the date as "yyyy-mm-dd"
+        output_date = input_date_object.strftime("%Y-%m-%d")
+
         # Store data to breeding colleciton
         query = Breeding(livestock_male_id=livestock_male_id,
                          livestock_female_id=livestock_female_id,
