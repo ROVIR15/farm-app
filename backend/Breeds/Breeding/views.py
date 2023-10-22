@@ -1,5 +1,5 @@
 from db_connection import db
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from sqlalchemy import desc
 from sqlalchemy.orm import subqueryload
 
@@ -197,7 +197,7 @@ def post_new_breeding():
 
         #Format the date as "yyyy-mm-dd"
         output_date = input_date_object.strftime("%Y-%m-%d")
-        print(livestock_female_id, livestock_male_id, date, sled_id, block_area_id)
+
         # Store data to breeding colleciton
         query = Breeding(livestock_male_id=livestock_male_id,
                          livestock_female_id=livestock_female_id,
@@ -268,6 +268,7 @@ def post_new_breeding():
         db.session.rollback()
         # Handling the exception if storing the data fails
         error_message = str(e)
+        current_app.logger.error(f"An error occurred: {error_message}")
         response = {
             'status': 'error',
             'message': f'Sorry error, due to {error_message}'

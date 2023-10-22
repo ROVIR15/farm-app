@@ -1,6 +1,7 @@
 from flask import Flask
 from dotenv import load_dotenv
 import os
+import logging
 
 from auth import AuthManager
 
@@ -46,6 +47,12 @@ app.secret_key = os.environ.get('SECRET_KEY')  # Replace with a strong secret ke
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+# Configure logging
+app.logger.setLevel(logging.INFO)  # Set the logging level to INFO or any desired level
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] - %(message)s'))
+app.logger.addHandler(handler)
 
 app.login_manager = AuthManager(app, app.config['SECRET_KEY'])
 
