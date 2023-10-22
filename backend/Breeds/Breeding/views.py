@@ -187,16 +187,15 @@ def post_new_breeding():
         # Process the data or perform any desired operations
         livestock_male_id = data.get('livestock_male_id')
         livestock_female_id = data.get('livestock_female_id')
-        date = data.get('date') if data.get(
-            'date') is not None else "2023-10-10"
+        date = "2023-10-10"
         sled_id = data.get('sled_id')
         block_area_id = data.get('block_area_id')
 
         # Convert the input date to a datetime object
-        input_date_object = datetime.strptime(date, "%d-%m-%Y")
+        # input_date_object = datetime.strptime(date, "%d-%m-%Y")
 
         # Format the date as "yyyy-mm-dd"
-        output_date = input_date_object.strftime("%Y-%m-%d")
+        # output_date = input_date_object.strftime("%Y-%m-%d")
 
         # Store data to breeding colleciton
         query = Breeding(livestock_male_id=livestock_male_id,
