@@ -197,7 +197,7 @@ def post_new_breeding():
 
         #Format the date as "yyyy-mm-dd"
         output_date = input_date_object.strftime("%Y-%m-%d")
-
+        print(livestock_female_id, livestock_male_id, date, sled_id, block_area_id)
         # Store data to breeding colleciton
         query = Breeding(livestock_male_id=livestock_male_id,
                          livestock_female_id=livestock_female_id,
