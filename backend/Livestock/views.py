@@ -106,140 +106,229 @@ def get_a_livestock(livestock_id):
         query_block_area_livestock = BlockAreaSledLivestock.query.filter_by(
             livestock_id=livestock_id).first()
 
-        query_block_area = BlockArea.query.get(
-            query_block_area_livestock.block_area_id)
-        livestock_count = len(
-            query_block_area.livestock) if query_block_area.livestock else 0
-
-        columns_to_select = [
-            FeedingRecord.feed_category,
-            FeedingRecord.block_area_id,
-            func.to_char(FeedingRecord.created_at, 'DD Mon YYYY').label('day'),
-            func.sum(FeedingRecord.score).label('total_score')
-        ]
-
-        query_feeding = FeedingRecord.query \
-            .with_entities(*columns_to_select) \
-            .filter_by(block_area_id=query_block_area.id) \
-            .group_by(FeedingRecord.feed_category, FeedingRecord.block_area_id, func.to_char(FeedingRecord.created_at, 'DD Mon YYYY')) \
-            .order_by(desc(func.to_char(FeedingRecord.created_at, 'DD Mon YYYY'))) \
-            .all()
-
-        # Create a dictionary to group data by 'day'
-        day_map = {}
-
-        results_feeding = []
-        for item in query_feeding:
-            day = item.day
-            feed_category = item.feed_category
-            total_score = item.total_score
+        if query_block_area_livestock is None:
+            # Retrieve all livestock records from the database
+            query = Livestock.query.options([
+                subqueryload(Livestock.weight_records),
+                subqueryload(Livestock.bcs_records),
+                subqueryload(Livestock.health_records)
+            ]).get(livestock_id)
 
             result = {
-                'day': day,
-                'block_area_id': item.block_area_id,
-                'feed_list': []
+                'id': query.id,
+                'name': query.name,
+                'gender': query.gender,
+                'bangsa': query.bangsa,
+                'birth_date': query.birth_date,
+                'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'description': query.description,
+                'bcs_records': [],
+                'weight_records': [],
+                'feeding_records': [],
+                'health_records': query.health_records
             }
 
-            if day not in day_map:
-                day_map[day] = {
-                    "day": day,
-                    "block_area_id": item.block_area_id,
-                    "feed_list": []
+            results_bcs_records = []
+            results_weight_records = []
+            prev_score = None
+
+            if isinstance(query.bcs_records, list):
+                for current_record in query.bcs_records:
+                    data_bcs = {
+                        'id': current_record.id,
+                        'livestock_id': current_record.livestock_id,
+                        'date': current_record.date,
+                        'score': current_record.score,
+                        'remarks': current_record.remarks,
+                        'created_at': current_record.created_at
+                    }
+
+                    if prev_score is not None:
+                        growth = current_record.score - prev_score
+                        percentage = (growth / prev_score) * 100
+                        # Format the percentage with two decimal places
+                        data_bcs['growth'] = f'{percentage:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_bcs['prev_score'] = prev_score if prev_score is not None else 0
+                    else:
+                        # Format the percentage with two decimal places
+                        data_bcs['growth'] = f'{0:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_bcs['prev_score'] = 0
+
+                    results_bcs_records.append(data_bcs)
+                    prev_score = current_record.score  # Update prev_score for the next iteration
+
+            if isinstance(query.weight_records, list):
+                for current_record in query.weight_records:
+                    data_weight = {
+                        'id': current_record.id,
+                        'livestock_id': current_record.livestock_id,
+                        'date': current_record.date,
+                        'score': current_record.score,
+                        'remarks': current_record.remarks,
+                        'created_at': current_record.created_at
+                    }
+
+                    if prev_score is not None:
+                        growth = current_record.score - prev_score
+                        percentage = (growth / prev_score) * 100
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{percentage:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = prev_score if prev_score is not None else 0
+                    else:
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{0:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = 0
+
+                    results_weight_records.append(data_weight)
+                    prev_score = current_record.score  # Update prev_score for the next iteration
+
+            result['bcs_records'] = results_bcs_records[::-1]
+            result['weight_records'] = results_weight_records[::-1]
+            result['feeding_records'] = None
+
+            # Serialize the livestock data using the schema
+            result = livestock_schema.dump(result)
+        else:
+            query_block_area = BlockArea.query.get(
+                query_block_area_livestock.block_area_id)
+            livestock_count = len(
+                query_block_area.livestock) if query_block_area.livestock else 0
+
+            columns_to_select = [
+                FeedingRecord.feed_category,
+                FeedingRecord.block_area_id,
+                func.to_char(FeedingRecord.created_at,
+                             'DD Mon YYYY').label('day'),
+                func.sum(FeedingRecord.score).label('total_score')
+            ]
+
+            query_feeding = FeedingRecord.query \
+                .with_entities(*columns_to_select) \
+                .filter_by(block_area_id=query_block_area.id) \
+                .group_by(FeedingRecord.feed_category, FeedingRecord.block_area_id, func.to_char(FeedingRecord.created_at, 'DD Mon YYYY')) \
+                .order_by(desc(func.to_char(FeedingRecord.created_at, 'DD Mon YYYY'))) \
+                .all()
+
+            # Create a dictionary to group data by 'day'
+            day_map = {}
+
+            results_feeding = []
+            for item in query_feeding:
+                day = item.day
+                feed_category = item.feed_category
+                total_score = item.total_score
+
+                result = {
+                    'day': day,
+                    'block_area_id': item.block_area_id,
+                    'feed_list': []
                 }
 
-            day_map[day]["feed_list"].append({
-                "feed_category": get_feed_category_label(feed_category),
-                "total_score": total_score / livestock_count
-            })
+                if day not in day_map:
+                    day_map[day] = {
+                        "day": day,
+                        "block_area_id": item.block_area_id,
+                        "feed_list": []
+                    }
 
-            result.update(day_map[day])
-            results_feeding.append(result)
+                day_map[day]["feed_list"].append({
+                    "feed_category": get_feed_category_label(feed_category),
+                    "total_score": total_score / livestock_count
+                })
 
-        # Retrieve all livestock records from the database
-        query = Livestock.query.options([
-            subqueryload(Livestock.weight_records),
-            subqueryload(Livestock.bcs_records),
-            subqueryload(Livestock.health_records)
-        ]).get(livestock_id)
+                result.update(day_map[day])
+                results_feeding.append(result)
 
-        result = {
-            'id': query.id,
-            'name': query.name,
-            'gender': query.gender,
-            'bangsa': query.bangsa,
-            'birth_date': query.birth_date,
-            'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
-            'description': query.description,
-            'bcs_records': [],
-            'weight_records': [],
-            'feeding_records': [],
-            'health_records': query.health_records
-        }
+            # Retrieve all livestock records from the database
+            query = Livestock.query.options([
+                subqueryload(Livestock.weight_records),
+                subqueryload(Livestock.bcs_records),
+                subqueryload(Livestock.health_records)
+            ]).get(livestock_id)
 
-        results_bcs_records = []
-        results_weight_records = []
-        prev_score = None
+            result = {
+                'id': query.id,
+                'name': query.name,
+                'gender': query.gender,
+                'bangsa': query.bangsa,
+                'birth_date': query.birth_date,
+                'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'description': query.description,
+                'bcs_records': [],
+                'weight_records': [],
+                'feeding_records': [],
+                'health_records': query.health_records
+            }
 
-        if isinstance(query.bcs_records, list):
-            for current_record in query.bcs_records:
-                data_bcs = {
-                    'id': current_record.id,
-                    'livestock_id': current_record.livestock_id,
-                    'date': current_record.date,
-                    'score': current_record.score,
-                    'remarks': current_record.remarks,
-                    'created_at': current_record.created_at
-                }
+            results_bcs_records = []
+            results_weight_records = []
+            prev_score = None
 
-                if prev_score is not None:
-                    growth = current_record.score - prev_score
-                    percentage = (growth / prev_score) * 100
-                    # Format the percentage with two decimal places
-                    data_bcs['growth'] = f'{percentage:.2f}%'
-                    # Format the percentage with two decimal places
-                    data_bcs['prev_score'] = prev_score if prev_score is not None else 0
-                else:
-                    # Format the percentage with two decimal places
-                    data_bcs['growth'] = f'{0:.2f}%'
-                    # Format the percentage with two decimal places
-                    data_bcs['prev_score'] = 0
+            if isinstance(query.bcs_records, list):
+                for current_record in query.bcs_records:
+                    data_bcs = {
+                        'id': current_record.id,
+                        'livestock_id': current_record.livestock_id,
+                        'date': current_record.date,
+                        'score': current_record.score,
+                        'remarks': current_record.remarks,
+                        'created_at': current_record.created_at
+                    }
 
-                results_bcs_records.append(data_bcs)
-                prev_score = current_record.score  # Update prev_score for the next iteration
+                    if prev_score is not None:
+                        growth = current_record.score - prev_score
+                        percentage = (growth / prev_score) * 100
+                        # Format the percentage with two decimal places
+                        data_bcs['growth'] = f'{percentage:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_bcs['prev_score'] = prev_score if prev_score is not None else 0
+                    else:
+                        # Format the percentage with two decimal places
+                        data_bcs['growth'] = f'{0:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_bcs['prev_score'] = 0
 
-        if isinstance(query.weight_records, list):
-            for current_record in query.weight_records:
-                data_weight = {
-                    'id': current_record.id,
-                    'livestock_id': current_record.livestock_id,
-                    'date': current_record.date,
-                    'score': current_record.score,
-                    'remarks': current_record.remarks,
-                    'created_at': current_record.created_at
-                }
+                    results_bcs_records.append(data_bcs)
+                    prev_score = current_record.score  # Update prev_score for the next iteration
 
-                if prev_score is not None:
-                    growth = current_record.score - prev_score
-                    percentage = (growth / prev_score) * 100
-                    # Format the percentage with two decimal places
-                    data_weight['growth'] = f'{percentage:.2f}%'
-                    # Format the percentage with two decimal places
-                    data_weight['prev_score'] = prev_score if prev_score is not None else 0
-                else:
-                    # Format the percentage with two decimal places
-                    data_weight['growth'] = f'{0:.2f}%'
-                    # Format the percentage with two decimal places
-                    data_weight['prev_score'] = 0
+            if isinstance(query.weight_records, list):
+                for current_record in query.weight_records:
+                    data_weight = {
+                        'id': current_record.id,
+                        'livestock_id': current_record.livestock_id,
+                        'date': current_record.date,
+                        'score': current_record.score,
+                        'remarks': current_record.remarks,
+                        'created_at': current_record.created_at
+                    }
 
-                results_weight_records.append(data_weight)
-                prev_score = current_record.score  # Update prev_score for the next iteration
+                    if prev_score is not None:
+                        growth = current_record.score - prev_score
+                        percentage = (growth / prev_score) * 100
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{percentage:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = prev_score if prev_score is not None else 0
+                    else:
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{0:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = 0
 
-        result['bcs_records'] = results_bcs_records[::-1]
-        result['weight_records'] = results_weight_records[::-1]
-        result['feeding_records'] = remove_duplicates(results_feeding, 'day')
+                    results_weight_records.append(data_weight)
+                    prev_score = current_record.score  # Update prev_score for the next iteration
 
-        # Serialize the livestock data using the schema
-        result = livestock_schema.dump(result)
+            result['bcs_records'] = results_bcs_records[::-1]
+            result['weight_records'] = results_weight_records[::-1]
+            result['feeding_records'] = remove_duplicates(
+                results_feeding, 'day')
+
+            # Serialize the livestock data using the schema
+            result = livestock_schema.dump(result)
 
         # Return the serialized data as JSON response
         return jsonify(result)
@@ -380,7 +469,7 @@ def delete_livestock(livestock_id):
             db.session.commit()
             db.session.delete(livestock)
             db.session.commit()
-            
+
             response = {
                 'status': 'success',
                 'message': f'Livestock {livestock_id} has been deleted.'
