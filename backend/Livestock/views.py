@@ -1,5 +1,5 @@
 from db_connection import db
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from sqlalchemy import func, desc
 from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
@@ -120,7 +120,7 @@ def get_a_livestock(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date,
-                'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
                 'weight_records': [],
@@ -256,7 +256,7 @@ def get_a_livestock(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date,
-                'info': f'{query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'info': f'Tinggal di kandang {query_block_area_livestock.sled_id} di blok {query_block_area_livestock.block_area_id} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
                 'weight_records': [],
@@ -336,6 +336,8 @@ def get_a_livestock(livestock_id):
     except Exception as e:
         # Handling the exception if storing the data fails
         error_message = str(e)
+        current_app.logger.error(f"An error occurred: {error_message}")
+
         response = {
             'status': 'error',
             'message': f'Sorry! Failed to get {livestock_id} livestock data. Error: {error_message}'
@@ -420,8 +422,6 @@ def update_livestock(livestock_id):
     description = data.get('description')
     sled_id = data.get('sled_id')
 
-    return jsonify({ 'sled_id': sled_id}), 200
-
     try:
         # Assuming you have a Livestock model and an existing livestock object
         livestock = Livestock.query.get(livestock_id)
@@ -435,7 +435,7 @@ def update_livestock(livestock_id):
             # Create a response JSON
             response = {
                 'status': 'success',
-                'message': f'Livestock {livestock_id} has been updated.'
+                'message': f'Livestock {livestock_id} has been updated. sled {sled_id}'
             }
             return jsonify(response), 200
         else:

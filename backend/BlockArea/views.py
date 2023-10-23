@@ -5,6 +5,7 @@ from sqlalchemy.orm import subqueryload
 from BlockArea.models import BlockArea
 from FarmProfile.HasBlockArea.models import HasBlockArea as FarmProfileHasBlockArea
 from FarmProfile.models import FarmProfileHasUsers
+from Livestock.models import Livestock
 from Record.FeedingRecord.models import FeedingRecord
 from BlockArea.schema import BlockAreaSchema
 
@@ -166,7 +167,7 @@ def get_a_block_area(block_area_id):
                     "created_at": formatted_date,
                     "description": item.description,
                     "id": item.id,
-                    "name": item.name
+                    "name": f'S-{item.id} {item.name}'
                 }
                 result_sleds.append(_item)
 
@@ -193,6 +194,9 @@ def get_a_block_area(block_area_id):
                     'name': livestock.name,
                     'gender': livestock.gender,
                     'bangsa': livestock.bangsa,
+                    'sled_id': item.sled_id,
+                    'label': f'BA-{item.block_area_id}/S-{item.sled_id}',
+                    'block_area_id': item.block_area_id,
                     'info': f'{livestock.get_gender_label()} | {livestock.calculate_age()} | Bangsa {livestock.bangsa}',
                     'description': livestock.description,
                     'created_at': livestock.created_at.strftime("%d %B %Y")

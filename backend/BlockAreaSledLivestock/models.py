@@ -4,7 +4,7 @@ from datetime import datetime
 class BlockAreaSledLivestock(db.Model):
     id = db.Column(db.Integer(), nullable=False, primary_key=True)
     livestock_id = db.Column(db.Integer(), db.ForeignKey('livestock.id'), nullable=False)
-    livestock = db.relationship('Livestock', backref='block_area_sled_livestock', uselist=False)
+    livestock = db.relationship('Livestock', foreign_keys=[livestock_id], uselist=False)
     block_area_id = db.Column(db.Integer(), db.ForeignKey('block_area.id'), nullable=False)
     block_area = db.relationship('BlockArea', backref='block_area_sled_livestock', uselist=False)
     sled_id = db.Column(db.Integer(), db.ForeignKey('sled.id'), nullable=False)

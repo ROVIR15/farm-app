@@ -17,7 +17,7 @@ class Livestock (db.Model):
     bangsa = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-    # info = db.relationship('BlockAreaSledLivestock', backref='livestock', lazy=True)
+    live = db.relationship('BlockAreaSledLivestock', back_populates='livestock', lazy=True)
 
     weight_records = db.relationship('WeightRecord', back_populates='livestock', order_by=asc(
         WeightRecord.created_at), lazy=True)
