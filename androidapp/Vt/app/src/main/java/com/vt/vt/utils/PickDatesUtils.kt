@@ -2,20 +2,19 @@ package com.vt.vt.utils
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.view.View
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatEditText
 import com.google.android.material.textfield.TextInputEditText
+import com.vt.vt.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 object PickDatesUtils {
-    fun setupDatePicker(context: Context, dateTextView: TextView) {
+    fun setupDatePicker(context: Context, dateTextView: TextView, isSpinnerType: Boolean = false) {
         val calendar = Calendar.getInstance()
-
+        val style = if (isSpinnerType) R.style.SpinnerDatePickerDialog else 0
         val datePickerDialog = DatePickerDialog(
-            context,
+            context, style,
             { _, year, month, date ->
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                 calendar.set(year, month, date)
@@ -28,7 +27,11 @@ object PickDatesUtils {
         datePickerDialog.show()
     }
 
-    fun pickMonthAndYear(context: Context, dateTextView: TextView, onDateSelected: (String) -> Unit) {
+    fun pickMonthAndYear(
+        context: Context,
+        dateTextView: TextView,
+        onDateSelected: (String) -> Unit
+    ) {
         val calendar = Calendar.getInstance()
 
         val datePickerDialog = DatePickerDialog(

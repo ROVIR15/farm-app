@@ -1,46 +1,25 @@
 package com.vt.vt.core.data.source.remote
 
-import com.vt.vt.core.data.source.remote.auth.model.login.LoginRequest
-import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
-import com.vt.vt.core.data.source.remote.auth.model.register.request.RegisterRequest
-import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterResponse
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponse
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAreaInfoResponse
-import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponse
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
-import com.vt.vt.core.data.source.remote.breeding.create.CreateBreedingRequest
-import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
-import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
-import com.vt.vt.core.data.source.remote.breeding.pregnancy.PregnancyRequest
-import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
-import com.vt.vt.core.data.source.remote.budget.BudgetResponse
-import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
-import com.vt.vt.core.data.source.remote.farm_profile.model.FarmProfileResponse
-import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
-import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordResponse
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordRequest
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponse
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.StoreLivestockRequest
-import com.vt.vt.core.data.source.remote.products.model.ProductRequest
-import com.vt.vt.core.data.source.remote.products.model.ProductResponse
-import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
-import com.vt.vt.core.data.source.remote.profile.model.ProfileResponse
-import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponse
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
+import com.vt.vt.core.data.source.remote.auth.model.login.*
+import com.vt.vt.core.data.source.remote.auth.model.register.request.*
+import com.vt.vt.core.data.source.remote.auth.model.register.response.*
+import com.vt.vt.core.data.source.remote.bcs_record.model.*
+import com.vt.vt.core.data.source.remote.block_areas.model.*
+import com.vt.vt.core.data.source.remote.breeding.*
+import com.vt.vt.core.data.source.remote.breeding.create.*
+import com.vt.vt.core.data.source.remote.breeding.history.create.*
+import com.vt.vt.core.data.source.remote.breeding.lambing.create.*
+import com.vt.vt.core.data.source.remote.breeding.pregnancy.*
+import com.vt.vt.core.data.source.remote.budget.*
+import com.vt.vt.core.data.source.remote.categories.model.*
+import com.vt.vt.core.data.source.remote.farm_profile.model.*
+import com.vt.vt.core.data.source.remote.feeding_record.model.*
+import com.vt.vt.core.data.source.remote.health_record.model.*
+import com.vt.vt.core.data.source.remote.livestock.model.*
+import com.vt.vt.core.data.source.remote.products.model.*
+import com.vt.vt.core.data.source.remote.profile.model.*
+import com.vt.vt.core.data.source.remote.sleds.model.*
+import com.vt.vt.core.data.source.remote.weight_record.model.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -212,6 +191,7 @@ interface ApiService {
 
     @POST("api/breeding")
     suspend fun createBreeding(@Body breedingRequest: CreateBreedingRequest): Response<BreedingResponse>
+
     @DELETE("api/breeding/{id}")
     suspend fun deleteBreedingById(@Path("id") id: String): Response<BreedingResponse>
 
@@ -225,7 +205,10 @@ interface ApiService {
     suspend fun createLambing(@Body lambingRequest: LambingRequest): Response<BreedingResponse>
 
     @PUT("api/pregnancy/{id}")
-    suspend fun updatePregnancy(@Path("id") id: String, @Body pregnancyRequest: PregnancyRequest): Response<BreedingResponse>
+    suspend fun updatePregnancy(
+        @Path("id") id: String,
+        @Body pregnancyRequest: PregnancyRequest
+    ): Response<BreedingResponse>
 
     // Budget
     @GET("api/budget")
@@ -233,4 +216,10 @@ interface ApiService {
 
     @GET("api/budget-item/{id}")
     suspend fun getBudgetById(@Path("id") id: String): Response<BudgetItemResponse>
+
+    @GET("api/budget-categories")
+    suspend fun getBudgetCategories(): Response<List<CategoriesResponseItem>>
+
+    @GET("api/budget-sub-category/{id}")
+    suspend fun getBudgetSubCategoriesById(@Path("id") id: String): Response<List<CategoriesResponseItem>>
 }

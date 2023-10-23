@@ -101,4 +101,13 @@ class AddAnimalPregnantFragment : BottomSheetDialogFragment() {
             progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

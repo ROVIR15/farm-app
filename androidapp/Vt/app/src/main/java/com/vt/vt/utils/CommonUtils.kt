@@ -31,8 +31,7 @@ import java.util.Locale
 fun Any.convertRupiah(): String {
     val localId = Locale("in", "ID")
     val formatter = NumberFormat.getCurrencyInstance(localId)
-    val strFormat = formatter.format(this)
-    return strFormat
+    return formatter.format(this)
 }
 
 fun Spinner.selected(action: (position: Int) -> Unit) {

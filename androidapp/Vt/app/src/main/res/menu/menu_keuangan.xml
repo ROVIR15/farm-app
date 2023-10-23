@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-  <!--  <item
-        android:id="@+id/action_wallet"
-        android:icon="@drawable/ic_baseline_wallet_money_broken_24"
-        android:orderInCategory="100"
-        android:title="Wallet"
-        app:showAsAction="ifRoom" />
--->
     <item
         android:id="@+id/action_folder"
         android:icon="@drawable/ic_baseline_add_folder_broken_24"
         android:orderInCategory="101"
         android:title="Folder"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/action_add_income"
+                android:title="Tambah Pemasukan"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_add_expenditure"
+                android:title="Tambah Pengeluaran"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

@@ -62,7 +62,8 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
                         blockId
                     )
                 } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             btnCancelAddAnimalMating.setOnClickListener {
@@ -154,6 +155,10 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
                 ).show()
             }
         }
+    }
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
     }
 
     private fun showLoading(state: Boolean) {

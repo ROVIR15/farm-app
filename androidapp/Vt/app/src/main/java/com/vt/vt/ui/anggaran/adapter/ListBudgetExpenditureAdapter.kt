@@ -25,7 +25,9 @@ class ListBudgetExpenditureAdapter() :
     inner class BudgetViewHolder(private val binding: ItemAnggaranBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(expendituresItem: ExpendituresItem) {
-            binding.tvBudget.text = expendituresItem.amount.toString()
+            val amountExpenditure = expendituresItem.amount.toString()
+            val decimalAmountExpenditureValue = amountExpenditure.replace(".", "").toBigDecimal()
+            binding.tvBudget.text = decimalAmountExpenditureValue.convertRupiah()
         }
     }
 

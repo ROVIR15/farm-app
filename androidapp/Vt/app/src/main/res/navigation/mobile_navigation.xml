@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_navigation_keuangan_to_anggaranFragment"
             app:destination="@id/anggaranFragment" />
+        <action
+            android:id="@+id/action_navigation_keuangan_to_addIncomeFragment"
+            app:destination="@id/addIncomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
@@ -539,5 +542,10 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/addIncomeFragment"
+        android:name="com.vt.vt.ui.income.add.AddIncomeFragment"
+        android:label="fragment_add_income"
+        tools:layout="@layout/fragment_add_income" />
 
 </navigation>

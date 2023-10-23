@@ -89,8 +89,12 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }

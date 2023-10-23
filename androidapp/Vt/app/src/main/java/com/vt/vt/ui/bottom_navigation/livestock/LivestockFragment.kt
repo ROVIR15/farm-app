@@ -74,7 +74,6 @@ class LivestockFragment : Fragment() {
     }
 
     private fun showLoading(state: Boolean) {
-        //  binding.refresh.isRefreshing = state
         with(binding) {
             if (state) {
                 loading.progressBar.visibility = View.VISIBLE

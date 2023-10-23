@@ -34,6 +34,7 @@ class BudgetAdapter() :
             val decimalBudgetValue = budgetValue.replace(".", "").toBigDecimal()
             val decimalExpensesValue = expensesValue.replace(".", "").toBigDecimal()
             val id = currentList[adapterPosition].id
+            binding.itemTvCategories.text = data.budgetCategoryName
             binding.tvBudgetValue.text = decimalBudgetValue.convertRupiah()
             binding.tvExpensesValue.text = decimalExpensesValue.convertRupiah()
             itemView.setOnClickListener {

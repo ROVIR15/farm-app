@@ -124,13 +124,17 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
-                   getLivestockFemale = livestockFemales[position].name
+                    getLivestockFemale = livestockFemales[position].name
                 }
             }
         }
         recordBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
     }
 
     override fun onDestroy() {

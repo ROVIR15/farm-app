@@ -12,10 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
+import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.databinding.FragmentChangeBreedingStatusDialogBinding
 import com.vt.vt.ui.rekam_perkawinan.BreedingRecordFragment
 import com.vt.vt.ui.rekam_perkawinan.RecordBreedingViewModel
-import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.utils.PickDatesUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,7 +49,12 @@ class ChangeBreedingStatusDialogFragment : BottomSheetDialogFragment() {
                 val category = edtAreaCategory.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
                 if (createdAt.isNotEmpty() && description.isNotEmpty()) {
-                    recordBreedingViewModel.updatePregnancy(receiveId.toString(), createdAt, false, description)
+                    recordBreedingViewModel.updatePregnancy(
+                        receiveId.toString(),
+                        createdAt,
+                        false,
+                        description
+                    )
                     dismiss()
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
@@ -83,14 +88,14 @@ class ChangeBreedingStatusDialogFragment : BottomSheetDialogFragment() {
         onBottomSheetDialogListener?.onBottomSheetClose()
     }
 
-    private fun observerView(){
-        recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner){
+    private fun observerView() {
+        recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        recordBreedingViewModel.updatePregnancyEmitter.observe(viewLifecycleOwner){
+        recordBreedingViewModel.updatePregnancyEmitter.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it.status, Toast.LENGTH_SHORT).show()
         }
-        recordBreedingViewModel.isError().observe(viewLifecycleOwner){
+        recordBreedingViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
@@ -106,6 +111,10 @@ class ChangeBreedingStatusDialogFragment : BottomSheetDialogFragment() {
             )
             progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
+    }
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
     }
 
     override fun onDestroy() {

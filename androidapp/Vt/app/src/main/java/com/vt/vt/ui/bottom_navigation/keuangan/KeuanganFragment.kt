@@ -9,22 +9,20 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.textfield.TextInputEditText
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.budget.BudgetBreakdownItem
 import com.vt.vt.databinding.FragmentKeuanganBinding
+import com.vt.vt.ui.bottom_navigation.keuangan.bottom_dialog.AddBudgetBottomSheetDialogFragment
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.convertRupiah
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -116,24 +114,6 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
     }
 
-    private fun addBudget() {
-        val dialog = BottomSheetDialog(requireActivity(), R.style.AppBottomSheetDialogTheme)
-        dialog.setContentView(R.layout.bottom_sheet_add_budget)
-        val spSelectCategories = dialog.findViewById<Spinner>(R.id.sp_select_categories)
-        if (spSelectCategories != null) adapterSpinner(spSelectCategories)
-        val edtBudgetAdded = dialog.findViewById<TextInputEditText>(R.id.added_budget)
-        val btnAdd = dialog.findViewById<AppCompatButton>(R.id.btn_save_add_budget)
-        val btnCancel = dialog.findViewById<AppCompatButton>(R.id.btn_cancel_add_budget)
-        dialog.show()
-
-        btnAdd?.setOnClickListener {
-            dialog.dismiss()
-        }
-        btnCancel?.setOnClickListener {
-            dialog.dismiss()
-        }
-    }
-
     private fun showLoading(state: Boolean) {
         binding.loading.progressBar.isVisible = state
     }
@@ -145,8 +125,18 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_folder -> {
-                addBudget()
+            R.id.action_add_income -> {
+                view?.findNavController()
+                    ?.navigate(R.id.action_navigation_keuangan_to_addIncomeFragment)
+                return true
+            }
+
+            R.id.action_add_expenditure -> {
+                val addBudgetBottomSheetDialog = AddBudgetBottomSheetDialogFragment()
+                addBudgetBottomSheetDialog.show(
+                    childFragmentManager,
+                    addBudgetBottomSheetDialog::class.java.simpleName
+                )
                 return true
             }
         }
