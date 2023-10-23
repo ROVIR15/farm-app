@@ -256,7 +256,7 @@ def get_a_livestock(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date,
-                'info': f'Tinggal di kandang {query_block_area_livestock.sled_id} di blok {query_block_area_livestock.block_area_id} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
                 'weight_records': [],
