@@ -467,11 +467,13 @@ def delete_livestock(livestock_id):
 
         livestock = Livestock.query.get(livestock_id)
 
-        if livestock and bashl:
-            db.session.delete(bashl)
-            db.session.commit()
+        if livestock:
             db.session.delete(livestock)
             db.session.commit()
+
+            if bashl:
+                db.session.delete(bashl)
+                db.session.commit()
 
             response = {
                 'status': 'success',
