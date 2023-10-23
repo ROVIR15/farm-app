@@ -30,8 +30,8 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
 
     private var sledId: Int = 0
     private var blockId: Int = 0
-    private var livestockMale: String? = null
-    private var livestockFemale: String? = null
+    private var livestockMaleId: Int? = null
+    private var livestockFemaleId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,13 +53,17 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
             }
             btnSaveAddAnimalMating.setOnClickListener {
                 val createdAt = tvAddAnimalMatingDate.text.toString().trim()
-                listBreedingViewModel.createBreeding(
-                    createdAt,
-                    livestockMale,
-                    livestockFemale,
-                    sledId,
-                    blockId
-                )
+                if (createdAt.isNotEmpty()) {
+                    listBreedingViewModel.createBreeding(
+                        createdAt,
+                        livestockMaleId,
+                        livestockFemaleId,
+                        sledId,
+                        blockId
+                    )
+                } else {
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT).show()
+                }
             }
             btnCancelAddAnimalMating.setOnClickListener {
                 dismiss()
@@ -126,7 +130,8 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseMaleAddAnimalMating.selected { position ->
-                    livestockMale = livestockMales[position].name
+                    livestockMales[position].name
+                    livestockMaleId = livestockMales[position].id.toInt()
                 }
             }
             livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->
@@ -137,7 +142,8 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
-                    livestockFemale = livestockFemales[position].name
+                    livestockFemales[position].name
+                    livestockFemaleId = livestockFemales[position].id
                 }
             }
             isError().observe(viewLifecycleOwner) {

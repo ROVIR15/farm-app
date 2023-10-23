@@ -11,10 +11,10 @@ data class CreateBreedingRequest(
     val birthDate: String? = null,
 
     @field:SerializedName("livestock_female_id")
-    val livestockFemaleId: String? = null,
+    val livestockFemaleId: Int? = null,
 
     @field:SerializedName("livestock_male_id")
-    val livestockMaleId: String? = null,
+    val livestockMaleId: Int? = null,
 
     @field:SerializedName("block_area_id")
     val blockAreaId: Int? = null

@@ -41,8 +41,8 @@ class ListBreedingViewModel @Inject constructor(private val breedingVtRepository
 
     fun createBreeding(
         createAt: String?,
-        livestockMaleId: String?,
-        livestockFemaleId: String?,
+        livestockMaleId: Int?,
+        livestockFemaleId: Int?,
         sledId: Int,
         blockAreaId: Int
     ) {
