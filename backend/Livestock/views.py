@@ -418,6 +418,9 @@ def update_livestock(livestock_id):
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
+    sled_id = data.get('sled_id')
+
+    return jsonify({ 'sled_id': sled_id}), 200
 
     try:
         # Assuming you have a Livestock model and an existing livestock object
