@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
+import com.vt.vt.core.data.source.remote.budget.AddBudgetRequest
 import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
 import com.vt.vt.core.data.source.remote.budget.BudgetResponse
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
@@ -19,4 +20,7 @@ class BudgetVtRepository @Inject constructor(private val apiService: ApiService)
 
     suspend fun getBudgetById(id: String): Response<BudgetItemResponse> =
         apiService.getBudgetById(id)
+
+    suspend fun addBudget(addBudgetRequest: AddBudgetRequest): Response<BudgetResponse> =
+        apiService.addBudget(addBudgetRequest)
 }

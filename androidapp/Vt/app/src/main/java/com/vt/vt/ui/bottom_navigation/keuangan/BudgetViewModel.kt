@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.budget.AddBudgetRequest
 import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
 import com.vt.vt.core.data.source.remote.budget.BudgetResponse
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
@@ -36,6 +37,10 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
     private val _subCategoriesBudgetEmitter = MutableLiveData<List<CategoriesResponseItem>>()
     val subCategoriesBudgetEmitter: LiveData<List<CategoriesResponseItem>> =
         _subCategoriesBudgetEmitter
+
+    private val _addBudgetEmitter = MutableLiveData<BudgetResponse>()
+    val addBudgetEmitter: LiveData<BudgetResponse> = _addBudgetEmitter
+
 
     init {
         _currentDate.value = getCurrentDate()
@@ -72,6 +77,20 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
             val response = budgetVtRepository.getCategoriesBudget()
             if (response.isSuccessful) {
                 _categoriesBudgetEmitter.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message.toString())
+            }
+        }, error = { if (it.isNetworkError) isError.postValue("No Internet Connection") })
+    }
+
+    fun addBudget(budgetCategoryId: Int, amount: Double, monthYear: String) {
+        launch(action = {
+            val addBudgetRequest = AddBudgetRequest(budgetCategoryId, amount, monthYear)
+            val response = budgetVtRepository.addBudget(addBudgetRequest)
+            if (response.isSuccessful) {
+                _addBudgetEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")

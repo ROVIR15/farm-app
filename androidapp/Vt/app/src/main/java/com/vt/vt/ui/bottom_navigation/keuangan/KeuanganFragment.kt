@@ -74,6 +74,11 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             val date = inputDateFormat.parse(selectedDate)
             binding.tvDatePick.text = date?.let { outputDateFormat.format(it) }
             budgetViewModel.loadBudgetByMonth(selectedDate.toString())
+            binding.refreshPage.setOnRefreshListener {
+                budgetViewModel.loadBudgetByMonth(selectedDate.toString())
+                binding.refreshPage.isRefreshing = false
+            }
+
         }
         budgetViewModel.budgetEmmiter.observe(viewLifecycleOwner) { budget ->
             binding.isEmpty.isEmpty.isVisible = budget.budgetBreakdown.isNullOrEmpty().apply {

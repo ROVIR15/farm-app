@@ -222,4 +222,7 @@ interface ApiService {
 
     @GET("api/budget-sub-category/{id}")
     suspend fun getBudgetSubCategoriesById(@Path("id") id: String): Response<List<CategoriesResponseItem>>
+
+    @POST("api/budget")
+    suspend fun addBudget(@Body addBudgetRequest: AddBudgetRequest): Response<BudgetResponse>
 }
