@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -7,20 +8,22 @@
     android:orientation="vertical"
     android:paddingTop="8dp">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_tambah_anggaran"
-        style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_expenditure"
         android:layout_width="match_parent"
         android:layout_height="62dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/green_grass"
+        android:elevation="2dp"
         android:fontFamily="@font/roboto_bold"
         android:text="Tambah Pengeluaran"
         android:textAllCaps="false"
         android:textColor="@color/green_text_button"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:cornerRadius="8dp"
+        app:elevation="1dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

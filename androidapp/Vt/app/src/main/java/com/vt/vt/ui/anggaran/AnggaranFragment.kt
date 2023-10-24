@@ -1,11 +1,12 @@
 package com.vt.vt.ui.anggaran
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -57,8 +58,8 @@ class AnggaranFragment : Fragment() {
                 title = "Anggaran"
                 setNavigationOnClickListener { findNavController().popBackStack() }
             }
-            footerAnggaranForm.btnTambahAnggaran.setOnClickListener {
-                it.findNavController()
+            footerAnggaranForm.btnAddExpenditure.setOnClickListener { view ->
+                view.findNavController()
                     .navigate(R.id.action_anggaranFragment_to_addPengeluaranFragment, mBundle)
             }
             rvPengeluaran.apply {
@@ -72,8 +73,11 @@ class AnggaranFragment : Fragment() {
     }
 
     private fun observerView() {
-        budgetViewModel.observeLoading().observe(viewLifecycleOwner) {
-            binding.loading.progressBar.isVisible = it
+        budgetViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
+            showLoading(isLoading)
+        }
+        expenditureViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
+            showLoading(isLoading)
         }
         budgetViewModel.budgetByIdEmmiter.observe(viewLifecycleOwner) { budget ->
             binding.dataEmpty.isEmpty.isVisible = budget.expenditures.isNullOrEmpty()
@@ -93,15 +97,41 @@ class AnggaranFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
+        expenditureViewModel.isError().observe(viewLifecycleOwner) {
+            Toast.makeText(
+                requireActivity(),
+                it.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun listExpenditures(data: List<ExpendituresItem>?) {
         listBudgetExpenditureAdapter.submitList(data)
     }
 
+    private fun showLoading(state: Boolean) {
+        binding.footerAnggaranForm.btnAddExpenditure.apply {
+            isEnabled = !state
+            setBackgroundColor(
+                if (state) Color.GRAY else ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.green_grass
+                )
+            )
+            setTextColor(
+                if (state) Color.BLACK else ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.green_text_button
+                )
+            )
+        }
+        binding.loading.progressBar.isVisible = state
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        _binding = null
     }
 
 }
