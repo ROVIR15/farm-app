@@ -49,7 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/roboto_bold"
+                        android:fontFamily="@font/roboto_medium"
                         android:hint="Isi Tanggal..."
                         android:paddingHorizontal="16dp"
                         android:textColor="@color/text_black"
@@ -188,13 +188,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
-
-        <include
-            android:id="@+id/loading"
-            layout="@layout/loading" />
-
-        <include
-            android:id="@+id/isEmpty"
-            layout="@layout/data_empty" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+
+    <include
+        android:id="@+id/isEmpty"
+        layout="@layout/data_empty" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

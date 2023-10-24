@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentDataKandangBinding
 import com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakViewModel
+import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -82,25 +83,13 @@ class DataKandangFragment : Fragment() {
                     ArrayAdapter(requireActivity(), R.layout.item_spinner, blocksArrayWithPrompt)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerCageCategory.adapter = adapter
-                binding.spinnerCageCategory.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if (position > 0) {
-                                blockAreaId = data[position - 1].id
-                            } else {
-                                blockAreaId = -1
-                            }
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
+                binding.spinnerCageCategory.selected { position ->
+                    if (position > 0) {
+                        blockAreaId = data[position - 1].id
+                    } else {
+                        blockAreaId = -1
                     }
+                }
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()

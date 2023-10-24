@@ -108,23 +108,12 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         listBudgetAdapter.submitList(data)
     }
 
-    private fun adapterSpinner(binding: Spinner) {
-        ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.product_category_array,
-            R.layout.item_spinner
-        ).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.item_spinner)
-            binding.adapter = adapter
-        }
-    }
-
     private fun showLoading(state: Boolean) {
         binding.loading.progressBar.isVisible = state
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 

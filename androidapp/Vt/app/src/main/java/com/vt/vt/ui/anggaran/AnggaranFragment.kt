@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.budget.ExpendituresItem
@@ -37,6 +37,11 @@ class AnggaranFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val budgetId = arguments?.getInt("id")
+        val categoryId = arguments?.getInt("categoryId")
+        val mBundle = Bundle().apply {
+            if (categoryId != null) putInt("categoryId", categoryId)
+        }
+
         budgetViewModel.getBudgetById(budgetId.toString())
         with(binding) {
             anggaranAppBar.topAppBar.apply {
@@ -44,7 +49,8 @@ class AnggaranFragment : Fragment() {
                 setNavigationOnClickListener { findNavController().popBackStack() }
             }
             footerAnggaranForm.btnTambahAnggaran.setOnClickListener {
-                findNavController().navigate(R.id.action_anggaranFragment_to_addPengeluaranFragment)
+                it.findNavController()
+                    .navigate(R.id.action_anggaranFragment_to_addPengeluaranFragment, mBundle)
             }
             rvPengeluaran.apply {
                 adapter = listBudgetExpenditureAdapter
@@ -64,6 +70,7 @@ class AnggaranFragment : Fragment() {
             binding.dataEmpty.isEmpty.isVisible = budget.expenditures.isNullOrEmpty()
             val budgetAmount = budget.amount?.let { formatAsIDR(it) }
             binding.amountBudget.setText(budgetAmount.toString())
+            binding.categoryBudget.text = budget.budgetCategoryName
             listExpenditures(budget.expenditures)
         }
         budgetViewModel.isError().observe(viewLifecycleOwner) {

@@ -12,6 +12,8 @@ import com.vt.vt.core.data.source.remote.breeding.lambing.create.*
 import com.vt.vt.core.data.source.remote.breeding.pregnancy.*
 import com.vt.vt.core.data.source.remote.budget.*
 import com.vt.vt.core.data.source.remote.categories.model.*
+import com.vt.vt.core.data.source.remote.expenditure.AddExpenditureRequest
+import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
 import com.vt.vt.core.data.source.remote.farm_profile.model.*
 import com.vt.vt.core.data.source.remote.feeding_record.model.*
 import com.vt.vt.core.data.source.remote.health_record.model.*
@@ -225,4 +227,9 @@ interface ApiService {
 
     @POST("api/budget")
     suspend fun addBudget(@Body addBudgetRequest: AddBudgetRequest): Response<BudgetResponse>
+
+    // Expenditure
+    @POST("api/expenditure")
+    suspend fun addExpenditure(@Body addExpenditureRequest: AddExpenditureRequest): Response<ExpenditureResponse>
+
 }

@@ -20,6 +20,7 @@ import com.vt.vt.core.data.source.repository.BreedingVtRepository
 import com.vt.vt.core.data.source.repository.BudgetVtRepository
 import com.vt.vt.core.data.source.repository.CategoriesVtRepository
 import com.vt.vt.core.data.source.repository.DataRepository
+import com.vt.vt.core.data.source.repository.ExpenditureVtRepository
 import com.vt.vt.core.data.source.repository.FarmProfileVtRepository
 import com.vt.vt.core.data.source.repository.FeedingVtRepository
 import com.vt.vt.core.data.source.repository.HealthRecordVtRepository
@@ -120,6 +121,11 @@ class AppModule {
     @Singleton
     fun providesBudgetVtRepository(apiService: ApiService): BudgetVtRepository =
         BudgetVtRepository(apiService)
+
+    @Provides
+    @Singleton
+    fun providesExpenditureVtRepository(apiService: ApiService): ExpenditureVtRepository =
+        ExpenditureVtRepository(apiService)
 
     @Provides
     @Singleton

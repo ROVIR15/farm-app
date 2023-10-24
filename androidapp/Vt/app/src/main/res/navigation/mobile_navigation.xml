@@ -220,7 +220,12 @@
         android:id="@+id/addPengeluaranFragment"
         android:name="com.vt.vt.ui.pengeluaran.add_pengeluaran.AddPengeluaranFragment"
         android:label="fragment_add_pengeluaran"
-        tools:layout="@layout/fragment_add_pengeluaran" />
+        tools:layout="@layout/fragment_add_pengeluaran">
+        <argument
+            android:name="categoryId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/rekamKesehatanFragment"
         android:name="com.vt.vt.ui.rekam_kesehatan.RekamKesehatanFragment"

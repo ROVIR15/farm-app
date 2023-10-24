@@ -17,12 +17,6 @@
         android:padding="16dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <DatePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,10 +25,11 @@
             android:text="Pilih Bulan dan Tahun" />
 
         <LinearLayout
+            android:id="@id/containerDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_calendar_grey"
+            android:background="@drawable/bg_outline_box"
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -50,144 +45,159 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/roboto_regular"
-                android:hint=""
+                android:hint="Isi Tanggal"
                 android:paddingHorizontal="16dp"
+                android:textColor="@color/text_black"
                 android:textSize="14sp" />
 
         </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Pengeluaran"
+            app:boxStrokeColor="@color/black_overlay"
+            app:hintTextColor="@color/text_blue"
+            app:startIconDrawable="@drawable/ic_baseline_currency"
+            app:startIconTint="@color/text_blue">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/expenditure_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:importantForAccessibility="no"
+                android:inputType="numberDecimal"
+                android:maxLength="7" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_text_input_layout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Catatan"
+            app:boxStrokeColor="@color/btn_blue_icon"
+            app:hintTextColor="@color/text_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_rekam_kesehatan">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Kategori Budget" />
+            android:text="Kategori Anggaran" />
 
-        <Spinner
-            android:id="@+id/sp_kategori_anggaran"
-            android:layout_width="fill_parent"
-            android:layout_height="48dp"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:entries="@array/dropdown_items" />
+            android:background="@drawable/bg_outline_box"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+
+            <Spinner
+                android:id="@+id/sp_category_anggaran"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/dropdown_items" />
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Kategori Produk/Jasa" />
-
-        <Spinner
-            android:id="@+id/sp_kategori_produk_jasa"
-            android:layout_width="fill_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:entries="@array/dropdown_items" />
+            android:text="Sub-kategori Anggaran" />
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:background="@drawable/bg_outline_box"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/sp_sub_category_anggaran"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Qty" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:paddingHorizontal="12dp"
-                android:text="Harga Barang" />
-
+                android:entries="@array/dropdown_items" />
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_quatity"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:paddingHorizontal="12dp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_harga_barang"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="2"
-                android:background="@drawable/bg_edt_normal"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center_vertical|end"
-                android:paddingHorizontal="12dp" />
-
-        </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Nama Produk/Jasa" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_outline_box"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/sp_products"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Total"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/text_black" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_total_pengeluaran"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="2"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="center_vertical|end"
-                android:paddingHorizontal="12dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
+                android:entries="@array/dropdown_items" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_update_list"
-            style="?android:attr/buttonBarButtonStyle"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="24dp"
             android:backgroundTint="@color/btn_blue_icon"
             android:elevation="2dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Tambah"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Simpan"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="8dp"
+            app:elevation="1dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_cancel_add_budget"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_edt_error"
+            android:layout_height="58dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Batalkan"
+            android:text="Batal"
             android:textAllCaps="false"
-            android:textColor="@color/text_red"
+            android:textColor="@color/red"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

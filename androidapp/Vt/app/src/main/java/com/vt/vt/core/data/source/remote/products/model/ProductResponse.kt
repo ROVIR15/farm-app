@@ -32,5 +32,4 @@ data class ProductResponseItem(
     val skuId: Int? = null,
 
     @field:SerializedName("product_name")
-    val productName: String? = null
-)
+    val productName: String)

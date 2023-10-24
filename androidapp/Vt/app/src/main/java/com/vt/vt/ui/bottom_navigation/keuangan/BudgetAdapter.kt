@@ -34,6 +34,7 @@ class BudgetAdapter() :
             val decimalBudgetValue = budgetValue.replace(".", "").toBigDecimal()
             val decimalExpensesValue = expensesValue.replace(".", "").toBigDecimal()
             val id = currentList[adapterPosition].id
+            val categoryId = currentList[adapterPosition].budgetCategoryId
             binding.itemTvCategories.text = data.budgetCategoryName
             binding.tvBudgetValue.text = decimalBudgetValue.convertRupiah()
             binding.tvExpensesValue.text = decimalExpensesValue.convertRupiah()
@@ -41,6 +42,9 @@ class BudgetAdapter() :
                 val mBundle = Bundle()
                 if (id != null) {
                     mBundle.putInt("id", id)
+                    if (categoryId != null) {
+                        mBundle.putInt("categoryId", categoryId)
+                    }
                 }
                 it.findNavController()
                     .navigate(R.id.action_navigation_keuangan_to_anggaranFragment, mBundle)
