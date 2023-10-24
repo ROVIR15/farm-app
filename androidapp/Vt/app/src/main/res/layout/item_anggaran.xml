@@ -35,12 +35,12 @@
         android:textAlignment="textEnd"
         android:textColor="@color/btn_blue_icon"
         app:layout_constraintBottom_toBottomOf="@+id/tv_title_kategori_budget"
-        app:layout_constraintEnd_toStartOf="@+id/btn_options_item_goods_and_services"
+        app:layout_constraintEnd_toStartOf="@+id/btn_options_expenditure"
         app:layout_constraintStart_toEndOf="@+id/tv_title_kategori_budget"
         app:layout_constraintTop_toTopOf="@+id/tv_title_kategori_budget" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_options_item_goods_and_services"
+        android:id="@+id/btn_options_expenditure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -48,6 +48,6 @@
         android:padding="4dp"
         android:src="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_kategori_budget" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

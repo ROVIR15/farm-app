@@ -232,4 +232,7 @@ interface ApiService {
     @POST("api/expenditure")
     suspend fun addExpenditure(@Body addExpenditureRequest: AddExpenditureRequest): Response<ExpenditureResponse>
 
+    @DELETE("api/expenditure/{id}")
+    suspend fun deleteExpenditure(@Path("id") id: String): Response<ExpenditureResponse>
+
 }

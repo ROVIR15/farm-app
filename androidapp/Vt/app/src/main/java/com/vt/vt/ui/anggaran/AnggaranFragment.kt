@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.vt.vt.core.data.source.remote.budget.ExpendituresItem
 import com.vt.vt.databinding.FragmentAnggaranBinding
 import com.vt.vt.ui.anggaran.adapter.ListBudgetExpenditureAdapter
 import com.vt.vt.ui.bottom_navigation.keuangan.BudgetViewModel
+import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
 import com.vt.vt.utils.formatAsIDR
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,8 +25,15 @@ class AnggaranFragment : Fragment() {
 
     private var _binding: FragmentAnggaranBinding? = null
     private val binding get() = _binding!!
-    private val listBudgetExpenditureAdapter by lazy { ListBudgetExpenditureAdapter() }
+    private var budgetId: Int? = null
     private val budgetViewModel by viewModels<BudgetViewModel>()
+    private val expenditureViewModel by viewModels<ExpenditureViewModel>()
+    private val listBudgetExpenditureAdapter by lazy {
+        ListBudgetExpenditureAdapter(
+            expenditureViewModel
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,7 +45,7 @@ class AnggaranFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val budgetId = arguments?.getInt("id")
+        budgetId = arguments?.getInt("id")
         val categoryId = arguments?.getInt("categoryId")
         val mBundle = Bundle().apply {
             if (categoryId != null) putInt("categoryId", categoryId)
@@ -72,6 +81,10 @@ class AnggaranFragment : Fragment() {
             binding.amountBudget.setText(budgetAmount.toString())
             binding.categoryBudget.text = budget.budgetCategoryName
             listExpenditures(budget.expenditures)
+        }
+        expenditureViewModel.deleteExpenditureEmitter.observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), it.message.toString(), Toast.LENGTH_SHORT).show()
+            budgetViewModel.getBudgetById(budgetId.toString())
         }
         budgetViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(

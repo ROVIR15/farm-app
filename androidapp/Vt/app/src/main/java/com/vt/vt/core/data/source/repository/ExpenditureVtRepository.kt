@@ -9,4 +9,6 @@ import javax.inject.Inject
 class ExpenditureVtRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun addExpenditure(addExpenditureRequest: AddExpenditureRequest): Response<ExpenditureResponse> =
         apiService.addExpenditure(addExpenditureRequest)
+
+    suspend fun deleteExpenditure(id: String): Response<ExpenditureResponse> = apiService.deleteExpenditure(id)
 }

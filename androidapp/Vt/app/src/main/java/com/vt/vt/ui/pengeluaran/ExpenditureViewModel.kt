@@ -17,6 +17,9 @@ class ExpenditureViewModel @Inject constructor(private val expenditureVtReposito
     private val _addExpenditureEmitter = MutableLiveData<ExpenditureResponse>()
     val addExpenditureEmitter: LiveData<ExpenditureResponse> = _addExpenditureEmitter
 
+    private val _deleteExpenditureEmitter = MutableLiveData<ExpenditureResponse>()
+    val deleteExpenditureEmitter: LiveData<ExpenditureResponse> = _deleteExpenditureEmitter
+
     fun addExpenditure(
         budgetCategoryId: Int,
         budgetSubCategoryId: Int,
@@ -37,6 +40,23 @@ class ExpenditureViewModel @Inject constructor(private val expenditureVtReposito
             val response = expenditureVtRepository.addExpenditure(addExpenditureRequest)
             if (response.isSuccessful) {
                 _addExpenditureEmitter.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message.toString())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+    fun deleteExpenditure(id: String) {
+        launch(action = {
+            val response = expenditureVtRepository.deleteExpenditure(id)
+            if (response.isSuccessful) {
+                _deleteExpenditureEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
