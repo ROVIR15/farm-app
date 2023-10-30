@@ -60,23 +60,41 @@ def get_livestocks():
 
         # Serialize the livestock data using the schema
         for item in query:
+
+            query_block_area_livestock = BlockAreaSledLivestock.query.filter_by(livestock_id=item.livestock_id).first()
+
             if hasattr(item, 'livestock'):
                 date_obj = item.livestock.created_at
 
                 # Format the date as "DD MMMM YYYY"
                 formatted_date = date_obj.strftime("%d %B %Y")
 
-                data = {
-                    'id': item.livestock.id,
-                    'name': item.livestock.name,
-                    'gender': item.livestock.gender,
-                    'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
-                    'birth_date': item.livestock.birth_date,
-                    'bangsa': item.livestock.bangsa,
-                    'info': f'{item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
-                    'description': item.livestock.description,
-                    'created_at': formatted_date,
-                }
+                if query_block_area_livestock:
+                    data = {
+                        'id': item.livestock.id,
+                        'name': item.livestock.name,
+                        'gender': item.livestock.gender,
+                        'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
+                        'birth_date': item.livestock.birth_date,
+                        'bangsa': item.livestock.bangsa,
+                        'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                        'description': item.livestock.description,
+                        'created_at': formatted_date,
+                    }
+                else:
+                    data = {
+                        'id': item.livestock.id,
+                        'name': item.livestock.name,
+                        'gender': item.livestock.gender,
+                        'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
+                        'birth_date': item.livestock.birth_date,
+                        'bangsa': item.livestock.bangsa,
+                        'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                        'description': item.livestock.description,
+                        'created_at': formatted_date,
+                    }
+
+                    
                 results.append(data)
 
         if gender is not None:
