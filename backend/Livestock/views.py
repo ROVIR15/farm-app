@@ -77,7 +77,7 @@ def get_livestocks():
                         'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
                         'birth_date': item.livestock.birth_date,
                         'bangsa': item.livestock.bangsa,
-                        'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                        'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                         'description': item.livestock.description,
                         'created_at': formatted_date,
                     }
@@ -89,7 +89,7 @@ def get_livestocks():
                         'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
                         'birth_date': item.livestock.birth_date,
                         'bangsa': item.livestock.bangsa,
-                        'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                        'info': f'Belum di taruh kandang | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                         'description': item.livestock.description,
                         'created_at': formatted_date,
                     }
