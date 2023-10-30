@@ -19,6 +19,7 @@ class Livestock (db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     live = db.relationship('BlockAreaSledLivestock', back_populates='livestock', lazy=True)
 
+    # parent = db.relationship('Descendant', back_populates='livestock', lazy=True)
     weight_records = db.relationship('WeightRecord', back_populates='livestock', order_by=asc(
         WeightRecord.created_at), lazy=True)
     bcs_records = db.relationship('BCSRecord', back_populates='livestock', order_by=asc(

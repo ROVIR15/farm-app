@@ -6,6 +6,8 @@ from Livestock.models import Livestock
 from Livestock.schema import LivestockSchema
 from Livestock.schema import LivestockSchema_new
 
+from Descendant.models import Descendant
+
 from ProductHasCategory.models import ProductHasCategory
 from Product.models import Product
 from SKU.models import SKU
@@ -123,6 +125,24 @@ def get_a_livestock(livestock_id):
     try:
         query_block_area_livestock = BlockAreaSledLivestock.query.filter_by(
             livestock_id=livestock_id).first()
+        
+        query_d = Descendant.query.options([
+            subqueryload(Descendant.livestock),
+            subqueryload(Descendant.parent_male),
+            subqueryload(Descendant.parent_female)
+        ]).filter_by(livestock_id=livestock_id).first()
+
+        descendant_result = None
+        if query_d:
+            descendant_result = {
+                'id': query_d.id,
+                'livestock_id': query_d.livestock_id,
+                'livestock_name': query_d.livestock.name,
+                'parent_male_id': query_d.livestock_male_id,
+                'parent_male_name': f'{query_d.livestock_male_id}-{query_d.parent_male.name}',
+                'parent_female_id': query_d.parent_female.id,
+                'parent_female_name': f'{query_d.parent_female.id}-{query_d.parent_female.name}'
+            }
 
         if query_block_area_livestock is None:
             # Retrieve all livestock records from the database
@@ -143,7 +163,8 @@ def get_a_livestock(livestock_id):
                 'bcs_records': [],
                 'weight_records': [],
                 'feeding_records': [],
-                'health_records': query.health_records
+                'health_records': query.health_records,
+                'descendant': descendant_result
             }
 
             results_bcs_records = []
@@ -279,7 +300,8 @@ def get_a_livestock(livestock_id):
                 'bcs_records': [],
                 'weight_records': [],
                 'feeding_records': [],
-                'health_records': query.health_records
+                'health_records': query.health_records,
+                'descendant': descendant_result
             }
 
             results_bcs_records = []
@@ -405,6 +427,10 @@ def post_livestock():
             has_livestock = FarmProfileHasLivestock(
                 livestock_id=query.id, farm_profile_id=farm_profile_id)
             db.session.add(has_livestock)
+            db.session.commit()
+
+            descendant = Descendant(livestock_id=query.id)
+            db.session.add(descendant)
             db.session.commit()
 
             # Create a response JSON
