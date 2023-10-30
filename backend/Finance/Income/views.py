@@ -1,10 +1,15 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import subqueryload
+import datetime
+
 from Finance.BudgetRevision.models import BudgetRevision
 from Finance.BudgetItem.models import BudgetItem
 from Finance.BudgetItem.schema import BudgetItemSchema
+
 from Finance.Income.models import Income
+
+from Finance.IncomeCategories.models import IncomeCategories
 
 from FarmProfile.HasIncome.models import HasIncome
 
@@ -14,6 +19,70 @@ views_income_bp = Blueprint('views_income', __name__)
 
 budget_item_schema = BudgetItemSchema()
 budget_items_schema = BudgetItemSchema(many=True)
+
+@views_income_bp.route('/income-categories', methods=['GET'])
+@login_required
+def get_income_categories():
+    try:
+        query = IncomeCategories.query.all()
+
+        results = []
+        for item in query:
+            result = {
+                'id': item.id,
+                'name': item.category_name
+            }
+            results.append(result)
+        
+        return jsonify(results), 200
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to get income categories data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
+        
+
+@views_income_bp.route('/income/<int:income_id>', methods=['GET'])
+@login_required
+def get_a_income(income_id):
+
+    try:
+        query = Income.query.get(income_id)
+
+        if not query:
+            return jsonify({
+                'status': 'error',
+                'message': 'Not found income'
+            }), 404
+        
+        # Format the datetime object as "DD-MM-YYYY" string
+        formatted_date = query.date.strftime("%d-%m-%Y")
+
+        data = {
+            'id': query.id,
+            'income_category_id': query.income_category_id,
+            'category_label': query.category_label.category_name,
+            'date': formatted_date,
+            'amount': query.amount,
+            'remarks': query.remarks
+        }
+
+        return jsonify(data), 200
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to get income data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
 
 @views_income_bp.route('/income', methods=['POST'])
 @login_required

@@ -44,6 +44,10 @@ def get_budget():
 
         farm_profile_id = current_farm_profile()
 
+        total_budget_amount = 0
+        total_expenditure = 0
+        total_income = 0
+
         query = HasBudgetItem.query.options([
             subqueryload(HasBudgetItem.budget_item).subqueryload(BudgetItem.expenditures)
         ]).filter(
@@ -73,10 +77,11 @@ def get_budget():
         if isinstance(income_query, list) and income_query:
             for item in income_query:
                 item_ = item.income
-
+                total_income = total_income + Decimal(item_.amount)
                 data = {
                     'id': item_.id,
                     'income_category_id': item_.income_category_id,
+                    'category_label': item_.category_label.category_name,
                     'date': item_.date,
                     'amount': item_.amount,
                     'remarks': item_.remarks
@@ -89,9 +94,6 @@ def get_budget():
         ]
 
         results = []
-
-        total_budget_amount = 0
-        total_expenditure = 0
 
         # Serialize the livestock data using the schema
         for koko in query:
@@ -132,6 +134,7 @@ def get_budget():
             'month_year': month_year,
             'total_budget_amount': total_budget_amount,
             'total_expenditure': total_expenditure,
+            'total_income': total_income,
             'budget_left': budget_left,
             'status': 'Lebih dari budget' if (budget_left) < 0 else 'Aman',
             'budget_breakdown': results,
