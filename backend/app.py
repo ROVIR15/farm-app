@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from dotenv import load_dotenv
 import os
 import logging
@@ -6,6 +6,9 @@ import logging
 from auth import AuthManager
 
 from db_connection import db
+
+from Upload.views import views_upload_bp
+
 from Livestock.views import views_bp
 from BlockAreaSledLivestock.views import views_livestock_details_bp
 from Sled.views import views_sled_bp
@@ -54,11 +57,17 @@ handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] - %(message)s'))
 app.logger.addHandler(handler)
 
+@app.route('/static/<filename>', methods=['GET'])
+def serve_file(filename):
+    return send_from_directory('static/uploads', filename)
+
 app.login_manager = AuthManager(app, app.config['SECRET_KEY'])
 
 # @login_manager.user_loader
 # def load_user(user_id):
 #     return UserModel.query.get(int(user_id))
+
+app.register_blueprint(views_upload_bp, url_prefix='/api')
 
 # Auth
 # 0. Authentication
