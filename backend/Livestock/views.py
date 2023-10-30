@@ -466,6 +466,9 @@ def update_livestock(livestock_id):
     description = data.get('description')
     sled_id = data.get('sled_id')
 
+    parent_male_id = data.get('parent_male_id')
+    parent_female_id = data.get('parent_female_id')
+
     try:
         # Assuming you have a Livestock model and an existing livestock object
         livestock = Livestock.query.get(livestock_id)
@@ -475,6 +478,17 @@ def update_livestock(livestock_id):
             livestock.bangsa = bangsa
             livestock.description = description
             db.session.commit()
+
+            descendant = Descendant.query.filter_by(livestock_id=livestock_id).first()
+
+            if descendant:
+                descendant.livestock_male_id = parent_male_id
+                descendant.livestock_female_id = parent_female_id
+                db.session.commit()
+            else:
+                new_descendant = Descendant(livestock_id=livestock_id, livestock_male_id=parent_male_id, livestock_female_id=parent_female_id)
+                db.session.add(new_descendant)
+                db.session.commit()
 
             # Create a response JSON
             response = {
