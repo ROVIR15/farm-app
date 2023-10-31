@@ -228,11 +228,18 @@ interface ApiService {
     @POST("api/budget")
     suspend fun addBudget(@Body addBudgetRequest: AddBudgetRequest): Response<BudgetResponse>
 
+    @DELETE("api/budget-item/{id}")
+    suspend fun deleteBudgetById(@Path("id") id: String): Response<BudgetResponse>
+
     // Expenditure
     @POST("api/expenditure")
     suspend fun addExpenditure(@Body addExpenditureRequest: AddExpenditureRequest): Response<ExpenditureResponse>
 
     @DELETE("api/expenditure/{id}")
     suspend fun deleteExpenditure(@Path("id") id: String): Response<ExpenditureResponse>
+
+    // Income
+    @DELETE("/api/income/{id}")
+    suspend fun deleteIncomeById(@Path("id") id: String): Response<BudgetResponse>
 
 }

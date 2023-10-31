@@ -10,6 +10,7 @@ import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
 import com.vt.vt.core.data.source.remote.budget.BudgetResponse
 import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
 import com.vt.vt.core.data.source.repository.BudgetVtRepository
+import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -25,11 +26,14 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
     private val _currentDate = MutableLiveData<String>()
     val currentDate: LiveData<String> = _currentDate
 
-    private val _budgetEmmiter = MutableLiveData<BudgetResponse>()
-    val budgetEmmiter: LiveData<BudgetResponse> = _budgetEmmiter
+    private val _budgetEmitter = MutableLiveData<BudgetResponse>()
+    val budgetEmitter: LiveData<BudgetResponse> = _budgetEmitter
 
-    private val _budgetByIdEmmiter = MutableLiveData<BudgetItemResponse>()
-    val budgetByIdEmmiter: LiveData<BudgetItemResponse> = _budgetByIdEmmiter
+    private val _deleteBudgetEmitter = MutableLiveData<Event<BudgetResponse>>()
+    val deleteBudgetEmitter: LiveData<Event<BudgetResponse>> = _deleteBudgetEmitter
+
+    private val _budgetByIdEmitter = MutableLiveData<BudgetItemResponse>()
+    val budgetByIdEmitter: LiveData<BudgetItemResponse> = _budgetByIdEmitter
 
     private val _categoriesBudgetEmitter = MutableLiveData<List<CategoriesResponseItem>>()
     val categoriesBudgetEmitter: LiveData<List<CategoriesResponseItem>> = _categoriesBudgetEmitter
@@ -50,7 +54,7 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
         launch(action = {
             val response = budgetVtRepository.getBudgetByMonth(monthYear)
             if (response.isSuccessful) {
-                _budgetEmmiter.postValue(response.body())
+                _budgetEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
@@ -63,7 +67,7 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
         launch(action = {
             val response = budgetVtRepository.getBudgetById(id)
             if (response.isSuccessful) {
-                _budgetByIdEmmiter.postValue(response.body())
+                _budgetByIdEmitter.postValue(response.body())
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")
@@ -91,6 +95,19 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
             val response = budgetVtRepository.addBudget(addBudgetRequest)
             if (response.isSuccessful) {
                 _addBudgetEmitter.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message.toString())
+            }
+        }, error = { if (it.isNetworkError) isError.postValue("No Internet Connection") })
+    }
+
+    fun deleteBudgetById(id: String) {
+        launch(action = {
+            val response = budgetVtRepository.deleteBudgetById(id)
+            if (response.isSuccessful) {
+                _deleteBudgetEmitter.postValue(Event(response.body()!!))
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")

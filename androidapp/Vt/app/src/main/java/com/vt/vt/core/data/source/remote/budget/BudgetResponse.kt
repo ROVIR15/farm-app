@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class BudgetResponse(
 
+	@field:SerializedName("message")
+	val message: String? = null,
+
 	@field:SerializedName("budget_breakdown")
 	val budgetBreakdown: List<BudgetBreakdownItem>? = null,
 

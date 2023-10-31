@@ -23,4 +23,7 @@ class BudgetVtRepository @Inject constructor(private val apiService: ApiService)
 
     suspend fun addBudget(addBudgetRequest: AddBudgetRequest): Response<BudgetResponse> =
         apiService.addBudget(addBudgetRequest)
+
+    suspend fun deleteBudgetById(id: String): Response<BudgetResponse> =
+        apiService.deleteBudgetById(id)
 }

@@ -1,6 +1,7 @@
 package com.vt.vt.ui.pemberian_ternak.hijauan
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,21 +61,22 @@ class HijauanFragment : Fragment() {
             btnSimpanHijauan.setOnClickListener {
                 val score = editTextValueHijauan.text.toString().trim()
                 val date = formatterDateFromCalendar(tvShowDate.text.toString().trim())
-                if (score.isNotEmpty() && date.isNotEmpty()) {
-                    val feedItem = ConsumptionRecordItem(
-                        date,
-                        score.toDouble(),
-                        receiveHijauanId,
-                        0,
-                        skuId,
-                        receiveBlockId,
-                        "None"
-                    )
-                    pemberianTernakViewModel.createFeedingRecord(listOf(feedItem))
+                pemberianTernakViewModel.addStack(2)
+//                if (score.isNotEmpty() && date.isNotEmpty()) {
+//                    val feedItem = ConsumptionRecordItem(
+//                        date,
+//                        score.toDouble(),
+//                        receiveHijauanId,
+//                        0,
+//                        skuId,
+//                        receiveBlockId,
+//                        "None"
+//                    )
+//                    pemberianTernakViewModel.createFeedingRecord(listOf(feedItem))
 
 //                    view.findNavController()
 //                        .navigate(R.id.action_hijauanFragment_to_pemberianTernakFragment, mBundle)
-                }
+//                }
             }
             btnBatalHijauan.setOnClickListener {
                 view.findNavController().popBackStack()
@@ -87,6 +89,9 @@ class HijauanFragment : Fragment() {
         pemberianTernakViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.loading.progressBar.isVisible = isLoading
+            }
+            stack.observe(viewLifecycleOwner){
+                Log.d("PFT", "result stack fragment hijauan : $it")
             }
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()

@@ -2,6 +2,7 @@ package com.vt.vt.ui.pemberian_ternak
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,14 @@ class PemberianTernakFragment : Fragment() {
                 putInt("feedCategoryTambahanId", 4)
             }
         }
+
+        pemberianTernakViewModel.addStack(1)
+
         observewView()
+        pemberianTernakViewModel.stack.observe(viewLifecycleOwner) {
+            Log.d("PFT", "result stack fragment : $it")
+        }
+
         with(binding) {
             this.appBarLayout.topAppBar.apply {
                 title = "Pemberian Ternak"

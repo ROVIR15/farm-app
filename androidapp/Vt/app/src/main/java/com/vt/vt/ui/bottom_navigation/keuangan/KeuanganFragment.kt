@@ -6,19 +6,23 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
+import com.vt.vt.core.data.source.base.BaseSwipeToDeleteAdapter
 import com.vt.vt.core.data.source.remote.budget.BudgetBreakdownItem
+import com.vt.vt.core.data.source.remote.budget.IncomesItem
 import com.vt.vt.databinding.FragmentKeuanganBinding
 import com.vt.vt.ui.bottom_navigation.keuangan.bottom_dialog.AddBudgetBottomSheetDialogFragment
+import com.vt.vt.ui.income.IncomeViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.convertRupiah
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,11 +36,12 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private val binding get() = _binding!!
 
     private val listBudgetAdapter by lazy { BudgetAdapter() }
+    private val listIncomeAdapter by lazy { IncomeAdapter() }
+
+    private val incomeViewModel: IncomeViewModel by viewModels()
     private val budgetViewModel: BudgetViewModel by viewModels()
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentKeuanganBinding.inflate(inflater, container, false)
         return binding.root
@@ -59,6 +64,12 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             rvAnggaranRealisasi.layoutManager = LinearLayoutManager(
                 requireActivity(), LinearLayoutManager.VERTICAL, false
             )
+            rvIncomes.adapter = listIncomeAdapter
+            rvIncomes.layoutManager = LinearLayoutManager(
+                requireActivity(), LinearLayoutManager.VERTICAL, false
+            )
+            initActionBudget()
+            initActionIncomes()
         }
         observerView()
     }
@@ -80,10 +91,20 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
 
         }
-        budgetViewModel.budgetEmmiter.observe(viewLifecycleOwner) { budget ->
-            binding.isEmpty.isEmpty.isVisible = budget.budgetBreakdown.isNullOrEmpty().apply {
+        budgetViewModel.budgetEmitter.observe(viewLifecycleOwner) { budget ->
+            val isBudgetBreakdownEmpty = budget.budgetBreakdown.isNullOrEmpty()
+            val isIncomesEmpty = budget.incomes.isNullOrEmpty()
+
+            binding.anggaranText.isVisible = !isBudgetBreakdownEmpty
+            binding.incomeText.isVisible = !isIncomesEmpty
+            binding.horizontalLine1.isVisible = !isBudgetBreakdownEmpty
+            binding.horizontalLine2.isVisible = !isIncomesEmpty
+            binding.isEmpty.isEmpty.isVisible = isBudgetBreakdownEmpty && isIncomesEmpty
+
+            if (isBudgetBreakdownEmpty && isIncomesEmpty) {
                 binding.isEmpty.isEmpty.text = "Tidak Ada Pengeluaran Bulan ini"
             }
+
             val budgetLeftValue = budget.budgetLeft.toString()
             val decimalBudgetValue = budgetLeftValue.replace(".", "").toBigDecimal()
             binding.tvBudgetLeft.text = decimalBudgetValue.convertRupiah()
@@ -98,8 +119,32 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             binding.tvTotalExpenditure.text = decimalTotalBudgetAmountValue.convertRupiah()
 
             listBudget(budget.budgetBreakdown)
+            listIncome(budget.incomes)
+        }
+        budgetViewModel.deleteBudgetEmitter.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { eventMessage ->
+                Toast.makeText(requireActivity(), "${eventMessage.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
         budgetViewModel.isError().observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireActivity(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
+        }
+        incomeViewModel.isDeleted.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { eventMessage ->
+                Toast.makeText(
+                    requireActivity(), eventMessage, Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        incomeViewModel.deleteIncomeEmitter.observe(viewLifecycleOwner) {
+            if (it.status == "success") {
+                budgetViewModel.currentDate.observe(viewLifecycleOwner) { selectedDate ->
+                    budgetViewModel.loadBudgetByMonth(selectedDate.toString())
+                }
+            }
+        }
+        incomeViewModel.isError().observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(requireActivity(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
         }
     }
@@ -108,8 +153,61 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         listBudgetAdapter.submitList(data)
     }
 
+    private fun listIncome(data: List<IncomesItem>?) {
+        listIncomeAdapter.submitList(data)
+    }
+
+    private fun initActionBudget() {
+        val swipeHandler = object : BaseSwipeToDeleteAdapter(requireActivity()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                AlertDialog.Builder(requireContext()).setTitle("Delete")
+                    .setIcon(R.drawable.ic_outline_delete_outline_24)
+                    .setMessage("Are you sure delete this Information")
+                    .setPositiveButton("Yes") { dialog, _ ->
+                        val item = listBudgetAdapter.currentList[position]
+                        budgetViewModel.deleteBudgetById(item.id.toString())
+                        listBudgetAdapter.notifyItemRemoved(position)
+                        dialog.dismiss()
+                    }.setNegativeButton("No") { dialog, _ ->
+                        listBudgetAdapter.notifyItemChanged(position)
+                        dialog.dismiss()
+                    }.create().show()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.rvAnggaranRealisasi)
+    }
+
+    private fun initActionIncomes() {
+        val swipeHandler = object : BaseSwipeToDeleteAdapter(requireActivity()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                AlertDialog.Builder(requireContext()).setTitle("Delete")
+                    .setIcon(R.drawable.ic_outline_delete_outline_24)
+                    .setMessage("Are you sure delete this Information")
+                    .setPositiveButton("Yes") { dialog, _ ->
+                        val item = listIncomeAdapter.currentList[position].id
+                        incomeViewModel.deleteIncomeById(item.toString())
+                        listIncomeAdapter.notifyItemRemoved(position)
+                        dialog.dismiss()
+                    }.setNegativeButton("No") { dialog, _ ->
+                        listIncomeAdapter.notifyItemChanged(position)
+                        dialog.dismiss()
+                    }.create().show()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.rvIncomes)
+    }
+
+
     private fun showLoading(state: Boolean) {
         binding.loading.progressBar.isVisible = state
+        binding.anggaranText.isVisible = !state
+        binding.incomeText.isVisible = !state
+        binding.horizontalLine1.isVisible = !state
+        binding.horizontalLine2.isVisible = !state
     }
 
     override fun onDestroy() {
@@ -128,8 +226,7 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             R.id.action_add_expenditure -> {
                 val addBudgetBottomSheetDialog = AddBudgetBottomSheetDialogFragment()
                 addBudgetBottomSheetDialog.show(
-                    childFragmentManager,
-                    addBudgetBottomSheetDialog::class.java.simpleName
+                    childFragmentManager, addBudgetBottomSheetDialog::class.java.simpleName
                 )
                 return true
             }

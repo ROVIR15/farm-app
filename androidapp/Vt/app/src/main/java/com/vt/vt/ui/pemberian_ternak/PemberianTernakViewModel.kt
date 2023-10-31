@@ -18,8 +18,25 @@ class PemberianTernakViewModel @Inject constructor(
     private val feedingVtRepository: FeedingVtRepository
 ) : BaseViewModel() {
 
+    private val _stack = MutableLiveData<List<Int>>()
+    val stack: LiveData<List<Int>> = _stack
+
+    init {
+        _stack.value = feedingVtRepository.getAllStack()
+    }
+
     private val _feedingEmitter = MutableLiveData<FeedingRecordResponse>()
     val feedingEmitter: LiveData<FeedingRecordResponse> = _feedingEmitter
+
+    fun addStack(value: Int) {
+        feedingVtRepository.push(value)
+        _stack.value = feedingVtRepository.getAllStack()
+    }
+
+    fun clear() {
+        feedingVtRepository.clear()
+        _stack.value = feedingVtRepository.getAllStack()
+    }
 
     fun createFeedingRecord(consumptionRecord: List<ConsumptionRecordItem>) {
         launch(action = {

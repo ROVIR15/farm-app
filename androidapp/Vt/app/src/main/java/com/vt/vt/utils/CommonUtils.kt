@@ -56,8 +56,7 @@ fun formatterDateFromCalendar(inputDate: String): String {
         val date = inputDateFormat.parse(inputDate)
         outputDateFormat.format(date!!)
     } catch (e: Exception) {
-        // Handle parsing or formatting exceptions
-        inputDate // Return the original input if an exception occurs
+        inputDate
     }
 }
 
