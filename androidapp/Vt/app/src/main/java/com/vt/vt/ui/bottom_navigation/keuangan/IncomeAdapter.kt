@@ -1,10 +1,13 @@
 package com.vt.vt.ui.bottom_navigation.keuangan
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.income.IncomesItem
 import com.vt.vt.databinding.ItemIncomeBinding
 import com.vt.vt.utils.convertRupiah
@@ -27,6 +30,15 @@ class IncomeAdapter : ListAdapter<IncomesItem, IncomeAdapter.ViewHolder>(DIFF_CA
             val decimalAmountValue = amount.replace(".", "").toBigDecimal()
             binding.tvTitleIncome.text = data.categoryLabel.toString()
             binding.tvAmount.text = decimalAmountValue.convertRupiah()
+            val incomeId = currentList[adapterPosition].id
+            itemView.setOnClickListener {
+                val mBundle = Bundle()
+                if (incomeId != null) {
+                    mBundle.putInt("incomeId", incomeId)
+                }
+                it.findNavController()
+                    .navigate(R.id.action_navigation_keuangan_to_editIncomeFragment, mBundle)
+            }
         }
     }
 

@@ -20,6 +20,7 @@ import com.vt.vt.core.data.source.remote.health_record.model.*
 import com.vt.vt.core.data.source.remote.income.IncomeCategoriesResponseItem
 import com.vt.vt.core.data.source.remote.income.IncomeRequest
 import com.vt.vt.core.data.source.remote.income.IncomeResponse
+import com.vt.vt.core.data.source.remote.income.IncomesItem
 import com.vt.vt.core.data.source.remote.livestock.model.*
 import com.vt.vt.core.data.source.remote.products.model.*
 import com.vt.vt.core.data.source.remote.profile.model.*
@@ -242,6 +243,16 @@ interface ApiService {
     suspend fun deleteExpenditure(@Path("id") id: String): Response<ExpenditureResponse>
 
     // Income
+    @GET("api/income/{id}")
+    suspend fun getIncomeById(@Path("id") id: String): Response<IncomesItem>
+
+    @PUT("api/income/{id}")
+    suspend fun updateIncome(
+        @Path("id") id: String,
+        @Body incomeRequest: IncomeRequest
+    ): Response<IncomeResponse>
+
+
     @GET("api/income-categories")
     suspend fun incomeCategories(): Response<List<IncomeCategoriesResponseItem>>
 

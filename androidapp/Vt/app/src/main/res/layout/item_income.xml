@@ -12,13 +12,17 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title_income"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
         android:fontFamily="@font/roboto_bold"
+        android:inputType="textMultiLine"
         android:padding="8dp"
         android:text="Income"
         android:textAppearance="?attr/textAppearanceSubtitle1"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_amount"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,6 +40,7 @@
         android:textColor="@color/green_text_button"
         app:layout_constraintBottom_toBottomOf="@+id/tv_title_income"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_title_income"
         app:layout_constraintTop_toTopOf="@+id/tv_title_income" />
 
