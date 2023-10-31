@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_calendar_grey"
+            android:background="@drawable/bg_outline_box"
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -75,9 +75,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/bg_calendar_grey"
                 android:ems="10"
-                android:focusable="false"
                 android:gravity="center_vertical"
-                android:hint="Jumlah Budget"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -115,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_calendar_grey"
+            android:background="@drawable/bg_outline_box"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
@@ -164,5 +162,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_simpan_kimia" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
 import com.vt.vt.core.data.source.base.BaseSwipeToDeleteAdapter
 import com.vt.vt.core.data.source.remote.budget.BudgetBreakdownItem
-import com.vt.vt.core.data.source.remote.budget.IncomesItem
+import com.vt.vt.core.data.source.remote.income.IncomesItem
 import com.vt.vt.databinding.FragmentKeuanganBinding
 import com.vt.vt.ui.bottom_navigation.keuangan.bottom_dialog.AddBudgetBottomSheetDialogFragment
 import com.vt.vt.ui.income.IncomeViewModel

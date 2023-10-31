@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.budget
 
 import com.google.gson.annotations.SerializedName
+import com.vt.vt.core.data.source.remote.income.IncomesItem
 
 data class BudgetResponse(
 

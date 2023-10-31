@@ -1,4 +1,4 @@
-package com.vt.vt.core.data.source.remote.budget
+package com.vt.vt.core.data.source.remote.income
 
 import com.google.gson.annotations.SerializedName
 
