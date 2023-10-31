@@ -25,10 +25,18 @@ class AddLivestockViewModel @Inject constructor(private val livestockVtRepositor
         birthDate: String?,
         description: String?,
         gender: Int,
-        bangsa: String?,
+        bangsa: String?
     ) {
         launch(action = {
-            val livestockRequest = LivestockRequest(bangsa, gender, name, birthDate, description)
+            val livestockRequest = LivestockRequest(
+                bangsa,
+                gender,
+                name,
+                birthDate,
+                description,
+                null,
+                null
+            )
             val response = livestockVtRepository.createLivestock(livestockRequest)
             if (response.isSuccessful) {
                 _createLivestock.postValue(response.body())

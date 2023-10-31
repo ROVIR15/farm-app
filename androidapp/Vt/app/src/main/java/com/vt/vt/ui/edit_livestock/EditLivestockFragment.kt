@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditLivestockBinding
+import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
@@ -27,13 +28,15 @@ class EditLivestockFragment : Fragment() {
 
     private var _binding: FragmentEditLivestockBinding? = null
     private val binding get() = _binding!!
+    private val livestockViewModel by viewModels<LivestockViewModel>()
     private val editLivestockViewModel by viewModels<EditLivestockViewModel>()
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
 
-    var receiveId: String = ""
+    private var receiveId: String = ""
+    private var parentMaleId: Int = 0
+    private var parentFemaleId: Int = 0
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditLivestockBinding.inflate(inflater, container, false)
         return binding.root
@@ -42,7 +45,11 @@ class EditLivestockFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         receiveId = arguments?.getInt("id").toString()
-        editLivestockViewModel.getLivestockById(receiveId)
+        if (receiveId.isNotEmpty()) {
+            editLivestockViewModel.getLivestockById(receiveId)
+        }
+        livestockViewModel.getLivestocksMale()
+        livestockViewModel.getLivestocksFemale()
 
         with(binding) {
             appBarLayout.topAppBar.also { toolbar ->
@@ -67,7 +74,8 @@ class EditLivestockFragment : Fragment() {
                 val description = edtDescription.text.toString().trim()
                 val birthDate = tvDateLivestock.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(birthDate)
-                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty()) {
+                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty() && parentMaleId != 0 && parentFemaleId != 0
+                ) {
                     if (gender != 0) {
                         editLivestockViewModel.updateLivestockById(
                             receiveId,
@@ -75,15 +83,14 @@ class EditLivestockFragment : Fragment() {
                             gender,
                             nation,
                             description,
-                            createdAt
+                            createdAt,
+                            parentMaleId,
+                            parentFemaleId
                         )
                     }
                 }
             }
-            /* Spinner Adapter */
-            adapterSpinner(binding.spinnerGenderUmum)
-            adapterSpinner(binding.spinnerPilihLivestockJantan)
-            adapterSpinner(binding.spinnerPilihLivestockBetina)
+            adapterSpinnerStaticGender(binding.spinnerGenderUmum)
         }
         observerView()
     }
@@ -99,9 +106,7 @@ class EditLivestockFragment : Fragment() {
                     val namesArray = sleds.map { data ->
                         data.name
                     }.toTypedArray()
-                    val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spinnerKandangUmum.adapter = adapter
+                    adapterSpinner(binding.spinnerKandangUmum, namesArray)
                     binding.spinnerKandangUmum.selected { position ->
                         binding.edtArea.setText(sleds[position].blockAreaName)
                     }
@@ -127,13 +132,54 @@ class EditLivestockFragment : Fragment() {
                 Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
             }
         }
+        livestockViewModel.observeLoading().observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+        livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMale ->
+            val livestockMales = livestockMale.map {
+                it.name
+            }.toTypedArray()
+            adapterSpinner(binding.spinnerPilihLivestockJantan, livestockMales)
+        }
+        livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMale ->
+            val livestockMales = livestockMale.map {
+                it.name
+            }.toTypedArray()
+            adapterSpinner(binding.spinnerPilihLivestockJantan, livestockMales)
+            binding.spinnerPilihLivestockJantan.selected { position ->
+                parentMaleId = livestockMale[position].id
+            }
+        }
+        livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemale ->
+            val livestockFemales = livestockFemale.map {
+                it.name
+            }.toTypedArray()
+            adapterSpinner(binding.spinnerPilihLivestockBetina, livestockFemales)
+            binding.spinnerPilihLivestockBetina.selected { position ->
+                parentFemaleId = livestockFemale[position].id
+            }
+        }
+        livestockViewModel.isError().observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun adapterSpinner(binding: Spinner) {
+    private fun adapterSpinner(binding: Spinner, textArray: Array<String>) {
+        ArrayAdapter(
+            requireActivity(),
+            R.layout.item_spinner,
+            textArray,
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.item_spinner)
+            binding.adapter = adapter
+        }
+    }
+
+    private fun adapterSpinnerStaticGender(binding: Spinner) {
         ArrayAdapter.createFromResource(
             requireActivity(),
             R.array.gender_animal,
-            R.layout.item_spinner
+            R.layout.item_spinner,
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.item_spinner)
             binding.adapter = adapter

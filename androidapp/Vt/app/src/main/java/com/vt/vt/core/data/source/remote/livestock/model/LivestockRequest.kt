@@ -17,5 +17,11 @@ data class LivestockRequest(
     val birthDate: String?,
 
     @field:SerializedName("description")
-    val description: String?
+    val description: String?,
+
+    @field:SerializedName("parent_female_id")
+    val parentFemaleId: Int?,
+
+    @field:SerializedName("parent_male_id")
+    val parentMaleId: Int?,
 )

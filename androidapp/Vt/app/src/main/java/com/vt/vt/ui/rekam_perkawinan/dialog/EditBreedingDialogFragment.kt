@@ -53,10 +53,6 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
             }
             btnSaveAddAnimalMating.setOnClickListener {
                 val blockArea = edtAreaEditBreeding.text.toString().trim()
-                println("blcok 1 $blockArea")
-                println("blcok 2 $getSled")
-                println("blcok 3 $getLivestockMale")
-                println("blcok 4 $getLivestockFemale")
                 if (blockArea.isNotEmpty() && !getSled.isNullOrEmpty() && !getLivestockMale.isNullOrEmpty() && !getLivestockFemale.isNullOrEmpty()) {
                     Toast.makeText(requireActivity(), "UPDATE (API) BELOM ADA", Toast.LENGTH_SHORT)
                         .show()
@@ -76,11 +72,10 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
         recordBreedingViewModel.observeLoading().observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = it
         }
+        livestockViewModel.observeLoading().observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = it
+        }
         recordBreedingViewModel.breedingByIdEmitter.observe(viewLifecycleOwner) { breeding ->
-            val (desiredLivestockMaleId, desiredLivestockFemaleId) = breeding.run {
-                livestockMaleId to livestockFemaleId
-            }
-            val desiredSledId = breeding.sledId?.toInt()
             sledViewModel.sledItems.observe(viewLifecycleOwner) { sled ->
                 with(binding) {
                     val nameArray = sled.map {
@@ -89,43 +84,33 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                     val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerEditBreeding.adapter = adapter
-                    val desiredPosition = sled.indexOfFirst {
-                        it.id == desiredSledId
-                    }
-                    if (desiredPosition != -1) {
-                        spinnerEditBreeding.selected {
-                            getSled = sled[it].name
-                            edtAreaEditBreeding.setText(sled[desiredPosition].blockAreaName)
-                        }
-                    } else {
-                        spinnerEditBreeding.selected { position ->
-                            getSled = sled[position].name
-                            edtAreaEditBreeding.setText(sled[position].blockAreaName)
-                        }
+                    spinnerEditBreeding.selected { position ->
+                        getSled = sled[position].name
+                        edtAreaEditBreeding.setText(sled[position].blockAreaName)
                     }
                 }
             }
-            livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMales ->
-                val nameArray = livestockMales.map {
-                    it.name
-                }.toTypedArray()
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
-                binding.spinnerChooseMaleAddAnimalMating.selected { position ->
-                    getLivestockMale = livestockMales[position].name
-                }
+        }
+        livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMales ->
+            val nameArray = livestockMales.map {
+                it.name
+            }.toTypedArray()
+            val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
+            binding.spinnerChooseMaleAddAnimalMating.selected { position ->
+                getLivestockMale = livestockMales[position].name
             }
-            livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->
-                val nameArray = livestockFemales.map {
-                    it.name
-                }.toTypedArray()
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
-                binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
-                    getLivestockFemale = livestockFemales[position].name
-                }
+        }
+        livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->
+            val nameArray = livestockFemales.map {
+                it.name
+            }.toTypedArray()
+            val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArray)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerChooseFemaleAddAnimalMating.adapter = adapter
+            binding.spinnerChooseFemaleAddAnimalMating.selected { position ->
+                getLivestockFemale = livestockFemales[position].name
             }
         }
         recordBreedingViewModel.isError().observe(viewLifecycleOwner) {

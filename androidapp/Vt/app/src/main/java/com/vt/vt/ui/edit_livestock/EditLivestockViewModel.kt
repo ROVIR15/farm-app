@@ -25,7 +25,7 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
             if (response.isSuccessful) {
                 _getLivestockEmitter.postValue(response.body())
             } else {
-                isError.postValue(response.errorBody().toString())
+                isError.postValue(response.message())
             }
         }, error = { networkError ->
             if (networkError.isNetworkError) {
@@ -39,10 +39,18 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
         name: String?,
         gender: Int,
         nation: String?,
-        description: String?, birthDate: String?
+        description: String?, birthDate: String?, parentMaleId: Int, parentFemaleId: Int
     ) {
         launch(action = {
-            val livestockRequest = LivestockRequest(nation, gender, name, birthDate, description)
+            val livestockRequest = LivestockRequest(
+                nation,
+                gender,
+                name,
+                birthDate,
+                description,
+                parentMaleId,
+                parentFemaleId
+            )
             val response = livestockVtRepository.updateLivestockById(id, livestockRequest)
             if (response.isSuccessful) {
                 _updateLivestock.postValue(response.body())

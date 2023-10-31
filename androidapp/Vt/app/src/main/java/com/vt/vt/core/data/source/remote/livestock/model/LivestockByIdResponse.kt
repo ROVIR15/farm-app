@@ -26,6 +26,9 @@ data class LivestockByIdResponse(
     @field:SerializedName("description")
     val description: String,
 
+    @field:SerializedName("descendant")
+    val descendant: DescendantItem? = null,
+
     @field:SerializedName("weight_records")
     val weightRecords: List<WeightRecordsItem>,
 
@@ -115,4 +118,28 @@ data class BcsRecordsItem(
 
     @field:SerializedName("remarks")
     val remarks: String
+)
+
+data class DescendantItem(
+
+    @field:SerializedName("livestock_id")
+    val livestockId: Int? = null,
+
+    @field:SerializedName("parent_female_id")
+    val parentFemaleId: Int? = null,
+
+    @field:SerializedName("parent_male_name")
+    val parentMaleName: String? = null,
+
+    @field:SerializedName("parent_male_id")
+    val parentMaleId: Int? = null,
+
+    @field:SerializedName("id")
+    val id: Int? = null,
+
+    @field:SerializedName("livestock_name")
+    val livestockName: String? = null,
+
+    @field:SerializedName("parent_female_name")
+    val parentFemaleName: String? = null
 )

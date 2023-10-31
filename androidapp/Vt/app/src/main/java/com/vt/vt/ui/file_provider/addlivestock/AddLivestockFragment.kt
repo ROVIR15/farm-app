@@ -31,6 +31,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentAddLivestockBinding
+import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.createCustomTempFile

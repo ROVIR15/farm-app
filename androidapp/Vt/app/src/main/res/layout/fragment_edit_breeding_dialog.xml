@@ -59,6 +59,8 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -77,6 +79,7 @@
             app:boxBackgroundColor="@color/subtle_grey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/linearLayout6"
             app:layout_constraintTop_toTopOf="parent"
             app:startIconTint="@color/text_blue">
