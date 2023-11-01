@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class BudgetItemResponse(
 
 	@field:SerializedName("amount")
-	val amount: Int? = null,
+	val amount: Double? = null,
 
 	@field:SerializedName("budget_category_id")
 	val budgetCategoryId: Int? = null,

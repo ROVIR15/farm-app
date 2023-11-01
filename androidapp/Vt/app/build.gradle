@@ -62,6 +62,8 @@ dependencies {
     // Splash Screen
     implementation "androidx.core:core-splashscreen:$splash_screen"
 
+    implementation "com.cottacush:CurrencyEditText:1.0.0"
+
     //    Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
