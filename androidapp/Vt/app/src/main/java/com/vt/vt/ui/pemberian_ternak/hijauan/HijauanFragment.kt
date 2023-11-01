@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentHijauanBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
@@ -28,6 +27,7 @@ class HijauanFragment : Fragment() {
     private var _binding: FragmentHijauanBinding? = null
     private val binding get() = _binding!!
 
+    private val hijauanViewModel by viewModels<HijauanViewModel>()
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
@@ -61,22 +61,23 @@ class HijauanFragment : Fragment() {
             btnSimpanHijauan.setOnClickListener {
                 val score = editTextValueHijauan.text.toString().trim()
                 val date = formatterDateFromCalendar(tvShowDate.text.toString().trim())
-                pemberianTernakViewModel.addStack(2)
-//                if (score.isNotEmpty() && date.isNotEmpty()) {
-//                    val feedItem = ConsumptionRecordItem(
-//                        date,
-//                        score.toDouble(),
-//                        receiveHijauanId,
-//                        0,
-//                        skuId,
-//                        receiveBlockId,
-//                        "None"
-//                    )
-//                    pemberianTernakViewModel.createFeedingRecord(listOf(feedItem))
 
-//                    view.findNavController()
-//                        .navigate(R.id.action_hijauanFragment_to_pemberianTernakFragment, mBundle)
-//                }
+                if (score.isNotEmpty() && date.isNotEmpty() && receiveHijauanId != null && receiveBlockId != null) {
+                    pemberianTernakViewModel.addStack(
+                        date,
+                        score.toDouble(),
+                        receiveHijauanId,
+                        0,
+                        skuId,
+                        receiveBlockId,
+                        "None"
+                    )
+                    hijauanViewModel.setButtonHijauan(true)
+                    view.findNavController().popBackStack()
+                } else {
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
             btnBatalHijauan.setOnClickListener {
                 view.findNavController().popBackStack()
@@ -90,7 +91,7 @@ class HijauanFragment : Fragment() {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.loading.progressBar.isVisible = isLoading
             }
-            stack.observe(viewLifecycleOwner){
+            stack.observe(viewLifecycleOwner) {
                 Log.d("PFT", "result stack fragment hijauan : $it")
             }
             feedingEmitter.observe(viewLifecycleOwner) {

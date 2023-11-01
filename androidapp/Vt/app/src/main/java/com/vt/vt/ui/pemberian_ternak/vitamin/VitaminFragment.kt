@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentVitaminBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
@@ -26,8 +25,8 @@ class VitaminFragment : Fragment() {
     private var _binding: FragmentVitaminBinding? = null
     private val binding get() = _binding!!
 
+    private val vitaminViewModel by viewModels<VitaminViewModel>()
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
-
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
@@ -61,7 +60,7 @@ class VitaminFragment : Fragment() {
                 val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
 
                 if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && currentDate.isNotEmpty()) {
-                    val feedItem = ConsumptionRecordItem(
+                    pemberianTernakViewModel.addStack(
                         currentDate,
                         score.toDouble(),
                         receiveVitaminId,
@@ -70,7 +69,11 @@ class VitaminFragment : Fragment() {
                         receiveBlockId,
                         "None"
                     )
-                    pemberianTernakViewModel.createFeedingRecord(listOf(feedItem))
+                    vitaminViewModel.setButtonVitamin(true)
+                    view.findNavController().popBackStack()
+                } else {
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             btnBatalVitamin.setOnClickListener {

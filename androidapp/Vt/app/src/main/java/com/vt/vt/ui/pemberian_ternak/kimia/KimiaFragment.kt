@@ -1,6 +1,5 @@
 package com.vt.vt.ui.pemberian_ternak.kimia
 
-//import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentKimiaBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
@@ -27,6 +25,7 @@ class KimiaFragment : Fragment() {
     private var _binding: FragmentKimiaBinding? = null
     private val binding get() = _binding!!
 
+    private val kimiaViewModel by viewModels<KimiaViewModel>()
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
@@ -58,9 +57,8 @@ class KimiaFragment : Fragment() {
             btnSimpanKimia.setOnClickListener {
                 val score = editTextRekamPemberianKimia.text.toString().trim()
                 val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
-
-                if (score.isNotEmpty() && receiveKimiaId != null && receiveBlockId != null && currentDate.isNotEmpty()) {
-                    val feedItem = ConsumptionRecordItem(
+                if (score.isNotEmpty() && currentDate.isNotEmpty() && receiveKimiaId != null && receiveBlockId != null) {
+                    pemberianTernakViewModel.addStack(
                         currentDate,
                         score.toDouble(),
                         receiveKimiaId,
@@ -69,8 +67,11 @@ class KimiaFragment : Fragment() {
                         receiveBlockId,
                         "None"
                     )
-                    pemberianTernakViewModel.createFeedingRecord(listOf(feedItem))
-
+                    kimiaViewModel.setButtonKimia(true)
+                    view.findNavController().popBackStack()
+                } else {
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             btnBatalKimia.setOnClickListener {

@@ -2,6 +2,7 @@ package com.vt.vt.core.data.di
 
 import android.content.Context
 import com.vt.vt.core.data.source.remote.ApiService
+import com.vt.vt.core.data.source.remote.dummy.SessionFeedingDataStoreManager
 import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.remote.dummy.cobahilt.model.IAnimal
 import com.vt.vt.core.data.source.remote.dummy.cobahilt.repository.AnimalRepositoryImpl
@@ -137,4 +138,10 @@ class AppModule {
     @Singleton
     fun provideDataStoreManager(@ApplicationContext appContext: Context): SessionPreferencesDataStoreManager =
         SessionPreferencesDataStoreManager(appContext)
+
+
+    @Provides
+    @Singleton
+    fun provideFeedingDataStoreManager(@ApplicationContext appContext: Context): SessionFeedingDataStoreManager =
+        SessionFeedingDataStoreManager(appContext)
 }
