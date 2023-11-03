@@ -5,6 +5,7 @@ from sqlalchemy.orm import joinedload, subqueryload
 from Livestock.models import Livestock
 from Livestock.schema import LivestockSchema
 from Livestock.schema import LivestockSchema_new
+from Descendant.schema import DescendantSchema
 
 from Descendant.models import Descendant
 
@@ -127,21 +128,24 @@ def get_a_livestock(livestock_id):
             livestock_id=livestock_id).first()
         
         query_d = Descendant.query.options([
-            subqueryload(Descendant.livestock),
-            subqueryload(Descendant.parent_male),
-            subqueryload(Descendant.parent_female)
+            subqueryload(Descendant.livestock)
         ]).filter_by(livestock_id=livestock_id).first()
 
         descendant_result = None
         if query_d:
+            parent_male_id = query_d.livestock_male_id if query_d.livestock_male_id is not None else None
+            parent_male_name = f'{query_d.livestock_male_id}-{query_d.parent_male.name}' if query_d.livestock_male_id is not None else None
+            parent_female_id = query_d.livestock_female_id if query_d.livestock_female_id is not None else None
+            parent_female_name = f'{query_d.livestock_female_id}-{query_d.parent_female.name}' if query_d.livestock_female_id is not None else None
+
             descendant_result = {
                 'id': query_d.id,
                 'livestock_id': query_d.livestock_id,
                 'livestock_name': query_d.livestock.name,
-                'parent_male_id': query_d.livestock_male_id,
-                'parent_male_name': f'{query_d.livestock_male_id}-{query_d.parent_male.name}',
-                'parent_female_id': query_d.parent_female.id,
-                'parent_female_name': f'{query_d.parent_female.id}-{query_d.parent_female.name}'
+                'parent_male_id' : parent_male_id,
+                'parent_male_name' : parent_male_name,
+                'parent_female_id' : parent_female_id,
+                'parent_female_name' : parent_female_name
             }
 
         if query_block_area_livestock is None:
@@ -462,6 +466,7 @@ def update_livestock(livestock_id):
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     gender = data.get('gender')
+    birth_date = data.get('birth_date')
     bangsa = data.get('bangsa')
     description = data.get('description')
     sled_id = data.get('sled_id')
@@ -474,6 +479,7 @@ def update_livestock(livestock_id):
         livestock = Livestock.query.get(livestock_id)
         if livestock:
             livestock.name = name
+            livestock.birth_date = birth_date
             livestock.gender = gender
             livestock.bangsa = bangsa
             livestock.description = description

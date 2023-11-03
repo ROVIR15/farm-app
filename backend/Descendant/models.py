@@ -11,6 +11,6 @@ class Descendant (db.Model):
     livestock_female_id = db.Column(
         db.Integer(), db.ForeignKey('livestock.id'), nullable=False)
 
-    livestock = db.relationship('Livestock', foreign_keys=[livestock_male_id])
+    livestock = db.relationship('Livestock', foreign_keys=[livestock_id])
     parent_male = db.relationship('Livestock', foreign_keys=[livestock_male_id])
     parent_female = db.relationship('Livestock', foreign_keys=[livestock_female_id])
