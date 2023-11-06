@@ -20,6 +20,7 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -28,6 +29,17 @@ import java.util.Locale
     matrix.postRotate(angle)
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 }*/
+fun calculateDelayForNextDay(currentDate: Date): Long {
+    val calendar = Calendar.getInstance()
+    calendar.time = currentDate
+    calendar.add(Calendar.DAY_OF_YEAR, 1)
+    calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the hour to 0 (midnight)
+    calendar.set(Calendar.MINUTE, 0) // Set the minutes to 0
+    calendar.set(Calendar.SECOND, 0) // Set the seconds to 0
+    calendar.set(Calendar.MILLISECOND, 0) // Set the milliseconds to 0
+    val nextDay = calendar.time
+    return nextDay.time - currentDate.time
+}
 fun Any.convertRupiah(): String {
     val localId = Locale("in", "ID")
     val formatter = NumberFormat.getCurrencyInstance(localId)

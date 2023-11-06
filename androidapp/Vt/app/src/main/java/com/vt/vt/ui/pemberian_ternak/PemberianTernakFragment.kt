@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -31,6 +33,7 @@ class PemberianTernakFragment : Fragment() {
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
     private val personalProfileViewModel by viewModels<PersonalProfileViewModel>()
 
+    var isCallbacksSet = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -53,11 +56,8 @@ class PemberianTernakFragment : Fragment() {
 
         observewView()
         with(binding) {
-            appBarLayout.topAppBar.apply {
+            binding.appBarLayout.topAppBar.apply {
                 title = "Pemberian Ternak"
-                setNavigationOnClickListener {
-                    view.findNavController().popBackStack()
-                }
             }
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setOnClickListener {
                 view.findNavController()
@@ -74,13 +74,38 @@ class PemberianTernakFragment : Fragment() {
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setOnClickListener {
                 view.findNavController()
                     .navigate(R.id.action_pemberianTernakFragment_to_tambahanFragment, mBundle)
-            }
+            }/*contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.setOnClickListener {
+                contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.isEnabled = false
+                pemberianTernakViewModel.setButtonState(false)
+                val currentDate = Date()
+
+                val calendar = Calendar.getInstance()
+                calendar.time = currentDate
+                calendar.add(Calendar.DAY_OF_YEAR, 1)
+                calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the hour to 0 (midnight)
+                calendar.set(Calendar.MINUTE, 0) // Set the minutes to 0
+                calendar.set(Calendar.SECOND, 0) // Set the seconds to 0
+                calendar.set(Calendar.MILLISECOND, 0) // Set the milliseconds to 0
+                val nextDay = calendar.time
+                val delay = nextDay.time - currentDate.time
+                contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.postDelayed({
+                    contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.isEnabled =
+                        true
+                    pemberianTernakViewModel.setButtonState(true)
+                }, delay)
+            }*/
         }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun observewView() {
         personalProfileViewModel.getProfile()
+//        pemberianTernakViewModel.testButton.observe(viewLifecycleOwner) { enable ->
+//            Log.d("PFT", "test button each day enable or disable ${enable}")
+//            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.isEnabled =
+//                enable
+//        }
         personalProfileViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
             binding.loading.progressBar.isVisible = isLoading
         }
@@ -99,19 +124,15 @@ class PemberianTernakFragment : Fragment() {
             view?.findNavController()?.popBackStack()
         }
         pemberianTernakViewModel.stack.observe(viewLifecycleOwner) { feedingStack ->
-            if (feedingStack.size == 4) {
-                binding.contentPemberianMakanTernak.btnSave.visibility = View.VISIBLE
-                binding.contentPemberianMakanTernak.btnCancel.visibility = View.VISIBLE
-                binding.contentPemberianMakanTernak.btnSave.setOnClickListener {
-                    pemberianTernakViewModel.createFeedingRecord(feedingStack)
-                }
-                binding.contentPemberianMakanTernak.btnCancel.setOnClickListener {
+            if (feedingStack.isNotEmpty() && !isCallbacksSet) {
+                setupCallbacks()
+                isCallbacksSet = true
+            } else {
+                binding.appBarLayout.topAppBar.setNavigationOnClickListener {
                     view?.findNavController()?.popBackStack()
                 }
-            } else {
-                binding.contentPemberianMakanTernak.btnSave.visibility = View.GONE
-                binding.contentPemberianMakanTernak.btnCancel.visibility = View.GONE
             }
+            handleUiBasedOnStackSize(feedingStack.size)
         }
         pemberianTernakViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -119,45 +140,94 @@ class PemberianTernakFragment : Fragment() {
         // hijauan filled
         pemberianTernakViewModel.isHijauanFilled.observe(viewLifecycleOwner) { isFilled ->
             Log.d("PFT", "hijauan ${isFilled}")
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.isEnabled = !isFilled
+            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.isEnabled =
+                isFilled
             binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setBackgroundColor(
-                if (isFilled) Color.GRAY
+                if (!isFilled) Color.GRAY
                 else ContextCompat.getColor(requireActivity(), R.color.white)
             )
         }
         pemberianTernakViewModel.isKimiaFilled.observe(viewLifecycleOwner) { isFilled ->
             Log.d("PFT", "kimia ${isFilled}")
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.isEnabled = !isFilled
+            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.isEnabled =
+                isFilled
             binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.setBackgroundColor(
-                if (isFilled) Color.GRAY
+                if (!isFilled) Color.GRAY
                 else ContextCompat.getColor(requireActivity(), R.color.white)
             )
         }
         pemberianTernakViewModel.isVitaminFilled.observe(viewLifecycleOwner) { isFilled ->
             Log.d("PFT", "vitamin ${isFilled}")
             binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.isEnabled =
-                !isFilled
+                isFilled
             binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.setBackgroundColor(
-                if (isFilled) Color.GRAY
+                if (!isFilled) Color.GRAY
                 else ContextCompat.getColor(requireActivity(), R.color.white)
             )
         }
         pemberianTernakViewModel.isTambahanFilled.observe(viewLifecycleOwner) { isFilled ->
             Log.d("PFT", "tambahan ${isFilled}")
             binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.isEnabled =
-                !isFilled
+                isFilled
             binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setBackgroundColor(
-                if (isFilled) Color.GRAY
+                if (!isFilled) Color.GRAY
                 else ContextCompat.getColor(requireActivity(), R.color.white)
             )
         }
     }
 
+    private fun setupCallbacks() {
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(),
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    alertDialog()
+                }
+            })
+
+        binding.appBarLayout.topAppBar.setNavigationOnClickListener {
+            alertDialog()
+        }
+    }
+
+    private fun handleUiBasedOnStackSize(stackSize: Int) {
+        if (stackSize == 4) {
+            binding.contentPemberianMakanTernak.btnSave.visibility = View.VISIBLE
+            binding.contentPemberianMakanTernak.btnCancel.visibility = View.VISIBLE
+
+            binding.contentPemberianMakanTernak.btnSave.setOnClickListener {
+                pemberianTernakViewModel.createFeedingRecord(
+                    pemberianTernakViewModel.stack.value ?: emptyList()
+                )
+            }
+
+            binding.contentPemberianMakanTernak.btnCancel.setOnClickListener {
+                view?.findNavController()?.popBackStack()
+            }
+        } else {
+            binding.contentPemberianMakanTernak.btnSave.visibility = View.GONE
+            binding.contentPemberianMakanTernak.btnCancel.visibility = View.GONE
+        }
+    }
+
+    fun alertDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Peringatan")
+        builder.setMessage("Apakah anda yakin ingin menghapus data ?")
+        builder.setPositiveButton("Ya") { dialog, which ->
+            pemberianTernakViewModel.clear()
+            pemberianTernakViewModel.clearSessionFeeding()
+            view?.findNavController()?.popBackStack()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Tidak") { dialog, which ->
+            dialog.dismiss()
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        // when user go back from this page the stack will be clear
-        pemberianTernakViewModel.clear()
-        pemberianTernakViewModel.clearSessionFeeding()
         _binding = null
     }
 }

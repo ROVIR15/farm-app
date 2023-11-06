@@ -16,9 +16,11 @@ import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class TambahanFragment : Fragment() {
@@ -59,18 +61,25 @@ class TambahanFragment : Fragment() {
             }
             btnSimpanTambahan.setOnClickListener {
                 val score = editTextRekamPemberianTambahan.text.toString().trim()
-                val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
-                if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && currentDate.isNotEmpty()) {
+                val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
+                if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
+                    btnSimpanTambahan.isEnabled = false
+                    tambahanViewModel.setButtonTambahan(false)
+                    val currentDate = Date()
+                    val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
-                        currentDate,
-                        score.toDouble(),
-                        receiveTambahanId,
-                        0,
-                        skuId,
-                        receiveBlockId,
-                        "None"
+                        date = createdAt,
+                        score = score.toDouble(),
+                        feedCategory = receiveTambahanId,
+                        left = 0,
+                        skuId = skuId,
+                        blockAreaId = receiveBlockId,
+                        remarks = "None"
                     )
-                    tambahanViewModel.setButtonTambahan(true)
+                    btnSimpanTambahan.postDelayed({
+                        btnSimpanTambahan.isEnabled = true
+                        tambahanViewModel.setButtonTambahan(true)
+                    }, delay)
                     view.findNavController().popBackStack()
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)

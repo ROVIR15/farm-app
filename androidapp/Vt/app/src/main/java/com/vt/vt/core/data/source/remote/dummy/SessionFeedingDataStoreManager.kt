@@ -27,7 +27,7 @@ class SessionFeedingDataStoreManager(context: Context) {
 
     fun isHijauanButtonFilled(): Flow<Boolean> {
         return sessionForFeedingDataStore.data.map {
-            it[hijauanButton] ?: false
+            it[hijauanButton] ?: true
         }
     }
 
@@ -39,7 +39,7 @@ class SessionFeedingDataStoreManager(context: Context) {
 
     fun isKimiaButtonFilled(): Flow<Boolean> {
         return sessionForFeedingDataStore.data.map {
-            it[kimiaButton] ?: false
+            it[kimiaButton] ?: true
         }
     }
 
@@ -51,7 +51,7 @@ class SessionFeedingDataStoreManager(context: Context) {
 
     fun isVitaminButtonFilled(): Flow<Boolean> {
         return sessionForFeedingDataStore.data.map {
-            it[vitaminButton] ?: false
+            it[vitaminButton] ?: true
         }
     }
 
@@ -63,7 +63,7 @@ class SessionFeedingDataStoreManager(context: Context) {
 
     fun isTambahanButtonFilled(): Flow<Boolean> {
         return sessionForFeedingDataStore.data.map {
-            it[tambahanButton] ?: false
+            it[tambahanButton] ?: true
         }
     }
 

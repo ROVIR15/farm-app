@@ -46,7 +46,15 @@ class PemberianTernakViewModel @Inject constructor(
     }
 
     // stack feeding
-    fun addStack(date: String, score: Double, feedCategory: Int, left: Int, skuId: Int, blockAreaId: Int, remarks: String?) {
+    fun addStack(
+        date: String,
+        score: Double,
+        feedCategory: Int,
+        left: Int,
+        skuId: Int,
+        blockAreaId: Int,
+        remarks: String?
+    ) {
         feedingVtRepository.push(date, score, feedCategory, left, skuId, blockAreaId, remarks)
         _stack.value = feedingVtRepository.getAllStack()
     }

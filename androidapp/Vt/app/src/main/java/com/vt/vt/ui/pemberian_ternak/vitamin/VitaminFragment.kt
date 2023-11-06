@@ -16,9 +16,11 @@ import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class VitaminFragment : Fragment() {
@@ -57,19 +59,26 @@ class VitaminFragment : Fragment() {
             }
             btnSimpanVitamin.setOnClickListener {
                 val score = editTextRekamPemberianVitamin.text.toString().trim()
-                val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
+                val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
 
-                if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && currentDate.isNotEmpty()) {
+                if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
+                    btnSimpanVitamin.isEnabled = false
+                    vitaminViewModel.setButtonVitamin(false)
+                    val currentDate = Date()
+                    val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
-                        currentDate,
-                        score.toDouble(),
-                        receiveVitaminId,
-                        0,
-                        skuId,
-                        receiveBlockId,
-                        "None"
+                        date = createdAt,
+                        score = score.toDouble(),
+                        feedCategory = receiveVitaminId,
+                        left = 0,
+                        skuId = skuId,
+                        blockAreaId = receiveBlockId,
+                        remarks = "None"
                     )
-                    vitaminViewModel.setButtonVitamin(true)
+                    btnSimpanVitamin.postDelayed({
+                        btnSimpanVitamin.isEnabled = true
+                        vitaminViewModel.setButtonVitamin(true)
+                    }, delay)
                     view.findNavController().popBackStack()
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)

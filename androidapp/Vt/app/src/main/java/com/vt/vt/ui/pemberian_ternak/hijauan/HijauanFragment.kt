@@ -17,9 +17,11 @@ import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class HijauanFragment : Fragment() {
@@ -63,16 +65,23 @@ class HijauanFragment : Fragment() {
                 val date = formatterDateFromCalendar(tvShowDate.text.toString().trim())
 
                 if (score.isNotEmpty() && date.isNotEmpty() && receiveHijauanId != null && receiveBlockId != null) {
+                    btnSimpanHijauan.isEnabled = false
+                    hijauanViewModel.setButtonHijauan(false)
+                    val currentDate = Date()
+                    val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
-                        date,
-                        score.toDouble(),
-                        receiveHijauanId,
-                        0,
-                        skuId,
-                        receiveBlockId,
-                        "None"
+                        date = date,
+                        score = score.toDouble(),
+                        feedCategory = receiveHijauanId,
+                        left = 0,
+                        skuId = skuId,
+                        blockAreaId = receiveBlockId,
+                        remarks = "None"
                     )
-                    hijauanViewModel.setButtonHijauan(true)
+                    btnSimpanHijauan.postDelayed({
+                        btnSimpanHijauan.isEnabled = true
+                        hijauanViewModel.setButtonHijauan(true)
+                    }, delay)
                     view.findNavController().popBackStack()
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
@@ -90,9 +99,6 @@ class HijauanFragment : Fragment() {
         pemberianTernakViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.loading.progressBar.isVisible = isLoading
-            }
-            stack.observe(viewLifecycleOwner) {
-                Log.d("PFT", "result stack fragment hijauan : $it")
             }
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()

@@ -19,7 +19,7 @@ class FeedingVtRepository @Inject constructor(private val apiService: ApiService
         Log.d("PFT", "item push : $consumptionRecordItem")
     }
 
-    fun clear() {
+   fun clear() {
         stack.clear()
     }
 

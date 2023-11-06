@@ -16,9 +16,11 @@ import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class KimiaFragment : Fragment() {
@@ -56,18 +58,26 @@ class KimiaFragment : Fragment() {
             }
             btnSimpanKimia.setOnClickListener {
                 val score = editTextRekamPemberianKimia.text.toString().trim()
-                val currentDate = formatterDateFromCalendar(tvShowDate.text.toString().trim())
-                if (score.isNotEmpty() && currentDate.isNotEmpty() && receiveKimiaId != null && receiveBlockId != null) {
+                val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
+                if (score.isNotEmpty() && createdAt.isNotEmpty() && receiveKimiaId != null && receiveBlockId != null) {
+                    btnSimpanKimia.isEnabled = false
+                    kimiaViewModel.setButtonKimia(false)
+                    val currentDate = Date()
+                    val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
-                        currentDate,
-                        score.toDouble(),
-                        receiveKimiaId,
-                        0,
-                        skuId,
-                        receiveBlockId,
-                        "None"
+                        date = createdAt,
+                        score = score.toDouble(),
+                        feedCategory = receiveKimiaId,
+                        left = 0,
+                        skuId = skuId,
+                        blockAreaId = receiveBlockId,
+                        remarks = "None"
                     )
-                    kimiaViewModel.setButtonKimia(true)
+                    btnSimpanKimia.postDelayed({
+                        btnSimpanKimia.isEnabled = true
+                        kimiaViewModel.setButtonKimia(true)
+                    }, delay)
+
                     view.findNavController().popBackStack()
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
