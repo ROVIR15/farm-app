@@ -27,6 +27,9 @@ data class BreedingResponseItem(
     @field:SerializedName("created_at")
     val createdAt: String? = null,
 
+    @field:SerializedName("date")
+    val date: String? = null,
+
     @field:SerializedName("livestock_male_name")
     val livestockMaleName: String? = null,
 

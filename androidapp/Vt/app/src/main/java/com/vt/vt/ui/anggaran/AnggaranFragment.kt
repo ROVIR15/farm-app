@@ -81,7 +81,7 @@ class AnggaranFragment : Fragment() {
         }
         budgetViewModel.budgetByIdEmitter.observe(viewLifecycleOwner) { budget ->
             binding.dataEmpty.isEmpty.isVisible = budget.expenditures.isNullOrEmpty()
-            val budgetAmount = budget.amount?.let { formatAsIDR(it) }
+            val budgetAmount = budget.amount
             binding.amountBudget.setText(budgetAmount.toString())
             binding.categoryBudget.text = budget.budgetCategoryName
             listExpenditures(budget.expenditures)

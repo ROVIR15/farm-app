@@ -56,6 +56,7 @@ class ListAnimalMatingsAdapter(private val listBreedingViewModel: ListBreedingVi
                 }
             }
             binding.createAt.text = data.createdAt.toString()
+            binding.tvActiveAt.text = "Aktif pada ${data.date.toString()}"
             binding.tvNameItemAnimalMating.text = data.name
             binding.btnUpdateList.setOnClickListener(this)
             binding.btnDeleteList.setOnClickListener(this)

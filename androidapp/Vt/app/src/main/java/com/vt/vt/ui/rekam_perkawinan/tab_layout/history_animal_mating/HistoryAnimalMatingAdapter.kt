@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.core.data.source.remote.breeding.BreedingHistoryItem
+import com.vt.vt.databinding.ItemHistoryBinding
 import com.vt.vt.databinding.ItemKesehatanBinding
 import com.vt.vt.utils.formatDate
 
@@ -13,7 +14,7 @@ class HistoryAnimalMatingAdapter :
     ListAdapter<BreedingHistoryItem, HistoryAnimalMatingAdapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            ItemKesehatanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -22,12 +23,12 @@ class HistoryAnimalMatingAdapter :
         holder.bindTo(data)
     }
 
-    inner class ViewHolder(private val binding: ItemKesehatanBinding) :
+    inner class ViewHolder(private val binding: ItemHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindTo(data: BreedingHistoryItem) {
             val createdAt = formatDate(data.createdAt, "dd-MM-yyyy")
-            binding.tvDateHealthRecord.text = createdAt
-            binding.tvDescriptionHealthRecord.text = data.remarks
+            binding.tvDateRecord.text = createdAt
+            binding.tvDescriptionRecord.text = data.remarks
         }
     }
 

@@ -217,6 +217,14 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.action_add_budget -> {
+                val addBudgetBottomSheetDialog = AddBudgetBottomSheetDialogFragment()
+                addBudgetBottomSheetDialog.show(
+                    childFragmentManager, addBudgetBottomSheetDialog::class.java.simpleName
+                )
+                return true
+            }
+
             R.id.action_add_income -> {
                 view?.findNavController()
                     ?.navigate(R.id.action_navigation_keuangan_to_addIncomeFragment)
