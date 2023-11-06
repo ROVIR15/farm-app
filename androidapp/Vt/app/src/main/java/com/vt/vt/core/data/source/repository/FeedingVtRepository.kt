@@ -9,22 +9,35 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class FeedingVtRepository @Inject constructor(private val apiService: ApiService) {
-    private val stack = mutableListOf<ConsumptionRecordItem>()
+    private val stacks = mutableMapOf<Int, MutableList<ConsumptionRecordItem>>()
     suspend fun createFeedingRecord(feedingRecordRequest: FeedingRecordRequest): Response<FeedingRecordResponse> =
         apiService.createFeedingRecord(feedingRecordRequest)
 
-    fun push(date: String, score: Double, feedCategory: Int, left: Int, skuId: Int, blockAreaId: Int, remarks: String?) {
-        val consumptionRecordItem = ConsumptionRecordItem(date, score, feedCategory, left, skuId, blockAreaId, remarks)
-        stack.add(consumptionRecordItem)
+    fun push(
+        stackFromBlockId: Int,
+        date: String,
+        score: Double,
+        feedCategory: Int,
+        left: Int,
+        skuId: Int,
+        blockAreaId: Int,
+        remarks: String?
+    ) {
+        val consumptionRecordItem =
+            ConsumptionRecordItem(date, score, feedCategory, left, skuId, blockAreaId, remarks)
+        if (!stacks.contains(stackFromBlockId)) {
+            stacks[stackFromBlockId] = mutableListOf()
+        }
+        stacks[stackFromBlockId]?.add(consumptionRecordItem)
         Log.d("PFT", "item push : $consumptionRecordItem")
     }
 
-   fun clear() {
-        stack.clear()
+    fun clear() {
+        stacks.clear()
     }
 
-    fun getAllStack(): List<ConsumptionRecordItem> {
-        Log.d("PFT", "stack : $stack")
-        return stack
+    fun getAllStack(): Map<Int, List<ConsumptionRecordItem>> {
+        Log.d("PFT", "stack : $stacks")
+        return stacks
     }
 }

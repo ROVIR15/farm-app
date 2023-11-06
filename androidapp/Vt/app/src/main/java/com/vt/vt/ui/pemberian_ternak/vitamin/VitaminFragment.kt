@@ -63,10 +63,11 @@ class VitaminFragment : Fragment() {
 
                 if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
                     btnSimpanVitamin.isEnabled = false
-                    vitaminViewModel.setButtonVitamin(false)
+                    vitaminViewModel.setButtonVitamin(blockId = receiveBlockId, isFilled = false)
                     val currentDate = Date()
                     val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
+                        blockId = receiveBlockId,
                         date = createdAt,
                         score = score.toDouble(),
                         feedCategory = receiveVitaminId,
@@ -77,7 +78,7 @@ class VitaminFragment : Fragment() {
                     )
                     btnSimpanVitamin.postDelayed({
                         btnSimpanVitamin.isEnabled = true
-                        vitaminViewModel.setButtonVitamin(true)
+                        vitaminViewModel.setButtonVitamin(blockId = receiveBlockId, isFilled = true)
                     }, delay)
                     view.findNavController().popBackStack()
                 } else {

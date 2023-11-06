@@ -12,9 +12,9 @@ import javax.inject.Inject
 class VitaminViewModel @Inject constructor(private val sessionFeedingDataStoreManager: SessionFeedingDataStoreManager) :
     ViewModel() {
 
-    fun setButtonVitamin(isFilled: Boolean) {
+    fun setButtonVitamin(blockId: Int, isFilled: Boolean) {
         viewModelScope.launch {
-            sessionFeedingDataStoreManager.setVitaminButtonFilled(isFilled)
+            sessionFeedingDataStoreManager.setVitaminButtonFilled(blockId, isFilled)
         }
     }
 }

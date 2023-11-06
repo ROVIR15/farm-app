@@ -12,9 +12,9 @@ import javax.inject.Inject
 class TambahanViewModel @Inject constructor(private val sessionFeedingDataStoreManager: SessionFeedingDataStoreManager) :
     ViewModel() {
 
-    fun setButtonTambahan(isFilled: Boolean) {
+    fun setButtonTambahan(blockId: Int, isFilled: Boolean) {
         viewModelScope.launch {
-            sessionFeedingDataStoreManager.setTambahanButtonFilled(isFilled)
+            sessionFeedingDataStoreManager.setTambahanButtonFilled(blockId,isFilled)
         }
     }
 }

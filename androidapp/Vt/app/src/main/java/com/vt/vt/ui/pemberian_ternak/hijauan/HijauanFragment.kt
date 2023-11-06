@@ -1,7 +1,6 @@
 package com.vt.vt.ui.pemberian_ternak.hijauan
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,10 +65,11 @@ class HijauanFragment : Fragment() {
 
                 if (score.isNotEmpty() && date.isNotEmpty() && receiveHijauanId != null && receiveBlockId != null) {
                     btnSimpanHijauan.isEnabled = false
-                    hijauanViewModel.setButtonHijauan(false)
+                    hijauanViewModel.setHijauanButtonFilled(blockId = receiveBlockId, value = false)
                     val currentDate = Date()
                     val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
+                        blockId = receiveBlockId,
                         date = date,
                         score = score.toDouble(),
                         feedCategory = receiveHijauanId,
@@ -80,7 +80,10 @@ class HijauanFragment : Fragment() {
                     )
                     btnSimpanHijauan.postDelayed({
                         btnSimpanHijauan.isEnabled = true
-                        hijauanViewModel.setButtonHijauan(true)
+                        hijauanViewModel.setHijauanButtonFilled(
+                            blockId = receiveBlockId,
+                            value = true
+                        )
                     }, delay)
                     view.findNavController().popBackStack()
                 } else {

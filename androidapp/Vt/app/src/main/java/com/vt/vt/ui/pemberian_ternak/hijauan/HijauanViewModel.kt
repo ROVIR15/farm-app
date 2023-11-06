@@ -10,10 +10,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HijauanViewModel @Inject constructor(private val sessionFeedingDataStoreManager: SessionFeedingDataStoreManager) :
     ViewModel() {
-
-    fun setButtonHijauan(isFilled: Boolean) {
+    fun setHijauanButtonFilled(blockId: Int, value: Boolean) {
         viewModelScope.launch {
-            sessionFeedingDataStoreManager.setHijauanButtonFilled(isFilled)
+            sessionFeedingDataStoreManager.setHijauanButtonFilled(blockId, value)
         }
     }
 }

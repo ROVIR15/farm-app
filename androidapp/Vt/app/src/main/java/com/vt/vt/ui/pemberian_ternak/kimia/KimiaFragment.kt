@@ -61,10 +61,11 @@ class KimiaFragment : Fragment() {
                 val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
                 if (score.isNotEmpty() && createdAt.isNotEmpty() && receiveKimiaId != null && receiveBlockId != null) {
                     btnSimpanKimia.isEnabled = false
-                    kimiaViewModel.setButtonKimia(false)
+                    kimiaViewModel.setButtonKimia(blockId = receiveBlockId, isFilled = false)
                     val currentDate = Date()
                     val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
+                        blockId = receiveBlockId,
                         date = createdAt,
                         score = score.toDouble(),
                         feedCategory = receiveKimiaId,
@@ -75,7 +76,7 @@ class KimiaFragment : Fragment() {
                     )
                     btnSimpanKimia.postDelayed({
                         btnSimpanKimia.isEnabled = true
-                        kimiaViewModel.setButtonKimia(true)
+                        kimiaViewModel.setButtonKimia(blockId = receiveBlockId, isFilled = true)
                     }, delay)
 
                     view.findNavController().popBackStack()

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentPemberianTernakBinding
 import com.vt.vt.ui.pemberian_ternak.hijauan.HijauanViewModel
 import com.vt.vt.ui.profile.personal_profile.PersonalProfileViewModel
@@ -34,6 +35,7 @@ class PemberianTernakFragment : Fragment() {
     private val personalProfileViewModel by viewModels<PersonalProfileViewModel>()
 
     var isCallbacksSet = false
+    var receiveBlockId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -43,7 +45,7 @@ class PemberianTernakFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveBlockId = arguments?.getInt("id")
+        receiveBlockId = arguments?.getInt("id")
         mBundle = Bundle().apply {
             receiveBlockId?.let {
                 putInt("blockId", it)
@@ -53,6 +55,7 @@ class PemberianTernakFragment : Fragment() {
                 putInt("feedCategoryTambahanId", 4)
             }
         }
+        receiveBlockId?.let { pemberianTernakViewModel.isHijauanButtonFilled(it) }
 
         observewView()
         with(binding) {
@@ -74,26 +77,7 @@ class PemberianTernakFragment : Fragment() {
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setOnClickListener {
                 view.findNavController()
                     .navigate(R.id.action_pemberianTernakFragment_to_tambahanFragment, mBundle)
-            }/*contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.setOnClickListener {
-                contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.isEnabled = false
-                pemberianTernakViewModel.setButtonState(false)
-                val currentDate = Date()
-
-                val calendar = Calendar.getInstance()
-                calendar.time = currentDate
-                calendar.add(Calendar.DAY_OF_YEAR, 1)
-                calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the hour to 0 (midnight)
-                calendar.set(Calendar.MINUTE, 0) // Set the minutes to 0
-                calendar.set(Calendar.SECOND, 0) // Set the seconds to 0
-                calendar.set(Calendar.MILLISECOND, 0) // Set the milliseconds to 0
-                val nextDay = calendar.time
-                val delay = nextDay.time - currentDate.time
-                contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.postDelayed({
-                    contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.isEnabled =
-                        true
-                    pemberianTernakViewModel.setButtonState(true)
-                }, delay)
-            }*/
+            }
         }
     }
 
@@ -101,11 +85,6 @@ class PemberianTernakFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun observewView() {
         personalProfileViewModel.getProfile()
-//        pemberianTernakViewModel.testButton.observe(viewLifecycleOwner) { enable ->
-//            Log.d("PFT", "test button each day enable or disable ${enable}")
-//            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.testDay.isEnabled =
-//                enable
-//        }
         personalProfileViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
             binding.loading.progressBar.isVisible = isLoading
         }
@@ -124,86 +103,104 @@ class PemberianTernakFragment : Fragment() {
             view?.findNavController()?.popBackStack()
         }
         pemberianTernakViewModel.stack.observe(viewLifecycleOwner) { feedingStack ->
-            if (feedingStack.isNotEmpty() && !isCallbacksSet) {
-                setupCallbacks()
-                isCallbacksSet = true
-            } else {
-                binding.appBarLayout.topAppBar.setNavigationOnClickListener {
-                    view?.findNavController()?.popBackStack()
-                }
+            val data = feedingStack[receiveBlockId]
+            Log.d("PFT", "data from stack observer ${feedingStack}")
+            if (data != null) {
+                setupCallbacks(data)
+                setupNavigationBack(data)
+                handleUiBasedOnStackSize(data)
             }
-            handleUiBasedOnStackSize(feedingStack.size)
         }
         pemberianTernakViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
         // hijauan filled
-        pemberianTernakViewModel.isHijauanFilled.observe(viewLifecycleOwner) { isFilled ->
-            Log.d("PFT", "hijauan ${isFilled}")
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.isEnabled =
-                isFilled
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setBackgroundColor(
-                if (!isFilled) Color.GRAY
-                else ContextCompat.getColor(requireActivity(), R.color.white)
-            )
-        }
-        pemberianTernakViewModel.isKimiaFilled.observe(viewLifecycleOwner) { isFilled ->
-            Log.d("PFT", "kimia ${isFilled}")
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.isEnabled =
-                isFilled
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.setBackgroundColor(
-                if (!isFilled) Color.GRAY
-                else ContextCompat.getColor(requireActivity(), R.color.white)
-            )
-        }
-        pemberianTernakViewModel.isVitaminFilled.observe(viewLifecycleOwner) { isFilled ->
-            Log.d("PFT", "vitamin ${isFilled}")
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.isEnabled =
-                isFilled
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.setBackgroundColor(
-                if (!isFilled) Color.GRAY
-                else ContextCompat.getColor(requireActivity(), R.color.white)
-            )
-        }
-        pemberianTernakViewModel.isTambahanFilled.observe(viewLifecycleOwner) { isFilled ->
-            Log.d("PFT", "tambahan ${isFilled}")
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.isEnabled =
-                isFilled
-            binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setBackgroundColor(
-                if (!isFilled) Color.GRAY
-                else ContextCompat.getColor(requireActivity(), R.color.white)
-            )
-        }
+        pemberianTernakViewModel.isHijauanButtonFilled(receiveBlockId!!)
+            .observe(viewLifecycleOwner) { isButtonFilled ->
+                Log.d("PFT", "hijauan ${isButtonFilled}")
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.isEnabled =
+                    isButtonFilled
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setBackgroundColor(
+                    if (!isButtonFilled) Color.GRAY
+                    else ContextCompat.getColor(requireActivity(), R.color.white)
+                )
+            }
+        pemberianTernakViewModel.isKimiaButtonFilled(receiveBlockId!!)
+            .observe(viewLifecycleOwner) { isButtonFilled ->
+                Log.d("PFT", "kimia ${isButtonFilled}")
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.isEnabled =
+                    isButtonFilled
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.setBackgroundColor(
+                    if (!isButtonFilled) Color.GRAY
+                    else ContextCompat.getColor(requireActivity(), R.color.white)
+                )
+            }
+        pemberianTernakViewModel.isVitaminButtonFilled(receiveBlockId!!)
+            .observe(viewLifecycleOwner) { isButtonFilled ->
+                Log.d("PFT", "vitamin ${isButtonFilled}")
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.isEnabled =
+                    isButtonFilled
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.setBackgroundColor(
+                    if (!isButtonFilled) Color.GRAY
+                    else ContextCompat.getColor(requireActivity(), R.color.white)
+                )
+            }
+        pemberianTernakViewModel.isTambahanButtonFilled(receiveBlockId!!)
+            .observe(viewLifecycleOwner) { isButtonFilled ->
+                Log.d("PFT", "tambahan ${isButtonFilled}")
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.isEnabled =
+                    isButtonFilled
+                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setBackgroundColor(
+                    if (!isButtonFilled) Color.GRAY
+                    else ContextCompat.getColor(requireActivity(), R.color.white)
+                )
+            }
     }
 
-    private fun setupCallbacks() {
+    private fun setupCallbacks(list: List<ConsumptionRecordItem>) {
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity(),
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    alertDialog()
+                    if (list.isNotEmpty()) alertDialog()
+                    else view?.findNavController()?.popBackStack()
                 }
             })
+    }
 
+    private fun setupNavigationBack(list: List<ConsumptionRecordItem>) {
         binding.appBarLayout.topAppBar.setNavigationOnClickListener {
-            alertDialog()
+            if (list.isNotEmpty()) alertDialog()
+            else view?.findNavController()?.popBackStack()
         }
     }
 
-    private fun handleUiBasedOnStackSize(stackSize: Int) {
-        if (stackSize == 4) {
+    @SuppressLint("SetTextI18n")
+    private fun handleUiBasedOnStackSize(list: List<ConsumptionRecordItem>) {
+        if (list.size == 4) {
+            binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.VISIBLE
+
+            binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.GONE
+            binding.contentPemberianMakanTernak.contentHomeSubtitle.text =
+                "Klik Simpan atau Batal untuk Membatalkan"
+
             binding.contentPemberianMakanTernak.btnSave.visibility = View.VISIBLE
             binding.contentPemberianMakanTernak.btnCancel.visibility = View.VISIBLE
 
             binding.contentPemberianMakanTernak.btnSave.setOnClickListener {
                 pemberianTernakViewModel.createFeedingRecord(
-                    pemberianTernakViewModel.stack.value ?: emptyList()
+                    consumptionRecord = list
                 )
             }
 
             binding.contentPemberianMakanTernak.btnCancel.setOnClickListener {
+                pemberianTernakViewModel.clearSessionFeeding()
+                pemberianTernakViewModel.clear()
                 view?.findNavController()?.popBackStack()
             }
         } else {
+            binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.GONE
+            binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.VISIBLE
+            binding.contentPemberianMakanTernak.contentHomeSubtitle.visibility = View.VISIBLE
             binding.contentPemberianMakanTernak.btnSave.visibility = View.GONE
             binding.contentPemberianMakanTernak.btnCancel.visibility = View.GONE
         }
@@ -214,8 +211,8 @@ class PemberianTernakFragment : Fragment() {
         builder.setTitle("Peringatan")
         builder.setMessage("Apakah anda yakin ingin menghapus data ?")
         builder.setPositiveButton("Ya") { dialog, which ->
-            pemberianTernakViewModel.clear()
             pemberianTernakViewModel.clearSessionFeeding()
+            pemberianTernakViewModel.clear()
             view?.findNavController()?.popBackStack()
             dialog.dismiss()
         }

@@ -9,7 +9,6 @@ import com.vt.vt.core.data.source.remote.dummy.SessionFeedingDataStoreManager
 import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
 import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordResponse
-import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import com.vt.vt.core.data.source.repository.FeedingVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,24 +17,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PemberianTernakViewModel @Inject constructor(
-    private val blockAndAreasVtRepository: BlockAndAreasVtRepository,
     private val sessionFeedingDataStoreManager: SessionFeedingDataStoreManager,
     private val feedingVtRepository: FeedingVtRepository
 ) : BaseViewModel() {
 
-    val isHijauanFilled = sessionFeedingDataStoreManager.isHijauanButtonFilled().asLiveData()
-    val isKimiaFilled = sessionFeedingDataStoreManager.isKimiaButtonFilled().asLiveData()
-    val isVitaminFilled = sessionFeedingDataStoreManager.isVitaminButtonFilled().asLiveData()
-    val isTambahanFilled = sessionFeedingDataStoreManager.isTambahanButtonFilled().asLiveData()
-
-    private val _stack = MutableLiveData<List<ConsumptionRecordItem>>()
-    val stack: LiveData<List<ConsumptionRecordItem>> = _stack
+    private val _stack = MutableLiveData<Map<Int, List<ConsumptionRecordItem>>>()
+    val stack: LiveData<Map<Int, List<ConsumptionRecordItem>>> = _stack
 
     private val _feedingEmitter = MutableLiveData<FeedingRecordResponse>()
     val feedingEmitter: LiveData<FeedingRecordResponse> = _feedingEmitter
 
     init {
         _stack.value = feedingVtRepository.getAllStack()
+    }
+
+    // Button State for Feeding
+    fun isHijauanButtonFilled(blockId: Int): LiveData<Boolean> {
+        return sessionFeedingDataStoreManager.isHijauanButtonFilled(blockId).asLiveData()
+    }
+
+    fun isKimiaButtonFilled(blockId: Int): LiveData<Boolean> {
+        return sessionFeedingDataStoreManager.isKimiaButtonFilled(blockId).asLiveData()
+    }
+
+    fun isVitaminButtonFilled(blockId: Int): LiveData<Boolean> {
+        return sessionFeedingDataStoreManager.isVitaminButtonFilled(blockId).asLiveData()
+    }
+
+    fun isTambahanButtonFilled(blockId: Int): LiveData<Boolean> {
+        return sessionFeedingDataStoreManager.isTambahanButtonFilled(blockId).asLiveData()
     }
 
     // Feeding
@@ -47,6 +57,7 @@ class PemberianTernakViewModel @Inject constructor(
 
     // stack feeding
     fun addStack(
+        blockId: Int,
         date: String,
         score: Double,
         feedCategory: Int,
@@ -55,7 +66,16 @@ class PemberianTernakViewModel @Inject constructor(
         blockAreaId: Int,
         remarks: String?
     ) {
-        feedingVtRepository.push(date, score, feedCategory, left, skuId, blockAreaId, remarks)
+        feedingVtRepository.push(
+            blockId,
+            date,
+            score,
+            feedCategory,
+            left,
+            skuId,
+            blockAreaId,
+            remarks
+        )
         _stack.value = feedingVtRepository.getAllStack()
     }
 
@@ -65,7 +85,7 @@ class PemberianTernakViewModel @Inject constructor(
     }
 
     // response feeding
-    fun createFeedingRecord(consumptionRecord: List<ConsumptionRecordItem>) {
+    fun createFeedingRecord(consumptionRecord: List<ConsumptionRecordItem>?) {
         launch(action = {
             val feedingRecordRequest = FeedingRecordRequest(consumptionRecord)
             val response = feedingVtRepository.createFeedingRecord(feedingRecordRequest)

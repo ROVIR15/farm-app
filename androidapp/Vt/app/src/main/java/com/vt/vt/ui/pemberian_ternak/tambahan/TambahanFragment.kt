@@ -64,10 +64,11 @@ class TambahanFragment : Fragment() {
                 val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
                 if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
                     btnSimpanTambahan.isEnabled = false
-                    tambahanViewModel.setButtonTambahan(false)
+                    tambahanViewModel.setButtonTambahan(blockId = receiveBlockId, isFilled = false)
                     val currentDate = Date()
                     val delay = calculateDelayForNextDay(currentDate)
                     pemberianTernakViewModel.addStack(
+                        blockId = receiveBlockId,
                         date = createdAt,
                         score = score.toDouble(),
                         feedCategory = receiveTambahanId,
@@ -78,7 +79,7 @@ class TambahanFragment : Fragment() {
                     )
                     btnSimpanTambahan.postDelayed({
                         btnSimpanTambahan.isEnabled = true
-                        tambahanViewModel.setButtonTambahan(true)
+                        tambahanViewModel.setButtonTambahan(blockId = receiveBlockId, isFilled = true)
                     }, delay)
                     view.findNavController().popBackStack()
                 } else {

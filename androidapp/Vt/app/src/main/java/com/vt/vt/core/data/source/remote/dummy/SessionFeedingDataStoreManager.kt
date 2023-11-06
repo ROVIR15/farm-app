@@ -14,56 +14,59 @@ private val Context.createDataStore: DataStore<Preferences> by preferencesDataSt
 class SessionFeedingDataStoreManager(context: Context) {
     private val sessionForFeedingDataStore: DataStore<Preferences> = context.createDataStore
 
-    private val hijauanButton = booleanPreferencesKey("HIJAUAN_HAS_BEEN_FILLED")
-    private val kimiaButton = booleanPreferencesKey("KIMIA_HAS_BEEN_FILLED")
-    private val vitaminButton = booleanPreferencesKey("VITAMIN_HAS_BEEN_FILLED")
-    private val tambahanButton = booleanPreferencesKey("TAMBAHAN_HAS_BEEN_FILLED")
-
-    suspend fun setHijauanButtonFilled(value: Boolean) {
+    suspend fun setHijauanButtonFilled(blockId: Int, value: Boolean) {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_HIJAUAN_IN_BLOCK_$blockId")
         sessionForFeedingDataStore.edit { preferences ->
-            preferences[hijauanButton] = value
+            preferences[blockPreferenceKey] = value
         }
     }
 
-    fun isHijauanButtonFilled(): Flow<Boolean> {
-        return sessionForFeedingDataStore.data.map {
-            it[hijauanButton] ?: true
+    fun isHijauanButtonFilled(blockId: Int): Flow<Boolean> {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_HIJAUAN_IN_BLOCK_$blockId")
+        return sessionForFeedingDataStore.data.map { preferences ->
+            preferences[blockPreferenceKey] ?: true
         }
     }
 
-    suspend fun setKimiaButtonFilled(value: Boolean) {
+    suspend fun setKimiaButtonFilled(blockId: Int, value: Boolean) {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_KIMIA_IN_BLOCK_$blockId")
         sessionForFeedingDataStore.edit { preferences ->
-            preferences[kimiaButton] = value
+            preferences[blockPreferenceKey] = value
         }
     }
 
-    fun isKimiaButtonFilled(): Flow<Boolean> {
-        return sessionForFeedingDataStore.data.map {
-            it[kimiaButton] ?: true
+    fun isKimiaButtonFilled(blockId: Int): Flow<Boolean> {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_KIMIA_IN_BLOCK_$blockId")
+        return sessionForFeedingDataStore.data.map { preferences ->
+            preferences[blockPreferenceKey] ?: true
         }
     }
 
-    suspend fun setVitaminButtonFilled(value: Boolean) {
+    suspend fun setVitaminButtonFilled(blockId: Int, value: Boolean) {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_VITAMIN_IN_BLOCK_$blockId")
         sessionForFeedingDataStore.edit { preferences ->
-            preferences[vitaminButton] = value
+            preferences[blockPreferenceKey] = value
         }
     }
 
-    fun isVitaminButtonFilled(): Flow<Boolean> {
-        return sessionForFeedingDataStore.data.map {
-            it[vitaminButton] ?: true
+    fun isVitaminButtonFilled(blockId: Int): Flow<Boolean> {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_VITAMIN_IN_BLOCK_$blockId")
+        return sessionForFeedingDataStore.data.map { preferences ->
+            preferences[blockPreferenceKey] ?: true
         }
     }
 
-    suspend fun setTambahanButtonFilled(value: Boolean) {
+    suspend fun setTambahanButtonFilled(blockId: Int, value: Boolean) {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_TAMBAHAN_IN_BLOCK_$blockId")
         sessionForFeedingDataStore.edit { preferences ->
-            preferences[tambahanButton] = value
+            preferences[blockPreferenceKey] = value
         }
     }
 
-    fun isTambahanButtonFilled(): Flow<Boolean> {
-        return sessionForFeedingDataStore.data.map {
-            it[tambahanButton] ?: true
+    fun isTambahanButtonFilled(blockId: Int): Flow<Boolean> {
+        val blockPreferenceKey = booleanPreferencesKey("STATE_BUTTON_TAMBAHAN_IN_BLOCK_$blockId")
+        return sessionForFeedingDataStore.data.map { preferences ->
+            preferences[blockPreferenceKey] ?: true
         }
     }
 
