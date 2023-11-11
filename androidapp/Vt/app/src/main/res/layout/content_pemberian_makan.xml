@@ -50,7 +50,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="72dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Apa yang sudah anda beri \nke ternak hari ini?"
+                android:text="@string/feeding_is_complete"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tv_username_greetings"

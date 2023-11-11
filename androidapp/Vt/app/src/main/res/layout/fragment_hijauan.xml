@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/roboto_regular"
-                    android:hint="Isi Tanggal..."
+                    android:hint="Pilih Tanggal"
                     android:paddingHorizontal="16dp"
                     android:textSize="14sp" />
             </LinearLayout>

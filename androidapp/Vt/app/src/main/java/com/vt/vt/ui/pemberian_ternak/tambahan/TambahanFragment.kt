@@ -1,6 +1,8 @@
 package com.vt.vt.ui.pemberian_ternak.tambahan
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +11,22 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentTambahanBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Date
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class TambahanFragment : Fragment() {
@@ -35,9 +41,9 @@ class TambahanFragment : Fragment() {
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
     private var skuId: Int = 0
+    private var receiveBlockId: Int? = null
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTambahanBinding.inflate(inflater, container, false)
         return binding.root
@@ -45,7 +51,7 @@ class TambahanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveBlockId = arguments?.getInt("blockId")
+        receiveBlockId = arguments?.getInt("blockId")
         dataAreaBlockViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveTambahanId = arguments?.getInt("feedCategoryTambahanId")
 
@@ -63,29 +69,27 @@ class TambahanFragment : Fragment() {
                 val score = editTextRekamPemberianTambahan.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
                 if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
-                    btnSimpanTambahan.isEnabled = false
-                    tambahanViewModel.setButtonTambahan(blockId = receiveBlockId, isFilled = false)
-                    val currentDate = Date()
-                    val delay = calculateDelayForNextDay(currentDate)
-                    pemberianTernakViewModel.addStack(
-                        blockId = receiveBlockId,
-                        date = createdAt,
-                        score = score.toDouble(),
-                        feedCategory = receiveTambahanId,
-                        left = 0,
-                        skuId = skuId,
-                        blockAreaId = receiveBlockId,
-                        remarks = "None"
+                    val consumptionRecordItem = mutableListOf(
+                        ConsumptionRecordItem(
+                            date = createdAt,
+                            score = score.toDouble(),
+                            feedCategory = receiveTambahanId,
+                            left = 0,
+                            skuId = skuId,
+                            blockAreaId = receiveBlockId,
+                            remarks = "None"
+                        )
                     )
-                    btnSimpanTambahan.postDelayed({
-                        btnSimpanTambahan.isEnabled = true
-                        tambahanViewModel.setButtonTambahan(blockId = receiveBlockId, isFilled = true)
-                    }, delay)
-                    view.findNavController().popBackStack()
-                } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                    val map = mapOf(
+                        receiveBlockId!! to consumptionRecordItem
+                    )
+                    pemberianTernakViewModel.push(map)
+                } else Toast.makeText(
+                    requireActivity(),
+                    "Silahkan Lengkapi Kolom",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
             }
             btnBatalTambahan.setOnClickListener {
                 view.findNavController().popBackStack()
@@ -102,10 +106,25 @@ class TambahanFragment : Fragment() {
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(
-                    requireContext(),
-                    it.message.toString(),
-                    Toast.LENGTH_SHORT
+                    requireContext(), it.message.toString(), Toast.LENGTH_SHORT
                 ).show()
+            }
+            observeException().observe(viewLifecycleOwner) { e ->
+                Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
+            }
+            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
+                if (isCommitSuccessful) {
+                    binding.loading.progressBar.isVisible = true
+                    lifecycleScope.launch {
+                        tambahanViewModel.setButtonTambahan(receiveBlockId!!, false)
+                        delay(1000)
+                        withContext(Dispatchers.Main) {
+                            binding.btnSimpanTambahan.isEnabled = false
+                            view?.findNavController()?.popBackStack()
+                        }
+                    }
+                } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+                    .show()
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -115,8 +134,11 @@ class TambahanFragment : Fragment() {
             binding.loading.progressBar.isVisible = it
         }
         dataAreaBlockViewModel.blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
-            binding.tvBlockName.text = data.name
-            binding.tvBlockInfo.text = data.info
+            if (receiveBlockId != null) {
+                binding.tvBlockName.text = data.name
+                binding.tvBlockInfo.text = data.info
+            } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+                .show()
         }
         dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

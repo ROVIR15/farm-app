@@ -1,6 +1,8 @@
 package com.vt.vt.ui.pemberian_ternak.vitamin
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +11,22 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentVitaminBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Date
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class VitaminFragment : Fragment() {
@@ -33,9 +39,9 @@ class VitaminFragment : Fragment() {
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
     private var skuId: Int = 0
+    private var receiveBlockId: Int? = null
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVitaminBinding.inflate(inflater, container, false)
         return binding.root
@@ -43,7 +49,7 @@ class VitaminFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveBlockId = arguments?.getInt("blockId")
+        receiveBlockId = arguments?.getInt("blockId")
         dataAreaBlockViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveVitaminId = arguments?.getInt("feedCategoryVitaminId")
 
@@ -62,25 +68,21 @@ class VitaminFragment : Fragment() {
                 val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
 
                 if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
-                    btnSimpanVitamin.isEnabled = false
-                    vitaminViewModel.setButtonVitamin(blockId = receiveBlockId, isFilled = false)
-                    val currentDate = Date()
-                    val delay = calculateDelayForNextDay(currentDate)
-                    pemberianTernakViewModel.addStack(
-                        blockId = receiveBlockId,
-                        date = createdAt,
-                        score = score.toDouble(),
-                        feedCategory = receiveVitaminId,
-                        left = 0,
-                        skuId = skuId,
-                        blockAreaId = receiveBlockId,
-                        remarks = "None"
+                    val consumptionRecordItem = mutableListOf(
+                        ConsumptionRecordItem(
+                            date = createdAt,
+                            score = score.toDouble(),
+                            feedCategory = receiveVitaminId,
+                            left = 0,
+                            skuId = skuId,
+                            blockAreaId = receiveBlockId,
+                            remarks = "None"
+                        )
                     )
-                    btnSimpanVitamin.postDelayed({
-                        btnSimpanVitamin.isEnabled = true
-                        vitaminViewModel.setButtonVitamin(blockId = receiveBlockId, isFilled = true)
-                    }, delay)
-                    view.findNavController().popBackStack()
+                    val map = mapOf(
+                        receiveBlockId!! to consumptionRecordItem
+                    )
+                    pemberianTernakViewModel.push(map)
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
@@ -101,10 +103,25 @@ class VitaminFragment : Fragment() {
             feedingEmitter.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(
-                    requireContext(),
-                    it.message.toString(),
-                    Toast.LENGTH_SHORT
+                    requireContext(), it.message.toString(), Toast.LENGTH_SHORT
                 ).show()
+            }
+            observeException().observe(viewLifecycleOwner) { e ->
+                Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
+            }
+            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
+                if (isCommitSuccessful) {
+                    binding.loading.progressBar.isVisible = true
+                    lifecycleScope.launch {
+                        vitaminViewModel.setButtonVitamin(receiveBlockId!!, false)
+                        delay(1000)
+                        withContext(Dispatchers.Main) {
+                            binding.btnSimpanVitamin.isEnabled = false
+                            view?.findNavController()?.popBackStack()
+                        }
+                    }
+                } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+                    .show()
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
@@ -114,8 +131,13 @@ class VitaminFragment : Fragment() {
             binding.loading.progressBar.isVisible = it
         }
         dataAreaBlockViewModel.blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
-            binding.tvBlockName.text = data.name
-            binding.tvBlockInfo.text = data.info
+            if (receiveBlockId != null) {
+                binding.tvBlockName.text = data.name
+                binding.tvBlockInfo.text = data.info
+            } else {
+                Toast.makeText(requireActivity(), "Block Tidak Ditemukan", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
         dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

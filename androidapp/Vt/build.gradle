@@ -11,6 +11,7 @@ buildscript {
     ext.androidx_junit_version = '1.1.5'
     ext.androidx_espresso_version = '3.5.1'
 
+    ext.versions_work = '2.7.1'
     ext.activity_ktx_version = '1.7.2'
     ext.fragment_ktx_version = '1.6.1'
     ext.lifecycle_version = '2.6.1'

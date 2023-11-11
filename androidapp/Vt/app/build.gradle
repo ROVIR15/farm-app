@@ -64,6 +64,10 @@ dependencies {
 
     implementation "com.cottacush:CurrencyEditText:1.0.0"
 
+    // WorkManager dependency
+    implementation "androidx.work:work-runtime-ktx:$versions_work"
+    implementation "androidx.work:work-multiprocess:2.8.1"
+
     //    Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"

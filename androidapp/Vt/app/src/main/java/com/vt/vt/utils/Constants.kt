@@ -27,3 +27,9 @@ const val EDIT_TEXT_PHONE_NUMBER = 5
 const val EDIT_TEXT_BLACK = "black"
 const val EDIT_TEXT_GREEN = "green"
 const val EDIT_TEXT_RED = "red"
+
+// Notification
+const val BLOCK_ID = "BLOCK_ID"
+const val HABIT_TITLE = "HABIT_TITLE"
+const val NOTIFICATION_CHANNEL_ID = "notify-channel"
+const val NOTIF_UNIQUE_WORK: String = "NOTIF_UNIQUE_WORK"

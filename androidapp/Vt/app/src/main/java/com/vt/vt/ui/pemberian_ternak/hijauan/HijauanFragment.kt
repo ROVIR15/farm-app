@@ -1,6 +1,8 @@
 package com.vt.vt.ui.pemberian_ternak.hijauan
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +11,22 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentHijauanBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
 import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.calculateDelayForNextDay
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Date
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class HijauanFragment : Fragment() {
@@ -35,6 +41,7 @@ class HijauanFragment : Fragment() {
 
     private var value: Int? = 0
     private var skuId: Int = 0
+    private var receiveBlockId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,7 +52,7 @@ class HijauanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val receiveBlockId = arguments?.getInt("blockId")
+        receiveBlockId = arguments?.getInt("blockId")
         dataAreaBlockViewModel.getBlockAreaInfoById(receiveBlockId.toString())
         val receiveHijauanId = arguments?.getInt("feedCategoryHijauanId")
 
@@ -65,27 +72,21 @@ class HijauanFragment : Fragment() {
 
                 if (score.isNotEmpty() && date.isNotEmpty() && receiveHijauanId != null && receiveBlockId != null) {
                     btnSimpanHijauan.isEnabled = false
-                    hijauanViewModel.setHijauanButtonFilled(blockId = receiveBlockId, value = false)
-                    val currentDate = Date()
-                    val delay = calculateDelayForNextDay(currentDate)
-                    pemberianTernakViewModel.addStack(
-                        blockId = receiveBlockId,
-                        date = date,
-                        score = score.toDouble(),
-                        feedCategory = receiveHijauanId,
-                        left = 0,
-                        skuId = skuId,
-                        blockAreaId = receiveBlockId,
-                        remarks = "None"
-                    )
-                    btnSimpanHijauan.postDelayed({
-                        btnSimpanHijauan.isEnabled = true
-                        hijauanViewModel.setHijauanButtonFilled(
-                            blockId = receiveBlockId,
-                            value = true
+                    val consumptionRecordItem = mutableListOf(
+                        ConsumptionRecordItem(
+                            date = date,
+                            score = score.toDouble(),
+                            feedCategory = receiveHijauanId,
+                            left = 0,
+                            skuId = skuId,
+                            blockAreaId = receiveBlockId,
+                            remarks = "None"
                         )
-                    }, delay)
-                    view.findNavController().popBackStack()
+                    )
+                    val map = mapOf(
+                        receiveBlockId!! to consumptionRecordItem
+                    )
+                    pemberianTernakViewModel.push(map)
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
@@ -107,6 +108,25 @@ class HijauanFragment : Fragment() {
                 view?.findNavController()?.popBackStack()
                 Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()
             }
+            observeException().observe(viewLifecycleOwner) { e ->
+                Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
+            }
+            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
+                if (isCommitSuccessful) {
+                    binding.loading.progressBar.isVisible = true
+                    lifecycleScope.launch {
+                        hijauanViewModel.setHijauanButtonFilled(receiveBlockId!!, false)
+                        delay(1000)
+                        withContext(Dispatchers.Main) {
+                            binding.btnSimpanHijauan.isEnabled = false
+                            view?.findNavController()?.popBackStack()
+                        }
+                    }
+                } else {
+                    Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
@@ -115,8 +135,13 @@ class HijauanFragment : Fragment() {
             binding.loading.progressBar.isVisible = it
         }
         dataAreaBlockViewModel.blockAreaInfoByIdEmitter.observe(viewLifecycleOwner) { data ->
-            binding.tvBlockName.text = data.name
-            binding.tvInfo.text = data.info
+            if (receiveBlockId != null) {
+                binding.tvBlockName.text = data.name
+                binding.tvInfo.text = data.info
+            } else {
+                Toast.makeText(requireActivity(), "Block Tidak Ditemukan", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
         dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,7 +16,6 @@ import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentPemberianTernakBinding
-import com.vt.vt.ui.pemberian_ternak.hijauan.HijauanViewModel
 import com.vt.vt.ui.profile.personal_profile.PersonalProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,11 +27,9 @@ class PemberianTernakFragment : Fragment() {
 
     private lateinit var mBundle: Bundle
 
-    private val hijauanViewModel by viewModels<HijauanViewModel>()
     private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
     private val personalProfileViewModel by viewModels<PersonalProfileViewModel>()
 
-    var isCallbacksSet = false
     var receiveBlockId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,12 +50,14 @@ class PemberianTernakFragment : Fragment() {
                 putInt("feedCategoryTambahanId", 4)
             }
         }
-        receiveBlockId?.let { pemberianTernakViewModel.isHijauanButtonFilled(it) }
 
         observewView()
+
+
         with(binding) {
             binding.appBarLayout.topAppBar.apply {
                 title = "Pemberian Ternak"
+                setNavigationOnClickListener { view.findNavController().popBackStack() }
             }
             contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setOnClickListener {
                 view.findNavController()
@@ -80,7 +77,6 @@ class PemberianTernakFragment : Fragment() {
             }
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun observewView() {
@@ -102,22 +98,14 @@ class PemberianTernakFragment : Fragment() {
             Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
             view?.findNavController()?.popBackStack()
         }
-        pemberianTernakViewModel.stack.observe(viewLifecycleOwner) { feedingStack ->
-            val data = feedingStack[receiveBlockId]
-            Log.d("PFT", "data from stack observer ${feedingStack}")
-            if (data != null) {
-                setupCallbacks(data)
-                setupNavigationBack(data)
-                handleUiBasedOnStackSize(data)
-            }
-        }
         pemberianTernakViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
-        // hijauan filled
+        pemberianTernakViewModel.load().observe(viewLifecycleOwner) { source ->
+            handleUIFeeding(source)
+        }
         pemberianTernakViewModel.isHijauanButtonFilled(receiveBlockId!!)
             .observe(viewLifecycleOwner) { isButtonFilled ->
-                Log.d("PFT", "hijauan ${isButtonFilled}")
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.isEnabled =
                     isButtonFilled
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setBackgroundColor(
@@ -127,7 +115,6 @@ class PemberianTernakFragment : Fragment() {
             }
         pemberianTernakViewModel.isKimiaButtonFilled(receiveBlockId!!)
             .observe(viewLifecycleOwner) { isButtonFilled ->
-                Log.d("PFT", "kimia ${isButtonFilled}")
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.isEnabled =
                     isButtonFilled
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.setBackgroundColor(
@@ -137,7 +124,6 @@ class PemberianTernakFragment : Fragment() {
             }
         pemberianTernakViewModel.isVitaminButtonFilled(receiveBlockId!!)
             .observe(viewLifecycleOwner) { isButtonFilled ->
-                Log.d("PFT", "vitamin ${isButtonFilled}")
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.isEnabled =
                     isButtonFilled
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.setBackgroundColor(
@@ -147,7 +133,6 @@ class PemberianTernakFragment : Fragment() {
             }
         pemberianTernakViewModel.isTambahanButtonFilled(receiveBlockId!!)
             .observe(viewLifecycleOwner) { isButtonFilled ->
-                Log.d("PFT", "tambahan ${isButtonFilled}")
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.isEnabled =
                     isButtonFilled
                 binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setBackgroundColor(
@@ -157,70 +142,38 @@ class PemberianTernakFragment : Fragment() {
             }
     }
 
-    private fun setupCallbacks(list: List<ConsumptionRecordItem>) {
-        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(),
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (list.isNotEmpty()) alertDialog()
-                    else view?.findNavController()?.popBackStack()
+    private fun handleUIFeeding(source: Map<Int, List<ConsumptionRecordItem>>) {
+        val listConsumptionRecord = source[receiveBlockId]
+        if (!listConsumptionRecord.isNullOrEmpty()) {
+            Log.d("PFT", "map : $listConsumptionRecord")
+            if (listConsumptionRecord.size > 3) {
+                binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.VISIBLE
+                binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.GONE
+                binding.contentPemberianMakanTernak.contentHomeSubtitle.visibility = View.VISIBLE
+                binding.contentPemberianMakanTernak.btnSave.apply {
+                    visibility = View.VISIBLE
+                    setOnClickListener {
+                        pemberianTernakViewModel.createFeedingRecord(
+                            receiveBlockId!!,
+                            consumptionRecord = listConsumptionRecord
+                        )
+                    }
                 }
-            })
-    }
-
-    private fun setupNavigationBack(list: List<ConsumptionRecordItem>) {
-        binding.appBarLayout.topAppBar.setNavigationOnClickListener {
-            if (list.isNotEmpty()) alertDialog()
-            else view?.findNavController()?.popBackStack()
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun handleUiBasedOnStackSize(list: List<ConsumptionRecordItem>) {
-        if (list.size == 4) {
-            binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.VISIBLE
-
-            binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.GONE
-            binding.contentPemberianMakanTernak.contentHomeSubtitle.text =
-                "Klik Simpan atau Batal untuk Membatalkan"
-
-            binding.contentPemberianMakanTernak.btnSave.visibility = View.VISIBLE
-            binding.contentPemberianMakanTernak.btnCancel.visibility = View.VISIBLE
-
-            binding.contentPemberianMakanTernak.btnSave.setOnClickListener {
-                pemberianTernakViewModel.createFeedingRecord(
-                    consumptionRecord = list
-                )
-            }
-
-            binding.contentPemberianMakanTernak.btnCancel.setOnClickListener {
-                pemberianTernakViewModel.clearSessionFeeding()
-                pemberianTernakViewModel.clear()
-                view?.findNavController()?.popBackStack()
+                binding.contentPemberianMakanTernak.btnCancel.apply {
+                    visibility = View.VISIBLE
+                    setOnClickListener {
+                        pemberianTernakViewModel.clearSessionFeeding(receiveBlockId!!)
+                    }
+                }
             }
         } else {
+            Log.d("PFT", "map : $listConsumptionRecord")
             binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.GONE
             binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.VISIBLE
             binding.contentPemberianMakanTernak.contentHomeSubtitle.visibility = View.VISIBLE
             binding.contentPemberianMakanTernak.btnSave.visibility = View.GONE
             binding.contentPemberianMakanTernak.btnCancel.visibility = View.GONE
         }
-    }
-
-    fun alertDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Peringatan")
-        builder.setMessage("Apakah anda yakin ingin menghapus data ?")
-        builder.setPositiveButton("Ya") { dialog, which ->
-            pemberianTernakViewModel.clearSessionFeeding()
-            pemberianTernakViewModel.clear()
-            view?.findNavController()?.popBackStack()
-            dialog.dismiss()
-        }
-        builder.setNegativeButton("Tidak") { dialog, which ->
-            dialog.dismiss()
-        }
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.show()
     }
 
     override fun onDestroy() {

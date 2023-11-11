@@ -21,17 +21,32 @@ class PemberianTernakViewModel @Inject constructor(
     private val feedingVtRepository: FeedingVtRepository
 ) : BaseViewModel() {
 
-    private val _stack = MutableLiveData<Map<Int, List<ConsumptionRecordItem>>>()
-    val stack: LiveData<Map<Int, List<ConsumptionRecordItem>>> = _stack
-
     private val _feedingEmitter = MutableLiveData<FeedingRecordResponse>()
     val feedingEmitter: LiveData<FeedingRecordResponse> = _feedingEmitter
 
-    init {
-        _stack.value = feedingVtRepository.getAllStack()
+    private val _pushFeeding =
+        MutableLiveData<Pair<Boolean, Map<Int, MutableList<ConsumptionRecordItem>>>>()
+    val pushFeeding: LiveData<Pair<Boolean, Map<Int, MutableList<ConsumptionRecordItem>>>> =
+        _pushFeeding
+
+    fun push(map: Map<Int, MutableList<ConsumptionRecordItem>>) {
+        viewModelScope.launch {
+            var isCommitSuccessful = false
+            try {
+                sessionFeedingDataStoreManager.saveMap(map)
+                isCommitSuccessful = true
+            } catch (e: Exception) {
+                isException.postValue(e)
+            } finally {
+                _pushFeeding.postValue(isCommitSuccessful to map)
+            }
+        }
     }
 
-    // Button State for Feeding
+    fun load(): LiveData<Map<Int, MutableList<ConsumptionRecordItem>>> {
+        return sessionFeedingDataStoreManager.loadMap().asLiveData()
+    }
+
     fun isHijauanButtonFilled(blockId: Int): LiveData<Boolean> {
         return sessionFeedingDataStoreManager.isHijauanButtonFilled(blockId).asLiveData()
     }
@@ -49,48 +64,20 @@ class PemberianTernakViewModel @Inject constructor(
     }
 
     // Feeding
-    fun clearSessionFeeding() {
+    fun clearSessionFeeding(blockId: Int) {
         viewModelScope.launch {
-            sessionFeedingDataStoreManager.clearFeedingStates()
+            sessionFeedingDataStoreManager.clearFeeding(blockId)
         }
     }
 
-    // stack feeding
-    fun addStack(
-        blockId: Int,
-        date: String,
-        score: Double,
-        feedCategory: Int,
-        left: Int,
-        skuId: Int,
-        blockAreaId: Int,
-        remarks: String?
-    ) {
-        feedingVtRepository.push(
-            blockId,
-            date,
-            score,
-            feedCategory,
-            left,
-            skuId,
-            blockAreaId,
-            remarks
-        )
-        _stack.value = feedingVtRepository.getAllStack()
-    }
-
-    fun clear() {
-        feedingVtRepository.clear()
-        _stack.value = feedingVtRepository.getAllStack()
-    }
-
     // response feeding
-    fun createFeedingRecord(consumptionRecord: List<ConsumptionRecordItem>?) {
+    fun createFeedingRecord(blockId: Int, consumptionRecord: List<ConsumptionRecordItem>?) {
         launch(action = {
             val feedingRecordRequest = FeedingRecordRequest(consumptionRecord)
             val response = feedingVtRepository.createFeedingRecord(feedingRecordRequest)
             if (response.isSuccessful) {
                 _feedingEmitter.postValue(response.body())
+                sessionFeedingDataStoreManager.clearFeeding(blockId)
             } else {
                 val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
                 val message = errorBody.getString("message")

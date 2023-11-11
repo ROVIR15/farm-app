@@ -33,12 +33,18 @@
     <string name="tambah_nkandang">Tambah \n<b>Kandang</b></string>
     <string name="lihat_nkandang">Lihat \n<b>Kandang</b></string>
 
+    <!--  Notification  -->
+    <string name="pref_key_notify">key_notification</string>
+
     <!--  Fattening And Breeding  -->
     <string name="record_weight">Rekam \n<b>Berat Badan</b></string>
     <string name="record_bcs">Rekam \n<b>BCS</b></string>
     <string name="record_health">Rekam \n<b>Kesehatan</b></string>
     <string name="record_food">Rekam \n<b>Pakan</b></string>
     <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>
+
+    <!--  Fattening/Record Food  -->
+    <string name="feeding_is_complete">Klik Simpan atau Batal untuk Membatalkan</string>
 
     <array name="dropdown_items">
         <item>Item 1</item>

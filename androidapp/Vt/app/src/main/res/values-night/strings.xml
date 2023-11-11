@@ -20,6 +20,8 @@
     <string name="tambah_livestock">Tambah Livestock</string>
     <string name="tambah_nkandang">Tambah \n<b>Kandang</b></string>
     <string name="lihat_nkandang">Lihat \n<b>Kandang</b></string>
+    <!--    Notification    -->
+    <string name="pref_key_notify">key_notification</string>
     <!--  Fattening Union Breeding -->
     <string name="record_weight">Rekam \n<b>Berat Badan</b></string>
     <string name="record_bcs">Rekam \n<b>BCS</b></string>
@@ -28,6 +30,9 @@
     <string name="tab_text_1_animal_mating_history">Histori</string>
     <string name="tab_text_2_animal_mating_history">Peranakan</string>
     <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>
+
+    <!--  Fattening/Record Food  -->
+    <string name="feeding_is_complete">Klik Simpan atau Batal untuk Membatalkan</string>
 
     <!--  Spinner Product Category  -->
     <string-array name="product_category_array">
