@@ -73,7 +73,8 @@ def get_breedings():
                         "livestock_female_name": item.breedings.livestock_female.name,
                         "sled_id": item.breedings.sled_id,
                         "is_active": item.breedings.is_active,
-                        "created_at": date
+                        "created_at": date,
+                        "date": item.date
                     }
                     results.append(result)
                 result = breeding_records_schema.dump(results)
