@@ -33,6 +33,7 @@ from Record.HealthRecord.views import views_health_record_bp
 from Record.FeedingRecord.views import views_consumption_bp
 
 from Breeds.Breeding.views import views_breeding_bp
+from Breeds.Breeding.v1b1.views import views_breeding_bp as views_breeding_bp_new
 
 from FarmProfile.views import views_farm_profile_bp
 from Finance.Budget.views import views_budget_bp
@@ -158,6 +159,9 @@ app.register_blueprint(views_bp_new, url_prefix='/api/v1.1')
 
 # V1.1 - 19. Sled new version with move to block area feature
 app.register_blueprint(views_sled_bp_new, url_prefix='/api/v1.1')
+
+# V1.1 - 20. Breeding new version with move to block area feature
+app.register_blueprint(views_breeding_bp_new, url_prefix='/api/v1.1')
 
 # app.register_blueprint(views_bp)
 # app.register_blueprint(views_sled_bp)

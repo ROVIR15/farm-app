@@ -17,7 +17,7 @@ class BreedingSchema(Schema):
     livestock_male_name = fields.Str(required=True)
     livestock_female_name = fields.Str(required=True)
     livestock_female_id = fields.Int(required=True)
-    sled_id = fields.Str(required=True)
+    sled_id = fields.Int(required=True)
     is_active = fields.Boolean(required=True)
 
     livestock_male = fields.Nested(LivestockSchema_new, required=False)
