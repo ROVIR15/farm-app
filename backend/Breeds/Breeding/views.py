@@ -153,6 +153,18 @@ def get_a_breeding(breeding_id):
             'block_area_description': block_area_description
         }
 
+        breeding_history = []
+        if len(query.breeding_history):
+            for item in query.breeding_history:
+                _item = {
+                    "breeding_id": item.breeding_id,
+                    "id": item.id,
+                    "remarks": item.remarks,
+                    "date": item.date if item.date is not None else item.created_at.strftime('%d %B %Y'),
+                    "created_at" : item.created_at
+                }
+                breeding_history.append(_item)
+
         result = {
             "id": query.id,
             "is_active": query.is_active,
@@ -163,7 +175,7 @@ def get_a_breeding(breeding_id):
             "pregnancy": query_preg,
             "livestock_male": query.livestock_male,
             "livestock_female": query.livestock_female,
-            "breeding_history": query.breeding_history,
+            "breeding_history": breeding_history,
             "breeding_status": status_breeding,
             "sled": sled_
         }
@@ -313,10 +325,11 @@ def post_breeding_history():
     # Process the data or perform any desired operations
     breeding_id = data.get('breeding_id')
     remarks = data.get('remarks')
+    date = data.get('date')
 
     try:
         query = BreedingHistory(breeding_id=breeding_id,
-                                remarks=remarks)
+                                remarks=remarks, date=date)
         db.session.add(query)
         db.session.commit()
 
