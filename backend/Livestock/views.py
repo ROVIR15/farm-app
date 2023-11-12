@@ -619,7 +619,6 @@ def update_livestock(livestock_id):
     birth_date = data.get('birth_date')
     bangsa = data.get('bangsa')
     description = data.get('description')
-    sled_id = data.get('sled_id')
 
     parent_male_id = data.get('parent_male_id')
     parent_female_id = data.get('parent_female_id')
@@ -651,7 +650,7 @@ def update_livestock(livestock_id):
             # Create a response JSON
             response = {
                 'status': 'success',
-                'message': f'Livestock {livestock_id} has been updated. sled {sled_id}'
+                'message': f'Livestock {livestock_id} has been updated.'
             }
             return jsonify(response), 200
         else:
