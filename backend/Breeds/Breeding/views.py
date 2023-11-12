@@ -216,9 +216,11 @@ def post_new_breeding():
         if male_query and female_query:
             male_query.sled_id=sled_id
             male_query.block_area_id=block_area_id
+            db.session.commit()
 
             female_query.sled_id=sled_id
             female_query.block_area_id=block_area_id
+            db.session.commit()
         else:
             raise Exception('One of livestock cannot be found')
 
