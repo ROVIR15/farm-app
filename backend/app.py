@@ -9,15 +9,25 @@ from db_connection import db
 
 from Upload.views import views_upload_bp
 
-from Livestock.views import views_bp
+# v1 - version 1 without 'move to sled'
+from Livestock.views import views_bp 
+# v1.1 
+from Livestock.v1b1.views import views_bp as views_bp_new
+
 from BlockAreaSledLivestock.views import views_livestock_details_bp
+
+# v1
 from Sled.views import views_sled_bp
+# v1.1 - feature move to block area is included
+from Sled.v1b1.views import views_sled_bp as views_sled_bp_new
+
 from BlockArea.views import views_block_area_bp
 from Category.views import views_category_bp
 from Product.views import views_product_bp
 from Feature.views import views_feature_bp
 
 from Record.BCSRecord.views import views_bcs_record_bp
+from Record.HeightRecord.views import views_height_record_bp
 from Record.WeightRecord.views import views_weight_record_bp
 from Record.HealthRecord.views import views_health_record_bp
 from Record.FeedingRecord.views import views_consumption_bp
@@ -31,7 +41,13 @@ from Finance.Expenditure.views import views_expenditure_bp
 from Finance.Income.views import views_income_bp
 
 from Finance.BudgetCategory.views import views_budget_category_bp
+
+from Dashboard.views import views_dashboard_bp
+
 # from Finance.BudgetCategory.views import views_budget_category_bp
+
+#  OPITOSN 
+from Options import views_opts_livestock, views_opt_sled_bp
 
 # Load enviroment variable
 load_dotenv()
@@ -99,6 +115,7 @@ app.register_blueprint(views_livestock_details_bp, url_prefix='/api')
 app.register_blueprint(views_bcs_record_bp, url_prefix='/api')
 # 9. Weight Record
 app.register_blueprint(views_weight_record_bp, url_prefix='/api')
+
 # 10. Health Record
 app.register_blueprint(views_health_record_bp, url_prefix='/api')
 # 11. Consumption Record 
@@ -124,6 +141,23 @@ app.register_blueprint(views_budget_category_bp, url_prefix='/api')
 # 13. Farm Profile API
 app.register_blueprint(views_farm_profile_bp, url_prefix='/api')
 
+# 14. Farm Profile
+app.register_blueprint(views_dashboard_bp, url_prefix='/api')
+
+# V1.1 - 15. Height Record
+app.register_blueprint(views_height_record_bp, url_prefix='/api/v1.1')
+
+# V1.1 - 16. Options Livestock
+app.register_blueprint(views_opts_livestock, url_prefix='/api/v1.1/options')
+
+# V1.1 - 17. Options Sleds
+app.register_blueprint(views_opt_sled_bp, url_prefix='/api/v1.1/options')
+
+# V1.1 - 18. Livestock new version with move to sled feature
+app.register_blueprint(views_bp_new, url_prefix='/api/v1.1')
+
+# V1.1 - 19. Sled new version with move to block area feature
+app.register_blueprint(views_sled_bp_new, url_prefix='/api/v1.1')
 
 # app.register_blueprint(views_bp)
 # app.register_blueprint(views_sled_bp)

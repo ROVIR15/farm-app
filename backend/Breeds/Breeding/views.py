@@ -30,6 +30,9 @@ from Breeds.Breeding.schema import BreedingSchema
 from Breeds.BreedingHistory.schema import BreedingHistorySchema
 from Breeds.Lambing.schema import LambingSchema
 
+from Record.HeightRecord.models import HeightRecord
+from Record.WeightRecord.models import WeightRecord
+
 views_breeding_bp = Blueprint('views_breeding', __name__)
 
 breeding_record_schema = BreedingSchema()
@@ -48,11 +51,11 @@ def get_breedings():
     try:
         farm_profile_id = current_farm_profile()
         query = HasBreeding.query.options([subqueryload(HasBreeding.breedings).subqueryload(Breeding.breeding_status)]) \
-                .filter_by(
-                    farm_profile_id=farm_profile_id
-                ) \
-                .order_by(desc(HasBreeding.breeding_id)) \
-                .all()
+            .filter_by(
+            farm_profile_id=farm_profile_id
+        ) \
+            .order_by(desc(HasBreeding.breeding_id)) \
+            .all()
         results = []
         if not query:
             return jsonify([]), 200
@@ -97,14 +100,14 @@ def get_breedings():
 def get_a_breeding(breeding_id):
     try:
         query = Breeding.query.options([
-                    subqueryload(Breeding.livestock_male),
-                    subqueryload(Breeding.livestock_female),
-                    subqueryload(Breeding.lambing),
-                    subqueryload(Breeding.breeding_history),
-                    subqueryload(Breeding.breeding_status),
-                    subqueryload(Breeding.sled).subqueryload(Sled.block_area)
-                ]) \
-                .get(breeding_id)
+            subqueryload(Breeding.livestock_male),
+            subqueryload(Breeding.livestock_female),
+            subqueryload(Breeding.lambing),
+            subqueryload(Breeding.breeding_history),
+            subqueryload(Breeding.breeding_status),
+            subqueryload(Breeding.sled).subqueryload(Sled.block_area)
+        ]) \
+            .get(breeding_id)
 
         query_preg = Pregnancy.query.filter_by(breeding_id=breeding_id).first()
 
@@ -131,7 +134,8 @@ def get_a_breeding(breeding_id):
 
             lambing.append(__temp)
 
-        status_breeding = query.breeding_status[0] if isinstance(query.breeding_status, list) and len(query.breeding_status) else None
+        status_breeding = query.breeding_status[0] if isinstance(
+            query.breeding_status, list) and len(query.breeding_status) else None
 
         if query.sled.block_area:
             block_area_name = query.sled.block_area.name
@@ -214,12 +218,12 @@ def post_new_breeding():
             livestock_id=livestock_female_id).first()
 
         if male_query and female_query:
-            male_query.sled_id=sled_id
-            male_query.block_area_id=block_area_id
+            male_query.sled_id = sled_id
+            male_query.block_area_id = block_area_id
             db.session.commit()
 
-            female_query.sled_id=sled_id
-            female_query.block_area_id=block_area_id
+            female_query.sled_id = sled_id
+            female_query.block_area_id = block_area_id
             db.session.commit()
         else:
             raise Exception('One of livestock cannot be found')
@@ -496,7 +500,11 @@ def post_lambing():
     sled_id = data.get('sled_id')
     breeding_id = data.get('breeding_id')
     # Get the current date
-    birth_date = "2023-09-08" if data.get('birth_date') is None else data.get('birth_date')
+    birth_date = "2023-09-08" if data.get(
+        'birth_date') is None else data.get('birth_date')
+
+    weight_score = data.get('weight_score')
+    height_score = data.get('height_score')
 
     try:
         query = Livestock(name=name, gender=gender, birth_date=birth_date,
@@ -552,8 +560,22 @@ def post_lambing():
         db.session.add(query4)
         db.session.commit()
 
-
         breeding = Breeding.query.get(breeding_id)
+
+        # Make record on weight and height
+        query5 = WeightRecord(livestock_id=query.id,
+                              score=weight_score,
+                              date=birth_date,
+                              remarks='berat pertama kali')
+        db.session.add(query5)
+        db.session.commit()
+
+        query6 = WeightRecord(livestock_id=query.id,
+                             score=height_score,
+                             date=birth_date,
+                             remarks='tinggi pertama kali')
+        db.session.add(query6)
+        db.session.commit()
 
         if breeding:
             breeding.is_active = False

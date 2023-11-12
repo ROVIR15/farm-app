@@ -26,7 +26,7 @@ from utils.index import get_feed_category_label, remove_duplicates
 
 from auth import login_required, current_farm_profile
 
-views_bp = Blueprint('views_livestock', __name__)
+views_bp = Blueprint('views_livestock_v1b1', __name__)
 
 livestock_schema = LivestockSchema()
 livestocks_schema = LivestockSchema(many=True)
@@ -606,6 +606,53 @@ def post_livestock():
 
         return jsonify(response), 500
 
+@views_bp.route('/livestock/move-to-sled', methods=['POST'])
+@login_required
+def update_livestock_sled():
+    data = request.get_json()
+
+    farm_profile_id = current_farm_profile()
+
+    livestock_id = data.get('livestock_id')
+    sled_id = data.get('sled_id')
+    block_area_id = data.get('block_area_id')
+
+    try:
+        # check whether livestock is belong to the farm_profile id
+        query_fphl = FarmProfileHasLivestock.query.filter_by(livestock_id=livestock_id)
+
+        if not query_fphl:
+            raise Exception('It is not your livestock, this prohibited')
+
+        # check livestock already placed on spesific sled and block_area
+        query_basl = BlockAreaSledLivestock.query.filter_by(livestock_id=livestock_id)
+
+        if not query_basl:
+            # if its not will register a livestock to a block area and sled with provided data on body request
+            BlockAreaSledLivestock(livestock_id=livestock_id, block_area_id=block_area_id, sled_id=sled_id)
+        else:
+            # if found then update
+            query_basl.sled_id = sled_id
+            query_basl.block_area_id = block_area_id
+            db.session.commit()
+
+        response = {
+            'status': 'Success',
+            'message': f'Your Livestock already moved to {sled_id} on {block_area_id}'
+        }
+
+        return jsonify(response), 200
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Sorry, Failed to update livestock data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
+        
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['PUT'])
 @login_required
