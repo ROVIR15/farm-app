@@ -63,6 +63,7 @@ def get_breedings():
             else:
                 for item in list_of_breeding:
                     date = item.created_at.strftime("%d %b %Y")
+                    ldate = item.breedings.date.strftime("%d %b %Y")
                     result = {
                         "id": item.breedings.id,
                         "name": f'Breeding #{item.breedings.id}',
@@ -74,7 +75,7 @@ def get_breedings():
                         "sled_id": item.breedings.sled_id,
                         "is_active": item.breedings.is_active,
                         "created_at": date,
-                        "date": item.breedings.date
+                        "date": ldate
                     }
                     results.append(result)
                 result = breeding_records_schema.dump(results)
