@@ -19,15 +19,19 @@ sled_schema = SledSchema()
 sleds_schema = SledSchema(many=True)
 
 
-@views_sled_bp.route('/sleds', methods=['GET'])
+@views_sled_bp.route('/search-sleds', methods=['GET'])
 @login_required
-def get_sleds():
-
+def search_sleds():
+    search_params = request.args.get('search_params')
     farm_profile_id = current_farm_profile()
 
     # Retrieve all livestock records from the database
     query = FarmProfileHasSled.query.options([subqueryload(
-        FarmProfileHasSled.sled).subqueryload(Sled.block_area)]).filter_by(farm_profile_id=farm_profile_id).order_by(desc(FarmProfileHasSled.sled_id)).all()
+        FarmProfileHasSled.sled).subqueryload(Sled.block_area)]) \
+        .filter(Sled.name.like(f'%{search_params}%')) \
+        .filter_by(farm_profile_id=farm_profile_id) \
+        .order_by(desc(FarmProfileHasSled.sled_id)) \
+        .all()
 
     # query = Sled.query.options(subqueryload(Sled.block_area)).all()
 
