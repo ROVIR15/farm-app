@@ -74,7 +74,7 @@ def get_breedings():
                         "sled_id": item.breedings.sled_id,
                         "is_active": item.breedings.is_active,
                         "created_at": date,
-                        "date": item.date
+                        "date": item.breedings.date
                     }
                     results.append(result)
                 result = breeding_records_schema.dump(results)
