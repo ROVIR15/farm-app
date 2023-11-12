@@ -33,3 +33,4 @@ class LivestockSchema_new(Schema):
     description = fields.Str(required=True)
     info = fields.Str(required=False)
     created_at = fields.Str(required=True)
+    descendant = fields.Nested(DescendantSchema, required=False)

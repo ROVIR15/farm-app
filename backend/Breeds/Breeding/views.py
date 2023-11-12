@@ -151,6 +151,7 @@ def get_a_breeding(breeding_id):
             "id": query.id,
             "is_active": query.is_active,
             "sled_id": query.sled_id,
+            "date": query.date,
             "created_at": query.created_at,
             "lambing": lambing,
             "pregnancy": query_preg,

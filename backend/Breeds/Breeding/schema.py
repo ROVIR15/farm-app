@@ -29,6 +29,7 @@ class BreedingSchema(Schema):
     sled = fields.Nested(SledSchema, required=False)
     breeding_status = fields.Nested(BreedingStatusSchema, required=False)
 
+    date = fields.Str(required=True)
     created_at = fields.Str(required=True)
 
 

@@ -118,7 +118,6 @@ def get_livestocks():
 
         return jsonify(response), 500
 
-
 @views_bp.route('/livestock/<int:livestock_id>', methods=['GET'])
 @login_required
 def get_a_livestock(livestock_id):
@@ -389,6 +388,92 @@ def get_a_livestock(livestock_id):
 
         return jsonify(response), 500
 
+@views_bp.route('/detail-livestock/<int:livestock_id>', methods=['GET'])
+@login_required
+def get_a_livestock_new(livestock_id):
+
+    try:
+        query_block_area_livestock = BlockAreaSledLivestock.query.filter_by(
+            livestock_id=livestock_id).first()
+        
+        query_d = Descendant.query.options([
+            subqueryload(Descendant.livestock)
+        ]).filter_by(livestock_id=livestock_id).first()
+
+        descendant_result = None
+        if query_d:
+            parent_male_id = query_d.livestock_male_id if query_d.livestock_male_id is not None else None
+            parent_male_name = f'{query_d.livestock_male_id}-{query_d.parent_male.name}' if query_d.livestock_male_id is not None else None
+            parent_female_id = query_d.livestock_female_id if query_d.livestock_female_id is not None else None
+            parent_female_name = f'{query_d.livestock_female_id}-{query_d.parent_female.name}' if query_d.livestock_female_id is not None else None
+
+            descendant_result = {
+                'id': query_d.id,
+                'livestock_id': query_d.livestock_id,
+                'livestock_name': query_d.livestock.name,
+                'parent_male_id' : parent_male_id,
+                'parent_male_name' : parent_male_name,
+                'parent_female_id' : parent_female_id,
+                'parent_female_name' : parent_female_name
+            }
+
+        if query_block_area_livestock is None:
+            # Retrieve all livestock records from the database
+            query = Livestock.query.get(livestock_id)
+
+            result = {
+                'id': query.id,
+                'name': query.name,
+                'gender': query.gender,
+                'bangsa': query.bangsa,
+                'birth_date': query.birth_date,
+                'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                # 'sled_id': None,
+                'sled_id': query_block_area_livestock.sled_id,
+                # 'block_area_id': None,
+                'block_area_id': query_block_area_livestock.block_area_id,
+                'description': query.description,
+                'descendant': descendant_result
+            }
+
+            # Serialize the livestock data using the schema
+            result = livestock_schema_new.dump(result)
+        else:
+            # Retrieve all livestock records from the database
+            query = Livestock.query.get(livestock_id)
+
+            result = {
+                'id': query.id,
+                'name': query.name,
+                'gender': query.gender,
+                'bangsa': query.bangsa,
+                'birth_date': query.birth_date,
+                'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                # 'sled_id': None,
+                'sled_id': query_block_area_livestock.sled_id,
+                # 'block_area_id': None,
+                'block_area_id': query_block_area_livestock.block_area_id,
+                'description': query.description,
+                'descendant': descendant_result
+            }
+
+            # Serialize the livestock data using the schema
+            result = livestock_schema_new.dump(result)
+
+        # Return the serialized data as JSON response
+        return jsonify(result)
+
+    except Exception as e:
+        # Handling the exception if storing the data fails
+        error_message = str(e)
+        current_app.logger.error(f"An error occurred: {error_message}")
+
+        response = {
+            'status': 'error',
+            'message': f'Sorry! Failed to get {livestock_id} livestock data. Error: {error_message}'
+        }
+
+        return jsonify(response), 500
 
 @views_bp.route('/livestock', methods=['POST'])
 @login_required
