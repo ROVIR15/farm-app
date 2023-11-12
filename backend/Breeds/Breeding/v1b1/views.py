@@ -47,7 +47,7 @@ def get_a_breeding_info(breeding_id):
                 raise Exception("Not found any breeding record")
             else:
                 date = item.created_at.strftime("%d %b %Y")
-                ldate = item.breedings.date.strftime("%d %b %Y")
+                ldate = item.breedings.date.strftime("%d-%m-%Y")
                 result = {
                     "id": item.breedings.id,
                     "name": f'Breeding #{item.breedings.id}',
