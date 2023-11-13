@@ -15,6 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
 import com.vt.vt.databinding.FragmentEditLivestockBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
@@ -33,8 +35,10 @@ class EditLivestockFragment : Fragment() {
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
 
     private var receiveId: String = ""
-    private var parentMaleId: Int = 0
-    private var parentFemaleId: Int = 0
+    private var sledId: Int = 0
+    private var blockAreaId: Int = 0
+    private var parentMaleId: Int? = null
+    private var parentFemaleId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -50,6 +54,7 @@ class EditLivestockFragment : Fragment() {
         }
         livestockViewModel.getLivestocksMale()
         livestockViewModel.getLivestocksFemale()
+        detailAreaBlockViewModel.getSleds()
 
         with(binding) {
             appBarLayout.topAppBar.also { toolbar ->
@@ -74,7 +79,7 @@ class EditLivestockFragment : Fragment() {
                 val description = edtDescription.text.toString().trim()
                 val birthDate = tvDateLivestock.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(birthDate)
-                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty() && parentMaleId != 0 && parentFemaleId != 0
+                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty() && parentMaleId != null && parentFemaleId != null
                 ) {
                     if (gender != 0) {
                         editLivestockViewModel.updateLivestockById(
@@ -84,11 +89,22 @@ class EditLivestockFragment : Fragment() {
                             nation,
                             description,
                             createdAt,
-                            parentMaleId,
-                            parentFemaleId
+                            parentFemaleId!!,
+                            parentMaleId!!,
+                        )
+                        editLivestockViewModel.livestockMoveSled(
+                            receiveId.toInt(),
+                            sledId,
+                            blockAreaId
                         )
                     }
+                } else {
+                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                        .show()
                 }
+            }
+            btnCancelEditLivestock.setOnClickListener {
+                view.findNavController().popBackStack()
             }
             adapterSpinnerStaticGender(binding.spinnerGenderUmum)
         }
@@ -101,16 +117,6 @@ class EditLivestockFragment : Fragment() {
                 showLoading(it)
             }
             getLivestockById.observe(viewLifecycleOwner) { livestock ->
-                detailAreaBlockViewModel.getSleds()
-                detailAreaBlockViewModel.sledItems.observe(viewLifecycleOwner) { sleds ->
-                    val namesArray = sleds.map { data ->
-                        data.name
-                    }.toTypedArray()
-                    adapterSpinner(binding.spinnerKandangUmum, namesArray)
-                    binding.spinnerKandangUmum.selected { position ->
-                        binding.edtArea.setText(sleds[position].blockAreaName)
-                    }
-                }
                 with(binding) {
                     livestock?.let { data ->
                         appBarLayout.topAppBar.title = "Edit ${data.name}"
@@ -119,14 +125,73 @@ class EditLivestockFragment : Fragment() {
                         spinnerGenderUmum.setSelection(data.gender)
                         edtDescription.setText(data.description)
                         edtBangsa.setText(data.bangsa)
-                        tvDateLivestock.setText(data.birthDate)
+                        tvDateLivestock.text = data.birthDate
+                    }
+                }
+                detailAreaBlockViewModel.sledItems.observe(viewLifecycleOwner) { sleds ->
+                    val namesArray = sleds.map { data ->
+                        data.name
+                    }.toTypedArray()
+                    adapterSpinner(binding.spinnerKandangUmum, namesArray)
+                    val currentSledId = livestock?.sledId
+                    val position = findPositionSledById(sleds, currentSledId)
+                    if (currentSledId != null) {
+                        if (position != -1) {
+                            binding.spinnerKandangUmum.setSelection(position)
+                        }
+                    }
+                    binding.spinnerKandangUmum.selected { pos ->
+                        sledId = sleds[pos].id
+                        blockAreaId = sleds[pos].blockAreaId
+                        binding.edtArea.setText(sleds[pos].blockAreaName)
+                    }
+                }
+                livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMale ->
+                    val dataEmpty = "-- Pilih Livestock Jantan --"
+                    val livestockMales = livestockMale.map {
+                        it.name
+                    }.toTypedArray()
+                    val dataSpinner = arrayOf(dataEmpty) + livestockMales
+                    adapterSpinner(binding.spinnerPilihLivestockJantan, dataSpinner)
+                    val desiredId = livestock?.descendant?.parentMaleId
+                    val position = findPositionById(livestockMale, desiredId)
+                    if (desiredId != null) {
+                        if (position != -1) {
+                            binding.spinnerPilihLivestockJantan.setSelection(position)
+                        }
+                    }
+                    binding.spinnerPilihLivestockJantan.selected { pos ->
+                        parentMaleId = livestockMale[pos].id
+                    }
+                }
+                livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemale ->
+                    val dataEmpty = "-- Pilih Livestock Betina --"
+                    val livestockFemaleArray = livestockFemale.map {
+                        it.name
+                    }.toTypedArray()
+                    val dataSpinner = arrayOf(dataEmpty) + livestockFemaleArray
+                    adapterSpinner(binding.spinnerPilihLivestockBetina, dataSpinner)
+                    val desiredId = livestock?.descendant?.parentFemaleId
+                    val position = findPositionById(livestockFemale, desiredId)
+                    if (desiredId != null) {
+                        if (position != -1) {
+                            binding.spinnerPilihLivestockBetina.setSelection(position)
+                        }
+                    }
+                    binding.spinnerPilihLivestockBetina.selected { pos ->
+                        parentFemaleId = livestockFemale[pos].id
                     }
                 }
             }
             isUpdateLivestock.observe(viewLifecycleOwner) { livestock ->
-                view?.findNavController()?.popBackStack()
-                Toast.makeText(requireContext(), livestock?.message.toString(), Toast.LENGTH_SHORT)
-                    .show()
+                livestockMoveSledEmitter.observe(viewLifecycleOwner) { livestockMoveSled ->
+                    Toast.makeText(
+                        requireContext(),
+                        livestock?.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    view?.findNavController()?.popBackStack()
+                }
             }
             isError().observe(viewLifecycleOwner) { errorMessage ->
                 Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
@@ -140,24 +205,6 @@ class EditLivestockFragment : Fragment() {
                 it.name
             }.toTypedArray()
             adapterSpinner(binding.spinnerPilihLivestockJantan, livestockMales)
-        }
-        livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMale ->
-            val livestockMales = livestockMale.map {
-                it.name
-            }.toTypedArray()
-            adapterSpinner(binding.spinnerPilihLivestockJantan, livestockMales)
-            binding.spinnerPilihLivestockJantan.selected { position ->
-                parentMaleId = livestockMale[position].id
-            }
-        }
-        livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemale ->
-            val livestockFemales = livestockFemale.map {
-                it.name
-            }.toTypedArray()
-            adapterSpinner(binding.spinnerPilihLivestockBetina, livestockFemales)
-            binding.spinnerPilihLivestockBetina.selected { position ->
-                parentFemaleId = livestockFemale[position].id
-            }
         }
         livestockViewModel.isError().observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
@@ -223,4 +270,23 @@ class EditLivestockFragment : Fragment() {
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }
+
+    private fun findPositionById(itemList: List<LivestockResponseItem>, desiredId: Int?): Int {
+        for ((index, item) in itemList.withIndex()) {
+            if (item.id == desiredId) {
+                return index
+            }
+        }
+        return -1
+    }
+
+    private fun findPositionSledById(itemList: List<SledsResponseItem>, desiredId: Int?): Int {
+        for ((index, item) in itemList.withIndex()) {
+            if (item.id == desiredId) {
+                return index
+            }
+        }
+        return -1
+    }
+
 }

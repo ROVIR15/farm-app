@@ -26,8 +26,11 @@ data class LivestockByIdResponse(
     @field:SerializedName("description")
     val description: String,
 
+    @field:SerializedName("sled_id")
+    val sledId: Int,
+
     @field:SerializedName("descendant")
-    val descendant: DescendantItem? = null,
+    val descendant: DescendantItem,
 
     @field:SerializedName("weight_records")
     val weightRecords: List<WeightRecordsItem>,

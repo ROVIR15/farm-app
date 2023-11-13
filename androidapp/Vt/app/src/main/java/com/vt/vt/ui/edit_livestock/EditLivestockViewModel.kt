@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockMoveSledRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
@@ -15,6 +16,9 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
     BaseViewModel() {
     private val _getLivestockEmitter = MutableLiveData<LivestockByIdResponse?>()
     val getLivestockById: LiveData<LivestockByIdResponse?> = _getLivestockEmitter
+
+    private val _livestockMoveSledEmitter = MutableLiveData<LivestockResponse>()
+    val livestockMoveSledEmitter: LiveData<LivestockResponse> = _livestockMoveSledEmitter
 
     private val _updateLivestock = MutableLiveData<LivestockResponse?>()
     val isUpdateLivestock: LiveData<LivestockResponse?> = _updateLivestock
@@ -34,12 +38,29 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
         })
     }
 
+    fun livestockMoveSled(livestockId: Int, sledId: Int, blockAreaId: Int) {
+        launch(action = {
+            val livestockMoveSledRequest =
+                LivestockMoveSledRequest(livestockId, sledId, blockAreaId)
+            val response = livestockVtRepository.livestockMoveSled(livestockMoveSledRequest)
+            if (response.isSuccessful) {
+                _livestockMoveSledEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
     fun updateLivestockById(
         id: String,
         name: String?,
         gender: Int,
         nation: String?,
-        description: String?, birthDate: String?, parentMaleId: Int, parentFemaleId: Int
+        description: String?, birthDate: String?, parentFemaleId: Int, parentMaleId: Int
     ) {
         launch(action = {
             val livestockRequest = LivestockRequest(
@@ -48,8 +69,8 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
                 name,
                 birthDate,
                 description,
-                parentMaleId,
-                parentFemaleId
+                parentFemaleId,
+                parentMaleId
             )
             val response = livestockVtRepository.updateLivestockById(id, livestockRequest)
             if (response.isSuccessful) {

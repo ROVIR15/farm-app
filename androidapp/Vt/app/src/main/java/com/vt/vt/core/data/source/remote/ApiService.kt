@@ -112,6 +112,9 @@ interface ApiService {
     @POST("api/livestock")
     suspend fun createLivestock(@Body livestockRequest: LivestockRequest): Response<LivestockResponse>
 
+    @POST("api/v1.1/livestock/move-to-sled")
+    suspend fun livestockMoveToSled(@Body livestockMoveSledRequest: LivestockMoveSledRequest): Response<LivestockResponse>
+
     @POST("api/store-livestock")
     suspend fun storeLivestock(@Body storeLivestockRequest: StoreLivestockRequest): Response<LivestockResponse>
 
