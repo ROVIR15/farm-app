@@ -6,6 +6,7 @@ from Record.HealthRecord.schema import HealthRecordSchema
 from Record.FeedingRecord.schema import FeedListSchema
 from Descendant.schema import DescendantSchema
 
+
 class LivestockSchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
     name = fields.Str(required=True)
@@ -15,12 +16,18 @@ class LivestockSchema(Schema):
     birth_date = fields.Str(required=False)
     info = fields.Str(required=False)
     description = fields.Str(required=True)
-    height_records = fields.Nested(HeightRecordSchema, allow_none=True, many=True)
-    weight_records = fields.Nested(WeightRecordSchema, allow_none=True, many=True)
+    sled_id = fields.Int(required=False)
+    block_area_id = fields.Int(required=False)
+    height_records = fields.Nested(
+        HeightRecordSchema, allow_none=True, many=True)
+    weight_records = fields.Nested(
+        WeightRecordSchema, allow_none=True, many=True)
     bcs_records = fields.Nested(BCSRecordSchema, allow_none=True, many=True)
-    health_records = fields.Nested(HealthRecordSchema, allow_none=True, many=True)
+    health_records = fields.Nested(
+        HealthRecordSchema, allow_none=True, many=True)
     feeding_records = fields.Nested(FeedListSchema, many=True)
     descendant = fields.Nested(DescendantSchema, required=False)
+
 
 class LivestockSchema_new(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
