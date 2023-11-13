@@ -9,6 +9,7 @@ import com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.WeightFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.kesehatan.HealthRecordsFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.pakan.PakanFragment
+import com.vt.vt.ui.detail_livestock.tab_layout.tinggi_badan.HeightTabLayoutFragment
 
 class ViewPagerDetailLivestockAdapter(
     private val fragmentBundle: ArrayList<Bundle>,
@@ -27,6 +28,7 @@ class ViewPagerDetailLivestockAdapter(
                 1 -> HealthRecordsFragment()
                 2 -> BcsFragment()
                 3 -> PakanFragment()
+                4 -> HeightTabLayoutFragment()
                 else -> throw IllegalArgumentException("Invalid position: $position")
             }
         }

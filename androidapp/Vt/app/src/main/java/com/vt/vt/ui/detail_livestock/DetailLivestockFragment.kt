@@ -78,6 +78,7 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             Bundle().apply { putInt("livestockId", receiveId.toInt()) },
             Bundle().apply { putInt("livestockId", receiveId.toInt()) },
             Bundle().apply { putInt("livestockId", receiveId.toInt()) },
+            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
         )
 
         val adapter = ViewPagerDetailLivestockAdapter(
@@ -90,6 +91,7 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 1 -> tab.text = "Kesehatan"
                 2 -> tab.text = "BCS"
                 3 -> tab.text = "Pakan"
+                4 -> tab.text = "Tinggi Badan"
             }
         }.attach()
     }
