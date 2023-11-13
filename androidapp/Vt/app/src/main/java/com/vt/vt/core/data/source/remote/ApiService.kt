@@ -17,6 +17,7 @@ import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
 import com.vt.vt.core.data.source.remote.farm_profile.model.*
 import com.vt.vt.core.data.source.remote.feeding_record.model.*
 import com.vt.vt.core.data.source.remote.health_record.model.*
+import com.vt.vt.core.data.source.remote.height_record.HeightRecordResponse
 import com.vt.vt.core.data.source.remote.income.IncomeCategoriesResponseItem
 import com.vt.vt.core.data.source.remote.income.IncomeRequest
 import com.vt.vt.core.data.source.remote.income.IncomeResponse
@@ -175,6 +176,11 @@ interface ApiService {
 
     @POST("api/weight-record")
     suspend fun createWeightRecord(@Body livestockRecordRequest: LivestockRecordRequest): Response<WeightRecordResponse>
+
+    // Height Record
+
+    @POST("api/v1.1/height-record")
+    suspend fun createHeightRecord(@Body livestockRecordRequest: LivestockRecordRequest): Response<HeightRecordResponse>
 
     // Health Record
     @GET("api/health-records")

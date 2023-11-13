@@ -270,6 +270,9 @@
         <action
             android:id="@+id/action_fatteningFragment_to_penyimpanTernakFragment"
             app:destination="@id/penyimpanTernakFragment" />
+        <action
+            android:id="@+id/action_fatteningFragment_to_rekamTinggiBadanFragment"
+            app:destination="@id/recordHeightFragment" />
     </fragment>
     <fragment
         android:id="@+id/toDetailAfterScanFragment"
@@ -366,6 +369,16 @@
         android:name="com.vt.vt.ui.rekam_berat_badan.RekamBeratBadanFragment"
         android:label="fragment_rekam_berat_badan"
         tools:layout="@layout/fragment_rekam_berat_badan">
+        <argument
+            android:name="livestockId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordHeightFragment"
+        android:name="com.vt.vt.ui.rekam_tinggi_badan.RecordHeightFragment"
+        android:label="fragment_record_height"
+        tools:layout="@layout/fragment_record_height" >
         <argument
             android:name="livestockId"
             android:defaultValue="0"

@@ -88,6 +88,9 @@ data class BreedingHistoryItem(
     @field:SerializedName("breeding_id")
     val breedingId: Int? = null,
 
+    @field:SerializedName("date")
+    val date: String? = null,
+
     @field:SerializedName("id")
     val id: Int,
 

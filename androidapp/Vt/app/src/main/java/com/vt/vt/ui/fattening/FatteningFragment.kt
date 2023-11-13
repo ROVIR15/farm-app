@@ -52,10 +52,11 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             ivDatePicker.setOnClickListener {
                 PickDatesUtils.setupDatePicker(requireActivity(), binding.tvFatteningDate)
             }
-            contentFatteningCategoryHeightRecord.setOnClickListener(this@FatteningFragment)
+            contentFatteningCategoryWeightRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryBcsRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryHealthRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryFoodRecord.setOnClickListener(this@FatteningFragment)
+            contentFatteningCategoryHeightRecord.setOnClickListener(this@FatteningFragment)
         }
     }
 
@@ -123,7 +124,7 @@ class FatteningFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.content_fattening_category_height_record -> {
+            R.id.content_fattening_category_weight_record -> {
                 showBottomSheet(1)
             }
 
@@ -133,6 +134,10 @@ class FatteningFragment : Fragment(), View.OnClickListener {
 
             R.id.content_fattening_category_health_record -> {
                 showBottomSheet(3)
+            }
+
+            R.id.content_fattening_category_height_record -> {
+                showBottomSheet(4)
             }
 
             R.id.content_fattening_category_food_record -> {
@@ -200,6 +205,19 @@ class FatteningFragment : Fragment(), View.OnClickListener {
                             view?.findNavController()
                                 ?.navigate(
                                     R.id.action_fatteningFragment_to_rekamKesehatanFragment,
+                                    mBundle
+                                )
+                    }
+                }
+            }
+
+            4 -> {
+                when (option) {
+                    1 -> {
+                        if (!mBundle.isEmpty)
+                            view?.findNavController()
+                                ?.navigate(
+                                    R.id.action_fatteningFragment_to_rekamTinggiBadanFragment,
                                     mBundle
                                 )
                     }

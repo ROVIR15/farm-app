@@ -27,6 +27,7 @@
     <string name="record_bcs">Rekam \n<b>BCS</b></string>
     <string name="record_health">Rekam \n<b>Kesehatan</b></string>
     <string name="record_food">Rekam \n<b>Pakan</b></string>
+    <string name="record_height">Rekam \n<b>Tinggi Badan</b></string>
     <string name="tab_text_1_animal_mating_history">Histori</string>
     <string name="tab_text_2_animal_mating_history">Peranakan</string>
     <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>

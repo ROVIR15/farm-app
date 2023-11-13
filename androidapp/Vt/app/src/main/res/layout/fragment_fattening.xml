@@ -78,7 +78,7 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/content_fattening_category_height_record"
+                android:id="@+id/content_fattening_category_weight_record"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_marginTop="24dp"
@@ -94,27 +94,26 @@
                 android:id="@+id/content_fattening_category_bcs_record"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/bg_circle_home_category"
                 android:padding="14dp"
                 android:src="@drawable/ic_baseline_add_square_24"
-                app:layout_constraintBottom_toBottomOf="@+id/content_fattening_category_height_record"
-                app:layout_constraintEnd_toStartOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintEnd_toStartOf="@+id/content_fattening_category_food_record"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_height_record"
-                app:layout_constraintTop_toTopOf="@+id/content_fattening_category_height_record" />
+                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_weight_record"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/content_fattening_category_health_record"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_circle_home_category"
                 android:padding="14dp"
                 android:src="@drawable/ic_baseline_add_square_24"
-                app:layout_constraintBottom_toBottomOf="@+id/content_fattening_category_bcs_record"
-                app:layout_constraintEnd_toStartOf="@+id/content_fattening_category_food_record"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_bcs_record"
-                app:layout_constraintTop_toTopOf="@+id/content_fattening_category_bcs_record" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline10"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/content_fattening_category_food_record"
@@ -123,10 +122,20 @@
                 android:background="@drawable/bg_circle_home_category"
                 android:padding="14dp"
                 android:src="@drawable/ic_baseline_add_square_24"
-                app:layout_constraintBottom_toBottomOf="@+id/content_fattening_category_health_record"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_health_record"
+                app:layout_constraintStart_toEndOf="@+id/content_fattening_category_bcs_record"
+                app:layout_constraintTop_toTopOf="@+id/content_fattening_category_bcs_record" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_fattening_category_height_record"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintStart_toStartOf="@+id/guideline10"
                 app:layout_constraintTop_toTopOf="@+id/content_fattening_category_health_record" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -138,9 +147,9 @@
                 android:text="@string/record_weight"
                 android:textAlignment="center"
                 android:textColor="@color/text_black"
-                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_height_record"
-                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_height_record"
-                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_height_record" />
+                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_weight_record"
+                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_weight_record"
+                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_weight_record" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView7"
@@ -182,6 +191,19 @@
                 app:layout_constraintHorizontal_bias="0.523"
                 app:layout_constraintStart_toStartOf="@+id/content_fattening_category_food_record"
                 app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_food_record" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_height"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_fattening_category_height_record"
+                app:layout_constraintStart_toStartOf="@+id/content_fattening_category_height_record"
+                app:layout_constraintTop_toBottomOf="@+id/content_fattening_category_height_record" />
 
             <LinearLayout
                 android:layout_width="220dp"
@@ -328,14 +350,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="349dp" />
+                app:layout_constraintGuide_begin="461dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="417dp" />
+                app:layout_constraintGuide_begin="531dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="205dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
