@@ -603,13 +603,13 @@ def update_livestock_sled():
 
     try:
         # check whether livestock is belong to the farm_profile id
-        query_fphl = FarmProfileHasLivestock.query.filter_by(livestock_id=livestock_id)
+        query_fphl = FarmProfileHasLivestock.query.filter_by(farm_profile_id=farm_profile_id).first()
 
         if not query_fphl:
             raise Exception('It is not your livestock, this prohibited')
 
         # check livestock already placed on spesific sled and block_area
-        query_basl = BlockAreaSledLivestock.query.filter_by(livestock_id=livestock_id)
+        query_basl = BlockAreaSledLivestock.query.filter_by(livestock_id=livestock_id).first()
 
         if not query_basl:
             # if its not will register a livestock to a block area and sled with provided data on body request
