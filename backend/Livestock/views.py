@@ -162,6 +162,8 @@ def get_a_livestock(livestock_id):
                 'name': query.name,
                 'gender': query.gender,
                 'bangsa': query.bangsa,
+                'sled_id': None,
+                'block_area_id': None,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
@@ -337,6 +339,8 @@ def get_a_livestock(livestock_id):
                 'weight_records': [],
                 'height_records': [],
                 'feeding_records': [],
+                'sled_id': query_block_area_livestock.sled_id,
+                'block_area_id': query_block_area_livestock.block_area_id,
                 'health_records': query.health_records,
                 'descendant': descendant_result
             }
