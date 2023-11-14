@@ -61,7 +61,9 @@ class LambingBreedingAdapter(private val viewModel: RecordBreedingViewModel) :
                 R.id.menu_edit -> {
                     val id = currentList[adapterPosition].livestock.id
                     val mBundle = Bundle()
-                    mBundle.putInt("id", id)
+                    if (id != null) {
+                        mBundle.putInt("id", id)
+                    }
                     itemView.findNavController().navigate(
                         R.id.action_breedingRecordFragment_to_editLivestockFragment,
                         mBundle

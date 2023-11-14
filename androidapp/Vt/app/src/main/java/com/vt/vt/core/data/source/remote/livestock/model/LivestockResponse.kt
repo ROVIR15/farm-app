@@ -19,7 +19,7 @@ data class LivestockResponse(
 
 data class LivestockResponseItem(
     @field:SerializedName("id")
-    val id: Int,
+    val id: Int? = null,
     @field:SerializedName("bangsa")
     val bangsa: String,
     @field:SerializedName("created_at")

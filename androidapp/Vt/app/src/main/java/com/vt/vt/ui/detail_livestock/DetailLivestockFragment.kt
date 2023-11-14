@@ -73,27 +73,14 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private fun setupViewPager() {
-        val fragmentBundles = arrayListOf(
-            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
-            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
-            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
-            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
-            Bundle().apply { putInt("livestockId", receiveId.toInt()) },
-        )
-
-        val adapter = ViewPagerDetailLivestockAdapter(
-            fragmentBundles, requireActivity().supportFragmentManager, lifecycle
-        )
-        binding.viewPager.adapter = adapter
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Berat Badan"
-                1 -> tab.text = "Kesehatan"
-                2 -> tab.text = "BCS"
-                3 -> tab.text = "Pakan"
-                4 -> tab.text = "Tinggi Badan"
-            }
-        }.attach()
+        val fragmentBundles = Bundle().apply { putInt("livestockId", receiveId.toInt()) }
+        val adapter = ViewPagerDetailLivestockAdapter(this, fragmentBundles)
+        with(binding) {
+            viewPager.adapter = adapter
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
+        }
     }
 
     override fun onDestroy() {
@@ -112,5 +99,15 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
         return false
+    }
+
+    companion object {
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1_breeding,
+            R.string.tab_text_2_breeding,
+            R.string.tab_text_3_breeding,
+            R.string.tab_text_4_breeding,
+            R.string.tab_text_5_breeding,
+        )
     }
 }

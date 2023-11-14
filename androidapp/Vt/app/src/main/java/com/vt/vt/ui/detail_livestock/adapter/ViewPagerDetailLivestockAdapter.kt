@@ -2,8 +2,6 @@ package com.vt.vt.ui.detail_livestock.adapter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.vt.vt.ui.detail_livestock.tab_layout.bcs.BcsFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.beratbadan.WeightFragment
@@ -12,29 +10,23 @@ import com.vt.vt.ui.detail_livestock.tab_layout.pakan.PakanFragment
 import com.vt.vt.ui.detail_livestock.tab_layout.tinggi_badan.HeightTabLayoutFragment
 
 class ViewPagerDetailLivestockAdapter(
-    private val fragmentBundle: ArrayList<Bundle>,
-    fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
-) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    fm: Fragment,
+    private val mBundle: Bundle
+) : FragmentStateAdapter(fm) {
 
-    override fun getItemCount(): Int {
-        return fragmentBundle.size
-    }
+    override fun getItemCount(): Int = 5
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = fragmentBundle[position].getInt("Id").let {
-            when (position) {
-                0 -> WeightFragment()
-                1 -> HealthRecordsFragment()
-                2 -> BcsFragment()
-                3 -> PakanFragment()
-                4 -> HeightTabLayoutFragment()
-                else -> throw IllegalArgumentException("Invalid position: $position")
-            }
+        var fragment: Fragment? = null
+        when (position) {
+            0 -> fragment = WeightFragment()
+            1 -> fragment = HealthRecordsFragment()
+            2 -> fragment = BcsFragment()
+            3 -> fragment = PakanFragment()
+            4 -> fragment = HeightTabLayoutFragment()
         }
-        fragment.arguments = fragmentBundle[position]
-
-        return fragment
+        fragment?.arguments = mBundle
+        return fragment as Fragment
     }
 
 }

@@ -20,6 +20,7 @@ import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
 import com.vt.vt.databinding.FragmentEditLivestockBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
+import com.vt.vt.ui.rekam_perkawinan.dialog.EditBreedingDialogFragment
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
@@ -147,12 +148,10 @@ class EditLivestockFragment : Fragment() {
                     }
                 }
                 livestockViewModel.livestocksMaleEmitter.observe(viewLifecycleOwner) { livestockMale ->
-                    val dataEmpty = "-- Pilih Livestock Jantan --"
-                    val livestockMales = livestockMale.map {
+                    val nameArray = livestockMale.map {
                         it.name
                     }.toTypedArray()
-                    val dataSpinner = arrayOf(dataEmpty) + livestockMales
-                    adapterSpinner(binding.spinnerPilihLivestockJantan, dataSpinner)
+                    adapterSpinner(binding.spinnerPilihLivestockJantan, nameArray)
                     val desiredId = livestock?.descendant?.parentMaleId
                     val position = findPositionById(livestockMale, desiredId)
                     if (desiredId != null) {
@@ -165,12 +164,10 @@ class EditLivestockFragment : Fragment() {
                     }
                 }
                 livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemale ->
-                    val dataEmpty = "-- Pilih Livestock Betina --"
                     val livestockFemaleArray = livestockFemale.map {
                         it.name
                     }.toTypedArray()
-                    val dataSpinner = arrayOf(dataEmpty) + livestockFemaleArray
-                    adapterSpinner(binding.spinnerPilihLivestockBetina, dataSpinner)
+                    adapterSpinner(binding.spinnerPilihLivestockBetina, livestockFemaleArray)
                     val desiredId = livestock?.descendant?.parentFemaleId
                     val position = findPositionById(livestockFemale, desiredId)
                     if (desiredId != null) {

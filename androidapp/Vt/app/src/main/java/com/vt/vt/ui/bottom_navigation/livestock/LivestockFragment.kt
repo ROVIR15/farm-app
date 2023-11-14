@@ -20,6 +20,7 @@ class LivestockFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val livestockViewModel: LivestockViewModel by viewModels()
+    private val livestockAdapter by lazy { LivestockAdapter(requireActivity(), livestockViewModel) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -30,6 +31,12 @@ class LivestockFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         livestockViewModel.getLivestocks()
+        with(binding) {
+            recyclerView.adapter = livestockAdapter
+            recyclerView.layoutManager = LinearLayoutManager(
+                requireActivity(), LinearLayoutManager.VERTICAL, false
+            )
+        }
         observerView()
     }
 
@@ -63,14 +70,7 @@ class LivestockFragment : Fragment() {
     }
 
     private fun setRecyclerView(data: List<LivestockResponseItem>) {
-        val livestockAdapter = LivestockAdapter(requireActivity(), livestockViewModel)
         livestockAdapter.submitList(data)
-        with(binding) {
-            recyclerView.adapter = livestockAdapter
-            recyclerView.layoutManager = LinearLayoutManager(
-                requireActivity(), LinearLayoutManager.VERTICAL, false
-            )
-        }
     }
 
     private fun showLoading(state: Boolean) {

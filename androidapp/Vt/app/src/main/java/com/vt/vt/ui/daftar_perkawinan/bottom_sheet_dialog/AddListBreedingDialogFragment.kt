@@ -132,7 +132,7 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
                 binding.spinnerChooseMaleAddAnimalMating.adapter = adapter
                 binding.spinnerChooseMaleAddAnimalMating.selected { position ->
                     livestockMales[position].name
-                    livestockMaleId = livestockMales[position].id.toInt()
+                    livestockMaleId = livestockMales[position].id
                 }
             }
             livestockViewModel.livestocksFemaleEmitter.observe(viewLifecycleOwner) { livestockFemales ->

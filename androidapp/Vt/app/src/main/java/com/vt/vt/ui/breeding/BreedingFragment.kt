@@ -84,8 +84,7 @@ class BreedingFragment : Fragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinner.adapter = adapter
                 spinner.selected { position ->
-                    livestockId = livestock[position].id
-
+                    livestockId = livestock[position].id!!
                 }
             }
             isError().observe(viewLifecycleOwner) {

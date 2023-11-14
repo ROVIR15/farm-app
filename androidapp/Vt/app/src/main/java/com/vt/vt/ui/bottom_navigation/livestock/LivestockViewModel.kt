@@ -64,7 +64,12 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
         launch(action = {
             val response = livestockVtRepository.getLivestocksMale()
             if (response.isSuccessful) {
-                _livestocksMaleEmitter.postValue(response.body())
+                val dataEmpty = mutableListOf(
+                    livestockMaleResponseItem
+                )
+                val listToMutable = response.body()?.toMutableList()
+                listToMutable?.addAll(0, dataEmpty)
+                _livestocksMaleEmitter.postValue(listToMutable!!)
             } else {
                 isError.postValue(response.errorBody().toString())
             }
@@ -79,7 +84,12 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
         launch(action = {
             val response = livestockVtRepository.getLivestocksFemale()
             if (response.isSuccessful) {
-                _livestocksFemaleEmitter.postValue(response.body())
+                val dataEmpty = mutableListOf(
+                    livestockFemaleResponseItem
+                )
+                val listToMutable = response.body()?.toMutableList()
+                listToMutable?.addAll(0, dataEmpty)
+                _livestocksFemaleEmitter.postValue(listToMutable!!)
             } else {
                 isError.postValue(response.errorBody().toString())
             }
@@ -88,5 +98,28 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
                 isError.postValue("No Internet Connection")
             }
         })
+    }
+
+    companion object {
+        val livestockMaleResponseItem = LivestockResponseItem(
+            null,
+            "Bangsa",
+            "2023-01-01",
+            "2023",
+            "Empty List",
+            "1",
+            "Empty List",
+            "-- Pilih Livestock Jantan --"
+        )
+        val livestockFemaleResponseItem = LivestockResponseItem(
+            null,
+            "Bangsa",
+            "2023-01-01",
+            "2023",
+            "Empty List",
+            "1",
+            "Empty List",
+            "-- Pilih Livestock Betina --"
+        )
     }
 }

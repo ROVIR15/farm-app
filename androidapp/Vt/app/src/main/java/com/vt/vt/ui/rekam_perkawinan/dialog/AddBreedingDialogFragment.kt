@@ -25,7 +25,6 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentAddBreedingDialogBinding? = null
     private val binding get() = _binding!!
-    private var onBottomSheetDialogListener: OnBottomSheetListener? = null
 
     private val recordBreedingViewModel by viewModels<RecordBreedingViewModel>()
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()

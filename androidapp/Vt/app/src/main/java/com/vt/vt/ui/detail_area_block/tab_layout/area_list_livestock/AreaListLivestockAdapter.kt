@@ -63,7 +63,9 @@ class AreaListLivestockAdapter(private val livestockViewModel: LivestockViewMode
                 R.id.btn_info -> {
                     val id = currentList[adapterPosition].id
                     val mBundle = Bundle()
-                    mBundle.putInt("id", id)
+                    if (id != null) {
+                        mBundle.putInt("id", id)
+                    }
                     itemView.findNavController()
                         .navigate(
                             R.id.action_detailAreaBlockFragment_to_detailLivestockFragment,
@@ -78,7 +80,9 @@ class AreaListLivestockAdapter(private val livestockViewModel: LivestockViewMode
                 R.id.menu_edit -> {
                     val getId = currentList[adapterPosition].id
                     val mBundle = Bundle()
-                    mBundle.putInt("id", getId)
+                    if (getId != null) {
+                        mBundle.putInt("id", getId)
+                    }
                     itemView.findNavController()
                         .navigate(
                             R.id.action_detailAreaBlockFragment_to_editLivestockFragment,

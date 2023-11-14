@@ -160,7 +160,7 @@ class FatteningFragment : Fragment(), View.OnClickListener {
 
         btnSave?.setOnClickListener {
             mBundle = Bundle()
-            mBundle.putInt("livestockId", livestockId)
+            livestockId?.let { mBundle.putInt("livestockId", it) }
             navDirectionPage(buttonId, 1)
             dialog.dismiss()
         }
@@ -227,6 +227,6 @@ class FatteningFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        var livestockId: Int = 0
+        var livestockId: Int? = null
     }
 }

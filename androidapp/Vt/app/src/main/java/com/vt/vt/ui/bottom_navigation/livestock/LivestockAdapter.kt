@@ -54,12 +54,14 @@ class LivestockAdapter(
                             R.id.menu_edit_livestock -> {
                                 val id = currentList[adapterPosition].id
                                 val mBundle = Bundle()
-                                mBundle.putInt("id", id)
-                                v.findNavController()
-                                    .navigate(
-                                        R.id.action_navigation_livestock_to_editLivestockFragment,
-                                        mBundle
-                                    )
+                                if (id != null) {
+                                    mBundle.putInt("id", id)
+                                    v.findNavController()
+                                        .navigate(
+                                            R.id.action_navigation_livestock_to_editLivestockFragment,
+                                            mBundle
+                                        )
+                                }
                                 true
                             }
 
@@ -99,7 +101,7 @@ class LivestockAdapter(
                 R.id.btn_info -> {
                     val id = currentList[adapterPosition].id
                     val mBundle = Bundle()
-                    mBundle.putInt("id", id)
+                    id?.let { mBundle.putInt("id", it) }
                     v.findNavController()
                         .navigate(
                             R.id.action_navigation_livestock_to_detailLivestockFragment,
