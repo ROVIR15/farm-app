@@ -14,6 +14,9 @@ data class BreedingByIdResponse(
     @field:SerializedName("livestock_female")
     val livestockFemale: LivestockFemale? = null,
 
+    @field:SerializedName("livestock_female_name")
+    val livestockFemaleName: String? = null,
+
     @field:SerializedName("breeding_history")
     val breedingHistory: List<BreedingHistoryItem>? = null,
 
@@ -31,6 +34,9 @@ data class BreedingByIdResponse(
 
     @field:SerializedName("livestock_male")
     val livestockMale: LivestockMale? = null,
+
+    @field:SerializedName("livestock_male_name")
+    val livestockMaleName: String? = null,
 
     @field:SerializedName("pregnancy")
     val pregnancy: Pregnancy,

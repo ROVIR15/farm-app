@@ -17,15 +17,22 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.vt.vt.R
+import com.vt.vt.core.data.source.remote.fattening.model.BcsResults
+import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
+import com.vt.vt.core.data.source.remote.fattening.model.WeightResults
 import com.vt.vt.databinding.FragmentFatteningBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 
 @AndroidEntryPoint
 class FatteningFragment : Fragment(), View.OnClickListener {
@@ -33,6 +40,7 @@ class FatteningFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
 
     private val livestockViewModel by viewModels<LivestockViewModel>()
+    private val fatteningViewModel by viewModels<FatteningViewModel>()
 
     private lateinit var mBundle: Bundle
     private lateinit var lineChart: LineChart
@@ -47,10 +55,14 @@ class FatteningFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lineChart = binding.linechartFattening
-        setupLineChart()
         with(binding) {
             ivDatePicker.setOnClickListener {
-                PickDatesUtils.setupDatePicker(requireActivity(), binding.tvFatteningDate)
+                PickDatesUtils.pickMonthAndYear(
+                    requireActivity(),
+                    tvFatteningDate
+                ) { selectedDate ->
+                    fatteningViewModel.updateSelectedDate(selectedDate)
+                }
             }
             contentFatteningCategoryWeightRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryBcsRecord.setOnClickListener(this@FatteningFragment)
@@ -58,11 +70,33 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             contentFatteningCategoryFoodRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryHeightRecord.setOnClickListener(this@FatteningFragment)
         }
+        observerFatteningView()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun observerFatteningView() {
+        fatteningViewModel.apply {
+            observeLoading().observe(viewLifecycleOwner) { isLoading ->
+                binding.homeRefreshLayout.isRefreshing = isLoading
+            }
+            currentDate.observe(viewLifecycleOwner) { selectedDate ->
+                val inputDateFormat = SimpleDateFormat("MM-yyyy", Locale.getDefault())
+                val outputDateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+                val date = inputDateFormat.parse(selectedDate)
+                binding.tvFatteningDate.text = date?.let { outputDateFormat.format(it) }
+                getFatteningGraph(selectedDate.toString())
+                binding.homeRefreshLayout.setOnRefreshListener {
+                    getFatteningGraph(selectedDate.toString())
+                    binding.homeRefreshLayout.isRefreshing = false
+                }
+
+            }
+            getFatteningGraphEmitter.observe(viewLifecycleOwner) { fattening ->
+                if (fattening != null) setupLineChart(fattening)
+            }
+            isError().observe(viewLifecycleOwner) { errorMessage ->
+                Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun observerView(spinner: Spinner) {
@@ -86,40 +120,81 @@ class FatteningFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun setupLineChart() {
-        val values = ArrayList<Entry>()
-        values.add(Entry(1f, 10f))
-        values.add(Entry(2f, 20f))
-        values.add(Entry(3f, 15f))
-        values.add(Entry(4f, 30f))
-        values.add(Entry(5f, 25f))
+    private fun setupLineChart(apiData: FatteningResponse) {
+        if (apiData.bcsResults?.date.isNullOrEmpty() and apiData.bcsResults?.score.isNullOrEmpty() or apiData.weightResults?.date.isNullOrEmpty() and apiData.weightResults?.score.isNullOrEmpty()) {
+            lineChart.setNoDataText("Data bulan ini belum tersedia.")
+            lineChart.clear()
+            return
+        }
+        val (bcsEntries, weightEntries) = generateEntries(apiData.bcsResults, apiData.weightResults)
+        setupDataSet(
+            bcsEntries, weightEntries, apiData.bcsResults?.label, apiData.weightResults?.label
+        )
+        val generateBarLabel = apiData.weightResults?.date?.let { generateBarLabel(it) }
+        lineChart.xAxis?.valueFormatter = IndexAxisValueFormatter(generateBarLabel)
+        lineChart.xAxis?.position = XAxis.XAxisPosition.BOTTOM
+        lineChart.xAxis?.granularity = 2f
+        lineChart.axisLeft?.axisMinimum = 0f
 
-        val dataSet = LineDataSet(values, "DataSet 1")
-        dataSet.color = Color.BLUE
-        dataSet.setCircleColor(Color.BLUE)
+        lineChart.axisRight?.isEnabled = false
+        lineChart.animateXY(3000, 3000)
+        lineChart.invalidate()
+    }
+
+    private fun generateBarLabel(dataVals: List<String>?): ArrayList<String> {
+        val barLabels = ArrayList<String>()
+        if (dataVals != null) {
+            for (i in dataVals.indices) {
+                barLabels.add(dataVals[i])
+            }
+        }
+        return barLabels
+    }
+
+    private fun generateEntries(
+        resultBcs: BcsResults?, resultWeight: WeightResults?
+    ): Pair<List<Entry>, List<Entry>> {
+        val entriesBcs = ArrayList<Entry>()
+        val entriesWeightResults = ArrayList<Entry>()
+
+        resultBcs?.date?.forEachIndexed { index, _ ->
+            resultBcs.score?.getOrNull(index)?.toFloat()?.let {
+                entriesBcs.add(Entry(index.toFloat(), it))
+            }
+        }
+        resultWeight?.date?.forEachIndexed { index, _ ->
+            resultWeight.score?.getOrNull(index)?.toFloat()?.let {
+                entriesWeightResults.add(Entry(index.toFloat(), it))
+            }
+        }
+
+        return Pair(entriesBcs, entriesWeightResults)
+    }
+
+    private fun setupDataSet(
+        entries1: List<Entry>, entries2: List<Entry>, label1: String?, label2: String?
+    ) {
+        val dataSet1 = LineDataSet(entries1, label1)
+        val dataSet2 = LineDataSet(entries2, label2)
+
+        customizeDataSet(dataSet1, Color.BLUE)
+        customizeDataSet(dataSet2, Color.RED)
+
+        val dataSets: ArrayList<ILineDataSet> = ArrayList()
+        dataSets.add(dataSet1)
+        dataSets.add(dataSet2)
+
+        val lineData = LineData(dataSets)
+        lineChart.data = lineData
+    }
+
+
+    private fun customizeDataSet(dataSet: LineDataSet, color: Int) {
+        dataSet.color = color
+        dataSet.setCircleColor(color)
         dataSet.lineWidth = 2f
         dataSet.circleRadius = 6f
         dataSet.setDrawCircleHole(false)
-
-        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-        dataSets.add(dataSet)
-
-        val lineData = LineData(dataSets)
-
-        lineChart.data = lineData
-
-        // Customize X-axis
-        val xAxis = lineChart.xAxis
-        xAxis?.position = XAxis.XAxisPosition.BOTTOM
-
-        // Customize Y-axis
-        val yAxisLeft = lineChart.axisLeft
-        yAxisLeft?.axisMinimum = 0f
-
-        // Hide right Y-axis
-        lineChart.axisRight?.isEnabled = false
-
-        lineChart.invalidate()
     }
 
     override fun onClick(v: View?) {
@@ -177,8 +252,7 @@ class FatteningFragment : Fragment(), View.OnClickListener {
                     1 -> {
                         if (!mBundle.isEmpty) {
                             view?.findNavController()?.navigate(
-                                R.id.action_fatteningFragment_to_rekamBeratBadanFragment,
-                                mBundle
+                                R.id.action_fatteningFragment_to_rekamBeratBadanFragment, mBundle
                             )
                         }
                     }
@@ -188,12 +262,9 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             2 -> {
                 when (option) {
                     1 -> {
-                        if (!mBundle.isEmpty)
-                            view?.findNavController()
-                                ?.navigate(
-                                    R.id.action_fatteningFragment_to_rekamBCSFragment,
-                                    mBundle
-                                )
+                        if (!mBundle.isEmpty) view?.findNavController()?.navigate(
+                            R.id.action_fatteningFragment_to_rekamBCSFragment, mBundle
+                        )
                     }
                 }
             }
@@ -201,12 +272,9 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             3 -> {
                 when (option) {
                     1 -> {
-                        if (!mBundle.isEmpty)
-                            view?.findNavController()
-                                ?.navigate(
-                                    R.id.action_fatteningFragment_to_rekamKesehatanFragment,
-                                    mBundle
-                                )
+                        if (!mBundle.isEmpty) view?.findNavController()?.navigate(
+                            R.id.action_fatteningFragment_to_rekamKesehatanFragment, mBundle
+                        )
                     }
                 }
             }
@@ -214,16 +282,18 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             4 -> {
                 when (option) {
                     1 -> {
-                        if (!mBundle.isEmpty)
-                            view?.findNavController()
-                                ?.navigate(
-                                    R.id.action_fatteningFragment_to_rekamTinggiBadanFragment,
-                                    mBundle
-                                )
+                        if (!mBundle.isEmpty) view?.findNavController()?.navigate(
+                            R.id.action_fatteningFragment_to_rekamTinggiBadanFragment, mBundle
+                        )
                     }
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

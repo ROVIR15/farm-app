@@ -24,6 +24,7 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     private val binding get() = _binding!!
 
     private val listBreedingViewModel: ListBreedingViewModel by viewModels()
+    private val listAnimalMatingAdapter by lazy { ListAnimalMatingsAdapter(listBreedingViewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +48,10 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 listBreedingViewModel.getAllBreedings()
                 refreshPage.isRefreshing = false
             }
+            recyclerViewListAnimalMatings.adapter = listAnimalMatingAdapter
+            recyclerViewListAnimalMatings.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
         }
         observerView()
     }
@@ -80,13 +85,7 @@ class ListAnimalMatingsFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private fun setupRecyclerView(data: List<BreedingResponseItem>) {
-        val adapter = ListAnimalMatingsAdapter(listBreedingViewModel)
-        adapter.submitList(data)
-        with(binding) {
-            recyclerViewListAnimalMatings.adapter = adapter
-            recyclerViewListAnimalMatings.layoutManager =
-                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        }
+        listAnimalMatingAdapter.submitList(data)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

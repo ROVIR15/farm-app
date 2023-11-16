@@ -22,7 +22,6 @@ import com.vt.vt.ui.rekam_perkawinan.dialog.AddBreedingDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.AddHistoryBreedingDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.ChangeBreedingStatusDialogFragment
 import com.vt.vt.ui.rekam_perkawinan.dialog.EditBreedingDialogFragment
-import com.vt.vt.utils.formatDateBreeding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -80,7 +79,6 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 showLoading(it)
             }
             breedingByIdEmitter.observe(viewLifecycleOwner) { breeding ->
-                val createdAt = formatDateBreeding(breeding.createdAt, "dd-MMMM-yyyy")
                 val desiredSledId = breeding.sledId?.toInt()
                 sledViewModel.sledItems.observe(viewLifecycleOwner) { sled ->
                     with(binding) {
@@ -96,11 +94,11 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                         }
                     }
                 }
-                binding.tvRecordMatingDate.text = createdAt
-                binding.tvLivestockMale.text = breeding.livestockMale?.name.toString()
-                binding.tvLivestockFemale.text = breeding.livestockFemale?.name.toString()
-                binding.swithMaterialRecordMating.isChecked = breeding.pregnancy.isActive
-                originalToggleState = breeding.pregnancy.isActive
+                binding.tvRecordMatingDate.text = breeding.createdAt
+                binding.tvLivestockMale.text = breeding.livestockMaleName.toString()
+                binding.tvLivestockFemale.text = breeding.livestockFemaleName.toString()
+//                binding.swithMaterialRecordMating.isChecked = breeding.pregnancy.isActive
+//                originalToggleState = breeding.pregnancy.isActive
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

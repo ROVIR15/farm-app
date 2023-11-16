@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
-import com.vt.vt.core.data.source.base.bottomdialog.listener.OnBottomSheetListener
 import com.vt.vt.databinding.FragmentAddBreedingDialogBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
 import com.vt.vt.ui.rekam_perkawinan.RecordBreedingViewModel
@@ -50,6 +49,8 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
                 val name = edtNameAnimalChild.text.toString().trim()
                 val nation = edtCountry.text.toString().trim()
                 val description = edtDescription.text.toString().trim()
+                val weight = edtWeight.text.toString().trim().toDouble()
+                val height = edtHeight.text.toString().trim().toDouble()
                 val gender = spinnerGender.selectedItemId.toInt()
                 val createAt = formatterDateFromCalendar(tvAnimalChildDate.text.toString().trim())
                 if (name.isNotEmpty() && nation.isNotEmpty() && description.isNotEmpty() && createAt.isNotEmpty() && gender != 0 && blockId != 0 && sledId != 0) {
@@ -61,6 +62,7 @@ class AddBreedingDialogFragment : BottomSheetDialogFragment() {
                             nation,
                             description,
                             blockId,
+                            weight, height,
                             sledId,
                             createAt
                         )

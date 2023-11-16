@@ -15,6 +15,7 @@ import com.vt.vt.core.data.source.remote.categories.model.*
 import com.vt.vt.core.data.source.remote.expenditure.AddExpenditureRequest
 import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
 import com.vt.vt.core.data.source.remote.farm_profile.model.*
+import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
 import com.vt.vt.core.data.source.remote.feeding_record.model.*
 import com.vt.vt.core.data.source.remote.health_record.model.*
 import com.vt.vt.core.data.source.remote.height_record.HeightRecordResponse
@@ -201,7 +202,7 @@ interface ApiService {
     @GET("api/breedings")
     suspend fun getBreedings(): Response<List<BreedingResponseItem>>
 
-    @GET("api/breeding/{id}")
+    @GET("api/v1.1/breeding-info/{id}")
     suspend fun getBreedingById(@Path("id") id: String): Response<BreedingByIdResponse>
 
     @POST("api/breeding")
@@ -224,6 +225,10 @@ interface ApiService {
         @Path("id") id: String,
         @Body pregnancyRequest: PregnancyRequest
     ): Response<BreedingResponse>
+
+    // Fattening
+    @GET("api/feeding-graph")
+    suspend fun getFatteningGraph(@Query("month-year") monthYear: String): Response<FatteningResponse>
 
     // Budget
     @GET("api/budget")

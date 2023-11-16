@@ -51,7 +51,6 @@ class AddEditDataBarangJasaFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("BARANG JASA ", "IS EDIT ? ${IS_UPDATE_DATA}")
         if (IS_UPDATE_DATA) {
             receiveId = arguments?.getInt("id").toString()
             dataBarangDanJasaViewModel.getProductById(receiveId)
@@ -107,7 +106,6 @@ class AddEditDataBarangJasaFragment : Fragment() {
             }
             isCreatedProduct.observe(viewLifecycleOwner) {
                 view?.findNavController()?.popBackStack()
-                Log.e("barang error", "error view 500 ${it?.message.toString()}")
                 Toast.makeText(requireContext(), it?.status, Toast.LENGTH_SHORT).show()
             }
             getProductEmitter.observe(viewLifecycleOwner) { data ->
@@ -130,7 +128,6 @@ class AddEditDataBarangJasaFragment : Fragment() {
                     .show()
             }
             isError().observe(viewLifecycleOwner) {
-                Log.e("barang error", "error view")
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
@@ -165,7 +162,7 @@ class AddEditDataBarangJasaFragment : Fragment() {
     private val requestPermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             permissions.entries.forEach {
-                Log.e("LOG_TAG", "${it.key} = ${it.value}")
+                Log.d("LOG_TAG", "${it.key} = ${it.value}")
             }
         }
 

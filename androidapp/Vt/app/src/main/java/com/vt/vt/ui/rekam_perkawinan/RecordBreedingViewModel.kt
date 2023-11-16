@@ -41,19 +41,42 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
             error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
     }
 
-    fun createLambing(breedingId: Int, name: String, gender: Int, bangsa: String, description: String, blockAreaId: Int, sledId: Int, birthDate: String){
+    fun createLambing(
+        breedingId: Int,
+        name: String,
+        gender: Int,
+        bangsa: String,
+        description: String,
+        blockAreaId: Int,
+        weightScore: Double,
+        heightScore: Double,
+        sledId: Int,
+        birthDate: String
+    ) {
         launch(action = {
-            val lambingRequest = LambingRequest(bangsa, gender, sledId, birthDate, name, description, breedingId, blockAreaId )
+            val lambingRequest = LambingRequest(
+                bangsa,
+                gender,
+                sledId,
+                birthDate,
+                name,
+                description,
+                breedingId,
+                weightScore,
+                heightScore,
+                blockAreaId
+            )
             val response = breedingVtRepository.createLambing(lambingRequest)
             if (response.isSuccessful) {
                 _createBreedingEmitter.postValue(response.body())
             } else {
                 isError.postValue(response.message())
             }
-        }, error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
+        },
+            error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
     }
 
-    fun createHistoryBreeding(createAt: String, breedingId: Int, remarks: String){
+    fun createHistoryBreeding(createAt: String, breedingId: Int, remarks: String) {
         launch(action = {
             val historyBreedingRequest = HistoryBreedingRequest(createAt, breedingId, remarks)
             val response = breedingVtRepository.createHistoryBreeding(historyBreedingRequest)
@@ -62,10 +85,11 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
             } else {
                 isError.postValue(response.message())
             }
-        }, error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
+        },
+            error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
     }
 
-    fun deleteLambing(id: String){
+    fun deleteLambing(id: String) {
         launch(action = {
             val response = breedingVtRepository.deleteLambing(id)
             if (response.isSuccessful) {
@@ -73,10 +97,11 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
             } else {
                 isError.postValue(response.message())
             }
-        }, error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
+        },
+            error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
     }
 
-    fun updatePregnancy(id:String, createdAt: String, isActive: Boolean ,remarks: String? ){
+    fun updatePregnancy(id: String, createdAt: String, isActive: Boolean, remarks: String?) {
         launch(action = {
             val pregnancyRequest = PregnancyRequest(createdAt, isActive, remarks)
             val response = breedingVtRepository.updatePregnancy(id, pregnancyRequest)
@@ -85,6 +110,7 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
             } else {
                 isError.postValue(response.message())
             }
-        }, error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
+        },
+            error = { networkError -> if (networkError.isNetworkError) isError.postValue("No Internet Connection") })
     }
 }
