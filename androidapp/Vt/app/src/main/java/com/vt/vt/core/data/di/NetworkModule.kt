@@ -2,8 +2,8 @@ package com.vt.vt.core.data.di
 
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.vt.vt.core.data.session_manager.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.dummy.auth.SessionPreferencesDataStoreManager
 import com.vt.vt.utils.loggingInterceptor
 import dagger.Module
 import dagger.Provides

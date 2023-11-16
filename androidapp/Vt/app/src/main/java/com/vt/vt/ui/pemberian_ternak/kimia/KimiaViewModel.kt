@@ -2,7 +2,7 @@ package com.vt.vt.ui.pemberian_ternak.kimia
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vt.vt.core.data.source.remote.dummy.SessionFeedingDataStoreManager
+import com.vt.vt.core.data.session_manager.SessionFeedingDataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
