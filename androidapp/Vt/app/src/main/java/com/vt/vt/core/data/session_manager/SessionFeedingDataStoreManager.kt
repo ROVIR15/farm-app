@@ -39,6 +39,32 @@ class SessionFeedingDataStoreManager(context: Context) {
         }
     }
 
+    suspend fun deleteItemFromList(key: Int, index: Int) {
+        val existingData = loadMap().first().toMutableMap()
+
+        // Check if the key exists in the map
+        if (existingData.containsKey(key)) {
+            // Get the list associated with the key
+            val list = existingData[key]?.toMutableList()
+
+            // Check if the index is within the bounds of the list
+            if (list != null && index in 0 until list.size) {
+                // Remove the item at the specified index
+                list.removeAt(index)
+
+                // Update the map with the modified list
+                existingData[key] = list
+
+                // Save the updated map to SharedPreferences
+                val mapString = Gson().toJson(existingData)
+                sessionForFeedingDataStore.edit { preferences ->
+                    preferences[mapKey] = mapString
+                }
+            }
+        }
+    }
+
+
     fun loadMap(): Flow<Map<Int, MutableList<ConsumptionRecordItem>>> {
         val mapType: Type =
             object : TypeToken<Map<Int, MutableList<ConsumptionRecordItem>>>() {}.type

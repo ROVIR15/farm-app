@@ -476,7 +476,7 @@
         </fragment>
         <fragment
             android:id="@+id/pemberianTernakFragment"
-            android:name="com.vt.vt.ui.pemberian_ternak.PemberianTernakFragment"
+            android:name="com.vt.vt.ui.pemberian_ternak.FeedingFragment"
             android:label="fragment_pemberian_ternak"
             tools:layout="@layout/fragment_pemberian_ternak">
             <argument

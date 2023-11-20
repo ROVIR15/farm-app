@@ -39,8 +39,13 @@
     <string name="tab_text_4_breeding">Pakan</string>
     <string name="tab_text_5_breeding">Tinggi Badan</string>
 
-    <!--  Fattening/Record Food  -->
+    <!--  Feeding Record Food  -->
     <string name="feeding_is_complete">Klik Simpan atau Batal untuk Membatalkan</string>
+    <string name="unknown_category">Unknown Category</string>
+    <string name="category_hijauan">Kategori Hijauan</string>
+    <string name="category_kimia">Kategori Kimia</string>
+    <string name="category_vitamin">Kategori Vitamin</string>
+    <string name="category_tambahan">Kategori Tambahan</string>
 
     <!--  Spinner Product Category  -->
     <string-array name="product_category_array">

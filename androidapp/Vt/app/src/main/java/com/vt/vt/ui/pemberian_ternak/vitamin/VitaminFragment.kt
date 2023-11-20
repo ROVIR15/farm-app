@@ -18,7 +18,7 @@ import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordI
 import com.vt.vt.databinding.FragmentVitaminBinding
 import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
-import com.vt.vt.ui.pemberian_ternak.PemberianTernakViewModel
+import com.vt.vt.ui.pemberian_ternak.FeedingViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
@@ -35,7 +35,7 @@ class VitaminFragment : Fragment() {
 
     private val vitaminViewModel by viewModels<VitaminViewModel>()
     private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
-    private val pemberianTernakViewModel by viewModels<PemberianTernakViewModel>()
+    private val feedingViewModel by viewModels<FeedingViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
     private var skuId: Int = 0
@@ -82,7 +82,7 @@ class VitaminFragment : Fragment() {
                     val map = mapOf(
                         receiveBlockId!! to consumptionRecordItem
                     )
-                    pemberianTernakViewModel.push(map)
+                    feedingViewModel.push(map)
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
@@ -96,7 +96,7 @@ class VitaminFragment : Fragment() {
     }
 
     private fun observerView() {
-        pemberianTernakViewModel.apply {
+        feedingViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 binding.loading.progressBar.isVisible = isLoading
             }
@@ -109,20 +109,20 @@ class VitaminFragment : Fragment() {
             observeException().observe(viewLifecycleOwner) { e ->
                 Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
             }
-            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
-                if (isCommitSuccessful) {
-                    binding.loading.progressBar.isVisible = true
-                    lifecycleScope.launch {
-                        vitaminViewModel.setButtonVitamin(receiveBlockId!!, false)
-                        delay(1000)
-                        withContext(Dispatchers.Main) {
-                            binding.btnSimpanVitamin.isEnabled = false
-                            view?.findNavController()?.popBackStack()
-                        }
-                    }
-                } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
-                    .show()
-            }
+//            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
+//                if (isCommitSuccessful) {
+//                    binding.loading.progressBar.isVisible = true
+//                    lifecycleScope.launch {
+//                        vitaminViewModel.setButtonVitamin(receiveBlockId!!, false)
+//                        delay(1000)
+//                        withContext(Dispatchers.Main) {
+//                            binding.btnSimpanVitamin.isEnabled = false
+//                            view?.findNavController()?.popBackStack()
+//                        }
+//                    }
+//                } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+//                    .show()
+//            }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }

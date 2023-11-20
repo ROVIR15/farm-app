@@ -92,7 +92,6 @@ class ListAnimalMatingsAdapter(private val listBreedingViewModel: ListBreedingVi
 
     }
 
-
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<BreedingResponseItem?> =
             object : DiffUtil.ItemCallback<BreedingResponseItem?>() {
@@ -108,13 +107,6 @@ class ListAnimalMatingsAdapter(private val listBreedingViewModel: ListBreedingVi
                     newItem: BreedingResponseItem
                 ): Boolean {
                     return oldItem == newItem
-                }
-
-                override fun getChangePayload(
-                    oldItem: BreedingResponseItem,
-                    newItem: BreedingResponseItem
-                ): Any? {
-                    return super.getChangePayload(oldItem, newItem)
                 }
             }
     }

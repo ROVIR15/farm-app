@@ -18,7 +18,10 @@ class ListBarangDanJasaViewModel @Inject constructor(private val productsVtRepos
     val productsEmitter: LiveData<List<ProductResponseItem>> = _productsEmitter
 
     private val _deleteProductEmitter = MutableLiveData<ProductResponse>()
-    val isDeletedProduct: LiveData<ProductResponse> =_deleteProductEmitter
+    val isDeletedProduct: LiveData<ProductResponse> = _deleteProductEmitter
+    fun getProductBySkuId(id: Int): ProductResponseItem? {
+        return _productsEmitter.value?.firstOrNull { it.skuId == id }
+    }
 
     fun getAllProducts() {
         launch(action = {
@@ -37,7 +40,7 @@ class ListBarangDanJasaViewModel @Inject constructor(private val productsVtRepos
         })
     }
 
-    fun deleteProduct(id: String){
+    fun deleteProduct(id: String) {
         launch(action = {
             val response = productsVtRepository.deleteProductById(id)
             if (response.isSuccessful) {

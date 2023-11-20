@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.session_manager.SessionFeedingDataStoreManager
+import com.vt.vt.core.data.source.base.BaseViewModel
 import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
 import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
 import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordResponse
@@ -16,7 +16,7 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
-class PemberianTernakViewModel @Inject constructor(
+class FeedingViewModel @Inject constructor(
     private val sessionFeedingDataStoreManager: SessionFeedingDataStoreManager,
     private val feedingVtRepository: FeedingVtRepository
 ) : BaseViewModel() {
@@ -39,6 +39,16 @@ class PemberianTernakViewModel @Inject constructor(
                 isException.postValue(e)
             } finally {
                 _pushFeeding.postValue(isCommitSuccessful to map)
+            }
+        }
+    }
+
+    fun deleteByItem(key: Int, index: Int) {
+        viewModelScope.launch {
+            try {
+                sessionFeedingDataStoreManager.deleteItemFromList(key, index)
+            } catch (e: Exception) {
+                isException.postValue(e)
             }
         }
     }
