@@ -3,6 +3,7 @@ package com.vt.vt.core.data.source.repository
 import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockMoveSledRequest
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
@@ -37,4 +38,7 @@ class LivestockVtRepository @Inject constructor(private val apiService: ApiServi
 
     suspend fun getLivestocksFemale(): Response<List<LivestockResponseItem>> =
         apiService.getLivestocksFemale()
+
+    suspend fun getOptionLivestock(): Response<List<LivestockOptionResponseItem>> =
+        apiService.getListOptionLivestock()
 }

@@ -2,7 +2,9 @@ package com.vt.vt.ui.bottom_navigation.livestock
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
@@ -18,6 +20,10 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
     private val _livestockEmitter = MutableLiveData<List<LivestockResponseItem>>()
     val livestockItems: LiveData<List<LivestockResponseItem>> = _livestockEmitter
 
+    private val _livestockOptionEmitter = MutableLiveData<List<LivestockOptionResponseItem>>()
+    val livestockOptionEmitter: LiveData<List<LivestockOptionResponseItem>> =
+        _livestockOptionEmitter
+
     private val _livestocksMaleEmitter = MutableLiveData<List<LivestockResponseItem>>()
     val livestocksMaleEmitter: LiveData<List<LivestockResponseItem>> = _livestocksMaleEmitter
 
@@ -26,6 +32,17 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
 
     private val _deleteLivestock = MutableLiveData<LivestockResponse>()
     val deleteLivestock: LiveData<LivestockResponse> = _deleteLivestock
+
+    fun filterLivestock(query: String?): LiveData<List<LivestockOptionResponseItem>> {
+        return _livestockOptionEmitter.map { livestockList ->
+            if (query.isNullOrBlank()) {
+                livestockList
+            } else {
+                livestockList.filter { it.name?.contains(query, true) == true }
+            }
+        }
+    }
+
     fun getLivestocks() {
         launch(action = {
             val response = livestockVtRepository.getLivestock()
@@ -54,6 +71,24 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
                 isError.postValue(response.errorBody().toString())
             }
         }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+    fun getListOptionLivestock() {
+        launch(action = {
+            val response = livestockVtRepository.getOptionLivestock()
+            if (response.isSuccessful) {
+                _livestockOptionEmitter.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message.toString())
+            }
+        }, error = { networkError ->
+            isError.postValue("You don't have any livestock")
             if (networkError.isNetworkError) {
                 isError.postValue("No Internet Connection")
             }

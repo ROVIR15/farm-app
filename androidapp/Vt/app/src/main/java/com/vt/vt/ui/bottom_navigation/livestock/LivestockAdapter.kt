@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
@@ -22,6 +24,7 @@ class LivestockAdapter(
 ) :
     ListAdapter<LivestockResponseItem, LivestockAdapter.ViewHolder>(DIFF_CALLBACK) {
 
+    private var lastPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemLivestockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
@@ -42,6 +45,7 @@ class LivestockAdapter(
             binding.btnOptionsItemLivestock.setOnClickListener(this)
             binding.btnRecord.setOnClickListener(this)
             binding.btnInfo.setOnClickListener(this)
+            setAnimation(itemView, adapterPosition)
         }
 
         override fun onClick(v: View?) {
@@ -109,6 +113,24 @@ class LivestockAdapter(
                         )
                 }
             }
+        }
+    }
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        if (position > lastPosition) {
+            val anim = ScaleAnimation(
+                0.0f,
+                1.0f,
+                0.0f,
+                1.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f
+            )
+            anim.duration = 350
+            viewToAnimate.startAnimation(anim)
+            lastPosition = position
         }
     }
 

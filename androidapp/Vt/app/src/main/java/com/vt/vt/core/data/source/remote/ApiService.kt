@@ -137,6 +137,9 @@ interface ApiService {
     @GET("api/livestocks?gender=2")
     suspend fun getLivestocksFemale(): Response<List<LivestockResponseItem>>
 
+    @GET("api/v1.1/options/livestocks")
+    suspend fun getListOptionLivestock(): Response<List<LivestockOptionResponseItem>>
+
     // Get Categories
     @GET("api/categories")
     suspend fun getCategories(): Response<List<CategoriesResponseItem>>

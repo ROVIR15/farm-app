@@ -10,6 +10,7 @@
     <!--  Background  -->
     <color name="bg_blue">#3D51BB</color>
     <!--  NEW COLORS  -->
+    <color name="purple_100">#E9ECFF</color>
     <color name="green_grass">#E8FFEB</color>
     <color name="green_text_button">#38b000</color>
     <color name="blue_icon">#1573FE</color>

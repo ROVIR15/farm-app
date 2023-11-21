@@ -10,42 +10,19 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.runBlocking
-import okhttp3.Cookie
-import okhttp3.CookieJar
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-    @Provides
-    fun provideCookies(): CookieJar {
-        return object : CookieJar {
-            private val cookieStore = HashMap<String, List<Cookie>>()
-
-            override fun loadForRequest(url: HttpUrl): List<Cookie> {
-                val cookies: List<Cookie>? = cookieStore[url.host]
-                return cookies ?: ArrayList<Cookie>()
-            }
-
-            override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-                if (cookies.isNotEmpty()) {
-                    cookieStore[url.host] = cookies
-                }
-            }
-        }
-    }
-
     @Provides
     fun provideOkHttpClient(pref: SessionPreferencesDataStoreManager): OkHttpClient {
         val client: OkHttpClient =
             OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .cookieJar(provideCookies())
                 .addInterceptor { chain ->
                     val newRequest = chain.request().newBuilder()
                     var token: String?

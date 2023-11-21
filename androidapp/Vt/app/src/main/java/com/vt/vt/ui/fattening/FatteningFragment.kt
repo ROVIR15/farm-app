@@ -1,13 +1,10 @@
 package com.vt.vt.ui.fattening
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,16 +16,14 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.fattening.model.BcsResults
 import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
 import com.vt.vt.core.data.source.remote.fattening.model.WeightResults
 import com.vt.vt.databinding.FragmentFatteningBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
+import com.vt.vt.ui.fattening.dialog.FatteningBottomDialogFragment
 import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -38,7 +33,7 @@ import java.util.Locale
 class FatteningFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentFatteningBinding? = null
     private val binding get() = _binding!!
-
+    private val optionLivestockBottomDialog by lazy { FatteningBottomDialogFragment() }
     private val livestockViewModel by viewModels<LivestockViewModel>()
     private val fatteningViewModel by viewModels<FatteningViewModel>()
 
@@ -55,6 +50,7 @@ class FatteningFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lineChart = binding.linechartFattening
+        mBundle = Bundle()
         with(binding) {
             ivDatePicker.setOnClickListener {
                 PickDatesUtils.pickMonthAndYear(
@@ -95,27 +91,6 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             }
             isError().observe(viewLifecycleOwner) { errorMessage ->
                 Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun observerView(spinner: Spinner) {
-        livestockViewModel.apply {
-            getLivestocks()
-            livestockItems.observe(viewLifecycleOwner) { livestock ->
-                val nameArrays = livestock.map { item ->
-                    item.name
-                }.toTypedArray()
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArrays)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-                spinner.selected { position ->
-                    livestockId = livestock[position].id
-
-                }
-            }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -200,19 +175,43 @@ class FatteningFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.content_fattening_category_weight_record -> {
-                showBottomSheet(1)
+                val navigationToWeightRecord =
+                    R.id.action_fatteningFragment_to_rekamBeratBadanFragment
+                mBundle.putInt("navigate", navigationToWeightRecord)
+                optionLivestockBottomDialog.arguments = mBundle
+                optionLivestockBottomDialog.show(
+                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
+                )
             }
 
             R.id.content_fattening_category_bcs_record -> {
-                showBottomSheet(2)
+                val navigationToBcsRecord =
+                    R.id.action_fatteningFragment_to_rekamBCSFragment
+                mBundle.putInt("navigate", navigationToBcsRecord)
+                optionLivestockBottomDialog.arguments = mBundle
+                optionLivestockBottomDialog.show(
+                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
+                )
             }
 
             R.id.content_fattening_category_health_record -> {
-                showBottomSheet(3)
+                val navigationToHealthRecord =
+                    R.id.action_fatteningFragment_to_rekamKesehatanFragment
+                mBundle.putInt("navigate", navigationToHealthRecord)
+                optionLivestockBottomDialog.arguments = mBundle
+                optionLivestockBottomDialog.show(
+                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
+                )
             }
 
             R.id.content_fattening_category_height_record -> {
-                showBottomSheet(4)
+                val navigationToHeightRecord =
+                    R.id.action_fatteningFragment_to_rekamTinggiBadanFragment
+                mBundle.putInt("navigate", navigationToHeightRecord)
+                optionLivestockBottomDialog.arguments = mBundle
+                optionLivestockBottomDialog.show(
+                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
+                )
             }
 
             R.id.content_fattening_category_food_record -> {
@@ -222,81 +221,8 @@ class FatteningFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("InflateParams")
-    private fun showBottomSheet(buttonId: Int) {
-        val dialog = BottomSheetDialog(requireActivity())
-        val view = layoutInflater.inflate(R.layout.bottom_sheet_farm, null)
-        dialog.setContentView(view)
-        val spinner = view.findViewById<Spinner>(R.id.sp_select_farm)
-        val btnSave = view.findViewById<MaterialButton>(R.id.btn_save)
-        val btnCancel = view.findViewById<MaterialButton>(R.id.btn_cancel)
-        observerView(spinner)
-        dialog.show()
-
-        btnSave?.setOnClickListener {
-            mBundle = Bundle()
-            livestockId?.let { mBundle.putInt("livestockId", it) }
-            navDirectionPage(buttonId, 1)
-            dialog.dismiss()
-        }
-        btnCancel?.setOnClickListener {
-            navDirectionPage(buttonId, 2)
-            dialog.dismiss()
-        }
-    }
-
-    private fun navDirectionPage(buttonId: Int, option: Int?) {
-        when (buttonId) {
-            1 -> {
-                when (option) {
-                    1 -> {
-                        if (!mBundle.isEmpty) {
-                            view?.findNavController()?.navigate(
-                                R.id.action_fatteningFragment_to_rekamBeratBadanFragment, mBundle
-                            )
-                        }
-                    }
-                }
-            }
-
-            2 -> {
-                when (option) {
-                    1 -> {
-                        if (!mBundle.isEmpty) view?.findNavController()?.navigate(
-                            R.id.action_fatteningFragment_to_rekamBCSFragment, mBundle
-                        )
-                    }
-                }
-            }
-
-            3 -> {
-                when (option) {
-                    1 -> {
-                        if (!mBundle.isEmpty) view?.findNavController()?.navigate(
-                            R.id.action_fatteningFragment_to_rekamKesehatanFragment, mBundle
-                        )
-                    }
-                }
-            }
-
-            4 -> {
-                when (option) {
-                    1 -> {
-                        if (!mBundle.isEmpty) view?.findNavController()?.navigate(
-                            R.id.action_fatteningFragment_to_rekamTinggiBadanFragment, mBundle
-                        )
-                    }
-                }
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        var livestockId: Int? = null
     }
 }
