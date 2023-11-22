@@ -2,7 +2,9 @@ package com.vt.vt.ui.file_provider.datakandang
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
 import com.vt.vt.core.data.source.remote.sleds.model.SledOptionResponseItem
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
@@ -30,6 +32,16 @@ class DataKandangViewModel @Inject constructor(private val sledsVtRepository: Sl
 
     private val _sledOptionsEmitter = MutableLiveData<List<SledOptionResponseItem>>()
     val sledOptionsEmitter: LiveData<List<SledOptionResponseItem>> = _sledOptionsEmitter
+
+    fun filterSled(query: String?): LiveData<List<SledOptionResponseItem>> {
+        return _sledOptionsEmitter.map { sledList ->
+            if (query.isNullOrBlank()) {
+                sledList
+            } else {
+                sledList.filter { it.name?.contains(query, true) == true }
+            }
+        }
+    }
 
     fun getSledOptions() {
         launch(action = {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -19,7 +20,7 @@ import com.vt.vt.ui.file_provider.datakandang.DataKandangViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ListSledBottomDialogFragment : BottomSheetDialogFragment() {
+class ListSledBottomDialogFragment : BottomSheetDialogFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentListSledBottomDialogBinding? = null
     private val binding get() = _binding!!
 
@@ -44,7 +45,7 @@ class ListSledBottomDialogFragment : BottomSheetDialogFragment() {
             listOptionSled.adapter = listSledBottomSheetAdapter
             listOptionSled.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-
+            binding.searchSled.setOnQueryTextListener(this@ListSledBottomDialogFragment)
             listSledBottomSheetAdapter.onClickListener = { sled ->
                 btnSave.setOnClickListener {
                     val livestockId = receiveLivestockArgument
@@ -85,6 +86,12 @@ class ListSledBottomDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun observeFilteredSled(query: String?) {
+        sledViewModel.filterSled(query).observe(viewLifecycleOwner) { filteredList ->
+            listSledBottomSheetAdapter.submitList(filteredList)
+        }
+    }
+
     private fun listSledOptions(data: List<SledOptionResponseItem>) {
         listSledBottomSheetAdapter.submitList(data)
     }
@@ -97,6 +104,17 @@ class ListSledBottomDialogFragment : BottomSheetDialogFragment() {
         )
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        observeFilteredSled(query)
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        observeFilteredSled(newText)
+        return true
+    }
+
+
     override fun getTheme(): Int {
         return R.style.AppBottomSheetDialogTheme
     }
@@ -105,5 +123,4 @@ class ListSledBottomDialogFragment : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
