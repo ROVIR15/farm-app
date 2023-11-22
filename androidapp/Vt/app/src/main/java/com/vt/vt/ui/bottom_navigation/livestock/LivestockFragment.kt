@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.databinding.FragmentLivestockBinding
+import com.vt.vt.ui.bottom_navigation.livestock.dialog.ListSledBottomDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +37,16 @@ class LivestockFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(
                 requireActivity(), LinearLayoutManager.VERTICAL, false
             )
+            livestockAdapter.onClickListener = { livestock ->
+                val mBundle = Bundle()
+                livestock.id?.let { mBundle.putInt("livestockId", it) }
+                val listSledBottomSheetDialog = ListSledBottomDialogFragment()
+                listSledBottomSheetDialog.arguments = mBundle
+                listSledBottomSheetDialog.show(
+                    childFragmentManager,
+                    listSledBottomSheetDialog::class.java.simpleName
+                )
+            }
         }
         observerView()
     }

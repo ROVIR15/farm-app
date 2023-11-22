@@ -23,7 +23,7 @@ class LivestockAdapter(
     private val livestockViewModel: LivestockViewModel
 ) :
     ListAdapter<LivestockResponseItem, LivestockAdapter.ViewHolder>(DIFF_CALLBACK) {
-
+    var onClickListener: ((LivestockResponseItem) -> Unit)? = null
     private var lastPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemLivestockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -86,6 +86,12 @@ class LivestockAdapter(
                                     }
                                     .create()
                                     .show()
+                                true
+                            }
+
+                            R.id.menu_move_livestock -> {
+                                val id = currentList[adapterPosition]
+                                onClickListener?.invoke(id)
                                 true
                             }
 

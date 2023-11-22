@@ -17,9 +17,6 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
     private val _getLivestockEmitter = MutableLiveData<LivestockByIdResponse?>()
     val getLivestockById: LiveData<LivestockByIdResponse?> = _getLivestockEmitter
 
-    private val _livestockMoveSledEmitter = MutableLiveData<LivestockResponse>()
-    val livestockMoveSledEmitter: LiveData<LivestockResponse> = _livestockMoveSledEmitter
-
     private val _updateLivestock = MutableLiveData<LivestockResponse?>()
     val isUpdateLivestock: LiveData<LivestockResponse?> = _updateLivestock
 
@@ -34,23 +31,6 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
         }, error = { networkError ->
             if (networkError.isNetworkError) {
                 isError.postValue("No Connection Internet")
-            }
-        })
-    }
-
-    fun livestockMoveSled(livestockId: Int, sledId: Int, blockAreaId: Int) {
-        launch(action = {
-            val livestockMoveSledRequest =
-                LivestockMoveSledRequest(livestockId, sledId, blockAreaId)
-            val response = livestockVtRepository.livestockMoveSled(livestockMoveSledRequest)
-            if (response.isSuccessful) {
-                _livestockMoveSledEmitter.postValue(response.body())
-            } else {
-                isError.postValue(response.message())
-            }
-        }, error = { networkError ->
-            if (networkError.isNetworkError) {
-                isError.postValue("No Internet Connection")
             }
         })
     }

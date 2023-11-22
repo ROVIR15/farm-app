@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.livestock.model.LivestockMoveSledRequest
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
@@ -30,6 +31,9 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
     private val _livestocksFemaleEmitter = MutableLiveData<List<LivestockResponseItem>>()
     val livestocksFemaleEmitter: LiveData<List<LivestockResponseItem>> = _livestocksFemaleEmitter
 
+    private val _livestockMoveSledEmitter = MutableLiveData<LivestockResponse>()
+    val livestockMoveSledEmitter: LiveData<LivestockResponse> = _livestockMoveSledEmitter
+
     private val _deleteLivestock = MutableLiveData<LivestockResponse>()
     val deleteLivestock: LiveData<LivestockResponse> = _deleteLivestock
 
@@ -41,6 +45,23 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
                 livestockList.filter { it.name?.contains(query, true) == true }
             }
         }
+    }
+
+    fun livestockMoveSled(livestockId: Int, sledId: Int, blockAreaId: Int) {
+        launch(action = {
+            val livestockMoveSledRequest =
+                LivestockMoveSledRequest(livestockId, sledId, blockAreaId)
+            val response = livestockVtRepository.livestockMoveSled(livestockMoveSledRequest)
+            if (response.isSuccessful) {
+                _livestockMoveSledEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
     }
 
     fun getLivestocks() {

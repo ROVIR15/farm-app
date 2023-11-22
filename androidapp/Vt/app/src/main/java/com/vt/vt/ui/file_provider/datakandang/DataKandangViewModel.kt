@@ -3,6 +3,7 @@ package com.vt.vt.ui.file_provider.datakandang
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.sleds.model.SledOptionResponseItem
 import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
@@ -26,6 +27,24 @@ class DataKandangViewModel @Inject constructor(private val sledsVtRepository: Sl
 
     private val _updateSledById = MutableLiveData<SledsResponse>()
     val updateSledById: LiveData<SledsResponse> = _updateSledById
+
+    private val _sledOptionsEmitter = MutableLiveData<List<SledOptionResponseItem>>()
+    val sledOptionsEmitter: LiveData<List<SledOptionResponseItem>> = _sledOptionsEmitter
+
+    fun getSledOptions() {
+        launch(action = {
+            val response = sledsVtRepository.getSledOptions()
+            if (response.isSuccessful) {
+                _sledOptionsEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
 
     fun createSled(sledId: Int?, name: String?, description: String?) {
         launch(action = {
@@ -76,7 +95,7 @@ class DataKandangViewModel @Inject constructor(private val sledsVtRepository: Sl
         })
     }
 
-    fun updateSledById(id: String, blockAreaId: Int? ,name: String?, description: String?) {
+    fun updateSledById(id: String, blockAreaId: Int?, name: String?, description: String?) {
         launch(action = {
             val sledRequest = SledRequest(blockAreaId, name, description)
             val response = sledsVtRepository.updateSledById(id, sledRequest)

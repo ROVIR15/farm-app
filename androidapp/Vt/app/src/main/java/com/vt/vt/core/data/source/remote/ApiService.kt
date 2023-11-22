@@ -83,6 +83,9 @@ interface ApiService {
     @GET("api/sleds")
     suspend fun getAllSleds(): Response<List<SledsResponseItem>>
 
+    @GET("api/v1.1/options/sleds")
+    suspend fun getSledOptions(): Response<List<SledOptionResponseItem>>
+
     @DELETE("/api/sled/{id}")
     suspend fun deleteSledById(
         @Path("id") id: String
