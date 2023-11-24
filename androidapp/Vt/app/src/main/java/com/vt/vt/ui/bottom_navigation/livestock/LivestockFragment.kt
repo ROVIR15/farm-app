@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vt.vt.core.data.source.base.DebouncingQueryTextListener
 import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
 import com.vt.vt.databinding.FragmentLivestockBinding
 import com.vt.vt.ui.bottom_navigation.livestock.dialog.ListSledBottomDialogFragment
@@ -22,6 +23,8 @@ class LivestockFragment : Fragment() {
 
     private val livestockViewModel: LivestockViewModel by viewModels()
     private val livestockAdapter by lazy { LivestockAdapter(requireActivity(), livestockViewModel) }
+    private lateinit var debouncingQueryTextListener: DebouncingQueryTextListener
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -37,6 +40,17 @@ class LivestockFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(
                 requireActivity(), LinearLayoutManager.VERTICAL, false
             )
+            debouncingQueryTextListener =
+                DebouncingQueryTextListener(viewLifecycleOwner.lifecycle) { query ->
+                    query?.let {
+                        if (it.isEmpty()) {
+                            livestockViewModel.getLivestocks()
+                        } else {
+                            livestockViewModel.searchLivestock(query)
+                        }
+                    }
+                }
+            searchView.setOnQueryTextListener(debouncingQueryTextListener)
             livestockAdapter.onClickListener = { livestock ->
                 val mBundle = Bundle()
                 livestock.id?.let { mBundle.putInt("livestockId", it) }
@@ -94,9 +108,13 @@ class LivestockFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        debouncingQueryTextListener.destroy()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
 }

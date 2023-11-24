@@ -109,6 +109,11 @@ interface ApiService {
     @GET("api/livestocks")
     suspend fun getLivestocks(): Response<List<LivestockResponseItem>>
 
+    @GET("api/v1.1/search-livestocks")
+    suspend fun getListBySearch(
+        @Query("search_params") search_params: String?
+    ): Response<List<LivestockResponseItem>>
+
     @GET("api/livestock/{id}")
     suspend fun getLivestockById(
         @Path("id") id: String

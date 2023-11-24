@@ -82,6 +82,24 @@ class LivestockViewModel @Inject constructor(private val livestockVtRepository: 
         })
     }
 
+    fun searchLivestock(query: String?) {
+        launch(action = {
+            val response = livestockVtRepository.searchLivestock(query)
+            if (response.isSuccessful) {
+                _livestockEmitter.postValue(response.body())
+            } else {
+                val errorBody = JSONObject(response.errorBody()!!.charStream().readText())
+                val message = errorBody.getString("message")
+                isError.postValue(message.toString())
+            }
+        }, error = { networkError ->
+            isError.postValue("You don't have any livestock")
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
     fun deleteLivestockById(id: String) {
         launch(action = {
             val response = livestockVtRepository.deleteLivestockById(id)

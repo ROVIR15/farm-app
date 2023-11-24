@@ -13,6 +13,9 @@ import javax.inject.Inject
 
 class LivestockVtRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun getLivestock(): Response<List<LivestockResponseItem>> = apiService.getLivestocks()
+    suspend fun searchLivestock(query: String?): Response<List<LivestockResponseItem>> =
+        apiService.getListBySearch(query)
+
     suspend fun createLivestock(livestockRequest: LivestockRequest): Response<LivestockResponse> =
         apiService.createLivestock(livestockRequest)
 
