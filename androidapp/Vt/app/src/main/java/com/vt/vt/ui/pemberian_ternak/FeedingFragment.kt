@@ -1,14 +1,12 @@
 package com.vt.vt.ui.pemberian_ternak
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -95,52 +93,19 @@ class FeedingFragment : Fragment() {
         feedingViewModel.load().observe(viewLifecycleOwner) { source ->
             handleUIFeeding(source)
         }
-        feedingViewModel.isHijauanButtonFilled(receiveBlockId!!)
-            .observe(viewLifecycleOwner) { isButtonFilled ->
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.isEnabled =
-                    isButtonFilled
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView.setBackgroundColor(
-                    if (!isButtonFilled) Color.GRAY
-                    else ContextCompat.getColor(requireActivity(), R.color.white)
-                )
-            }
-        feedingViewModel.isKimiaButtonFilled(receiveBlockId!!)
-            .observe(viewLifecycleOwner) { isButtonFilled ->
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.isEnabled =
-                    isButtonFilled
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView2.setBackgroundColor(
-                    if (!isButtonFilled) Color.GRAY
-                    else ContextCompat.getColor(requireActivity(), R.color.white)
-                )
-            }
-        feedingViewModel.isVitaminButtonFilled(receiveBlockId!!)
-            .observe(viewLifecycleOwner) { isButtonFilled ->
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.isEnabled =
-                    isButtonFilled
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView3.setBackgroundColor(
-                    if (!isButtonFilled) Color.GRAY
-                    else ContextCompat.getColor(requireActivity(), R.color.white)
-                )
-            }
-        feedingViewModel.isTambahanButtonFilled(receiveBlockId!!)
-            .observe(viewLifecycleOwner) { isButtonFilled ->
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.isEnabled =
-                    isButtonFilled
-                binding.contentPemberianMakanTernak.contentCategoryPemberianTernak.cardView4.setBackgroundColor(
-                    if (!isButtonFilled) Color.GRAY
-                    else ContextCompat.getColor(requireActivity(), R.color.white)
-                )
-            }
     }
 
     private fun handleUIFeeding(source: Map<Int, List<ConsumptionRecordItem>>) {
         val listConsumptionRecord = source[receiveBlockId]
         Log.d("FEEDING", "all list consumption : ${listConsumptionRecord}")
         if (!listConsumptionRecord.isNullOrEmpty()) {
-            if (listConsumptionRecord.size > 3) {
-                binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.VISIBLE
-                binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.GONE
-                binding.contentPemberianMakanTernak.contentHomeSubtitle.visibility = View.VISIBLE
+            if (listConsumptionRecord.isNotEmpty()) {
+                if (listConsumptionRecord.size >= 4) {
+                    binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.VISIBLE
+                    binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.GONE
+                    binding.contentPemberianMakanTernak.contentHomeSubtitle.visibility =
+                        View.VISIBLE
+                }
                 binding.contentPemberianMakanTernak.btnSave.apply {
                     visibility = View.VISIBLE
                     setOnClickListener {

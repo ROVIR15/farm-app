@@ -57,22 +57,6 @@ class FeedingViewModel @Inject constructor(
         return sessionFeedingDataStoreManager.loadMap().asLiveData()
     }
 
-    fun isHijauanButtonFilled(blockId: Int): LiveData<Boolean> {
-        return sessionFeedingDataStoreManager.isHijauanButtonFilled(blockId).asLiveData()
-    }
-
-    fun isKimiaButtonFilled(blockId: Int): LiveData<Boolean> {
-        return sessionFeedingDataStoreManager.isKimiaButtonFilled(blockId).asLiveData()
-    }
-
-    fun isVitaminButtonFilled(blockId: Int): LiveData<Boolean> {
-        return sessionFeedingDataStoreManager.isVitaminButtonFilled(blockId).asLiveData()
-    }
-
-    fun isTambahanButtonFilled(blockId: Int): LiveData<Boolean> {
-        return sessionFeedingDataStoreManager.isTambahanButtonFilled(blockId).asLiveData()
-    }
-
     // Feeding
     fun clearSessionFeeding(blockId: Int) {
         viewModelScope.launch {

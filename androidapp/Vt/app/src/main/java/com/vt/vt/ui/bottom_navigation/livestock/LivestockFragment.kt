@@ -41,7 +41,7 @@ class LivestockFragment : Fragment() {
                 requireActivity(), LinearLayoutManager.VERTICAL, false
             )
             debouncingQueryTextListener =
-                DebouncingQueryTextListener(viewLifecycleOwner.lifecycle) { query ->
+                DebouncingQueryTextListener(requireActivity().lifecycle) { query ->
                     query?.let {
                         if (it.isEmpty()) {
                             livestockViewModel.getLivestocks()

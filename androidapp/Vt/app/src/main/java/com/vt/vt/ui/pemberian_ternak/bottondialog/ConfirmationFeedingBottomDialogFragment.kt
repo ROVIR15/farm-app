@@ -75,11 +75,20 @@ class ConfirmationFeedingBottomDialogFragment : BottomSheetDialogFragment() {
                     val data = listConsumptionRecord[blockId]
                     Log.d("FEEDING", "data list in dialog : ${listConsumptionRecord}")
                     data?.let { listConsumptionRecord(it.toMutableList()) }
-                    binding.btnSave.setOnClickListener {
-                        feedingViewModel.createFeedingRecord(
-                            blockId = blockId!!,
-                            consumptionRecord = data
+                    binding.btnSave.apply {
+                        isEnabled = !data.isNullOrEmpty()
+                        setBackgroundColor(
+                            if (data.isNullOrEmpty()) Color.GRAY else ContextCompat.getColor(
+                                requireActivity(),
+                                R.color.white
+                            )
                         )
+                        setOnClickListener {
+                            feedingViewModel.createFeedingRecord(
+                                blockId = blockId!!,
+                                consumptionRecord = data
+                            )
+                        }
                     }
                 }
             }

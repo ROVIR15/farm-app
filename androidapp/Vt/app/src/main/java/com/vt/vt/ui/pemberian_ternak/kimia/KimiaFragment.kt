@@ -106,22 +106,21 @@ class KimiaFragment : Fragment() {
             observeException().observe(viewLifecycleOwner) { e ->
                 Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
             }
-//            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
-//                if (isCommitSuccessful) {
-//                    binding.loading.progressBar.isVisible = true
-//                    lifecycleScope.launch {
-//                        kimiaViewModel.setButtonKimia(receiveBlockId!!, false)
-//                        delay(1000)
-//                        withContext(Dispatchers.Main) {
-//                            binding.btnSimpanKimia.isEnabled = false
-//                            view?.findNavController()?.popBackStack()
-//                        }
-//                    }
-//                } else {
-//                    Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            }
+            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
+                if (isCommitSuccessful) {
+                    binding.loading.progressBar.isVisible = true
+                    lifecycleScope.launch {
+                        delay(500)
+                        withContext(Dispatchers.Main) {
+                            binding.btnSimpanKimia.isEnabled = false
+                            view?.findNavController()?.popBackStack()
+                        }
+                    }
+                } else {
+                    Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
