@@ -1,6 +1,6 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
-from sqlalchemy import not_
+from sqlalchemy import not_, and_
 from sqlalchemy.orm import joinedload, subqueryload
 from Product.models import Product as Product
 from Feature.models import Feature
@@ -33,12 +33,17 @@ def get_products():
     # )
 
     try:
+        farm_profile_id = current_farm_profile();
+
+        data = HasProduct.query.filter_by(farm_profile_id=farm_profile_id).with_entities(HasProduct.product_id).all()
+        data = [item.product_id for item in data]
+
         # Retrieve all product records from the database
         query = ProductHasCategory.query.options([
             subqueryload(ProductHasCategory.product),
             subqueryload(ProductHasCategory.category),
             subqueryload(ProductHasCategory.sku)
-        ]).filter(not_(ProductHasCategory.category_id == 3))
+        ]).filter(and_(not_(ProductHasCategory.category_id == 3), ProductHasCategory.product_id.in_(data)))
 
         results = []
         # Serialize the product data using the schema
