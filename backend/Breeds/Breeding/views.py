@@ -203,6 +203,14 @@ def post_new_breeding():
     data = request.get_json()  # Get the JSON data from request body
 
     try:
+        date = data.get('date')
+        
+        if date is None:
+            return jsonify({'message': 'Error'}), 405
+        
+        if not validate_date_format(date):
+            date = validate_and_transform_date(date)
+
         # Process the data or perform any desired operations
         livestock_male_id = data.get('livestock_male_id')
         livestock_female_id = data.get('livestock_female_id')
