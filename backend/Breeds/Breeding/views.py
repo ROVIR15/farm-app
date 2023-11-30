@@ -33,6 +33,8 @@ from Breeds.Lambing.schema import LambingSchema
 from Record.HeightRecord.models import HeightRecord
 from Record.WeightRecord.models import WeightRecord
 
+from utils.index import validate_date_format, validate_and_transform_date
+
 views_breeding_bp = Blueprint('views_breeding', __name__)
 
 breeding_record_schema = BreedingSchema()
@@ -161,7 +163,7 @@ def get_a_breeding(breeding_id):
                     "id": item.id,
                     "remarks": item.remarks,
                     "date": item.date if item.date is not None else item.created_at.strftime('%d %B %Y'),
-                    "created_at" : item.created_at
+                    "created_at": item.created_at
                 }
                 breeding_history.append(_item)
 
@@ -592,9 +594,9 @@ def post_lambing():
         db.session.commit()
 
         query6 = WeightRecord(livestock_id=query.id,
-                             score=height_score,
-                             date=birth_date,
-                             remarks='tinggi pertama kali')
+                              score=height_score,
+                              date=birth_date,
+                              remarks='tinggi pertama kali')
         db.session.add(query6)
         db.session.commit()
 
