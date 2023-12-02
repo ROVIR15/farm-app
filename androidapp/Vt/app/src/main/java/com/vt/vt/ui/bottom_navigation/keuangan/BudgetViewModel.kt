@@ -13,6 +13,7 @@ import com.vt.vt.core.data.source.repository.BudgetVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -89,7 +90,7 @@ class BudgetViewModel @Inject constructor(private val budgetVtRepository: Budget
         }, error = { if (it.isNetworkError) isError.postValue("No Internet Connection") })
     }
 
-    fun addBudget(budgetCategoryId: Int, amount: Double, monthYear: String) {
+    fun addBudget(budgetCategoryId: Int, amount: BigDecimal, monthYear: String) {
         launch(action = {
             val addBudgetRequest = AddBudgetRequest(budgetCategoryId, amount, monthYear)
             val response = budgetVtRepository.addBudget(addBudgetRequest)

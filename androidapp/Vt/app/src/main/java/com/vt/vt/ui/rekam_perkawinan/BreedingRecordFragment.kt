@@ -94,11 +94,11 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                         }
                     }
                 }
-                binding.tvRecordMatingDate.text = breeding.createdAt
-                binding.tvLivestockMale.text = breeding.livestockMaleName.toString()
-                binding.tvLivestockFemale.text = breeding.livestockFemaleName.toString()
-//                binding.swithMaterialRecordMating.isChecked = breeding.pregnancy.isActive
-//                originalToggleState = breeding.pregnancy.isActive
+                binding.tvRecordMatingDate.text = breeding.date
+                binding.tvLivestockMale.text = breeding.livestockMale?.name
+                binding.tvLivestockFemale.text = breeding.livestockFemale?.name
+                binding.swithMaterialRecordMating.isChecked = breeding.pregnancy.isActive
+                originalToggleState = breeding.pregnancy.isActive
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

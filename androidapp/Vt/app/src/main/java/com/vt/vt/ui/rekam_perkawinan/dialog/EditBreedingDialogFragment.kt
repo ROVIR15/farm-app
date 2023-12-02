@@ -53,7 +53,7 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
             spinnerEditBreeding.selected {
                 edtAreaEditBreeding.setText(it)
             }
-            btnSaveAddAnimalMating.setOnClickListener {
+            btnSaveEditAnimalMating.setOnClickListener {
                 val blockArea = edtAreaEditBreeding.text.toString().trim()
                 if (blockArea.isNotEmpty() && !getSled.isNullOrEmpty() && !getLivestockMale.isNullOrEmpty() && !getLivestockFemale.isNullOrEmpty()) {
                     Toast.makeText(requireActivity(), "UPDATE (API) BELOM ADA", Toast.LENGTH_SHORT)

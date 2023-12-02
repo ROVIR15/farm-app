@@ -89,6 +89,7 @@
                             style="@style/TextAppearance.MaterialComponents.Headline6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:fontFamily="@font/roboto_regular"
                             android:padding="8dp"
                             android:text="Rp.000" />
@@ -129,6 +130,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:ellipsize="end"
                                 android:fontFamily="@font/roboto_bold"
                                 android:padding="8dp"
                                 android:text="Rp.000"
@@ -140,6 +142,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:ellipsize="end"
                                 android:fontFamily="@font/roboto_bold"
                                 android:padding="8dp"
                                 android:text="Rp.000"

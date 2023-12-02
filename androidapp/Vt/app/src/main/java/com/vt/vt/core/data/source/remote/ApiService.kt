@@ -213,8 +213,11 @@ interface ApiService {
     @GET("api/breedings")
     suspend fun getBreedings(): Response<List<BreedingResponseItem>>
 
-    @GET("api/v1.1/breeding-info/{id}")
+    @GET("api/breeding/{id}")
     suspend fun getBreedingById(@Path("id") id: String): Response<BreedingByIdResponse>
+
+//    @GET("api/v1.1/breeding-info/{id}")
+//    suspend fun getBreedingInfoById(@Path("id") id: String): Response<BreedingByIdResponse>
 
     @POST("api/breeding")
     suspend fun createBreeding(@Body breedingRequest: CreateBreedingRequest): Response<BreedingResponse>

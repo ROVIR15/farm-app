@@ -18,6 +18,7 @@ import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.BigDecimal
 
 @AndroidEntryPoint
 class AddBudgetBottomSheetDialogFragment : BottomSheetDialogFragment() {
@@ -46,11 +47,19 @@ class AddBudgetBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 val dateSelected = formatterDateFromCalendar(formatter)
                 val amount = budgetValue.text.toString()
                 if (dateSelected.isNotEmpty() && amount.isNotEmpty()) {
-                    budgetCategoryId?.let {
-                        budgetViewModel.addBudget(
-                            it,
-                            amount.toDouble(),
-                            dateSelected
+                    val limit = BigDecimal("100000000")
+                    if (budgetValue.getNumericValueBigDecimal() <= limit) {
+                        budgetCategoryId?.let {
+                            budgetViewModel.addBudget(
+                                it, budgetValue.getNumericValueBigDecimal(), dateSelected
+                            )
+                        }
+                    } else {
+                        Toast.makeText(requireActivity(), "Maksimal Budget 100 Juta", Toast.LENGTH_SHORT)
+                            .show()
+                        Log.e(
+                            "ADD BUDGET",
+                            "BUDGET MORE THAN LIMIT : ${budgetValue.getNumericValueBigDecimal()}"
                         )
                     }
                 } else {

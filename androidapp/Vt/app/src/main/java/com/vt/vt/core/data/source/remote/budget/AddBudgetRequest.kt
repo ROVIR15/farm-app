@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.budget
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class AddBudgetRequest(
 
@@ -8,7 +9,7 @@ data class AddBudgetRequest(
 	val budgetCategoryId: Int,
 
 	@field:SerializedName("amount")
-	val amount: Double,
+	val amount: BigDecimal,
 
 	@field:SerializedName("month_year")
 	val monthYear: String

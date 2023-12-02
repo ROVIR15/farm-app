@@ -32,6 +32,9 @@ data class BreedingByIdResponse(
     @field:SerializedName("created_at")
     val createdAt: String? = null,
 
+    @field:SerializedName("date")
+    val date: String? = null,
+
     @field:SerializedName("livestock_male")
     val livestockMale: LivestockMale? = null,
 

@@ -14,7 +14,6 @@ import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentRecordHeightBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
-import com.vt.vt.ui.rekam_berat_badan.RekamBeratBadanViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import dagger.hilt.android.AndroidEntryPoint

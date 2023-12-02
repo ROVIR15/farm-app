@@ -106,7 +106,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_bold"
                 android:padding="8dp"
-                android:text="Nilai Berat Badan"
+                android:text="Nilai Tinggi Badan"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"

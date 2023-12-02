@@ -2,6 +2,7 @@ package com.vt.vt.ui.bottom_navigation.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,7 @@ class HomeFragment : Fragment() {
                 binding.contentHome.contentHomeGreeting.text = "Hello, ${data.message?.name}👋"
             }
             isError().observe(viewLifecycleOwner) {
+                Log.e("HOME FRAGMENT", it.toString())
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }

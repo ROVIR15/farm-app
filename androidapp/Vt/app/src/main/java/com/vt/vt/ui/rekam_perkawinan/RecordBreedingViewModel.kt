@@ -28,7 +28,6 @@ class RecordBreedingViewModel @Inject constructor(private val breedingVtReposito
     private val _updatePregnancyEmitter = MutableLiveData<BreedingResponse>()
     val updatePregnancyEmitter: LiveData<BreedingResponse> = _updatePregnancyEmitter
 
-
     fun getBreedingById(id: String) {
         launch(action = {
             val response = breedingVtRepository.getBreedingById(id)
