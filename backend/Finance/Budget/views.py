@@ -14,6 +14,7 @@ from Finance.BudgetItem.schema import BudgetItemSchema
 
 from decimal import Decimal
 
+from FarmProfile.HasExpenditure.models import HasExpenditure
 from FarmProfile.HasBudgetItem.models import HasBudgetItem
 from FarmProfile.HasIncome.models import HasIncome
 
@@ -25,6 +26,7 @@ budget_item_schema = BudgetItemSchema()
 budget_items_schema = BudgetItemSchema(many=True)
 
 expenditures_schema = ExpenditureSchema(many=True)
+
 
 @views_budget_bp.route('/budget', methods=['GET'])
 @login_required
@@ -49,7 +51,8 @@ def get_budget():
         total_income = 0
 
         query = HasBudgetItem.query.options([
-            subqueryload(HasBudgetItem.budget_item).subqueryload(BudgetItem.expenditures)
+            subqueryload(HasBudgetItem.budget_item).subqueryload(
+                BudgetItem.expenditures)
         ]).filter(
             and_(
                 HasBudgetItem.budget_item.has(func.extract(
@@ -62,16 +65,16 @@ def get_budget():
         ).all()
 
         income_query = HasIncome.query \
-                        .filter(
-                            and_(
-                                HasIncome.income.has(func.extract(
-                                    'month', Income.date) == month),
-                                HasIncome.income.has(func.extract(
-                                    'year', Income.date) == year)
-                            )
-                        ).filter_by(
-                            farm_profile_id=farm_profile_id
-                        ).all()
+            .filter(
+                and_(
+                    HasIncome.income.has(func.extract(
+                        'month', Income.date) == month),
+                    HasIncome.income.has(func.extract(
+                        'year', Income.date) == year)
+                )
+            ).filter_by(
+                farm_profile_id=farm_profile_id
+            ).all()
 
         results_income = []
         if isinstance(income_query, list) and income_query:
@@ -99,34 +102,44 @@ def get_budget():
         for koko in query:
             item = koko.budget_item
 
-            total_expenditure_on_category = 0
-            expenditures = None
-            
-            if item.expenditures and isinstance(item.expenditures, list):
-                expenditures = expenditures_schema.dump(item.expenditures)
-                # Use a list comprehension to extract the 'amount' values from the dictionaries
-                amounts = [item["amount"] for item in expenditures]
-
-                # Calculate the total expenditure by summing the amounts
-                total_expenditure_on_category = sum(amounts)
-                total_expenditure = total_expenditure + total_expenditure_on_category
-
-            total_budget_amount = total_budget_amount + item.amount
-
-            budget_left_ = Decimal(item.amount) - Decimal(total_expenditure)
-
-            data = {
-                'id': item.id,
-                'month_year': item.month_year,
-                'budget_category_id': item.budget_category.id,
-                'budget_category_name': item.budget_category.budget_category_name,
-                'month_year': item.month_year,
-                'budget_amount': item.amount,
-                'total_expenditure': total_expenditure,
-                'left': budget_left_
-                # 'created_at': item.created_at,
-            }
-            results.append(data)
+            if not any(result["budget_category_id"] == item.budget_category_id for result in results):
+                total_expenditure_on_category = 0
+                expenditures = None
+    
+                if item.expenditures and isinstance(item.expenditures, list):
+                    expenditures = expenditures_schema.dump(item.expenditures)
+                    # Use a list comprehension to extract the 'amount' values from the dictionaries
+                    amounts = [item["amount"] for item in expenditures]
+    
+                    # Calculate the total expenditure by summing the amounts
+                    total_expenditure_on_category = sum(amounts)
+                    total_expenditure = total_expenditure + total_expenditure_on_category
+    
+                total_budget_amount = total_budget_amount + total_expenditure_on_category
+    
+                budget_left_ = Decimal(item.amount) - Decimal(total_expenditure_on_category)
+    
+                data = {
+                    'id': item.id,
+                    'month_year': item.month_year,
+                    'budget_category_id': item.budget_category.id,
+                    'budget_category_name': item.budget_category.budget_category_name,
+                    'month_year': item.month_year,
+                    'budget_amount': item.amount,
+                    'total_expenditure': total_expenditure_on_category,
+                    'left': budget_left_
+                    # 'created_at': item.created_at,
+                }
+                results.append(data)
+    
+                total_expenditure_on_category = 0
+                expenditures = None
+            else:
+                # if the budget_category_id is in results
+                for _result_item in results:
+                    if(_result_item["budget_category_id"] == item.budget_category_id):
+                        _result_item["budget_amount"] += item.amount
+                        _result_item["left"] += item.amount
 
         budget_left = Decimal(total_budget_amount) - Decimal(total_expenditure)
 
