@@ -49,6 +49,7 @@ def get_budget():
         total_budget_amount = 0
         total_expenditure = 0
         total_income = 0
+        budget_left = 0
 
         query = HasBudgetItem.query.options([
             subqueryload(HasBudgetItem.budget_item).subqueryload(
@@ -105,7 +106,7 @@ def get_budget():
             if not any(result["budget_category_id"] == item.budget_category_id for result in results):
                 total_expenditure_on_category = 0
                 expenditures = None
-    
+
                 if item.expenditures and isinstance(item.expenditures, list):
                     expenditures = expenditures_schema.dump(item.expenditures)
                     # Use a list comprehension to extract the 'amount' values from the dictionaries
@@ -113,11 +114,12 @@ def get_budget():
     
                     # Calculate the total expenditure by summing the amounts
                     total_expenditure_on_category = sum(amounts)
-                    total_expenditure = total_expenditure + total_expenditure_on_category
+                    total_expenditure += total_expenditure_on_category
     
-                total_budget_amount = total_budget_amount + total_expenditure_on_category
-    
+                total_budget_amount = total_budget_amount + item.amount
+ 
                 budget_left_ = Decimal(item.amount) - Decimal(total_expenditure_on_category)
+                budget_left += budget_left_
     
                 data = {
                     'id': item.id,
@@ -125,30 +127,30 @@ def get_budget():
                     'budget_category_id': item.budget_category.id,
                     'budget_category_name': item.budget_category.budget_category_name,
                     'month_year': item.month_year,
-                    'budget_amount': item.amount,
-                    'total_expenditure': total_expenditure_on_category,
-                    'left': budget_left_
+                    'budget_amount': int(item.amount),
+                    'total_expenditure': int(total_expenditure_on_category),
+                    'left': int(budget_left_)
                     # 'created_at': item.created_at,
                 }
                 results.append(data)
     
-                total_expenditure_on_category = 0
-                expenditures = None
             else:
                 # if the budget_category_id is in results
                 for _result_item in results:
                     if(_result_item["budget_category_id"] == item.budget_category_id):
-                        _result_item["budget_amount"] += item.amount
-                        _result_item["left"] += item.amount
-
-        budget_left = Decimal(total_budget_amount) - Decimal(total_expenditure)
+                        _result_item["budget_amount"] += int(item.amount)
+                        _result_item["left"] += int(item.amount)
+                        total_budget_amount = Decimal(total_budget_amount) + Decimal(item.amount)
+                        budget_left = Decimal(budget_left) + Decimal(item.amount)
+                        total_budget_amount = int(total_budget_amount)
+                        budget_left = int(budget_left)
 
         response = {
             'month_year': month_year,
-            'total_budget_amount': total_budget_amount,
-            'total_expenditure': total_expenditure,
-            'total_income': total_income,
-            'budget_left': budget_left,
+            'total_budget_amount': int(total_budget_amount),
+            'total_expenditure': int(total_expenditure),
+            'total_income': int(total_income),
+            'budget_left': int(budget_left),
             'status': 'Lebih dari budget' if (budget_left) < 0 else 'Aman',
             'budget_breakdown': results,
             'incomes': results_income
