@@ -593,7 +593,7 @@ def post_lambing():
         db.session.add(query5)
         db.session.commit()
 
-        query6 = WeightRecord(livestock_id=query.id,
+        query6 = HeightRecord(livestock_id=query.id,
                               score=height_score,
                               date=birth_date,
                               remarks='tinggi pertama kali')

@@ -127,9 +127,9 @@ def get_budget():
                     'budget_category_id': item.budget_category.id,
                     'budget_category_name': item.budget_category.budget_category_name,
                     'month_year': item.month_year,
-                    'budget_amount': int(item.amount),
-                    'total_expenditure': int(total_expenditure_on_category),
-                    'left': int(budget_left_)
+                    'budget_amount': item.amount,
+                    'total_expenditure': total_expenditure_on_category,
+                    'left': budget_left_
                     # 'created_at': item.created_at,
                 }
                 results.append(data)
@@ -138,19 +138,17 @@ def get_budget():
                 # if the budget_category_id is in results
                 for _result_item in results:
                     if(_result_item["budget_category_id"] == item.budget_category_id):
-                        _result_item["budget_amount"] += int(item.amount)
-                        _result_item["left"] += int(item.amount)
+                        _result_item["budget_amount"] += item.amount
+                        _result_item["left"] += item.amount
                         total_budget_amount = Decimal(total_budget_amount) + Decimal(item.amount)
                         budget_left = Decimal(budget_left) + Decimal(item.amount)
-                        total_budget_amount = int(total_budget_amount)
-                        budget_left = int(budget_left)
 
         response = {
             'month_year': month_year,
-            'total_budget_amount': int(total_budget_amount),
-            'total_expenditure': int(total_expenditure),
-            'total_income': int(total_income),
-            'budget_left': int(budget_left),
+            'total_budget_amount': total_budget_amount,
+            'total_expenditure': total_expenditure,
+            'total_income': total_income,
+            'budget_left': budget_left,
             'status': 'Lebih dari budget' if (budget_left) < 0 else 'Aman',
             'budget_breakdown': results,
             'incomes': results_income
