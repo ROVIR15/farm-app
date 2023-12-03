@@ -12,7 +12,7 @@ class CustomDateTimeField(fields.DateTime):
 
 
 def validate_date_format(date_string):
-    date_formats_to_check = ['%d-%m-%Y', '%Y-%m-%d']
+    date_formats_to_check = ['%Y-%m-%d']
 
     for date_format in date_formats_to_check:
         try:

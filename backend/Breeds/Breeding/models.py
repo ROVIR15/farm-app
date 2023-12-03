@@ -10,7 +10,7 @@ class Breeding (db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     date = db.Column(db.Date(), nullable=False)
     livestock_male_id = db.Column(
-        db.Integer(), db.ForeignKey('livestock.id'), nullable=False)
+        db.Integer(), db.ForeignKey('livestock.id'))
     livestock_female_id = db.Column(
         db.Integer(), db.ForeignKey('livestock.id'), nullable=False)
     sled_id = db.Column(db.Integer(), db.ForeignKey('sled.id'), nullable=False)
