@@ -7,7 +7,7 @@ data class CreateBreedingRequest(
     @field:SerializedName("sled_id")
     val sledId: Int? = null,
 
-    @field:SerializedName("birth_date")
+    @field:SerializedName("date")
     val birthDate: String? = null,
 
     @field:SerializedName("livestock_female_id")

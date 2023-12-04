@@ -79,7 +79,7 @@ class EditLivestockFragment : Fragment() {
                 val description = edtDescription.text.toString().trim()
                 val birthDate = tvDateLivestock.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(birthDate)
-                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty() && parentMaleId != null && parentFemaleId != null
+                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty()
                 ) {
                     if (gender != 0) {
                         editLivestockViewModel.updateLivestockById(
@@ -89,8 +89,8 @@ class EditLivestockFragment : Fragment() {
                             nation,
                             description,
                             createdAt,
-                            parentFemaleId!!,
-                            parentMaleId!!,
+                            parentFemaleId,
+                            parentMaleId,
                         )
                         livestockViewModel.livestockMoveSled(
                             receiveId.toInt(),

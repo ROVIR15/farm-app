@@ -40,7 +40,7 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
         name: String?,
         gender: Int,
         nation: String?,
-        description: String?, birthDate: String?, parentFemaleId: Int, parentMaleId: Int
+        description: String?, birthDate: String?, parentFemaleId: Int?, parentMaleId: Int?
     ) {
         launch(action = {
             val livestockRequest = LivestockRequest(

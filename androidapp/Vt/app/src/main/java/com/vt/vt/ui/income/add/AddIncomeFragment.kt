@@ -17,6 +17,7 @@ import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.BigDecimal
 
 @AndroidEntryPoint
 class AddIncomeFragment : Fragment() {
@@ -52,13 +53,23 @@ class AddIncomeFragment : Fragment() {
                 val dateSelected = formatterDateFromCalendar(formatter)
                 val remarks = edtDescription.text.toString().trim()
                 val amount = amountBudget.text.toString()
+                val budget = amountBudget.getNumericValueBigDecimal()
+                val limit = BigDecimal("100000000")
                 if (dateSelected.isNotEmpty() && amount.isNotEmpty() && incomeCategoryId != null) {
-                    incomeViewModel.createIncome(
-                        dateSelected,
-                        amount.toDouble(),
-                        remarks,
-                        incomeCategoryId
-                    )
+                    if (budget <= limit) {
+                        incomeViewModel.createIncome(
+                            dateSelected,
+                            budget,
+                            remarks,
+                            incomeCategoryId
+                        )
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Budget Maksimal 100 Juta",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()

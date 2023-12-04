@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.expenditure
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class AddExpenditureRequest(
 
@@ -11,7 +12,7 @@ data class AddExpenditureRequest(
     val budgetSubCategoryId: Int,
 
     @field:SerializedName("amount")
-    val amount: Double,
+    val amount: BigDecimal,
 
     @field:SerializedName("sku_id")
     val skuId: Int? = null,

@@ -18,7 +18,6 @@ import com.vt.vt.databinding.FragmentAnggaranBinding
 import com.vt.vt.ui.anggaran.adapter.ListBudgetExpenditureAdapter
 import com.vt.vt.ui.bottom_navigation.keuangan.BudgetViewModel
 import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
-import com.vt.vt.utils.formatAsIDR
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

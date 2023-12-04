@@ -26,10 +26,9 @@ class IncomeAdapter : ListAdapter<IncomesItem, IncomeAdapter.ViewHolder>(DIFF_CA
     inner class ViewHolder(private val binding: ItemIncomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindTo(data: IncomesItem) {
-            val amount = data.amount.toString()
-            val decimalAmountValue = amount.replace(".", "").toBigDecimal()
+            val amount = data.amount?.convertRupiah()
             binding.tvTitleIncome.text = data.categoryLabel.toString()
-            binding.tvAmount.text = decimalAmountValue.convertRupiah()
+            binding.tvAmount.text = amount
             val incomeId = currentList[adapterPosition].id
             itemView.setOnClickListener {
                 val mBundle = Bundle()

@@ -20,6 +20,7 @@ import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.BigDecimal
 
 @AndroidEntryPoint
 class AddPengeluaranFragment : Fragment() {
@@ -57,18 +58,28 @@ class AddPengeluaranFragment : Fragment() {
             }
             btnSave.setOnClickListener {
                 val amount = expenditureValue.text.toString().trim()
+                val expenditure = expenditureValue.getNumericValueBigDecimal()
+                val limit = BigDecimal("100000000")
                 val remarks = edtDescription.text.toString().trim()
                 val formatter = tvPengeluaranCreatedAt.text.toString()
                 val dateSelected = formatterDateFromCalendar(formatter)
                 if (dateSelected.isNotEmpty() && amount.isNotEmpty())
-                    expenditureViewModel.addExpenditure(
-                        budgetCategoryId,
-                        budgetSubCategoryId,
-                        amount.toDouble(),
-                        skuId,
-                        remarks,
-                        dateSelected
-                    )
+                    if (expenditure <= limit) {
+                        expenditureViewModel.addExpenditure(
+                            budgetCategoryId,
+                            budgetSubCategoryId,
+                            expenditure,
+                            skuId,
+                            remarks,
+                            dateSelected
+                        )
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Maksimal Pengeluaran 100 Juta",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 else {
                     Toast.makeText(
                         requireActivity(),

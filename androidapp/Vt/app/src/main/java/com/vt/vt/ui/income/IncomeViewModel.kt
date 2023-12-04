@@ -12,6 +12,7 @@ import com.vt.vt.core.data.source.repository.IncomeVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +48,7 @@ class IncomeViewModel @Inject constructor(private val incomeVtRepository: Income
         }, error = { if (it.isNetworkError) isError.postValue("No Internet Connection") })
     }
 
-    fun createIncome(date: String, amount: Double, remarks: String?, incomeCategoryId: Int?) {
+    fun createIncome(date: String, amount: BigDecimal, remarks: String?, incomeCategoryId: Int?) {
         launch(action = {
             val incomeRequest = IncomeRequest(date, incomeCategoryId, amount, remarks)
             val response = incomeVtRepository.createIncome(incomeRequest)
@@ -62,11 +63,7 @@ class IncomeViewModel @Inject constructor(private val incomeVtRepository: Income
     }
 
     fun updateIncome(
-        id: String,
-        date: String,
-        amount: Double,
-        remarks: String?,
-        incomeCategoryId: Int?
+        id: String, date: String, amount: BigDecimal, remarks: String?, incomeCategoryId: Int?
     ) {
         launch(action = {
             val incomeRequest = IncomeRequest(date, incomeCategoryId, amount, remarks)

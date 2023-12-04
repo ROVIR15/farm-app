@@ -8,6 +8,7 @@ import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
 import com.vt.vt.core.data.source.repository.ExpenditureVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +24,7 @@ class ExpenditureViewModel @Inject constructor(private val expenditureVtReposito
     fun addExpenditure(
         budgetCategoryId: Int,
         budgetSubCategoryId: Int,
-        amount: Double,
+        amount: BigDecimal,
         skuId: Int?,
         remarks: String?,
         date: String

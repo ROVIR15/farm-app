@@ -68,16 +68,12 @@
             app:startIconDrawable="@drawable/ic_baseline_currency"
             app:startIconTint="@color/text_blue">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.cottacush.android.currencyedittext.CurrencyEditText
                 android:id="@+id/amountBudget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/bg_calendar_grey"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:inputType="numberDecimal" />
-
+                android:maxLength="11"
+                app:localeTag="id-ID" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

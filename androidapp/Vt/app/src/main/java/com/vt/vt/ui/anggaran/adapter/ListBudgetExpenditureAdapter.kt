@@ -1,5 +1,6 @@
 package com.vt.vt.ui.anggaran.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +15,8 @@ import com.vt.vt.core.data.source.remote.budget.ExpendituresItem
 import com.vt.vt.databinding.ItemAnggaranBinding
 import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
 import com.vt.vt.utils.convertRupiah
+import java.text.NumberFormat
+import java.util.Locale
 
 class ListBudgetExpenditureAdapter(private val expenditureViewModel: ExpenditureViewModel) :
     ListAdapter<ExpendituresItem, ListBudgetExpenditureAdapter.BudgetViewHolder>(DIFF_CALLBACK) {
@@ -32,9 +35,8 @@ class ListBudgetExpenditureAdapter(private val expenditureViewModel: Expenditure
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         PopupMenu.OnMenuItemClickListener {
         fun bind(expendituresItem: ExpendituresItem) {
-            val amountExpenditure = expendituresItem.amount.toString()
-            val decimalAmountExpenditureValue = amountExpenditure.replace(".", "").toBigDecimal()
-            binding.tvBudget.text = decimalAmountExpenditureValue.convertRupiah()
+            val amountExpenditure = expendituresItem.amount?.convertRupiah()
+            binding.tvBudget.text = amountExpenditure
             binding.btnOptionsExpenditure.setOnClickListener(this@BudgetViewHolder)
         }
 
@@ -72,7 +74,6 @@ class ListBudgetExpenditureAdapter(private val expenditureViewModel: Expenditure
             return false
         }
     }
-
 
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<ExpendituresItem> =

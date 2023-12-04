@@ -67,7 +67,7 @@
                 android:id="@+id/expenditure_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="7"
+                android:maxLength="11"
                 app:localeTag="id-ID" />
 
         </com.google.android.material.textfield.TextInputLayout>

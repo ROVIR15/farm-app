@@ -53,11 +53,11 @@ class AddListBreedingDialogFragment : BottomSheetDialogFragment() {
             }
             btnSaveAddAnimalMating.setOnClickListener {
                 val createdAt = tvAddAnimalMatingDate.text.toString().trim()
-                if (createdAt.isNotEmpty()) {
+                if (createdAt.isNotEmpty() && livestockFemaleId != null) {
                     listBreedingViewModel.createBreeding(
                         createdAt,
                         livestockMaleId,
-                        livestockFemaleId,
+                        livestockFemaleId!!,
                         sledId,
                         blockId
                     )

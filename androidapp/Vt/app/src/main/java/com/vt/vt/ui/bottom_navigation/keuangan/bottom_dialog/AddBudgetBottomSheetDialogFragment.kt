@@ -46,16 +46,21 @@ class AddBudgetBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 val formatter = tvShowDate.text.toString()
                 val dateSelected = formatterDateFromCalendar(formatter)
                 val amount = budgetValue.text.toString()
+                val budget = budgetValue.getNumericValueBigDecimal()
                 if (dateSelected.isNotEmpty() && amount.isNotEmpty()) {
                     val limit = BigDecimal("100000000")
-                    if (budgetValue.getNumericValueBigDecimal() <= limit) {
+                    if (budget <= limit) {
                         budgetCategoryId?.let {
                             budgetViewModel.addBudget(
-                                it, budgetValue.getNumericValueBigDecimal(), dateSelected
+                                it, budget, dateSelected
                             )
                         }
                     } else {
-                        Toast.makeText(requireActivity(), "Maksimal Budget 100 Juta", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireActivity(),
+                            "Maksimal Budget 100 Juta",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                         Log.e(
                             "ADD BUDGET",

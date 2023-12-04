@@ -2,6 +2,7 @@ package com.vt.vt.ui.income.edit
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.BigDecimal
 
 @AndroidEntryPoint
 class EditIncomeFragment : Fragment() {
@@ -56,14 +58,25 @@ class EditIncomeFragment : Fragment() {
                 val dateSelected = formatterDateFromCalendar(formatter)
                 val remarks = edtDescription.text.toString().trim()
                 val amount = amountBudget.text.toString()
+                val budget = amountBudget.getNumericValueBigDecimal()
+                val limit = BigDecimal("100000000")
                 if (dateSelected.isNotEmpty() && amount.isNotEmpty() && incomeCategoryId != null && receiveIncomeId != null) {
-                    incomeViewModel.updateIncome(
-                        receiveIncomeId.toString(),
-                        dateSelected,
-                        amount.toDouble(),
-                        remarks,
-                        incomeCategoryId
-                    )
+                    if (budget <= limit) {
+                        incomeViewModel.updateIncome(
+                            receiveIncomeId.toString(),
+                            dateSelected,
+                            budget,
+                            remarks,
+                            incomeCategoryId
+                        )
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Maksimal Budget 100 Juta",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
                         .show()
@@ -97,7 +110,7 @@ class EditIncomeFragment : Fragment() {
         }
         incomeViewModel.incomeByIdEmitter.observe(viewLifecycleOwner) { income ->
             binding.incomeCreatedAt.text = income.date.toString()
-            binding.amountBudget.setText(income.amount.toString())
+            binding.amountBudget.setText(income.amount?.toInt().toString())
             binding.edtDescription.setText(income.remarks)
         }
         incomeViewModel.isError().observe(viewLifecycleOwner) {
