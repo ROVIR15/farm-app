@@ -2,6 +2,7 @@ package com.vt.vt.core.data.di
 
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.vt.vt.BuildConfig
 import com.vt.vt.core.data.session_manager.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.remote.ApiService
 import com.vt.vt.utils.loggingInterceptor
@@ -50,7 +51,7 @@ class NetworkModule {
     @Provides
     fun provideApiService(client: OkHttpClient): ApiService {
         val gson = GsonBuilder().setLenient().create()
-        val retrofit = Retrofit.Builder().baseUrl("https://ekoarianto.tech/")
+        val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).client(client).build()
         return retrofit.create(ApiService::class.java)
     }

@@ -61,20 +61,12 @@ class BreedingFragment : Fragment() {
             contentBreedingCategoryRecordWeight.setOnClickListener {
                 val navigationToWeightRecord =
                     R.id.action_breedingFragment_to_rekamBeratBadanFragment
-                mBundle.putInt("navigate", navigationToWeightRecord)
-                optionLivestockBottomDialog.arguments = mBundle
-                optionLivestockBottomDialog.show(
-                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
-                )
+                navigateToRecord(navigationToWeightRecord)
             }
             contentBreedingCategoryRecordHealth.setOnClickListener {
                 val navigationToHealthRecord =
                     R.id.action_breedingFragment_to_rekamKesehatanFragment
-                mBundle.putInt("navigate", navigationToHealthRecord)
-                optionLivestockBottomDialog.arguments = mBundle
-                optionLivestockBottomDialog.show(
-                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
-                )
+                navigateToRecord(navigationToHealthRecord)
             }
             contentBreedingCategoryRecordAnimalMating.setOnClickListener {
                 findNavController().navigate(R.id.action_breedingFragment_to_listAnimalMatingsFragment)
@@ -141,9 +133,13 @@ class BreedingFragment : Fragment() {
         lineChart?.invalidate()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
+    private fun navigateToRecord(destinationId: Int) {
+        mBundle.putInt("navigate", destinationId)
+        optionLivestockBottomDialog.arguments = mBundle
+        optionLivestockBottomDialog.also {
+            it.show(childFragmentManager, it::class.java.simpleName)
+        }
     }
 
     private fun showLoading(state: Boolean) {
@@ -160,6 +156,11 @@ class BreedingFragment : Fragment() {
         )
 
         progressBar?.visibility = if (state) View.VISIBLE else View.GONE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

@@ -50,7 +50,6 @@ class FatteningFragment : Fragment(), View.OnClickListener {
         lineChart = binding.linechartFattening
         mBundle = Bundle()
         livestockId = arguments?.getString("livestockId")
-        println("awiaowkoawkoawkoawkaw $livestockId")
         with(binding) {
             ivDatePicker.setOnClickListener {
                 PickDatesUtils.pickMonthAndYear(
