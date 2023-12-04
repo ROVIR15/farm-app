@@ -49,6 +49,7 @@ class LivestockAdapter(
         }
 
         override fun onClick(v: View?) {
+            val id = currentList[adapterPosition].id
             when (v?.id) {
                 R.id.btn_options_item_livestock -> {
                     val popup = PopupMenu(v.context, v)
@@ -56,7 +57,6 @@ class LivestockAdapter(
                     popup.setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.menu_edit_livestock -> {
-                                val id = currentList[adapterPosition].id
                                 val mBundle = Bundle()
                                 if (id != null) {
                                     mBundle.putInt("id", id)
@@ -104,8 +104,15 @@ class LivestockAdapter(
                 }
 
                 R.id.btn_record -> {
-                    v.findNavController()
-                        .navigate(R.id.action_navigation_livestock_to_fatteningFragment)
+                    val mBundle = Bundle()
+                    if (id != null) {
+                        mBundle.putString("livestockId", id.toString())
+                        v.findNavController()
+                            .navigate(
+                                R.id.action_navigation_livestock_to_fatteningFragment,
+                                mBundle
+                            )
+                    }
                 }
 
                 R.id.btn_info -> {

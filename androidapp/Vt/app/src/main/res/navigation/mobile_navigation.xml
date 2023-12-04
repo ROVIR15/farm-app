@@ -258,6 +258,10 @@
         android:name="com.vt.vt.ui.fattening.FatteningFragment"
         android:label="fragment_fattening"
         tools:layout="@layout/fragment_fattening">
+        <argument
+            android:name="livestockId"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_fatteningFragment_to_rekamKesehatanFragment"
             app:destination="@id/rekamKesehatanFragment" />

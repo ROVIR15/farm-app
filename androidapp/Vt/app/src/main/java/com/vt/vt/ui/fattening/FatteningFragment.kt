@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -21,25 +22,22 @@ import com.vt.vt.core.data.source.remote.fattening.model.BcsResults
 import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
 import com.vt.vt.core.data.source.remote.fattening.model.WeightResults
 import com.vt.vt.databinding.FragmentFatteningBinding
-import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.fattening.dialog.FatteningBottomDialogFragment
 import com.vt.vt.utils.PickDatesUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 @AndroidEntryPoint
 class FatteningFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentFatteningBinding? = null
     private val binding get() = _binding!!
     private val optionLivestockBottomDialog by lazy { FatteningBottomDialogFragment() }
-    private val livestockViewModel by viewModels<LivestockViewModel>()
     private val fatteningViewModel by viewModels<FatteningViewModel>()
 
     private lateinit var mBundle: Bundle
     private lateinit var lineChart: LineChart
-
+    private var livestockId: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -51,6 +49,8 @@ class FatteningFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         lineChart = binding.linechartFattening
         mBundle = Bundle()
+        livestockId = arguments?.getString("livestockId")
+        println("awiaowkoawkoawkoawkaw $livestockId")
         with(binding) {
             ivDatePicker.setOnClickListener {
                 PickDatesUtils.pickMonthAndYear(
@@ -177,41 +177,25 @@ class FatteningFragment : Fragment(), View.OnClickListener {
             R.id.content_fattening_category_weight_record -> {
                 val navigationToWeightRecord =
                     R.id.action_fatteningFragment_to_rekamBeratBadanFragment
-                mBundle.putInt("navigate", navigationToWeightRecord)
-                optionLivestockBottomDialog.arguments = mBundle
-                optionLivestockBottomDialog.show(
-                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
-                )
+                navigateToRecord(navigationToWeightRecord)
             }
 
             R.id.content_fattening_category_bcs_record -> {
                 val navigationToBcsRecord =
                     R.id.action_fatteningFragment_to_rekamBCSFragment
-                mBundle.putInt("navigate", navigationToBcsRecord)
-                optionLivestockBottomDialog.arguments = mBundle
-                optionLivestockBottomDialog.show(
-                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
-                )
+                navigateToRecord(navigationToBcsRecord)
             }
 
             R.id.content_fattening_category_health_record -> {
                 val navigationToHealthRecord =
                     R.id.action_fatteningFragment_to_rekamKesehatanFragment
-                mBundle.putInt("navigate", navigationToHealthRecord)
-                optionLivestockBottomDialog.arguments = mBundle
-                optionLivestockBottomDialog.show(
-                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
-                )
+                navigateToRecord(navigationToHealthRecord)
             }
 
             R.id.content_fattening_category_height_record -> {
                 val navigationToHeightRecord =
                     R.id.action_fatteningFragment_to_rekamTinggiBadanFragment
-                mBundle.putInt("navigate", navigationToHeightRecord)
-                optionLivestockBottomDialog.arguments = mBundle
-                optionLivestockBottomDialog.show(
-                    childFragmentManager, optionLivestockBottomDialog::class.java.simpleName
-                )
+                navigateToRecord(navigationToHeightRecord)
             }
 
             R.id.content_fattening_category_food_record -> {
@@ -221,8 +205,22 @@ class FatteningFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    private fun navigateToRecord(destinationId: Int) {
+        val navigationToRecord = destinationId
+        if (livestockId != null) {
+            mBundle.putInt("livestockId", livestockId!!.toInt())
+            findNavController().navigate(navigationToRecord, mBundle)
+        } else {
+            mBundle.putInt("navigate", navigationToRecord)
+            optionLivestockBottomDialog.arguments = mBundle
+            optionLivestockBottomDialog.also { dialogBottom ->
+                dialogBottom.show(childFragmentManager, dialogBottom::class.java.simpleName)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }
