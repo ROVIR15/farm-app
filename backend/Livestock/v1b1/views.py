@@ -414,14 +414,14 @@ def get_a_livestock(livestock_id):
                         growth = current_record.score - prev_score
                         percentage = (growth / prev_score) * 100
                         # Format the percentage with two decimal places
-                        data_weight['growth'] = f'{percentage:.2f}%'
+                        data_height['growth'] = f'{percentage:.2f}%'
                         # Format the percentage with two decimal places
-                        data_weight['prev_score'] = prev_score if prev_score is not None else 0
+                        data_height['prev_score'] = prev_score if prev_score is not None else 0
                     else:
                         # Format the percentage with two decimal places
-                        data_weight['growth'] = f'{0:.2f}%'
+                        data_height['growth'] = f'{0:.2f}%'
                         # Format the percentage with two decimal places
-                        data_weight['prev_score'] = 0
+                        data_height['prev_score'] = 0
 
                     results_height_records.append(data_height)
                     prev_score = current_record.score  # Update prev_score for the next iteration
@@ -620,7 +620,7 @@ def update_livestock_sled():
 
     livestock_id = data.get('livestock_id')
     sled_id = data.get('sled_id')
-    block_area_id = data.get('block_area_id')
+    block_area_id = data.get('block_area_id') if data.get('block_area_id') is not None else None
 
     try:
         # check whether livestock is belong to the farm_profile id
