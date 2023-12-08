@@ -75,9 +75,10 @@ def get_livestocks():
 
                 if query_block_area_livestock:
 
-                    sled = query_block_area_livestock.sled if query_block_area_livestock.sled is not None else { "id": None, "name": "None" }
-                    block_area = query_block_area_livestock.block_area if query_block_area_livestock.block_area is not None else { "id": None, "name": None}
+                    sled = { 'id': query_block_area_livestock.sled_id, 'name': query_block_area_livestock.sled.name } if query_block_area_livestock.sled is not None else { 'id': "None", 'name': "None" }
+                    block_area = { 'id': query_block_area_livestock.block_area_id, 'name': query_block_area_livestock.block_area.name } if query_block_area_livestock.block_area is not None else { 'id': None, 'name': None}
                     
+                    # print(sled, block_area)
                     data = {
                         'id': item.livestock.id,
                         'name': item.livestock.name,
@@ -85,7 +86,7 @@ def get_livestocks():
                         'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
                         'birth_date': item.livestock.birth_date,
                         'bangsa': item.livestock.bangsa,
-                        'info': f'Tinggal di kandang S-{sled.id} {sled.name} di blok BA-{block_area.id} {block_area.name} | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
+                        'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                         'description': item.livestock.description,
                         'created_at': formatted_date,
                     }
@@ -331,13 +332,16 @@ def get_a_livestock(livestock_id):
                 subqueryload(Livestock.health_records)
             ]).get(livestock_id)
 
+            sled = { 'id': query_block_area_livestock.sled_id, 'name': query_block_area_livestock.sled.name } if query_block_area_livestock.sled is not None else { 'id': "None", 'name': "None" }
+            block_area = { 'id': query_block_area_livestock.block_area_id, 'name': query_block_area_livestock.block_area.name } if query_block_area_livestock.block_area is not None else { 'id': None, 'name': None}
+
             result = {
                 'id': query.id,
                 'name': query.name,
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
-                'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
                 'weight_records': [],
@@ -514,13 +518,16 @@ def get_a_livestock_new(livestock_id):
             # Retrieve all livestock records from the database
             query = Livestock.query.get(livestock_id)
 
+            sled = { 'id': query_block_area_livestock.sled_id, 'name': query_block_area_livestock.sled.name } if query_block_area_livestock.sled is not None else { 'id': "None", 'name': "None" }
+            block_area = { 'id': query_block_area_livestock.block_area_id, 'name': query_block_area_livestock.block_area.name } if query_block_area_livestock.block_area is not None else { 'id': None, 'name': None}
+
             result = {
                 'id': query.id,
                 'name': query.name,
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date,
-                'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
