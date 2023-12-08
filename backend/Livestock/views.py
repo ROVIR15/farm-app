@@ -74,6 +74,10 @@ def get_livestocks():
                 formatted_date = date_obj.strftime("%d %B %Y")
 
                 if query_block_area_livestock:
+
+                    sled = query_block_area_livestock.sled if query_block_area_livestock.sled is not None else { "id": None, "name": "None" }
+                    block_area = query_block_area_livestock.block_area if query_block_area_livestock.block_area is not None else { "id": None, "name": None}
+                    
                     data = {
                         'id': item.livestock.id,
                         'name': item.livestock.name,
@@ -81,7 +85,7 @@ def get_livestocks():
                         'gender_name': "Jantan" if item.livestock.gender == 1 else "Betina",
                         'birth_date': item.livestock.birth_date,
                         'bangsa': item.livestock.bangsa,
-                        'info': f'Tinggal di kandang S-{query_block_area_livestock.sled_id} {query_block_area_livestock.sled.name} di blok BA-{query_block_area_livestock.block_area_id} {query_block_area_livestock.block_area.name} | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
+                        'info': f'Tinggal di kandang S-{sled.id} {sled.name} di blok BA-{block_area.id} {block_area.name} | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                         'description': item.livestock.description,
                         'created_at': formatted_date,
                     }
