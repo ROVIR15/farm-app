@@ -620,7 +620,7 @@ def update_livestock_sled():
 
     livestock_id = data.get('livestock_id')
     sled_id = data.get('sled_id')
-    block_area_id = data.get('block_area_id') if data.get('block_area_id') is not None else None
+    block_area_id = data.get('block_area_id') if data.get('block_area_id') == 0 else None
 
     try:
         # check whether livestock is belong to the farm_profile id
