@@ -16,6 +16,7 @@ from SKU.models import SKU
 from FarmProfile.HasLivestock.models import HasLivestock as FarmProfileHasLivestock
 from FarmProfile.models import FarmProfileHasUsers
 
+from Sled.models import Sled
 from BlockArea.models import BlockArea
 from BlockAreaSledLivestock.models import BlockAreaSledLivestock
 from Record.FeedingRecord.models import FeedingRecord
@@ -44,8 +45,8 @@ def get_search_livestocks():
 
     try:
         query = FarmProfileHasLivestock.query.options(subqueryload(FarmProfileHasLivestock.livestock)) \
-           .filter_by(farm_profile_id=farm_profile_id) \
-           .all()
+            .filter_by(farm_profile_id=farm_profile_id) \
+            .all()
         #    .filter(Livestock.name.like(f'%{search_params}%')) \
 
         if not query:
@@ -251,55 +252,61 @@ def get_a_livestock(livestock_id):
             # Serialize the livestock data using the schema
             result = livestock_schema.dump(result)
         else:
-            query_block_area = BlockArea.query.get(
-                query_block_area_livestock.block_area_id)
-            livestock_count = len(
-                query_block_area.livestock) if query_block_area.livestock else 0
+            if query_block_area_livestock.block_area_id is None and query_block_area_livestock.sled_id is not None:
+                sled = Sled.query.get(query_block_area_livestock.sled_id)
+                if sled.block_area_id is None:
+                    results_feeding = []
+                else:
+                    query_block_area_livestock.block_area_id = sled.block_area_id
+                    query_block_area = BlockArea.query.get(
+                        query_block_area_livestock.block_area_id)
+                    livestock_count = len(
+                        query_block_area.livestock) if query_block_area.livestock is not None else 0
 
-            columns_to_select = [
-                FeedingRecord.feed_category,
-                FeedingRecord.block_area_id,
-                func.to_char(FeedingRecord.created_at,
-                             'DD Mon YYYY').label('day'),
-                func.sum(FeedingRecord.score).label('total_score')
-            ]
+                    columns_to_select = [
+                        FeedingRecord.feed_category,
+                        FeedingRecord.block_area_id,
+                        func.to_char(FeedingRecord.created_at,
+                                     'DD Mon YYYY').label('day'),
+                        func.sum(FeedingRecord.score).label('total_score')
+                    ]
 
-            query_feeding = FeedingRecord.query \
-                .with_entities(*columns_to_select) \
-                .filter_by(block_area_id=query_block_area.id) \
-                .group_by(FeedingRecord.feed_category, FeedingRecord.block_area_id, func.to_char(FeedingRecord.created_at, 'DD Mon YYYY')) \
-                .order_by(desc(func.to_char(FeedingRecord.created_at, 'DD Mon YYYY'))) \
-                .all()
+                    query_feeding = FeedingRecord.query \
+                        .with_entities(*columns_to_select) \
+                        .filter_by(block_area_id=query_block_area.id) \
+                        .group_by(FeedingRecord.feed_category, FeedingRecord.block_area_id, func.to_char(FeedingRecord.created_at, 'DD Mon YYYY')) \
+                        .order_by(desc(func.to_char(FeedingRecord.created_at, 'DD Mon YYYY'))) \
+                        .all()
 
-            # Create a dictionary to group data by 'day'
-            day_map = {}
+                    # Create a dictionary to group data by 'day'
+                    day_map = {}
 
-            results_feeding = []
-            for item in query_feeding:
-                day = item.day
-                feed_category = item.feed_category
-                total_score = item.total_score
+                    results_feeding = []
+                    for item in query_feeding:
+                        day = item.day
+                        feed_category = item.feed_category
+                        total_score = item.total_score
 
-                result = {
-                    'day': day,
-                    'block_area_id': item.block_area_id,
-                    'feed_list': []
-                }
+                        result = {
+                            'day': day,
+                            'block_area_id': item.block_area_id,
+                            'feed_list': []
+                        }
 
-                if day not in day_map:
-                    day_map[day] = {
-                        "day": day,
-                        "block_area_id": item.block_area_id,
-                        "feed_list": []
-                    }
+                        if day not in day_map:
+                            day_map[day] = {
+                                "day": day,
+                                "block_area_id": item.block_area_id,
+                                "feed_list": []
+                            }
 
-                day_map[day]["feed_list"].append({
-                    "feed_category": get_feed_category_label(feed_category),
-                    "total_score": total_score / livestock_count
-                })
+                        day_map[day]["feed_list"].append({
+                            "feed_category": get_feed_category_label(feed_category),
+                            "total_score": total_score / livestock_count
+                        })
 
-                result.update(day_map[day])
-                results_feeding.append(result)
+                        result.update(day_map[day])
+                        results_feeding.append(result)
 
             # Retrieve all livestock records from the database
             query = Livestock.query.options([
@@ -308,8 +315,11 @@ def get_a_livestock(livestock_id):
                 subqueryload(Livestock.bcs_records),
                 subqueryload(Livestock.health_records)
             ]).get(livestock_id)
-            sled = { 'id': query_block_area_livestock.sled_id, 'name': query_block_area_livestock.sled.name } if query_block_area_livestock.sled is not None else { 'id': "None", 'name': "None" }
-            block_area = { 'id': query_block_area_livestock.block_area_id, 'name': query_block_area_livestock.block_area.name } if query_block_area_livestock.block_area is not None else { 'id': None, 'name': None}
+
+            sled = {'id': query_block_area_livestock.sled_id,
+                    'name': query_block_area_livestock.sled.name} if query_block_area_livestock.sled is not None else {'id': "None", 'name': "None"}
+            block_area = {'id': query_block_area_livestock.block_area_id,
+                          'name': query_block_area_livestock.block_area.name} if query_block_area_livestock.block_area is not None else {'id': None, 'name': None}
 
             result = {
                 'id': query.id,
@@ -324,6 +334,8 @@ def get_a_livestock(livestock_id):
                 'height_records': [],
                 'feeding_records': [],
                 'health_records': query.health_records,
+                'sled_id': query_block_area_livestock.sled_id,
+                'block_area_id': query_block_area_livestock.block_area_id,
                 'descendant': descendant_result
             }
 
@@ -492,8 +504,10 @@ def get_a_livestock_new(livestock_id):
             # Retrieve all livestock records from the database
             query = Livestock.query.get(livestock_id)
 
-            sled = { 'id': query_block_area_livestock.sled_id, 'name': query_block_area_livestock.sled.name } if query_block_area_livestock.sled is not None else { 'id': "None", 'name': "None" }
-            block_area = { 'id': query_block_area_livestock.block_area_id, 'name': query_block_area_livestock.block_area.name } if query_block_area_livestock.block_area is not None else { 'id': None, 'name': None}
+            sled = {'id': query_block_area_livestock.sled_id,
+                    'name': query_block_area_livestock.sled.name} if query_block_area_livestock.sled is not None else {'id': "None", 'name': "None"}
+            block_area = {'id': query_block_area_livestock.block_area_id,
+                          'name': query_block_area_livestock.block_area.name} if query_block_area_livestock.block_area is not None else {'id': None, 'name': None}
 
             result = {
                 'id': query.id,
@@ -501,7 +515,7 @@ def get_a_livestock_new(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date,
-                'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                # 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
@@ -595,6 +609,7 @@ def post_livestock():
 
         return jsonify(response), 500
 
+
 @views_bp.route('/livestock/move-to-sled', methods=['POST'])
 @login_required
 def update_livestock_sled():
@@ -608,17 +623,20 @@ def update_livestock_sled():
 
     try:
         # check whether livestock is belong to the farm_profile id
-        query_fphl = FarmProfileHasLivestock.query.filter_by(farm_profile_id=farm_profile_id).first()
+        query_fphl = FarmProfileHasLivestock.query.filter_by(
+            farm_profile_id=farm_profile_id).first()
 
         if not query_fphl:
             raise Exception('It is not your livestock, this prohibited')
 
         # check livestock already placed on spesific sled and block_area
-        query_basl = BlockAreaSledLivestock.query.filter_by(livestock_id=livestock_id).first()
+        query_basl = BlockAreaSledLivestock.query.filter_by(
+            livestock_id=livestock_id).first()
 
         if not query_basl:
             # if its not will register a livestock to a block area and sled with provided data on body request
-            BlockAreaSledLivestock(livestock_id=livestock_id, block_area_id=block_area_id, sled_id=sled_id)
+            BlockAreaSledLivestock(
+                livestock_id=livestock_id, block_area_id=block_area_id, sled_id=sled_id)
         else:
             # if found then update
             query_basl.sled_id = sled_id
@@ -641,7 +659,7 @@ def update_livestock_sled():
         }
 
         return jsonify(response), 500
-        
+
 
 @views_bp.route('/livestock/<int:livestock_id>', methods=['PUT'])
 @login_required
