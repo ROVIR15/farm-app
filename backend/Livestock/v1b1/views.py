@@ -253,7 +253,7 @@ def get_a_livestock(livestock_id):
             result = livestock_schema.dump(result)
         else:
             results_feeding = []
-            if query_block_area_livestock.block_area_id is None and query_block_area_livestock.sled_id is not None:
+            if (query_block_area_livestock.block_area_id is None and query_block_area_livestock.sled_id is not None) or query_block_area_livestock.block_area_id is not None:
                 sled = Sled.query.get(query_block_area_livestock.sled_id)
                 if sled.block_area_id is None:
                     results_feeding = []
@@ -282,7 +282,6 @@ def get_a_livestock(livestock_id):
                     # Create a dictionary to group data by 'day'
                     day_map = {}
 
-                    results_feeding = []
                     for item in query_feeding:
                         day = item.day
                         feed_category = item.feed_category
@@ -516,7 +515,7 @@ def get_a_livestock_new(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date,
-                # 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
