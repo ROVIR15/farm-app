@@ -27,6 +27,8 @@ from utils.index import get_feed_category_label, remove_duplicates
 
 from auth import login_required, current_farm_profile
 
+from decimal import Decimal
+
 views_bp = Blueprint('views_livestock_v1b1', __name__)
 
 livestock_schema = LivestockSchema()
@@ -300,9 +302,10 @@ def get_a_livestock(livestock_id):
                                 "feed_list": []
                             }
 
+                        score = total_score / livestock_count
                         day_map[day]["feed_list"].append({
                             "feed_category": get_feed_category_label(feed_category),
-                            "total_score": total_score / livestock_count
+                            "total_score": f'{score:.2f}'
                         })
 
                         result.update(day_map[day])
