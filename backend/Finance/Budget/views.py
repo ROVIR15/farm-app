@@ -129,7 +129,7 @@ def get_budget():
                     'month_year': item.month_year,
                     'budget_amount': item.amount,
                     'total_expenditure': total_expenditure_on_category,
-                    'left': budget_left_
+                    'left': Decimal(total_expenditure_on_category)
                     # 'created_at': item.created_at,
                 }
                 results.append(data)
