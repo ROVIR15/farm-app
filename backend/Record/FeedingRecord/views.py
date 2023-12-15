@@ -139,6 +139,7 @@ def post_consumption_record():
                 sku_id = item['sku_id']
                 score = item['score']
                 left = item['left']
+                date = item['date']
                 remarks = item['remarks']
 
                 query = FeedingRecord(
@@ -147,6 +148,7 @@ def post_consumption_record():
                     sku_id=sku_id,
                     score=score,
                     left=left,
+                    date=date,
                     remarks=remarks
                 )
                 db.session.add(query)
