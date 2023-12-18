@@ -216,8 +216,6 @@ def post_new_breeding():
         # Process the data or perform any desired operations
         livestock_male_id = data.get('livestock_male_id')
         livestock_female_id = data.get('livestock_female_id')
-        date = data.get('date') if data.get(
-            'date') is not None else "2023-10-10"
         sled_id = data.get('sled_id')
         block_area_id = data.get('block_area_id')
 
