@@ -146,7 +146,7 @@ def get_budget():
         response = {
             'month_year': month_year,
             'total_budget_amount': total_budget_amount,
-            'total_expenditure': total_expenditure,
+            'total_expenditure': Decimal(total_expenditure),
             'total_income': total_income,
             'budget_left': budget_left,
             'status': 'Lebih dari budget' if (budget_left) < 0 else 'Aman',
