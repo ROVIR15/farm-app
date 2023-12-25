@@ -8,7 +8,7 @@ from Finance.Expenditure.models import Expenditure
 class BudgetItem (db.Model):
     __tablename__ = "budget_item"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('farm_profile_has_budget_item_id'), primary_key=True)
     month_year = db.Column(db.Date, nullable=False)
     budget_category_id = db.Column(db.Integer, db.ForeignKey('budget_category.id'), db.ForeignKey('expenditure.budget_category_id'), nullable=False)
     budget_sub_category_id = db.Column(db.Integer, nullable=False)

@@ -59,7 +59,8 @@ def get_livestocks():
                         'id': item.livestock.id,
                         'name': item.livestock.name,
                         'info': f'Tinggal di {query_block_area_livestock.sled.name} di {query_block_area_livestock.block_area.name} | {item.livestock.get_gender_label()}',
-                        'created_at': formatted_date,
+                        'gender': item.livestock.gender,
+                        'created_at': formatted_date
                     }
                 else:
                     data = {
@@ -67,7 +68,8 @@ def get_livestocks():
                         'name': item.livestock.name,
                         'bangsa': item.livestock.bangsa,
                         'info': f'Belum di taruh kandang | {item.livestock.get_gender_label()}',
-                        'created_at': formatted_date,
+                        'gender': item.livestock.gender,
+                        'created_at': formatted_date
                     }
 
                 results.append(data)

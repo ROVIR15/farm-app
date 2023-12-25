@@ -1,10 +1,13 @@
 from db_connection import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy import and_, func
-from sqlalchemy.orm import subqueryload
+from sqlalchemy.orm import subqueryload, aliased
 from datetime import datetime
+
 from Finance.BudgetRevision.models import BudgetRevision
 from Finance.BudgetItem.models import BudgetItem
+from Finance.Expenditure.models import Expenditure
+
 from Finance.BudgetItem.schema import BudgetItemSchema
 from Finance.Expenditure.schema import ExpenditureSchema
 
@@ -24,6 +27,8 @@ expenditures_schema = ExpenditureSchema(many=True)
 def get_a_budget_item(budget_item_id):
     month_year = request.args.get('month-year')
 
+    farm_profile_id = current_farm_profile() 
+
     if isinstance(month_year, str):
         param = month_year.split("-")
         month = param[0]
@@ -33,9 +38,21 @@ def get_a_budget_item(budget_item_id):
         month = date.month
         year = date.year
 
+    columns_to_select = [
+        BudgetItem.budget_category_id,
+        func.sum(BudgetItem.amount).label('total_amount')
+    ]
+
     try:
+
+        # Assuming BudgetItem has a relationship named 'expenditures'
+        alias_has_budget_item = aliased(BudgetItem)
+
         query = BudgetItem.query \
-            .options(subqueryload(BudgetItem.budget_category), subqueryload(BudgetItem.expenditures)) \
+            .options(
+                subqueryload(BudgetItem.budget_category), 
+                subqueryload(BudgetItem.expenditures).subqueryload(Expenditure.budget_sub_category),
+            ) \
             .filter(
                 and_(
                     func.extract(
@@ -47,13 +64,52 @@ def get_a_budget_item(budget_item_id):
             ) \
             .first()
 
+        expenditure_info = list()
+        total_expenditure_number = 0
+
+        if hasattr(query, 'expenditures') and any(query.expenditures):
+            for index, item_exp in enumerate(query.expenditures):
+                sub_category_name = str(index+1) + '. ' + item_exp.budget_sub_category.sub_category_name + ' - ' + item_exp.remarks
+                temp = {
+                    'id' : item_exp.id,
+                    'date': item_exp.date,
+                    'budget_category_id': item_exp.budget_category_id,
+                    'budget_sub_category_id': item_exp.budget_sub_category_id,
+                    'budget_sub_category_name': sub_category_name,
+                    'sku_id': item_exp.sku_id,
+                    'amount': item_exp.amount,
+                    'remarks': item_exp.remarks
+                }
+                total_expenditure_number += item_exp.amount
+
+                expenditure_info.append(temp)
+
+        total_budget_item = BudgetItem \
+                .query \
+                .with_entities(*columns_to_select) \
+                .filter(
+                    BudgetItem.budget_category_id == query.budget_category_id
+                ) \
+                .filter(
+                    and_(
+                        func.extract('month', BudgetItem.month_year) == month,
+                        func.extract('year', BudgetItem.month_year) == year                    )
+                ) \
+                .group_by(BudgetItem.budget_category_id) \
+                .all()
+
+        total_budget_item_number = total_budget_item[0].total_amount if any(total_budget_item) else 0
 
         results = {
             'id': query.id,
             'amount': query.amount,
             'created_at': query.created_at,
-            'expenditures': query.expenditures,
+            'total_budget': total_budget_item_number,
+            'total_expenditure': total_expenditure_number,
+            'expenditures': expenditure_info,
             'budget_category_id': query.budget_category_id,
+            'summary_text': 'Rp. XX digunakand dari Rp. XXX',
+            'left': int(total_budget_item_number) - int(total_expenditure_number),
             'budget_category_name': query.budget_category.budget_category_name
         }
 
