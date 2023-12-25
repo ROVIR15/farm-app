@@ -175,8 +175,6 @@ def get_a_livestock(livestock_id):
                 'name': query.name,
                 'gender': query.gender,
                 'bangsa': query.bangsa,
-                'sled_id': None,
-                'block_area_id': None,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
@@ -262,14 +260,14 @@ def get_a_livestock(livestock_id):
                         growth = current_record.score - prev_score
                         percentage = (growth / prev_score) * 100
                         # Format the percentage with two decimal places
-                        data_height['growth'] = f'{percentage:.2f}%'
+                        data_weight['growth'] = f'{percentage:.2f}%'
                         # Format the percentage with two decimal places
-                        data_height['prev_score'] = prev_score if prev_score is not None else 0
+                        data_weight['prev_score'] = prev_score if prev_score is not None else 0
                     else:
                         # Format the percentage with two decimal places
-                        data_height['growth'] = f'{0:.2f}%'
+                        data_weight['growth'] = f'{0:.2f}%'
                         # Format the percentage with two decimal places
-                        data_height['prev_score'] = 0
+                        data_weight['prev_score'] = 0
 
                     results_height_records.append(data_height)
                     prev_score = current_record.score  # Update prev_score for the next iteration
@@ -283,14 +281,16 @@ def get_a_livestock(livestock_id):
             result = livestock_schema.dump(result)
         else:
             results_feeding = []
-            if query_block_area_livestock.block_area_id is None and query_block_area_livestock.sled_id is not None:
+            if (query_block_area_livestock.block_area_id is None and query_block_area_livestock.sled_id is not None) or query_block_area_livestock.block_area_id is not None:
                 sled = Sled.query.get(query_block_area_livestock.sled_id)
                 if sled.block_area_id is None:
                     results_feeding = []
                 else:
                     query_block_area_livestock.block_area_id = sled.block_area_id
-                    query_block_area = BlockArea.query.get(query_block_area_livestock.block_area_id)
-                    livestock_count = len(query_block_area.livestock) if query_block_area.livestock is not None else 0
+                    query_block_area = BlockArea.query.get(
+                        query_block_area_livestock.block_area_id)
+                    livestock_count = len(
+                        query_block_area.livestock) if query_block_area.livestock is not None else 0
 
                     columns_to_select = [
                         FeedingRecord.feed_category,
@@ -310,7 +310,6 @@ def get_a_livestock(livestock_id):
                     # Create a dictionary to group data by 'day'
                     day_map = {}
 
-                    results_feeding = []
                     for item in query_feeding:
                         day = item.day
                         feed_category = item.feed_category
@@ -329,9 +328,10 @@ def get_a_livestock(livestock_id):
                                 "feed_list": []
                             }
 
+                        score = total_score / livestock_count
                         day_map[day]["feed_list"].append({
                             "feed_category": get_feed_category_label(feed_category),
-                            "total_score": total_score / livestock_count
+                            "total_score": f'{score:.2f}'
                         })
 
                         result.update(day_map[day])
@@ -345,8 +345,10 @@ def get_a_livestock(livestock_id):
                 subqueryload(Livestock.health_records)
             ]).get(livestock_id)
 
-            sled = { 'id': query_block_area_livestock.sled_id, 'name': query_block_area_livestock.sled.name } if query_block_area_livestock.sled is not None else { 'id': "None", 'name': "None" }
-            block_area = { 'id': query_block_area_livestock.block_area_id, 'name': query_block_area_livestock.block_area.name } if query_block_area_livestock.block_area is not None else { 'id': None, 'name': None}
+            sled = {'id': query_block_area_livestock.sled_id,
+                    'name': query_block_area_livestock.sled.name} if query_block_area_livestock.sled is not None else {'id': "None", 'name': "None"}
+            block_area = {'id': query_block_area_livestock.block_area_id,
+                          'name': query_block_area_livestock.block_area.name} if query_block_area_livestock.block_area is not None else {'id': None, 'name': None}
 
             result = {
                 'id': query.id,
@@ -360,9 +362,9 @@ def get_a_livestock(livestock_id):
                 'weight_records': [],
                 'height_records': [],
                 'feeding_records': [],
+                'health_records': query.health_records,
                 'sled_id': query_block_area_livestock.sled_id,
                 'block_area_id': query_block_area_livestock.block_area_id,
-                'health_records': query.health_records,
                 'descendant': descendant_result
             }
 
@@ -400,10 +402,11 @@ def get_a_livestock(livestock_id):
 
             if isinstance(query.weight_records, list):
                 for current_record in query.weight_records:
+                    my_date = current_record.date
                     data_weight = {
                         'id': current_record.id,
                         'livestock_id': current_record.livestock_id,
-                        'date': current_record.date,
+                        'date': my_date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
                         'created_at': current_record.created_at
