@@ -78,7 +78,7 @@ handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] - %(message)s'))
 app.logger.addHandler(handler)
 
-@app.route('/static/<filename>', methods=['GET'])
+@app.route('/static/uploads/<filename>', methods=['GET'])
 def serve_file(filename):
     return send_from_directory('static/uploads', filename)
 

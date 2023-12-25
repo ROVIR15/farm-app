@@ -137,9 +137,37 @@ def api_profile():
         return jsonify(response), 500
 
 
+# Reset Password route (protected API)
+@views_auth_bp.route('/api/change-password', methods=['POST'])
+@login_required
+def reset_password():
+    data = request.json
+    new_password = data.get('new_password')
+    
+    try:
+        user_id = current_user()
+        user = User.query.get(user_id)
+
+        if user:
+            new_password_enc = generate_password_hash(new_password, method='sha256')
+
+            user.password = new_password_enc
+            db.session.commit()
+            return jsonify({"message": "Your password has changed!"}), 200
+
+        else:
+            return jsonify({"message": "Your credential is failed. Check your username and password."}), 401
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Failed to proceed your request! due to error: {error_message}'
+        }
+
+        return jsonify(response), 500
+
+
 # Logout route (protected API)
-
-
 @views_auth_bp.route('/api/logout', methods=['POST'])
 @login_required
 def api_logout():
