@@ -77,7 +77,6 @@ def get_livestocks():
         if gender is not None:
             results = filter(gender_filter_, results)
             results = list(results)
-            print(results)
 
         result = livestocks_schema_new.dump(results)
         # Return the serialized data as JSON response
