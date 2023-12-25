@@ -282,7 +282,7 @@ def get_a_livestock(livestock_id):
             # Serialize the livestock data using the schema
             result = livestock_schema.dump(result)
         else:
-
+            results_feeding = []
             if query_block_area_livestock.block_area_id is None and query_block_area_livestock.sled_id is not None:
                 sled = Sled.query.get(query_block_area_livestock.sled_id)
                 if sled.block_area_id is None:
