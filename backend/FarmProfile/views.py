@@ -72,7 +72,7 @@ def post_farm_profile_details():
             address_one=address_one,
             address_two=address_two,
             city=city,
-            province=province
+            province=province,
             imageUrl=imageUrl
         )
         db.session.add(query)
@@ -120,8 +120,8 @@ def update_farm_profile_detail(farm_profile_id):
         farm_profile_detail.address_two = address_two
         farm_profile_detail.city = city
         farm_profile_detail.province = province
-        farm_profile_detail.imageUel = imageUel
-        
+        farm_profile_detail.imageUel = imageUrl
+
         db.session.commit()
 
         # Create a response JSON
