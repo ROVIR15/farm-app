@@ -28,6 +28,7 @@ from utils.index import get_feed_category_label, remove_duplicates
 from auth import login_required, current_farm_profile
 
 from decimal import Decimal
+from babel.dates import format_date
 
 views_bp = Blueprint('views_livestock_v1b1', __name__)
 
@@ -173,7 +174,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': current_record.created_at
+                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id-ID')
                     }
 
                     if prev_score is not None:
@@ -200,7 +201,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': current_record.created_at
+                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id-ID')
                     }
 
                     if prev_score is not None:
@@ -227,7 +228,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': current_record.created_at
+                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id-ID')
                     }
 
                     if prev_score is not None:
@@ -329,7 +330,7 @@ def get_a_livestock(livestock_id):
                 'name': query.name,
                 'gender': query.gender,
                 'bangsa': query.bangsa,
-                'birth_date': query.birth_date.strftime('%d-%m-%Y'),
+                'birth_date': format_date(query.birth_date, format='dd MMMM YYYY', locale='id_ID'),
                 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
@@ -355,7 +356,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': current_record.created_at
+                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id_ID')
                     }
 
                     if prev_score is not None:
@@ -382,7 +383,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': current_record.created_at
+                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id_ID')
                     }
 
                     if prev_score is not None:
@@ -409,7 +410,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': current_record.created_at
+                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id_ID')
                     }
 
                     if prev_score is not None:
