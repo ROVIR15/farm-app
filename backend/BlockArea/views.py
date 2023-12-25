@@ -230,10 +230,10 @@ def post_block_area():
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     description = data.get('description')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
 
     try:
-        query = BlockArea(name=name, description=description, imageUrl=imageUrl)
+        query = BlockArea(name=name, description=description, imageurl=imageurl)
         db.session.add(query)
         db.session.commit()
 
@@ -274,13 +274,13 @@ def update_block_area(block_area_id):
     # For example, you can access specific fields from the JSON data
     name = data.get('name')
     description = data.get('description')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
     # Assuming you have a Livestock model and an existing livestock object
     block_area = BlockArea.query.get(block_area_id)
     if block_area:
         block_area.name = name
         block_area.description = description
-        block_area.imageUrl = imageUrl
+        block_area.imageurl = imageurl
         db.session.commit()
 
         # Create a response JSON

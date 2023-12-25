@@ -98,12 +98,12 @@ def post_sled():
     name = data.get('name')
     description = data.get('description')
     block_area_id = data.get('block_area_id')
-    imageUrl = data.get('iamgeUrl')
+    imageurl = data.get('iamgeUrl')
     farm_profile_id = data.get('farm_profile_id')
 
     try:
         query = Sled(name=name, block_area_id=block_area_id,
-                     description=description, imageUrl=imageUrl)
+                     description=description, imageurl=imageurl)
         db.session.add(query)
         db.session.commit()
 
@@ -146,7 +146,7 @@ def update_sled(sled_id):
     name = data.get('name')
     description = data.get('description')
     block_area_id = data.get('block_area_id')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
 
     # Assuming you have a Livestock model and an existing livestock object
     sled = Sled.query.get(sled_id)
@@ -154,7 +154,7 @@ def update_sled(sled_id):
         sled.name = name
         sled.block_area_id = block_area_id
         sled.description = description
-        sled.imageUrl = imageUrl
+        sled.imageurl = imageurl
         db.session.commit()
 
         # Create a response JSON

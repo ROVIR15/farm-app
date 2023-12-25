@@ -64,7 +64,7 @@ def post_farm_profile_details():
     address_two = data.get('address_two')
     city = data.get('city')
     province = data.get('province')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
 
     try:
         query = FarmProfile(
@@ -73,7 +73,7 @@ def post_farm_profile_details():
             address_two=address_two,
             city=city,
             province=province,
-            imageUrl=imageUrl
+            imageurl=imageurl
         )
         db.session.add(query)
         db.session.commit()
@@ -110,7 +110,7 @@ def update_farm_profile_detail(farm_profile_id):
     address_two = data.get('address_two')
     city = data.get('city')
     province = data.get('province')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
 
     # Assuming you have a Block Area Sled Livestock model and an existing object
     farm_profile_detail = FarmProfile.query.get(farm_profile_id)
@@ -120,7 +120,7 @@ def update_farm_profile_detail(farm_profile_id):
         farm_profile_detail.address_two = address_two
         farm_profile_detail.city = city
         farm_profile_detail.province = province
-        farm_profile_detail.imageUel = imageUrl
+        farm_profile_detail.imageUel = imageurl
 
         db.session.commit()
 

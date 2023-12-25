@@ -584,7 +584,7 @@ def post_livestock():
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
 
     try:
         farm_profile_id = current_farm_profile()
@@ -593,7 +593,7 @@ def post_livestock():
             raise Exception("Cannot find farm profile!")
         else:
             query = Livestock(name=name, gender=gender, birth_date=birth_date,
-                              bangsa=bangsa, description=description, imageUrl=imageUrl)
+                              bangsa=bangsa, description=description, imageurl=imageurl)
             db.session.add(query)
             db.session.commit()
 
@@ -651,7 +651,7 @@ def update_livestock(livestock_id):
     birth_date = data.get('birth_date')
     bangsa = data.get('bangsa')
     description = data.get('description')
-    imageUrl = data.get('imageUrl')
+    imageurl = data.get('imageurl')
 
     parent_male_id = data.get('parent_male_id')
     parent_female_id = data.get('parent_female_id')
@@ -665,7 +665,7 @@ def update_livestock(livestock_id):
             livestock.gender = gender
             livestock.bangsa = bangsa
             livestock.description = description
-            livestock.imageUrl = imageUrl
+            livestock.imageurl = imageurl
             db.session.commit()
 
             descendant = Descendant.query.filter_by(
