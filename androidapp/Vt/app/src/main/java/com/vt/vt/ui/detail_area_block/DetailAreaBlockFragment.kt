@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -25,6 +24,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     private var _binding: FragmentDetailAreaBlockBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mBundle: Bundle
     private val dataAreaViewModel by viewModels<DataAreaViewModel>()
 
     private var receiveId: String = ""
@@ -38,7 +38,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mBundle = Bundle()
         receiveId = arguments?.getInt("id").toString()
         dataAreaViewModel.getBlockArea(receiveId)
 
@@ -100,7 +100,9 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_add_cage_detail_area -> {
+                mBundle.putInt("blockAreaId", receiveId.toInt())
                 val addAreaBlockDialog = AddAreaBlockDialogFragment()
+                addAreaBlockDialog.arguments = mBundle
                 addAreaBlockDialog.show(
                     childFragmentManager,
                     addAreaBlockDialog::class.java.simpleName
@@ -114,7 +116,6 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_edit_area_block -> {
-                val mBundle = Bundle()
                 mBundle.putInt("id", receiveId.toInt())
                 v.findNavController()
                     .navigate(R.id.action_detailAreaBlockFragment_to_editAreaBlockFragment, mBundle)

@@ -27,8 +27,7 @@ class AreaListKandangFragment : Fragment() {
     private val sledsViewModel by viewModels<DataKandangViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAreaListKandangBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -38,6 +37,10 @@ class AreaListKandangFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val receiveId = arguments?.getInt("areaBlockId")
         dataAreaViewModel.getBlockArea(receiveId.toString())
+        binding.refreshPage.setOnRefreshListener {
+            binding.refreshPage.isRefreshing = false
+            dataAreaViewModel.getBlockArea(receiveId.toString())
+        }
         observerView()
     }
 
@@ -52,11 +55,8 @@ class AreaListKandangFragment : Fragment() {
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(
-                    requireActivity(),
-                    it.toString(),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                    requireActivity(), it.toString(), Toast.LENGTH_SHORT
+                ).show()
             }
         }
         sledsViewModel.deleteSledById.observe(viewLifecycleOwner) {
@@ -65,11 +65,8 @@ class AreaListKandangFragment : Fragment() {
         sledsViewModel.isDeleted.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { eventMessage ->
                 Toast.makeText(
-                    requireActivity(),
-                    eventMessage,
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                    requireActivity(), eventMessage, Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

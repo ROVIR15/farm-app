@@ -105,6 +105,12 @@ interface ApiService {
         @Body sledRequest: SledRequest
     ): Response<SledsResponse>
 
+    @PUT("api/v1.1/sled/move-to-block-area/{id}")
+    suspend fun sledMoveToBlockArea(
+        @Path("id") id: String,
+        @Body moveSledRequest: MoveSledRequest
+    ): Response<SledsResponse>
+
     //    Livestock
     @GET("api/livestocks")
     suspend fun getLivestocks(): Response<List<LivestockResponseItem>>
@@ -114,7 +120,7 @@ interface ApiService {
         @Query("search_params") search_params: String?
     ): Response<List<LivestockResponseItem>>
 
-    @GET("api/livestock/{id}")
+    @GET("api/v1.1/livestock/{id}")
     suspend fun getLivestockById(
         @Path("id") id: String
     ): Response<LivestockByIdResponse>

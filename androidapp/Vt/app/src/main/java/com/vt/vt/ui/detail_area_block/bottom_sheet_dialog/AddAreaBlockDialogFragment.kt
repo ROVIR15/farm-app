@@ -1,6 +1,7 @@
 package com.vt.vt.ui.detail_area_block.bottom_sheet_dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentAddAreaBlockDialogBinding
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
+import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +26,7 @@ class AddAreaBlockDialogFragment : BottomSheetDialogFragment() {
 
     private val sledViewModel by viewModels<DetailAreaBlockViewModel>()
 
+    private var sledId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,9 +38,12 @@ class AddAreaBlockDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveBlockId = arguments?.getInt("blockAreaId")
         with(binding) {
             btnSaveAddAnimalCage.setOnClickListener {
-                Toast.makeText(requireActivity(), "no action", Toast.LENGTH_SHORT).show()
+                if (sledId != null && receiveBlockId != null) {
+                    sledViewModel.moveSledToBlockArea(sledId.toString(), receiveBlockId)
+                }
                 dismiss()
             }
             btnCancelAddAnimalCage.setOnClickListener {
@@ -74,6 +80,13 @@ class AddAreaBlockDialogFragment : BottomSheetDialogFragment() {
             val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArrays)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerCageAddAnimalCage.adapter = adapter
+            binding.spinnerCageAddAnimalCage.selected { position ->
+                sledId = sleds[position].id
+            }
+        }
+        sledViewModel.moveSledEmitter.observe(viewLifecycleOwner) { responseSled ->
+            Log.d(AddAreaBlockDialogFragment::class.java.simpleName, "${responseSled.message}")
+//            Toast.makeText(requireActivity(), "${responseSled.message}", Toast.LENGTH_SHORT).show()
         }
         sledViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
