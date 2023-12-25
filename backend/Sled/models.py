@@ -8,6 +8,7 @@ class Sled (db.Model):
     block_area_id = db.Column(db.Integer(), db.ForeignKey('block_area.id'),nullable=False)
     name = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text())
+    imageUrl = db.Column(db.Text(), nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
     # Define the `block_area` relationship

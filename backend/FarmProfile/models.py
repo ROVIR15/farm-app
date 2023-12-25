@@ -11,7 +11,8 @@ class FarmProfile (db.Model):
     city = db.Column(db.String(100), nullable=True)
     province = db.Column(db.String(100), nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-
+    imageUrl = db.Column(db.Text, nullable=True)
+    
     users = db.relationship('FarmProfileHasUsers', back_populates='farm_profiles')
 
 
