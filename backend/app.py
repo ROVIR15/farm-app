@@ -45,6 +45,10 @@ from Finance.BudgetCategory.views import views_budget_category_bp
 
 from Dashboard.views import views_dashboard_bp
 
+# Set the locale to Bahasa Indonesia
+from babel import Locale
+locale = Locale.parse('id_ID')
+
 # from Finance.BudgetCategory.views import views_budget_category_bp
 
 #  OPITOSN 

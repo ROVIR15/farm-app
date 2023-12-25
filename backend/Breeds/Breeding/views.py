@@ -35,6 +35,8 @@ from Record.WeightRecord.models import WeightRecord
 
 from utils.index import validate_date_format, validate_and_transform_date
 
+from babel.dates import format_date
+
 views_breeding_bp = Blueprint('views_breeding', __name__)
 
 breeding_record_schema = BreedingSchema()
@@ -67,16 +69,19 @@ def get_breedings():
                 raise Exception("Not found any breeding record")
             else:
                 for item in list_of_breeding:
-                    date = item.created_at.strftime("%d %b %Y")
-                    ldate = item.breedings.date.strftime("%d %b %Y")
+                    date = format_date(item.created_at, format='dd MMMM YYYY', locale='id_ID')
+                    ldate = format_date(item.breedings.date, format='dd MMMM YYYY', locale='id_ID')
+
+                    livestock_male_name = item.breedings.livestock_male.name if item.breedings.livestock_male_id is not None and hasattr(item.breedings.livestock_male, 'name') else None
+                    livestock_female_name = item.breedings.livestock_male.name if item.breedings.livestock_female_id is not None and hasattr(item.breedings.livestock_male, 'name') else None
                     result = {
                         "id": item.breedings.id,
                         "name": f'Breeding #{item.breedings.id}',
                         "farm_profile_id": item.farm_profile_id,
                         "livestock_male_id": item.breedings.livestock_male_id,
                         "livestock_female_id": item.breedings.livestock_female_id,
-                        "livestock_male_name": item.breedings.livestock_male.name,
-                        "livestock_female_name": item.breedings.livestock_female.name,
+                        "livestock_male_name": livestock_male_name,
+                        "livestock_female_name": livestock_female_name,
                         "sled_id": item.breedings.sled_id,
                         "is_active": item.breedings.is_active,
                         "created_at": date,
