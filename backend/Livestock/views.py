@@ -27,6 +27,12 @@ from utils.index import get_feed_category_label, remove_duplicates
 
 from auth import login_required, current_farm_profile
 
+from babel.dates import format_date
+
+# Set the locale to Bahasa Indonesia
+from babel import Locale
+locale = Locale.parse('id_ID')
+
 views_bp = Blueprint('views_livestock', __name__)
 
 livestock_schema = LivestockSchema()
@@ -73,6 +79,7 @@ def get_livestocks():
 
                 # Format the date as "DD MMMM YYYY"
                 formatted_date = date_obj.strftime("%d %B %Y")
+                formatted_date2 = format_date(date_obj, format='dd MMMM YYYY', locale='id_ID')
 
                 if query_block_area_livestock:
 
@@ -89,7 +96,7 @@ def get_livestocks():
                         'bangsa': item.livestock.bangsa,
                         'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                         'description': item.livestock.description,
-                        'created_at': formatted_date,
+                        'created_at': formatted_date2,
                     }
                 else:
                     data = {
@@ -101,7 +108,7 @@ def get_livestocks():
                         'bangsa': item.livestock.bangsa,
                         'info': f'Belum di taruh kandang | {item.livestock.get_gender_label()} | {item.livestock.calculate_age()} | Bangsa {item.livestock.bangsa}',
                         'description': item.livestock.description,
-                        'created_at': formatted_date,
+                        'created_at': formatted_date2,
                     }
 
                 results.append(data)
