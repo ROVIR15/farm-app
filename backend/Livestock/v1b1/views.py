@@ -174,7 +174,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id-ID')
+                        'created_at': current_record.created_at
                     }
 
                     if prev_score is not None:
@@ -201,7 +201,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id-ID')
+                        'created_at': current_record.created_at
                     }
 
                     if prev_score is not None:
@@ -228,7 +228,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id-ID')
+                        'created_at': current_record.created_at
                     }
 
                     if prev_score is not None:
@@ -330,7 +330,7 @@ def get_a_livestock(livestock_id):
                 'name': query.name,
                 'gender': query.gender,
                 'bangsa': query.bangsa,
-                'birth_date': format_date(query.birth_date, format='dd MMMM YYYY', locale='id_ID'),
+                'birth_date': query.birth_date.strftime('%d-%m-%Y'),
                 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
@@ -356,7 +356,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id_ID')
+                        'created_at': current_record.created_at
                     }
 
                     if prev_score is not None:
@@ -377,13 +377,14 @@ def get_a_livestock(livestock_id):
 
             if isinstance(query.weight_records, list):
                 for current_record in query.weight_records:
+                    my_date = current_record.date
                     data_weight = {
                         'id': current_record.id,
                         'livestock_id': current_record.livestock_id,
-                        'date': current_record.date,
+                        'date': my_date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id_ID')
+                        'created_at': current_record.created_at
                     }
 
                     if prev_score is not None:
@@ -410,7 +411,7 @@ def get_a_livestock(livestock_id):
                         'date': current_record.date,
                         'score': current_record.score,
                         'remarks': current_record.remarks,
-                        'created_at': format_date(current_record.created_at, format='dd MMMM YYYY', locale='id_ID')
+                        'created_at': current_record.created_at
                     }
 
                     if prev_score is not None:
@@ -623,7 +624,8 @@ def update_livestock_sled():
 
     livestock_id = data.get('livestock_id')
     sled_id = data.get('sled_id')
-    block_area_id = data.get('block_area_id') if data.get('block_area_id') != 0 else None
+    block_area_id = data.get('block_area_id') if data.get(
+        'block_area_id') != 0 else None
 
     try:
         # check whether livestock is belong to the farm_profile id
