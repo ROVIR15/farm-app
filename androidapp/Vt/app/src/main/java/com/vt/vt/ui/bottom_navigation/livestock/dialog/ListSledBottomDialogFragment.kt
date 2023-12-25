@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.sleds.model.SledOptionResponseItem
+import com.vt.vt.core.data.source.remote.sleds.dto.SledOptionResponseItem
 import com.vt.vt.databinding.FragmentListSledBottomDialogBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.file_provider.datakandang.DataKandangViewModel

@@ -3,7 +3,7 @@ package com.vt.vt.core.data.source.remote.categories.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
+import com.vt.vt.core.data.source.remote.categories.dto.CategoriesResponseItem
 import com.vt.vt.core.data.source.repository.CategoriesVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

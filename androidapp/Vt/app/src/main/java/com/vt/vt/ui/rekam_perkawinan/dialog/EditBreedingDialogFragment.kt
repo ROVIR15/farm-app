@@ -11,8 +11,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponseItem
 import com.vt.vt.databinding.FragmentEditBreedingDialogBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel

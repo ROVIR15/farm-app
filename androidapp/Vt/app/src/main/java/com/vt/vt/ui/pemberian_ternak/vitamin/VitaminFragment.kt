@@ -11,22 +11,17 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentVitaminBinding
-import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.barang_dan_jasa.ListItemsAndServiceViewModel
 import com.vt.vt.ui.file_provider.dataarea.DataAreaViewModel
 import com.vt.vt.ui.pemberian_ternak.FeedingViewModel
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class VitaminFragment : Fragment() {
@@ -34,7 +29,7 @@ class VitaminFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val vitaminViewModel by viewModels<VitaminViewModel>()
-    private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
+    private val listItemsAndServiceViewModel by viewModels<ListItemsAndServiceViewModel>()
     private val feedingViewModel by viewModels<FeedingViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
@@ -142,7 +137,7 @@ class VitaminFragment : Fragment() {
         dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
         }
-        listBarangDanJasaViewModel.apply {
+        listItemsAndServiceViewModel.apply {
             getAllProducts()
             observeLoading().observe(viewLifecycleOwner) {
                 binding.loading.progressBar.isVisible = it

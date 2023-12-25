@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponseItem
 import com.vt.vt.databinding.FragmentListAnimalMatingsBinding
 import com.vt.vt.ui.daftar_perkawinan.bottom_sheet_dialog.AddListBreedingDialogFragment
 import dagger.hilt.android.AndroidEntryPoint

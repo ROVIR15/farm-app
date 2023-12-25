@@ -5,13 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
 import com.vt.vt.databinding.ItemDetailFeedingBinding
-import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.barang_dan_jasa.ListItemsAndServiceViewModel
 import com.vt.vt.ui.pemberian_ternak.FeedingViewModel
 
 class ListDetailFeedingAdapter(
-    private val listBarangDanJasaViewModel: ListBarangDanJasaViewModel,
+    private val listItemsAndServiceViewModel: ListItemsAndServiceViewModel,
     private val feedingViewModel: FeedingViewModel
 ) : RecyclerView.Adapter<ListDetailFeedingAdapter.ViewHolder>() {
     private val listConsumptionRecord = ArrayList<ConsumptionRecordItem>()
@@ -29,7 +29,7 @@ class ListDetailFeedingAdapter(
         @SuppressLint("SetTextI18n")
         fun bindTo(data: ConsumptionRecordItem) {
             val skuId = data.skuId ?: return
-            val productName = listBarangDanJasaViewModel.getProductBySkuId(skuId)
+            val productName = listItemsAndServiceViewModel.getProductBySkuId(skuId)
             binding.categoriesDetail.text = when (data.feedCategory) {
                 1 -> "Kategori Hijauan"
                 2 -> "Kategori Kimia"

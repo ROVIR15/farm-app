@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.budget.ExpendituresItem
+import com.vt.vt.core.data.source.remote.budget.dto.ExpendituresItem
 import com.vt.vt.databinding.FragmentAnggaranBinding
 import com.vt.vt.ui.anggaran.adapter.ListBudgetExpenditureAdapter
 import com.vt.vt.ui.bottom_navigation.keuangan.BudgetViewModel

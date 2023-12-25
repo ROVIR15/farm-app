@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.base.DebouncingQueryTextListener
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponseItem
 import com.vt.vt.databinding.FragmentLivestockBinding
 import com.vt.vt.ui.bottom_navigation.livestock.dialog.ListSledBottomDialogFragment
 import dagger.hilt.android.AndroidEntryPoint

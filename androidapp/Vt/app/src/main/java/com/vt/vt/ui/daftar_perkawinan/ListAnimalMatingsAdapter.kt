@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponseItem
 import com.vt.vt.databinding.ItemListAnimalMatingsBinding
 
 class ListAnimalMatingsAdapter(private val listBreedingViewModel: ListBreedingViewModel) :

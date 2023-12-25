@@ -3,9 +3,9 @@ package com.vt.vt.ui.file_provider.addlivestock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
-import com.vt.vt.core.data.source.remote.livestock.model.StoreLivestockRequest
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRequest
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.StoreLivestockRequest
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

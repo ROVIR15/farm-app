@@ -3,11 +3,11 @@ package com.vt.vt.ui.rekam_perkawinan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponse
-import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
-import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
-import com.vt.vt.core.data.source.remote.breeding.pregnancy.PregnancyRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingByIdResponse
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponse
+import com.vt.vt.core.data.source.remote.breeding.dto.history.create.HistoryBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.lambing.create.LambingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.pregnancy.PregnancyRequest
 import com.vt.vt.core.data.source.repository.BreedingVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

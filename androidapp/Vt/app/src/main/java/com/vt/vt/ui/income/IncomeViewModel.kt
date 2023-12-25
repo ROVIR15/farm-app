@@ -3,11 +3,11 @@ package com.vt.vt.ui.income
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.budget.BudgetResponse
-import com.vt.vt.core.data.source.remote.income.IncomeCategoriesResponseItem
-import com.vt.vt.core.data.source.remote.income.IncomeRequest
-import com.vt.vt.core.data.source.remote.income.IncomeResponse
-import com.vt.vt.core.data.source.remote.income.IncomesItem
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetResponse
+import com.vt.vt.core.data.source.remote.income.dto.IncomeCategoriesResponseItem
+import com.vt.vt.core.data.source.remote.income.dto.IncomeRequest
+import com.vt.vt.core.data.source.remote.income.dto.IncomeResponse
+import com.vt.vt.core.data.source.remote.income.dto.IncomesItem
 import com.vt.vt.core.data.source.repository.IncomeVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel

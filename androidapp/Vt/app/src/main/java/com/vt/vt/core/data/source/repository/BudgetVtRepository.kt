@@ -1,10 +1,10 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.budget.AddBudgetRequest
-import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
-import com.vt.vt.core.data.source.remote.budget.BudgetResponse
-import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
+import com.vt.vt.core.data.source.remote.budget.dto.AddBudgetRequest
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetItemResponse
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetResponse
+import com.vt.vt.core.data.source.remote.categories.dto.CategoriesResponseItem
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -1,13 +1,12 @@
 package com.vt.vt.ui.detail_livestock.tab_layout.beratbadan
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.livestock.model.WeightRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.WeightRecordsItem
 import com.vt.vt.databinding.ItemBeratBadanBinding
 
 class ListWeightRecordAdapter :

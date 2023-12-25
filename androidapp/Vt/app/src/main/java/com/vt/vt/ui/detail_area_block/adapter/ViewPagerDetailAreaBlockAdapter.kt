@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.vt.vt.ui.detail_area_block.tab_layout.area_list_kandang.AreaListKandangFragment
-import com.vt.vt.ui.detail_area_block.tab_layout.area_list_livestock.AreaListLivestockFragment
-import com.vt.vt.ui.detail_area_block.tab_layout.area_list_pakan.AreaListPakanFragment
+import com.vt.vt.ui.detail_area_block.tab_layout.area_list_kandang.ListEnclosureAreasFragment
+import com.vt.vt.ui.detail_area_block.tab_layout.area_list_livestock.ListLivestockAreasFragment
+import com.vt.vt.ui.detail_area_block.tab_layout.area_list_pakan.ListFoodAreasFragment
 
 class ViewPagerDetailAreaBlockAdapter(
     private val fragmentBundle: Bundle,
@@ -22,9 +22,9 @@ class ViewPagerDetailAreaBlockAdapter(
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
         when (position) {
-            0 -> fragment = AreaListKandangFragment()
-            1 -> fragment = AreaListLivestockFragment()
-            2 -> fragment = AreaListPakanFragment()
+            0 -> fragment = ListEnclosureAreasFragment()
+            1 -> fragment = ListLivestockAreasFragment()
+            2 -> fragment = ListFoodAreasFragment()
         }
 
         fragment?.arguments = fragmentBundle

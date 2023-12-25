@@ -3,9 +3,9 @@ package com.vt.vt.ui.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.auth.model.register.request.FarmProfile
-import com.vt.vt.core.data.source.remote.auth.model.register.request.RegisterRequest
-import com.vt.vt.core.data.source.remote.auth.model.register.response.RegisterResponse
+import com.vt.vt.core.data.source.remote.auth.dto.register.request.FarmProfile
+import com.vt.vt.core.data.source.remote.auth.dto.register.request.RegisterRequest
+import com.vt.vt.core.data.source.remote.auth.dto.register.response.RegisterResponse
 import com.vt.vt.core.data.source.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

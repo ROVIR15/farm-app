@@ -44,7 +44,7 @@ class DetailAreaBlockFragment : Fragment(), Toolbar.OnMenuItemClickListener, Vie
 
         with(binding) {
             toolbarDetailArea.apply {
-                title = "Detail Area Block Kandang"
+                title = "Detil Area Blok Kandang"
                 setNavigationOnClickListener { findNavController().popBackStack() }
                 setOnMenuItemClickListener(this@DetailAreaBlockFragment)
             }

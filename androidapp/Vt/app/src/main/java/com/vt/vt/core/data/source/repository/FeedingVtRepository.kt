@@ -2,9 +2,9 @@ package com.vt.vt.core.data.source.repository
 
 import android.util.Log
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
-import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
-import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordResponse
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.FeedingRecordRequest
+import com.vt.vt.core.data.source.remote.feeding_record.dto.FeedingRecordResponse
 import retrofit2.Response
 import javax.inject.Inject
 

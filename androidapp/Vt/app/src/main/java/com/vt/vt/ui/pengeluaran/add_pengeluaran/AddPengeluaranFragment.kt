@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentAddPengeluaranBinding
-import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.barang_dan_jasa.ListItemsAndServiceViewModel
 import com.vt.vt.ui.bottom_navigation.keuangan.BudgetViewModel
 import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
 import com.vt.vt.utils.PickDatesUtils
@@ -30,7 +30,7 @@ class AddPengeluaranFragment : Fragment() {
 
     private val expenditureViewModel by viewModels<ExpenditureViewModel>()
     private val budgetViewModel by viewModels<BudgetViewModel>()
-    private val listProducts by viewModels<ListBarangDanJasaViewModel>()
+    private val listProducts by viewModels<ListItemsAndServiceViewModel>()
 
     private var budgetCategoryId: Int = 0
     private var budgetSubCategoryId: Int = 0

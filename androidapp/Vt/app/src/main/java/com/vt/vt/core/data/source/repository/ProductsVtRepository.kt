@@ -1,9 +1,9 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.products.model.ProductRequest
-import com.vt.vt.core.data.source.remote.products.model.ProductResponse
-import com.vt.vt.core.data.source.remote.products.model.ProductResponseItem
+import com.vt.vt.core.data.source.remote.products.dto.ProductRequest
+import com.vt.vt.core.data.source.remote.products.dto.ProductResponse
+import com.vt.vt.core.data.source.remote.products.dto.ProductResponseItem
 import retrofit2.Response
 import javax.inject.Inject
 

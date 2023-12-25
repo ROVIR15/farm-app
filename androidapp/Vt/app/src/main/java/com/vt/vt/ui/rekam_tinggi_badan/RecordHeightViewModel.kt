@@ -3,8 +3,8 @@ package com.vt.vt.ui.rekam_tinggi_badan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.height_record.HeightRecordResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
+import com.vt.vt.core.data.source.remote.height_record.dto.HeightRecordResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRecordRequest
 import com.vt.vt.core.data.source.repository.HeightRecordVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

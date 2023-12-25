@@ -1,13 +1,13 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockByIdResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockMoveSledRequest
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRequest
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.StoreLivestockRequest
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockByIdResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockMoveSledRequest
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockOptionResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRequest
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.StoreLivestockRequest
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -100,7 +100,7 @@
             app:popUpTo="@id/navigation_profile"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_navigation_profile_to_dataBarangDanJasaFragment"
+            android:id="@+id/action_navigation_profile_to_data_items_and_service_fragment"
             app:destination="@id/dataBarangDanJasaFragment" />
         <action
             android:id="@+id/action_navigation_profile_to_personalProfileFragment"
@@ -137,9 +137,9 @@
     </fragment>
     <fragment
         android:id="@+id/addEditDataBarangJasaFragment"
-        android:name="com.vt.vt.ui.file_provider.add_edit_data_barang.AddEditDataBarangJasaFragment"
+        android:name="com.vt.vt.ui.file_provider.add_edit_data_barang.AddEditItemsAndServiceDataFragment"
         android:label="fragment_data_barang_jasa"
-        tools:layout="@layout/fragment_add_edit_data_barang_jasa">
+        tools:layout="@layout/fragment_add_edit_items_and_service_data">
         <argument
             android:name="id"
             android:defaultValue="0"
@@ -156,7 +156,7 @@
     </fragment>
     <fragment
         android:id="@+id/dataKandangFragment"
-        android:name="com.vt.vt.ui.file_provider.datakandang.DataKandangFragment"
+        android:name="com.vt.vt.ui.file_provider.datakandang.AddCageFragment"
         android:label="DataKandangFragment">
         <action
             android:id="@+id/action_dataKandangFragment_to_navigation_home"
@@ -193,9 +193,9 @@
     </fragment>
     <fragment
         android:id="@+id/penyimpanTernakFragment"
-        android:name="com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakFragment"
+        android:name="com.vt.vt.ui.penyimpan_ternak.LivestockStorageFragment"
         android:label="fragment_penyimpan_ternak"
-        tools:layout="@layout/fragment_penyimpan_ternak">
+        tools:layout="@layout/fragment_livestock_storage">
         <action
             android:id="@+id/action_penyimpanTernakFragment_to_pemberianTernakFragment"
             app:destination="@id/navigation" />
@@ -332,9 +332,9 @@
     </fragment>
     <fragment
         android:id="@+id/dataBarangDanJasaFragment"
-        android:name="com.vt.vt.ui.barang_dan_jasa.DataBarangDanJasaFragment"
+        android:name="com.vt.vt.ui.barang_dan_jasa.ItemsAndServiceFragment"
         android:label="fragment_data_barang_dan_jasa"
-        tools:layout="@layout/fragment_data_barang_dan_jasa">
+        tools:layout="@layout/fragment_items_and_service">
         <action
             android:id="@+id/action_dataBarangDanJasaFragment_to_addDataBarangJasaFragment"
             app:destination="@id/addEditDataBarangJasaFragment" />

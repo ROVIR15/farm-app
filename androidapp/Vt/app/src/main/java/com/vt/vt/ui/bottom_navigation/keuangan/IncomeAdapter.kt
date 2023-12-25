@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.income.IncomesItem
+import com.vt.vt.core.data.source.remote.income.dto.IncomesItem
 import com.vt.vt.databinding.ItemIncomeBinding
 import com.vt.vt.utils.convertRupiah
 

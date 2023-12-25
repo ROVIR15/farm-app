@@ -1,8 +1,8 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.height_record.HeightRecordResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
+import com.vt.vt.core.data.source.remote.height_record.dto.HeightRecordResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRecordRequest
 import retrofit2.Response
 import javax.inject.Inject
 

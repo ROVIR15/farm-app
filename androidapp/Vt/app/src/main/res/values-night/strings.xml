@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--    Bottom Navigation Title     -->
-    <string name="app_name">Vt</string>
+    <string name="app_name">VET</string>
     <string name="title_home">Home</string>
     <string name="title_livestock">Ternak</string>
     <string name="title_scan">Scan</string>
     <string name="title_keuangan">Keuangan</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_profile">Profil</string>
 
     <string name="tambah_nlivestock">Tambah \n <b>Ternak</b></string>
     <string name="tambah_nlivestocks">Tambah \nTernak</string>

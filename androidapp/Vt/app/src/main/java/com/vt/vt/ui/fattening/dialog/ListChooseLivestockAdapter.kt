@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockOptionResponseItem
 import com.vt.vt.databinding.ItemChooseLivestockBinding
 
 class ListChooseLivestockAdapter :

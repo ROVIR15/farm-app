@@ -3,8 +3,8 @@ package com.vt.vt.ui.pengeluaran
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.expenditure.AddExpenditureRequest
-import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
+import com.vt.vt.core.data.source.remote.expenditure.dto.AddExpenditureRequest
+import com.vt.vt.core.data.source.remote.expenditure.dto.ExpenditureResponse
 import com.vt.vt.core.data.source.repository.ExpenditureVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

@@ -1,13 +1,13 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.breeding.BreedingByIdResponse
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponse
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
-import com.vt.vt.core.data.source.remote.breeding.create.CreateBreedingRequest
-import com.vt.vt.core.data.source.remote.breeding.history.create.HistoryBreedingRequest
-import com.vt.vt.core.data.source.remote.breeding.lambing.create.LambingRequest
-import com.vt.vt.core.data.source.remote.breeding.pregnancy.PregnancyRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingByIdResponse
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponse
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponseItem
+import com.vt.vt.core.data.source.remote.breeding.dto.create.CreateBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.history.create.HistoryBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.lambing.create.LambingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.pregnancy.PregnancyRequest
 import retrofit2.Response
 import javax.inject.Inject
 

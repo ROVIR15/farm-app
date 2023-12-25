@@ -1,9 +1,9 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreaRequest
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreasResponse
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreasResponseItem
 import retrofit2.Response
 import javax.inject.Inject
 

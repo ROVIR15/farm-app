@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.livestock.model.HeightRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.HeightRecordsItem
 import com.vt.vt.databinding.ItemHeightBinding
 
 class ListHeightTabLayoutAdapter :

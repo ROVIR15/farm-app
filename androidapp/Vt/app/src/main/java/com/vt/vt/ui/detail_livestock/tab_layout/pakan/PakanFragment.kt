@@ -9,9 +9,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vt.vt.core.data.source.remote.block_areas.model.FeedingRecordsItem
+import com.vt.vt.core.data.source.remote.block_areas.dto.FeedingRecordsItem
 import com.vt.vt.databinding.FragmentPakanBinding
-import com.vt.vt.ui.detail_area_block.tab_layout.area_list_pakan.AreaListPakanAdapter
+import com.vt.vt.ui.detail_area_block.tab_layout.area_list_pakan.ListFoodAreasAdapter
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,7 +52,7 @@ class PakanFragment : Fragment() {
     }
 
     private fun listPakan(data: List<FeedingRecordsItem>) {
-        val adapter = AreaListPakanAdapter()
+        val adapter = ListFoodAreasAdapter()
         adapter.submitList(data)
         with(binding) {
             listPakan.adapter = adapter

@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockMoveSledRequest
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockMoveSledRequest
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockOptionResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponseItem
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel

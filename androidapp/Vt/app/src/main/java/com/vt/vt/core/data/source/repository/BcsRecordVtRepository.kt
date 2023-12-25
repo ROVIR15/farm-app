@@ -1,9 +1,9 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponse
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
+import com.vt.vt.core.data.source.remote.bcs_record.dto.BcsRecordResponse
+import com.vt.vt.core.data.source.remote.bcs_record.dto.BcsRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRecordRequest
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentEditKandangBinding
-import com.vt.vt.ui.penyimpan_ternak.PenyimpanTernakViewModel
+import com.vt.vt.ui.penyimpan_ternak.LivestockStorageViewModel
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +22,7 @@ class EditKandangFragment : Fragment() {
     private var _binding: FragmentEditKandangBinding? = null
     private val binding get() = _binding!!
 
-    private val blockAreaViewModel by viewModels<PenyimpanTernakViewModel>()
+    private val blockAreaViewModel by viewModels<LivestockStorageViewModel>()
     private val sledsViewModel by viewModels<DataKandangViewModel>()
 
     private var sledsId: Int? = null

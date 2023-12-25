@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vt.vt.core.data.source.remote.livestock.model.HeightRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.HeightRecordsItem
 import com.vt.vt.databinding.FragmentHeightTabLayoutBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -6,9 +6,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.vt.vt.core.data.session_manager.SessionFeedingDataStoreManager
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
-import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordRequest
-import com.vt.vt.core.data.source.remote.feeding_record.model.FeedingRecordResponse
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.FeedingRecordRequest
+import com.vt.vt.core.data.source.remote.feeding_record.dto.FeedingRecordResponse
 import com.vt.vt.core.data.source.repository.FeedingVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

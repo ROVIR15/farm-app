@@ -3,8 +3,7 @@ package com.vt.vt.ui.detail_livestock.tab_layout.kesehatan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
+import com.vt.vt.core.data.source.remote.health_record.dto.HealthRecordResponseItem
 import com.vt.vt.core.data.source.repository.HealthRecordVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

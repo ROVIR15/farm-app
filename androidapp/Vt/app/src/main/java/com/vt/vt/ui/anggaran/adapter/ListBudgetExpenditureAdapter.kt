@@ -1,6 +1,5 @@
 package com.vt.vt.ui.anggaran.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -11,12 +10,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.budget.ExpendituresItem
+import com.vt.vt.core.data.source.remote.budget.dto.ExpendituresItem
 import com.vt.vt.databinding.ItemAnggaranBinding
 import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
 import com.vt.vt.utils.convertRupiah
-import java.text.NumberFormat
-import java.util.Locale
 
 class ListBudgetExpenditureAdapter(private val expenditureViewModel: ExpenditureViewModel) :
     ListAdapter<ExpendituresItem, ListBudgetExpenditureAdapter.BudgetViewHolder>(DIFF_CALLBACK) {

@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vt.vt.core.data.source.remote.livestock.model.WeightRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.WeightRecordsItem
 import com.vt.vt.databinding.FragmentWeightBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint

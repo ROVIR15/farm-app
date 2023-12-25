@@ -1,11 +1,11 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.sleds.model.MoveSledRequest
-import com.vt.vt.core.data.source.remote.sleds.model.SledOptionResponseItem
-import com.vt.vt.core.data.source.remote.sleds.model.SledRequest
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.remote.sleds.dto.MoveSledRequest
+import com.vt.vt.core.data.source.remote.sleds.dto.SledOptionResponseItem
+import com.vt.vt.core.data.source.remote.sleds.dto.SledRequest
+import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponse
+import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponseItem
 import retrofit2.Response
 import javax.inject.Inject
 

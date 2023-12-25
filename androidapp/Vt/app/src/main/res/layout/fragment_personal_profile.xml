@@ -31,6 +31,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_edit_profile_picture"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_circle_white"
+            android:padding="4dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_baseline_edit_24"
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
+            app:layout_constraintEnd_toEndOf="@+id/circleImageView" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/appCompatTextView29"
             style="@style/TextAppearance.MaterialComponents.Subtitle1"

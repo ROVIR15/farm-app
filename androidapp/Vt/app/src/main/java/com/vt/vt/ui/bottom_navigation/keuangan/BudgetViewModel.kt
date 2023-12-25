@@ -5,10 +5,10 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.budget.AddBudgetRequest
-import com.vt.vt.core.data.source.remote.budget.BudgetItemResponse
-import com.vt.vt.core.data.source.remote.budget.BudgetResponse
-import com.vt.vt.core.data.source.remote.categories.model.CategoriesResponseItem
+import com.vt.vt.core.data.source.remote.budget.dto.AddBudgetRequest
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetItemResponse
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetResponse
+import com.vt.vt.core.data.source.remote.categories.dto.CategoriesResponseItem
 import com.vt.vt.core.data.source.repository.BudgetVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.sleds.model.MoveSledRequest
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponse
-import com.vt.vt.core.data.source.remote.sleds.model.SledsResponseItem
+import com.vt.vt.core.data.source.remote.sleds.dto.MoveSledRequest
+import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponse
+import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponseItem
 import com.vt.vt.core.data.source.repository.SledsVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

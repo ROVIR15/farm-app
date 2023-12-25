@@ -3,7 +3,7 @@ package com.vt.vt.ui.detail_livestock.tab_layout.bcs
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
+import com.vt.vt.core.data.source.remote.bcs_record.dto.BcsRecordResponseItem
 import com.vt.vt.core.data.source.repository.BcsRecordVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

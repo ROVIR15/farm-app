@@ -3,10 +3,10 @@ package com.vt.vt.ui.file_provider.dataarea
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreaRequest
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponse
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAndAreasResponseItem
-import com.vt.vt.core.data.source.remote.block_areas.model.BlockAreaInfoResponse
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreaRequest
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreasResponse
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreasResponseItem
+import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAreaInfoResponse
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

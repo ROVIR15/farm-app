@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentPemberianTernakBinding
 import com.vt.vt.ui.pemberian_ternak.bottondialog.ConfirmationFeedingBottomDialogFragment
 import com.vt.vt.ui.profile.personal_profile.PersonalProfileViewModel

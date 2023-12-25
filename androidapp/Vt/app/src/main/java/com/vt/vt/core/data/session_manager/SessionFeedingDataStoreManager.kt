@@ -9,7 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

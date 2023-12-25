@@ -19,7 +19,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentDataAreaBinding
-import com.vt.vt.ui.penyimpan_ternak.adapter.PenyimpananTernakAdapter
+import com.vt.vt.ui.penyimpan_ternak.adapter.LivestockStorageAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,7 +39,7 @@ class DataAreaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (PenyimpananTernakAdapter.isUpdate) {
+        if (LivestockStorageAdapter.isUpdate) {
             binding.btnSimpan.text = "Update"
             id = arguments?.getInt("id").toString()
             dataAreaViewModel.getBlockArea(id)
@@ -59,7 +59,7 @@ class DataAreaFragment : Fragment() {
                 val name = binding.edtAreaName.text.toString().trim()
                 val description = binding.edtDescription.text.toString().trim()
                 if (name.isNotEmpty() && description.isNotEmpty()) {
-                    if (PenyimpananTernakAdapter.isUpdate) {
+                    if (LivestockStorageAdapter.isUpdate) {
                         dataAreaViewModel.updateBlockAndArea(id, name, description)
                     } else {
                         dataAreaViewModel.createBlockAndArea(name, description)

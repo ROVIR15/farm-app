@@ -1,7 +1,6 @@
 package com.vt.vt.ui.fattening.dialog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockOptionResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockOptionResponseItem
 import com.vt.vt.databinding.FragmentFatteningBottomDialogBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint

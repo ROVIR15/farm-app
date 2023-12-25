@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.HealthRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.HealthRecordsItem
 import com.vt.vt.databinding.ItemKesehatanBinding
 
 class ListHealthRecordAdapter :

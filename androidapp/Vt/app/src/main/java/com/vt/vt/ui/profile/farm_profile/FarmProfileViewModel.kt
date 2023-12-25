@@ -3,7 +3,7 @@ package com.vt.vt.ui.profile.farm_profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.farm_profile.model.FarmProfileResponse
+import com.vt.vt.core.data.source.remote.farm_profile.dto.FarmProfileResponse
 import com.vt.vt.core.data.source.repository.FarmProfileVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

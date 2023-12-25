@@ -89,7 +89,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
             R.id.profile_goods_and_service -> {
                 v.findNavController()
-                    .navigate(R.id.action_navigation_profile_to_dataBarangDanJasaFragment)
+                    .navigate(R.id.action_navigation_profile_to_data_items_and_service_fragment)
             }
 
             R.id.profile_animal_cage_area -> {

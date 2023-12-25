@@ -3,8 +3,8 @@ package com.vt.vt.ui.rekam_kesehatan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordRequest
-import com.vt.vt.core.data.source.remote.health_record.model.HealthRecordResponse
+import com.vt.vt.core.data.source.remote.health_record.dto.HealthRecordRequest
+import com.vt.vt.core.data.source.remote.health_record.dto.HealthRecordResponse
 import com.vt.vt.core.data.source.repository.HealthRecordVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

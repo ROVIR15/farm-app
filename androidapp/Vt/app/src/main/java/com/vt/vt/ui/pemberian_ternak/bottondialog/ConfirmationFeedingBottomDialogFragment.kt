@@ -13,9 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.feeding_record.model.ConsumptionRecordItem
+import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
 import com.vt.vt.databinding.FragmentConfirmationFeedingBottomDialogBinding
-import com.vt.vt.ui.barang_dan_jasa.ListBarangDanJasaViewModel
+import com.vt.vt.ui.barang_dan_jasa.ListItemsAndServiceViewModel
 import com.vt.vt.ui.pemberian_ternak.FeedingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,10 +25,10 @@ class ConfirmationFeedingBottomDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     private val feedingViewModel by viewModels<FeedingViewModel>()
-    private val listBarangDanJasaViewModel by viewModels<ListBarangDanJasaViewModel>()
+    private val listItemsAndServiceViewModel by viewModels<ListItemsAndServiceViewModel>()
     private val listDetailFeedingAdapter by lazy {
         ListDetailFeedingAdapter(
-            listBarangDanJasaViewModel, feedingViewModel
+            listItemsAndServiceViewModel, feedingViewModel
         )
     }
 
@@ -45,7 +45,7 @@ class ConfirmationFeedingBottomDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         blockId = arguments?.getInt("blockId")
-        listBarangDanJasaViewModel.getAllProducts()
+        listItemsAndServiceViewModel.getAllProducts()
         with(binding) {
             listFeeding.adapter = listDetailFeedingAdapter
             listFeeding.layoutManager =
@@ -58,7 +58,7 @@ class ConfirmationFeedingBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun observerView() {
-        listBarangDanJasaViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
+        listItemsAndServiceViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
         }
         feedingViewModel.observeLoading().observe(viewLifecycleOwner) { isLoading ->
@@ -70,7 +70,7 @@ class ConfirmationFeedingBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         feedingViewModel.load().observe(viewLifecycleOwner) { listConsumptionRecord ->
-            listBarangDanJasaViewModel.productsEmitter.observe(viewLifecycleOwner) {
+            listItemsAndServiceViewModel.productsEmitter.observe(viewLifecycleOwner) {
                 if (blockId != null) {
                     val data = listConsumptionRecord[blockId]
                     Log.d("FEEDING", "data list in dialog : ${listConsumptionRecord}")

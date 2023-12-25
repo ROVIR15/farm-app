@@ -9,8 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponseItem
-import com.vt.vt.core.data.source.remote.livestock.model.BcsRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.BcsRecordsItem
 import com.vt.vt.databinding.FragmentBcsBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
 import dagger.hilt.android.AndroidEntryPoint

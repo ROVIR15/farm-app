@@ -3,8 +3,8 @@ package com.vt.vt.ui.rekam_bcs
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.bcs_record.model.BcsRecordResponse
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
+import com.vt.vt.core.data.source.remote.bcs_record.dto.BcsRecordResponse
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRecordRequest
 import com.vt.vt.core.data.source.repository.BcsRecordVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONObject

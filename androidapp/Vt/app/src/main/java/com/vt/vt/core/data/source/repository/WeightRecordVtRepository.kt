@@ -1,9 +1,9 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.livestock.model.LivestockRecordRequest
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponse
-import com.vt.vt.core.data.source.remote.weight_record.model.WeightRecordResponseItem
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRecordRequest
+import com.vt.vt.core.data.source.remote.weight_record.dto.WeightRecordResponse
+import com.vt.vt.core.data.source.remote.weight_record.dto.WeightRecordResponseItem
 import retrofit2.Response
 import javax.inject.Inject
 

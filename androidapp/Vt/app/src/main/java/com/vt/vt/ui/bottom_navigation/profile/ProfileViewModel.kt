@@ -3,7 +3,7 @@ package com.vt.vt.ui.bottom_navigation.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.auth.model.login.LoginResponse
+import com.vt.vt.core.data.source.remote.auth.dto.login.LoginResponse
 import com.vt.vt.core.data.session_manager.SessionPreferencesDataStoreManager
 import com.vt.vt.core.data.source.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

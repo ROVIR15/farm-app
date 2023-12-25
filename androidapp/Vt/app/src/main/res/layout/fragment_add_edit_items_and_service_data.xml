@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.file_provider.add_edit_data_barang.AddEditItemsAndServiceDataFragment">
+
+    <include
+        android:id="@+id/app_bar_layout"
+        layout="@layout/app_bar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="always"
+        android:padding="12dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_photo_data_barang_jasa"
+                android:layout_width="298dp"
+                android:layout_height="348dp"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_file_photo"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_file_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="112dp"
+                android:src="@drawable/ic_baseline_file_upload_24"
+                app:layout_constraintEnd_toEndOf="@+id/iv_photo_data_barang_jasa"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="@+id/iv_photo_data_barang_jasa"
+                app:layout_constraintTop_toTopOf="@+id/iv_photo_data_barang_jasa" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_upload_file_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Upload Gambar"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/icon_file_photo"
+                app:layout_constraintHorizontal_bias="0.486"
+                app:layout_constraintStart_toStartOf="@+id/icon_file_photo"
+                app:layout_constraintTop_toBottomOf="@+id/icon_file_photo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="Nama"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_photo_data_barang_jasa">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_nama_barang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spinner_product_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout" />
+
+            <Spinner
+                android:id="@+id/spinner_product_sub_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edt_normal"
+                android:fontFamily="@font/roboto_regular"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_product_category" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Satuan"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinner_product_sub_category">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_satuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Deskripsi"
+                app:boxStrokeColor="@color/btn_blue_icon"
+                app:hintTextColor="@color/text_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/outlined_text_input_layout1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_simpan"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/btn_blue_icon"
+                android:elevation="2dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Simpan"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:elevation="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/outlined_text_input_layout2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_batal"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Batal"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_simpan"
+                app:strokeColor="@color/red" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

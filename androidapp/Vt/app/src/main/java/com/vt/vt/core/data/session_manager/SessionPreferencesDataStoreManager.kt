@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.vt.vt.core.data.source.remote.auth.model.user_session.UserSession
+import com.vt.vt.core.data.source.remote.auth.dto.user_session.UserSession
 import com.vt.vt.utils.FILE_PREFERENCE_DATASTORE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

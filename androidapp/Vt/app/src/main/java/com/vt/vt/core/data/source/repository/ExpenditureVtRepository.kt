@@ -1,8 +1,8 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.expenditure.AddExpenditureRequest
-import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
+import com.vt.vt.core.data.source.remote.expenditure.dto.AddExpenditureRequest
+import com.vt.vt.core.data.source.remote.expenditure.dto.ExpenditureResponse
 import retrofit2.Response
 import javax.inject.Inject
 

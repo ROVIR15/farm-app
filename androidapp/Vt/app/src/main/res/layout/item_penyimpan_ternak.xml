@@ -27,13 +27,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_date_content_pentimpan_ternak"
+            android:id="@+id/tv_date_content_livestock_storage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:padding="4dp"
             android:text="12 Januari 2023"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_date" />
@@ -46,7 +46,7 @@
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date_content_pentimpan_ternak" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_content_livestock_storage" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewPhoto_penyimpan_ternak"
@@ -63,7 +63,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
+            android:maxLines="1"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Title"
@@ -79,7 +81,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
+            android:maxLines="2"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Subtitle"

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentPersonalProfileBinding
+import com.vt.vt.ui.common.SnapSheetFragment
 import com.vt.vt.utils.PickDatesUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,10 +37,11 @@ class PersonalProfileFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             appBarPersonalProfile.topAppBar.apply {
-                title = "Profile Pribadi"
+                title = "Profil Pribadi"
                 setNavigationOnClickListener { findNavController().popBackStack() }
             }
             ivDatePicker.setOnClickListener(this@PersonalProfileFragment)
+            btnEditProfilePicture.setOnClickListener(this@PersonalProfileFragment)
             btnSavePersonalProfile.setOnClickListener(this@PersonalProfileFragment)
         }
         observerView()
@@ -71,6 +73,12 @@ class PersonalProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btn_edit_profile_picture -> {
+                val snapSheetFragment = SnapSheetFragment()
+                snapSheetFragment.show(
+                    childFragmentManager, snapSheetFragment::class.java.simpleName
+                )
+            }
             R.id.iv_date_picker -> {
                 PickDatesUtils.setupDatePicker(requireActivity(), binding.tvDatePersonalProfile)
             }

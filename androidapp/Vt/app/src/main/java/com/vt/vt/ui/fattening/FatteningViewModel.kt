@@ -3,7 +3,7 @@ package com.vt.vt.ui.fattening
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
-import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
+import com.vt.vt.core.data.source.remote.fattening.dto.FatteningResponse
 import com.vt.vt.core.data.source.repository.FatteningVtRepository
 import com.vt.vt.utils.PickDatesUtils
 import dagger.hilt.android.lifecycle.HiltViewModel

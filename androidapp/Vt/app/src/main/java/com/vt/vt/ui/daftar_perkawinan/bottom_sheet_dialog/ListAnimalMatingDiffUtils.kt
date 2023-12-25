@@ -1,7 +1,7 @@
 package com.vt.vt.ui.daftar_perkawinan.bottom_sheet_dialog
 
 import androidx.recyclerview.widget.DiffUtil
-import com.vt.vt.core.data.source.remote.breeding.BreedingResponseItem
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponseItem
 
 class ListAnimalMatingDiffUtils(
     private val oldList: List<BreedingResponseItem>,

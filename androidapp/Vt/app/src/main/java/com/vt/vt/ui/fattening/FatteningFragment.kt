@@ -18,9 +18,9 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.fattening.model.BcsResults
-import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
-import com.vt.vt.core.data.source.remote.fattening.model.WeightResults
+import com.vt.vt.core.data.source.remote.fattening.dto.BcsResults
+import com.vt.vt.core.data.source.remote.fattening.dto.FatteningResponse
+import com.vt.vt.core.data.source.remote.fattening.dto.WeightResults
 import com.vt.vt.databinding.FragmentFatteningBinding
 import com.vt.vt.ui.fattening.dialog.FatteningBottomDialogFragment
 import com.vt.vt.utils.PickDatesUtils

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.budget.BudgetBreakdownItem
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetBreakdownItem
 import com.vt.vt.databinding.ItemFinanceSummaryBinding
 import com.vt.vt.utils.convertRupiah
 

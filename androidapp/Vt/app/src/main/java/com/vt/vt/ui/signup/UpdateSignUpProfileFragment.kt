@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.vt.vt.R
-import com.vt.vt.core.data.source.remote.auth.model.register.request.FarmProfile
+import com.vt.vt.core.data.source.remote.auth.dto.register.request.FarmProfile
 import com.vt.vt.databinding.FragmentUpdateSignUpProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -1,11 +1,11 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
-import com.vt.vt.core.data.source.remote.budget.BudgetResponse
-import com.vt.vt.core.data.source.remote.income.IncomeCategoriesResponseItem
-import com.vt.vt.core.data.source.remote.income.IncomeRequest
-import com.vt.vt.core.data.source.remote.income.IncomeResponse
-import com.vt.vt.core.data.source.remote.income.IncomesItem
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetResponse
+import com.vt.vt.core.data.source.remote.income.dto.IncomeCategoriesResponseItem
+import com.vt.vt.core.data.source.remote.income.dto.IncomeRequest
+import com.vt.vt.core.data.source.remote.income.dto.IncomeResponse
+import com.vt.vt.core.data.source.remote.income.dto.IncomesItem
 import retrofit2.Response
 import javax.inject.Inject
 

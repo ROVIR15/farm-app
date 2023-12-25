@@ -1,33 +1,39 @@
 package com.vt.vt.core.data.source.remote
 
-import com.vt.vt.core.data.source.remote.auth.model.login.*
-import com.vt.vt.core.data.source.remote.auth.model.register.request.*
-import com.vt.vt.core.data.source.remote.auth.model.register.response.*
-import com.vt.vt.core.data.source.remote.bcs_record.model.*
-import com.vt.vt.core.data.source.remote.block_areas.model.*
+import com.vt.vt.core.data.source.remote.auth.dto.login.*
+import com.vt.vt.core.data.source.remote.auth.dto.register.request.*
+import com.vt.vt.core.data.source.remote.auth.dto.register.response.*
+import com.vt.vt.core.data.source.remote.bcs_record.dto.*
+import com.vt.vt.core.data.source.remote.block_areas.dto.*
 import com.vt.vt.core.data.source.remote.breeding.*
-import com.vt.vt.core.data.source.remote.breeding.create.*
-import com.vt.vt.core.data.source.remote.breeding.history.create.*
-import com.vt.vt.core.data.source.remote.breeding.lambing.create.*
-import com.vt.vt.core.data.source.remote.breeding.pregnancy.*
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingByIdResponse
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponse
+import com.vt.vt.core.data.source.remote.breeding.dto.BreedingResponseItem
+import com.vt.vt.core.data.source.remote.breeding.dto.create.CreateBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.history.create.HistoryBreedingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.lambing.create.LambingRequest
+import com.vt.vt.core.data.source.remote.breeding.dto.pregnancy.PregnancyRequest
 import com.vt.vt.core.data.source.remote.budget.*
-import com.vt.vt.core.data.source.remote.categories.model.*
-import com.vt.vt.core.data.source.remote.expenditure.AddExpenditureRequest
-import com.vt.vt.core.data.source.remote.expenditure.ExpenditureResponse
-import com.vt.vt.core.data.source.remote.farm_profile.model.*
-import com.vt.vt.core.data.source.remote.fattening.model.FatteningResponse
-import com.vt.vt.core.data.source.remote.feeding_record.model.*
-import com.vt.vt.core.data.source.remote.health_record.model.*
-import com.vt.vt.core.data.source.remote.height_record.HeightRecordResponse
-import com.vt.vt.core.data.source.remote.income.IncomeCategoriesResponseItem
-import com.vt.vt.core.data.source.remote.income.IncomeRequest
-import com.vt.vt.core.data.source.remote.income.IncomeResponse
-import com.vt.vt.core.data.source.remote.income.IncomesItem
-import com.vt.vt.core.data.source.remote.livestock.model.*
-import com.vt.vt.core.data.source.remote.products.model.*
-import com.vt.vt.core.data.source.remote.profile.model.*
-import com.vt.vt.core.data.source.remote.sleds.model.*
-import com.vt.vt.core.data.source.remote.weight_record.model.*
+import com.vt.vt.core.data.source.remote.budget.dto.AddBudgetRequest
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetItemResponse
+import com.vt.vt.core.data.source.remote.budget.dto.BudgetResponse
+import com.vt.vt.core.data.source.remote.categories.dto.*
+import com.vt.vt.core.data.source.remote.expenditure.dto.AddExpenditureRequest
+import com.vt.vt.core.data.source.remote.expenditure.dto.ExpenditureResponse
+import com.vt.vt.core.data.source.remote.farm_profile.dto.*
+import com.vt.vt.core.data.source.remote.fattening.dto.FatteningResponse
+import com.vt.vt.core.data.source.remote.feeding_record.dto.*
+import com.vt.vt.core.data.source.remote.health_record.dto.*
+import com.vt.vt.core.data.source.remote.height_record.dto.HeightRecordResponse
+import com.vt.vt.core.data.source.remote.income.dto.IncomeCategoriesResponseItem
+import com.vt.vt.core.data.source.remote.income.dto.IncomeRequest
+import com.vt.vt.core.data.source.remote.income.dto.IncomeResponse
+import com.vt.vt.core.data.source.remote.income.dto.IncomesItem
+import com.vt.vt.core.data.source.remote.livestock.dto.*
+import com.vt.vt.core.data.source.remote.products.dto.*
+import com.vt.vt.core.data.source.remote.profile.dto.*
+import com.vt.vt.core.data.source.remote.sleds.dto.*
+import com.vt.vt.core.data.source.remote.weight_record.dto.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -75,8 +81,7 @@ interface ApiService {
 
     @PUT("api/block-area/{id}")
     suspend fun updateBlockArea(
-        @Path("id") id: String,
-        @Body blockAndAreaRequest: BlockAndAreaRequest
+        @Path("id") id: String, @Body blockAndAreaRequest: BlockAndAreaRequest
     ): Response<BlockAndAreasResponse>
 
     // SLED
@@ -101,14 +106,12 @@ interface ApiService {
 
     @PUT("api/sled/{id}")
     suspend fun updateSled(
-        @Path("id") id: String,
-        @Body sledRequest: SledRequest
+        @Path("id") id: String, @Body sledRequest: SledRequest
     ): Response<SledsResponse>
 
     @PUT("api/v1.1/sled/move-to-block-area/{id}")
     suspend fun sledMoveToBlockArea(
-        @Path("id") id: String,
-        @Body moveSledRequest: MoveSledRequest
+        @Path("id") id: String, @Body moveSledRequest: MoveSledRequest
     ): Response<SledsResponse>
 
     //    Livestock
@@ -136,8 +139,7 @@ interface ApiService {
 
     @PUT("api/livestock/{id}")
     suspend fun updateLivestockById(
-        @Path("id") id: String,
-        @Body livestockRequest: LivestockRequest
+        @Path("id") id: String, @Body livestockRequest: LivestockRequest
     ): Response<LivestockResponse>
 
     @DELETE("api/livestock/{id}")
@@ -177,8 +179,7 @@ interface ApiService {
 
     @PUT("api/product/{id}")
     suspend fun updateProductById(
-        @Path("id") id: String,
-        @Body productRequest: ProductRequest
+        @Path("id") id: String, @Body productRequest: ProductRequest
     ): Response<ProductResponse>
 
     //    BCS RECORD
@@ -242,8 +243,7 @@ interface ApiService {
 
     @PUT("api/pregnancy/{id}")
     suspend fun updatePregnancy(
-        @Path("id") id: String,
-        @Body pregnancyRequest: PregnancyRequest
+        @Path("id") id: String, @Body pregnancyRequest: PregnancyRequest
     ): Response<BreedingResponse>
 
     // Fattening
@@ -282,8 +282,7 @@ interface ApiService {
 
     @PUT("api/income/{id}")
     suspend fun updateIncome(
-        @Path("id") id: String,
-        @Body incomeRequest: IncomeRequest
+        @Path("id") id: String, @Body incomeRequest: IncomeRequest
     ): Response<IncomeResponse>
 
 

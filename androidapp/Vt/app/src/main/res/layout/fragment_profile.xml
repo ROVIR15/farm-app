@@ -78,7 +78,7 @@
             android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
             android:gravity="center_vertical"
             android:padding="8dp"
-            android:text="Profile Pribadi" />
+            android:text="Profil Pribadi" />
 
         <View
             android:layout_width="match_parent"
@@ -92,7 +92,7 @@
             android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"
             android:gravity="center_vertical"
             android:padding="8dp"
-            android:text="Profile Perternakan" />
+            android:text="Profil Perternakan" />
 
         <View
             android:layout_width="match_parent"
@@ -195,7 +195,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/black"
         android:elevation="2dp"
-        android:text="Logout"
+        android:text="Keluar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
