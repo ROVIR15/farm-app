@@ -1,32 +1,39 @@
 package com.vt.vt.ui.edit_livestock
 
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
+import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
+import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponseItem
 import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponseItem
 import com.vt.vt.databinding.FragmentEditLivestockBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
+import com.vt.vt.ui.common.SnapSheetFragment
+import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
+import com.vt.vt.ui.file_provider.datakandang.AddCageFragment
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EditLivestockFragment : Fragment() {
+class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListener {
 
     private var _binding: FragmentEditLivestockBinding? = null
     private val binding get() = _binding!!
@@ -66,9 +73,7 @@ class EditLivestockFragment : Fragment() {
             ivDatePicker.setOnClickListener {
                 PickDatesUtils.setupDatePicker(requireActivity(), tvDateLivestock)
             }
-            ivProfileLivestock.setOnClickListener {
-                showBottomSheetDialog()
-            }
+            ivProfileLivestock.setOnClickListener(this@EditLivestockFragment)
             var gender = 0
             spinnerGenderUmum.selected { position ->
                 gender = position
@@ -110,6 +115,19 @@ class EditLivestockFragment : Fragment() {
         }
         observerView()
     }
+
+    private val requestResultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+            var permissionGranted = true
+            permission.entries.forEach {
+                if (it.key in PermissionManager.REQUIRED_PERMISSION && !it.value) {
+                    permissionGranted = false
+                }
+            }
+            if (!permissionGranted) {
+                showPermissionDeniedDialog(requireActivity())
+            }
+        }
 
     private fun observerView() {
         editLivestockViewModel.apply {
@@ -207,6 +225,35 @@ class EditLivestockFragment : Fragment() {
         }
     }
 
+    override fun bitmapPhotos(photo: Bitmap?) {
+        Log.d(TAG, "BITMAP PHOTO : $photo")
+        if (photo != null) {
+            with(binding) {
+                ivProfileLivestock.setImageBitmap(photo)
+                ivProfileLivestock.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_image_24)
+                ivProfileLivestock.clipToOutline = true
+                iconFilePhoto.visibility = View.GONE
+                tvUploadFilePhoto.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun uriFile(photo: Uri?) {
+        Log.d(TAG, "URI PHOTO : $photo")
+        with(binding) {
+            ivProfileLivestock.apply {
+                setImageURI(photo)
+                background = ContextCompat.getDrawable(
+                    requireContext(), R.drawable.ic_outline_image_24
+                )
+                clipToOutline = true
+            }
+            iconFilePhoto.visibility = View.GONE
+            tvUploadFilePhoto.visibility = View.GONE
+        }
+    }
+
     private fun adapterSpinner(binding: Spinner, textArray: Array<String>) {
         ArrayAdapter(
             requireActivity(),
@@ -229,29 +276,6 @@ class EditLivestockFragment : Fragment() {
         }
     }
 
-    private fun showBottomSheetDialog() {
-        val dialog = BottomSheetDialog(requireActivity())
-        dialog.setContentView(R.layout.bottom_sheet_open_camera_gallery)
-        val btnCamera = dialog.findViewById<RelativeLayout>(R.id.rl_camera)
-        val btnGallery = dialog.findViewById<RelativeLayout>(R.id.rl_gallery)
-        dialog.show()
-        btnCamera?.setOnClickListener {
-            startCamera()
-            dialog.dismiss()
-        }
-        btnGallery?.setOnClickListener {
-            startGallery()
-            dialog.dismiss()
-        }
-    }
-
-    fun startCamera() {
-        Toast.makeText(requireContext(), "belum ada action ke camera", Toast.LENGTH_SHORT).show()
-    }
-
-    fun startGallery() {
-        Toast.makeText(requireContext(), "belum ada action ambil gambar", Toast.LENGTH_SHORT).show()
-    }
 
     private fun showLoading(state: Boolean) {
         with(binding) {
@@ -283,6 +307,25 @@ class EditLivestockFragment : Fragment() {
             }
         }
         return -1
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.iv_profile_livestock -> {
+                if (PermissionManager(requireContext()).hasPermission()) {
+                    val snapShotDialog = SnapSheetFragment()
+                    snapShotDialog.show(
+                        childFragmentManager, snapShotDialog::class.java.simpleName
+                    )
+                } else {
+                    requestResultLauncher.launch(PermissionManager.REQUIRED_PERMISSION)
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val TAG = EditLivestockFragment::class.java.simpleName
     }
 
 }

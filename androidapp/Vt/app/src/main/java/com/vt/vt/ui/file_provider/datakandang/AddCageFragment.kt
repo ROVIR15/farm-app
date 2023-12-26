@@ -1,16 +1,14 @@
 package com.vt.vt.ui.file_provider.datakandang
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -18,15 +16,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
+import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
+import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentAddCageBinding
+import com.vt.vt.ui.common.SnapSheetFragment
+import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.LivestockStorageViewModel
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddCageFragment : Fragment(), View.OnClickListener {
+class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
 
     private var _binding: FragmentAddCageBinding? = null
     private val binding get() = _binding!!
@@ -53,12 +54,25 @@ class AddCageFragment : Fragment(), View.OnClickListener {
                     view.findNavController().popBackStack()
                 }
             }
-            this.ivPhotoDataKandang.setOnClickListener { requestPermissionsIfNeeded() }
+            ivPhotoDataKandang.setOnClickListener(this@AddCageFragment)
             btnSave.setOnClickListener(this@AddCageFragment)
             btnCancel.setOnClickListener(this@AddCageFragment)
         }
         observerView()
     }
+
+    private val requestResultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+            var permissionGranted = true
+            permission.entries.forEach {
+                if (it.key in PermissionManager.REQUIRED_PERMISSION && !it.value) {
+                    permissionGranted = false
+                }
+            }
+            if (!permissionGranted) {
+                showPermissionDeniedDialog(requireActivity())
+            }
+        }
 
     private fun observerView() {
         viewModel.apply {
@@ -104,66 +118,6 @@ class AddCageFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private val requestPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            permissions.entries.forEach {
-                Log.e("LOG_TAG", "${it.key} = ${it.value}")
-            }
-        }
-
-    private fun hasReadStoragePermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_MEDIA_IMAGES
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        }
-    }
-
-    private fun hasCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(), Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestPermissionsIfNeeded() {
-        val readStoragePermissionGranted = hasReadStoragePermission()
-        val cameraPermissionGranted = hasCameraPermission()
-
-        if (!readStoragePermissionGranted || !cameraPermissionGranted) {
-            val permissions = mutableListOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
-            )
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
-            }
-
-            requestPermissions.launch(permissions.toTypedArray())
-        } else {
-            showBottomSheetDialog()
-        }
-    }
-
-    private fun showBottomSheetDialog() {
-        val dialog = BottomSheetDialog(requireActivity())
-        dialog.setContentView(R.layout.bottom_sheet_open_camera_gallery)
-        val btnCamera = dialog.findViewById<RelativeLayout>(R.id.rl_camera)
-        val btnGallery = dialog.findViewById<RelativeLayout>(R.id.rl_gallery)
-        dialog.show()
-        btnCamera?.setOnClickListener {
-            //startCamera()
-            dialog.dismiss()
-        }
-        btnGallery?.setOnClickListener {
-            //startGallery()
-            dialog.dismiss()
-        }
-    }
-
     private fun showLoading(state: Boolean) {
         with(binding) {
             btnSave.isEnabled = !state
@@ -178,6 +132,36 @@ class AddCageFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    override fun bitmapPhotos(photo: Bitmap?) {
+        Log.d(TAG, "BITMAP PHOTO : $photo")
+        if (photo != null) {
+            with(binding) {
+                ivPhotoDataKandang.setImageBitmap(photo)
+                ivPhotoDataKandang.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_image_24)
+                ivPhotoDataKandang.clipToOutline = true
+                iconFilePhoto.visibility = View.GONE
+                tvUploadFilePhoto.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun uriFile(photo: Uri?) {
+        Log.d(TAG, "URI PHOTO : $photo")
+        with(binding) {
+            ivPhotoDataKandang.apply {
+                setImageURI(photo)
+                background = ContextCompat.getDrawable(
+                    requireContext(), R.drawable.ic_outline_image_24
+                )
+                clipToOutline = true
+            }
+            iconFilePhoto.visibility = View.GONE
+            tvUploadFilePhoto.visibility = View.GONE
+        }
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -185,6 +169,17 @@ class AddCageFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.iv_photo_data_kandang -> {
+                if (PermissionManager(requireContext()).hasPermission()) {
+                    val snapShotDialog = SnapSheetFragment()
+                    snapShotDialog.show(
+                        childFragmentManager, snapShotDialog::class.java.simpleName
+                    )
+                } else {
+                    requestResultLauncher.launch(PermissionManager.REQUIRED_PERMISSION)
+                }
+            }
+
             R.id.btn_save -> {
                 val name = binding.edtNamaKandang.text.toString().trim()
                 val description = binding.edtDescription.text.toString().trim()
@@ -202,4 +197,7 @@ class AddCageFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    companion object {
+        private val TAG = AddCageFragment::class.java.simpleName
+    }
 }

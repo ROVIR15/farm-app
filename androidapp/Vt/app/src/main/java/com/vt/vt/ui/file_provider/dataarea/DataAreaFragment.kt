@@ -1,29 +1,30 @@
 package com.vt.vt.ui.file_provider.dataarea
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.vt.vt.R
+import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
+import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentDataAreaBinding
+import com.vt.vt.ui.common.SnapSheetFragment
+import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.adapter.LivestockStorageAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DataAreaFragment : Fragment() {
+class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
 
     private var _binding: FragmentDataAreaBinding? = null
     private val binding get() = _binding!!
@@ -52,9 +53,7 @@ class DataAreaFragment : Fragment() {
                     view.findNavController().popBackStack()
                 }
             }
-            this.ivPhotoDataArea.setOnClickListener {
-                requestPermissionsIfNeeded()
-            }
+            this.ivPhotoDataArea.setOnClickListener(this@DataAreaFragment)
             this.btnSimpan.setOnClickListener {
                 val name = binding.edtAreaName.text.toString().trim()
                 val description = binding.edtDescription.text.toString().trim()
@@ -93,6 +92,48 @@ class DataAreaFragment : Fragment() {
         }
     }
 
+    private val requestResultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+            var permissionGranted = true
+            permission.entries.forEach {
+                if (it.key in PermissionManager.REQUIRED_PERMISSION && !it.value) {
+                    permissionGranted = false
+                }
+            }
+            if (!permissionGranted) {
+                showPermissionDeniedDialog(requireActivity())
+            }
+        }
+
+    override fun bitmapPhotos(photo: Bitmap?) {
+        Log.d(TAG, "BITMAP PHOTO : $photo")
+        if (photo != null) {
+            with(binding) {
+                ivPhotoDataArea.setImageBitmap(photo)
+                ivPhotoDataArea.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_image_24)
+                ivPhotoDataArea.clipToOutline = true
+                iconFilePhoto.visibility = View.GONE
+                tvUploadFilePhoto.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun uriFile(photo: Uri?) {
+        Log.d(TAG, "URI PHOTO : $photo")
+        with(binding) {
+            ivPhotoDataArea.apply {
+                setImageURI(photo)
+                background = ContextCompat.getDrawable(
+                    requireContext(), R.drawable.ic_outline_image_24
+                )
+                clipToOutline = true
+            }
+            iconFilePhoto.visibility = View.GONE
+            tvUploadFilePhoto.visibility = View.GONE
+        }
+    }
+
     private fun showLoading(state: Boolean) {
         with(binding) {
             if (state) {
@@ -127,64 +168,23 @@ class DataAreaFragment : Fragment() {
         _binding = null
     }
 
-    private val requestPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            permissions.entries.forEach {
-                Log.e("LOG_TAG", "${it.key} = ${it.value}")
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.iv_photo_data_area -> {
+                if (PermissionManager(requireContext()).hasPermission()) {
+                    val snapShotDialog = SnapSheetFragment()
+                    snapShotDialog.show(
+                        childFragmentManager, snapShotDialog::class.java.simpleName
+                    )
+                } else {
+                    requestResultLauncher.launch(PermissionManager.REQUIRED_PERMISSION)
+                }
             }
         }
-
-    private fun hasReadStoragePermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_MEDIA_IMAGES
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        }
     }
 
-    private fun hasCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(), Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestPermissionsIfNeeded() {
-        val readStoragePermissionGranted = hasReadStoragePermission()
-        val cameraPermissionGranted = hasCameraPermission()
-
-        if (!readStoragePermissionGranted || !cameraPermissionGranted) {
-            val permissions = mutableListOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
-            )
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
-            }
-
-            requestPermissions.launch(permissions.toTypedArray())
-        } else {
-            showBottomSheetDialog()
-        }
-    }
-
-    private fun showBottomSheetDialog() {
-        val dialog = BottomSheetDialog(requireActivity())
-        dialog.setContentView(R.layout.bottom_sheet_open_camera_gallery)
-        val btnCamera = dialog.findViewById<RelativeLayout>(R.id.rl_camera)
-        val btnGallery = dialog.findViewById<RelativeLayout>(R.id.rl_gallery)
-        dialog.show()
-        btnCamera?.setOnClickListener {
-            //startCamera()
-            dialog.dismiss()
-        }
-        btnGallery?.setOnClickListener {
-            //startGallery()
-            dialog.dismiss()
-        }
+    companion object {
+        private val TAG = DataAreaFragment::class.java.simpleName
     }
 
 }

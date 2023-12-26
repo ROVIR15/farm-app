@@ -22,6 +22,7 @@ import com.vt.vt.R
 import com.vt.vt.databinding.FragmentScanBinding
 import com.vt.vt.ui.ToDetailAfterScanFragment
 import com.vt.vt.utils.PermissionUtils
+import com.vt.vt.utils.PermissionUtils.showPermissionRationaleDialog
 
 class ScanFragment : Fragment(), CameraScan.OnScanResultCallback {
 
@@ -78,14 +79,14 @@ class ScanFragment : Fragment(), CameraScan.OnScanResultCallback {
 
     private val requestResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
-            var permmisionGranted = true
+            var permissionGranted = true
             permission.entries.forEach {
                 if (it.key in REQUIRED_PERMISSION && !it.value) {
-                    permmisionGranted = false
+                    permissionGranted = false
                 }
             }
-            if (!permmisionGranted) {
-                PermissionUtils().showPermissionRationaleDialog(requireContext())
+            if (!permissionGranted) {
+                showPermissionRationaleDialog(requireContext())
                 Toast.makeText(requireActivity(), "Permission Request Denied", Toast.LENGTH_SHORT)
                     .show()
             } else {
