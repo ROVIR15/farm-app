@@ -72,7 +72,8 @@ def upload_file():
         resized_img = resize_image(file, scale_factor=0.7)
 
         # Save the resized image with the new filename
-        file_path = os.path.join(UPLOAD_FOLDER, new_filename)
+        # file_path = os.path.join(UPLOAD_FOLDER, new_filename)
+        file_path = os.path.join(os.path.abspath(UPLOAD_FOLDER), new_filename)
         resized_img.save(file_path)
 
         return jsonify({'url_link': file_path,'message': 'File uploaded and resized to 70% successfully'}), 200
