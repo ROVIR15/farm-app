@@ -8,6 +8,7 @@ import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.dto.StoreLivestockRequest
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -25,7 +26,8 @@ class AddLivestockViewModel @Inject constructor(private val livestockVtRepositor
         birthDate: String?,
         description: String?,
         gender: Int,
-        bangsa: String?
+        bangsa: String?,
+        file: MultipartBody.Part?
     ) {
         launch(action = {
             val livestockRequest = LivestockRequest(
@@ -35,9 +37,9 @@ class AddLivestockViewModel @Inject constructor(private val livestockVtRepositor
                 birthDate,
                 description,
                 null,
-                null
+                null, file
             )
-            val response = livestockVtRepository.createLivestock(livestockRequest)
+            val response = livestockVtRepository.createLivestock(file!!, livestockRequest)
             if (response.isSuccessful) {
                 _createLivestock.postValue(response.body())
             } else {

@@ -25,6 +25,7 @@ import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.LivestockStorageViewModel
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
@@ -36,6 +37,7 @@ class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
     private val viewModel by viewModels<LivestockStorageViewModel>()
 
     private var blockAreaId: Int? = null
+    private var getFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -161,6 +163,14 @@ class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
         }
     }
 
+    override fun getFile(file: File?) {
+        if (file != null) {
+            Log.d(TAG, "getFileMultipart: $file")
+            getFile = file
+        } else {
+            Log.e(TAG, "getFileMultipart: $file")
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

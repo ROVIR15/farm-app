@@ -17,6 +17,9 @@ data class ExpendituresItem(
 	@field:SerializedName("budget_category_id")
 	val budgetCategoryId: Int? = null,
 
+	@field:SerializedName("budget_sub_category_name")
+	val budgetSubCategoryName: String? = null,
+
 	@field:SerializedName("sku_id")
 	val skuId: Any? = null,
 

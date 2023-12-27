@@ -21,7 +21,7 @@ data class BudgetResponse(
 	val totalBudgetAmount: String? = null,
 
     @field:SerializedName("total_expenditure")
-	val totalExpenditure: Double? = null,
+	val totalExpenditure: String? = null,
 
     @field:SerializedName("month_year")
 	val monthYear: String? = null,

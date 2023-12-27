@@ -32,19 +32,26 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:marqueeRepeatLimit="marquee_forever"
             android:fontFamily="@font/roboto_regular"
+            android:maxLines="1"
             android:padding="8dp"
-            android:text="Rp. 20 Juta digunakan dari Rp.300 Juta"
             android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/budgetLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/roboto_bold"
+            android:maxLines="1"
             android:padding="8dp"
             android:text="Rp. 280.000.000"
             android:textAlignment="center"

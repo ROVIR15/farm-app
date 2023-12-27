@@ -13,12 +13,15 @@
         android:id="@+id/tv_title_kategori_budget"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:fontFamily="@font/roboto_regular"
+        android:maxLines="2"
         android:padding="8dp"
-        android:text="1. Pengeluaran Item"
+        android:text="1. Pengeluaran tem"
         android:textAppearance="?attr/textAppearanceSubtitle1"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,15 +33,15 @@
         android:elevation="2dp"
         android:ellipsize="end"
         android:fontFamily="@font/roboto_bold"
+        android:maxLines="1"
         android:paddingHorizontal="8dp"
         android:paddingVertical="8dp"
-        android:maxLines="1"
         android:text="Rp. 0"
         android:textAlignment="textEnd"
         android:textColor="@color/btn_blue_icon"
         app:layout_constraintBottom_toBottomOf="@+id/tv_title_kategori_budget"
         app:layout_constraintEnd_toStartOf="@+id/btn_options_expenditure"
-        app:layout_constraintStart_toEndOf="@+id/tv_title_kategori_budget"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/tv_title_kategori_budget" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -51,5 +54,12 @@
         android:src="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="185dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

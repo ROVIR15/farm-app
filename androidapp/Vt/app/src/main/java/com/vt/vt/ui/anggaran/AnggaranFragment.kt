@@ -2,6 +2,7 @@ package com.vt.vt.ui.anggaran
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.vt.vt.databinding.FragmentAnggaranBinding
 import com.vt.vt.ui.anggaran.adapter.ListBudgetExpenditureAdapter
 import com.vt.vt.ui.bottom_navigation.keuangan.BudgetViewModel
 import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
+import com.vt.vt.utils.convertRupiah
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,6 +53,7 @@ class AnggaranFragment : Fragment() {
             if (categoryId != null) putInt("categoryId", categoryId)
         }
 
+        Log.d("TAG", "budget id : $budgetId ")
         budgetViewModel.getBudgetById(budgetId.toString())
         with(binding) {
             anggaranAppBar.topAppBar.apply {
@@ -81,8 +84,11 @@ class AnggaranFragment : Fragment() {
         budgetViewModel.budgetByIdEmitter.observe(viewLifecycleOwner) { budget ->
             binding.dataEmpty.isEmpty.isVisible = budget.expenditures.isNullOrEmpty()
             val budgetAmount = budget.amount
+            val budgetLeft = budget.left?.convertRupiah()
             binding.amountBudget.setText(budgetAmount.toString())
             binding.categoryBudget.text = budget.budgetCategoryName
+            binding.footerAnggaranForm.summary.text = budget.summaryText
+            binding.footerAnggaranForm.budgetLeft.text = budgetLeft
             listExpenditures(budget.expenditures)
         }
         expenditureViewModel.deleteExpenditureEmitter.observe(viewLifecycleOwner) {

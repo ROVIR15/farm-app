@@ -30,12 +30,12 @@ class IncomeAdapter : ListAdapter<IncomesItem, IncomeAdapter.ViewHolder>(DIFF_CA
             binding.tvTitleIncome.text = data.categoryLabel.toString()
             binding.tvAmount.text = amount
             val incomeId = currentList[adapterPosition].id
-            itemView.setOnClickListener {
+            itemView.setOnClickListener { view ->
                 val mBundle = Bundle()
                 if (incomeId != null) {
                     mBundle.putInt("incomeId", incomeId)
                 }
-                it.findNavController()
+                view.findNavController()
                     .navigate(R.id.action_navigation_keuangan_to_editIncomeFragment, mBundle)
             }
         }

@@ -23,6 +23,7 @@ import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatDate
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetListener {
@@ -31,6 +32,7 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
     private val binding get() = _binding!!
 
     private val farmProfileViewModel by viewModels<FarmProfileViewModel>()
+    private var getFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -100,6 +102,15 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
     override fun uriFile(photo: Uri?) {
         Log.d(TAG, "uriPhotos: $photo")
         binding.circleImageView.setImageURI(photo)
+    }
+
+    override fun getFile(file: File?) {
+        if (file != null) {
+            Log.d(TAG, "getFileMultipart: $file")
+            getFile = file
+        } else {
+            Log.e(TAG, "getFileMultipart: $file")
+        }
     }
 
     override fun onDestroy() {

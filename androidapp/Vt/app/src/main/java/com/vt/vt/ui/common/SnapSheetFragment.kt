@@ -7,17 +7,16 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentSnapSheetBinding
-import com.vt.vt.ui.file_provider.datakandang.AddCageFragment
 import com.vt.vt.utils.createCustomTempFile
 import com.vt.vt.utils.getRotateImage
 import com.vt.vt.utils.uriToFile
@@ -30,6 +29,8 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
     private var snapSheetListener: SnapSheetListener? = null
 
     private lateinit var currentPhotoPath: String
+    private var getFile: File? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -43,6 +44,8 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
             rlCamera.setOnClickListener(this@SnapSheetFragment)
             rlGallery.setOnClickListener(this@SnapSheetFragment)
         }
+        Log.d(TAG, "image file : $getFile ")
+
     }
 
     override fun onAttach(context: Context) {
@@ -82,8 +85,10 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 myFile.absolutePath,
                 BitmapFactory.decodeFile(myFile.path),
             )
-            snapSheetListener?.bitmapPhotos(filePhoto).also {
-                dismiss()
+            snapSheetListener?.getFile(myFile).run {
+                snapSheetListener?.bitmapPhotos(filePhoto).also {
+                    dismiss()
+                }
             }
         }
     }
@@ -102,8 +107,9 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
             if (it.resultCode == AppCompatActivity.RESULT_OK) {
                 val selectedImg = it.data?.data as Uri
                 val myFile = uriToFile(selectedImg, requireContext())
-                snapSheetListener?.uriFile(selectedImg)
-                dismiss()
+                snapSheetListener?.getFile(myFile).run {
+                    snapSheetListener?.uriFile(selectedImg).also { dismiss() }
+                }
             }
         }
 
@@ -126,5 +132,9 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 startGallery()
             }
         }
+    }
+
+    companion object {
+        private val TAG = SnapSheetFragment::class.java.simpleName
     }
 }

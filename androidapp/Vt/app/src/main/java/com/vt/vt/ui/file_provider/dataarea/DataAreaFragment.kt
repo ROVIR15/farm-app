@@ -22,6 +22,7 @@ import com.vt.vt.ui.common.SnapSheetFragment
 import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.adapter.LivestockStorageAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
@@ -31,6 +32,7 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
 
     private val dataAreaViewModel by viewModels<DataAreaViewModel>()
     private var id: String = ""
+    private var getFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -131,6 +133,15 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
             }
             iconFilePhoto.visibility = View.GONE
             tvUploadFilePhoto.visibility = View.GONE
+        }
+    }
+
+    override fun getFile(file: File?) {
+        if (file != null) {
+            Log.d(TAG, "get File: $file")
+            getFile = file
+        } else {
+            Log.e(TAG, "get File: $file")
         }
     }
 

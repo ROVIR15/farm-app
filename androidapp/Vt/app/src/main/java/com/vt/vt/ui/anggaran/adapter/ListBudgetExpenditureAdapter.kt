@@ -33,6 +33,7 @@ class ListBudgetExpenditureAdapter(private val expenditureViewModel: Expenditure
         PopupMenu.OnMenuItemClickListener {
         fun bind(expendituresItem: ExpendituresItem) {
             val amountExpenditure = expendituresItem.amount?.convertRupiah()
+            binding.tvTitleKategoriBudget.text = expendituresItem.budgetSubCategoryName
             binding.tvBudget.text = amountExpenditure
             binding.btnOptionsExpenditure.setOnClickListener(this@BudgetViewHolder)
         }

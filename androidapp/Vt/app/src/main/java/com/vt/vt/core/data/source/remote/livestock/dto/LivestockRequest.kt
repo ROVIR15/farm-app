@@ -1,6 +1,7 @@
 package com.vt.vt.core.data.source.remote.livestock.dto
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.MultipartBody
 
 data class LivestockRequest(
 
@@ -24,4 +25,7 @@ data class LivestockRequest(
 
     @field:SerializedName("parent_male_id")
     val parentMaleId: Int?,
+
+    @field:SerializedName("imageurl")
+    val imageUrl: MultipartBody.Part?
 )
