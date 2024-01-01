@@ -40,9 +40,11 @@ import com.vt.vt.utils.reduceFileImage
 import com.vt.vt.utils.selected
 import com.vt.vt.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 @AndroidEntryPoint
@@ -90,15 +92,30 @@ class AddLivestockFragment : Fragment() {
                 val createdAt = formatterDateFromCalendar(birthDate)
                 val genderId = spinnerGender.selectedItemId.toInt()
                 if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty() && createdAt.isNotEmpty() && genderId != 0 && getFile != null) {
-                    val file = reduceFileImage(getFile as File)
-                    val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                    val imageMultipart = MultipartBody.Part.createFormData(
-                        "avatar", file.name, requestImageFile
+                    Log.d(
+                        TAG,
+                        "onViewCreated: name $name desc: $description, bangsa : $bangsa, createat: $createdAt, gender: $genderId, file: $getFile"
                     )
+                    val file = reduceFileImage(getFile as File)
+                    val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
+                    val imageMultipart = MultipartBody.Part.createFormData(
+                        "file", file.name, requestImageFile
+                    )
+
+                    val newName = name.toRequestBody("text/plain".toMediaType())
+                    val newBirthDate = createdAt.toRequestBody("text/plain".toMediaType())
+                    val newGender = genderId.toString().toRequestBody("text/plain".toMediaType())
+                    val newBangsa = bangsa.toRequestBody("text/plain".toMediaType())
+                    val newDescription = description.toRequestBody("text/plain".toMediaType())
+
                     Log.d(TAG, "image multipart : $imageMultipart ")
                     addLivestockViewModel.createLivestock(
-                        name, createdAt, description,
-                        genderId, bangsa, imageMultipart
+                        file = imageMultipart,
+                        name = newName,
+                        birthDate = newBirthDate,
+                        gender = newGender,
+                        bangsa = newBangsa,
+                        description = newDescription,
                     )
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
