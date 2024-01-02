@@ -133,7 +133,7 @@ fun fileToMultipart(tag: String, inputFile: File?): MultipartBody.Part? {
             val file = reduceFileImage(inputFile)
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             imageMultipart = MultipartBody.Part.createFormData(
-                "avatar", file.name, requestImageFile
+                "file", file.name, requestImageFile
             )
         } catch (e: Exception) {
             Log.e(tag, "Error processing image file", e)
@@ -155,7 +155,7 @@ fun reduceFileImage(file: File): File {
         val bmpPicByteArray = bmpStream.toByteArray()
         streamLength = bmpPicByteArray.size
         compressQuality -= 5
-    } while (streamLength > 2000000)
+    } while (streamLength > 1000000)
 
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 

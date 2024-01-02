@@ -23,6 +23,9 @@ import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatDate
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint
@@ -75,6 +78,10 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
             }
+            postImageFarmProfile.observe(viewLifecycleOwner) {
+                Log.d(TAG, "observerView: ${it.message}")
+                Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
+            }
             farmProfileEmitter.observe(viewLifecycleOwner) { farmProfile ->
                 if (farmProfile != null) {
                     with(binding) {
@@ -95,22 +102,26 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
     }
 
     override fun bitmapPhotos(photo: Bitmap?) {
-        Log.d(TAG, "bitmapPhotos: $photo")
         binding.circleImageView.setImageBitmap(photo)
     }
 
     override fun uriFile(photo: Uri?) {
-        Log.d(TAG, "uriPhotos: $photo")
         binding.circleImageView.setImageURI(photo)
     }
 
     override fun getFile(file: File?) {
         if (file != null) {
-            Log.d(TAG, "getFileMultipart: $file")
-            getFile = file
-        } else {
-            Log.e(TAG, "getFileMultipart: $file")
+            val myFile = convertFileToMultipart(file)
+            Log.d(TAG, "get multipart file : $file")
+            farmProfileViewModel.postImageFarmProfile(myFile)
         }
+    }
+
+    private fun convertFileToMultipart(file: File): MultipartBody.Part {
+        val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData(
+            "file", file.name, requestImageFile
+        )
     }
 
     override fun onDestroy() {
@@ -136,7 +147,8 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
             }
 
             R.id.btn_save_farm_profile -> {
-                Toast.makeText(requireContext(), "no action", Toast.LENGTH_SHORT).show()
+                // TODO; POST API
+//                Toast.makeText(requireContext(), "no action", Toast.LENGTH_SHORT).show()
             }
         }
     }

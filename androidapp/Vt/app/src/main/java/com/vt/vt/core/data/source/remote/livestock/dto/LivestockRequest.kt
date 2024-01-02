@@ -27,5 +27,5 @@ data class LivestockRequest(
     val parentMaleId: Int?,
 
     @field:SerializedName("imageurl")
-    val imageUrl: MultipartBody.Part?
+    val imageUrl: String?
 )

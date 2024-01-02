@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.vt.vt.R
@@ -22,9 +23,17 @@ import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentAddCageBinding
 import com.vt.vt.ui.common.SnapSheetFragment
 import com.vt.vt.ui.common.SnapSheetListener
+import com.vt.vt.ui.file_provider.dataarea.DataAreaFragment
 import com.vt.vt.ui.penyimpan_ternak.LivestockStorageViewModel
+import com.vt.vt.utils.fileToMultipart
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint
@@ -37,7 +46,6 @@ class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
     private val viewModel by viewModels<LivestockStorageViewModel>()
 
     private var blockAreaId: Int? = null
-    private var getFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -107,6 +115,9 @@ class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
             observeLoading().observe(viewLifecycleOwner) { isLoading ->
                 showLoading(isLoading)
             }
+            postImageSledEmitter.observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
+            }
             createSled.observe(viewLifecycleOwner) {
                 view?.findNavController()
                     ?.navigate(R.id.action_dataKandangFragment_to_navigation_home)
@@ -164,11 +175,20 @@ class AddCageFragment : Fragment(), View.OnClickListener, SnapSheetListener {
     }
 
     override fun getFile(file: File?) {
+        Log.d(TAG, "getFile: $file")
         if (file != null) {
-            Log.d(TAG, "getFileMultipart: $file")
-            getFile = file
-        } else {
-            Log.e(TAG, "getFileMultipart: $file")
+            lifecycleScope.launch {
+                try {
+                    val myFile = withContext(Dispatchers.Main) {
+                        fileToMultipart(TAG, file)
+                    }
+                    if (myFile != null) {
+                        cageDataViewModel.postImageSled(myFile)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
@@ -26,11 +27,16 @@ import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.common.SnapSheetFragment
 import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.detail_area_block.DetailAreaBlockViewModel
-import com.vt.vt.ui.file_provider.datakandang.AddCageFragment
+import com.vt.vt.ui.file_provider.addlivestock.AddLivestockViewModel
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.fileToMultipart
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 @AndroidEntryPoint
 class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListener {
@@ -38,6 +44,7 @@ class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListene
     private var _binding: FragmentEditLivestockBinding? = null
     private val binding get() = _binding!!
     private val livestockViewModel by viewModels<LivestockViewModel>()
+    private val addLivestockViewModel by viewModels<AddLivestockViewModel>()
     private val editLivestockViewModel by viewModels<EditLivestockViewModel>()
     private val detailAreaBlockViewModel by viewModels<DetailAreaBlockViewModel>()
 
@@ -84,23 +91,21 @@ class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListene
                 val description = edtDescription.text.toString().trim()
                 val birthDate = tvDateLivestock.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(birthDate)
-                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty()
-                ) {
+                if (name.isNotEmpty() && description.isNotEmpty() && nation.isNotEmpty() && createdAt.isNotEmpty()) {
                     if (gender != 0) {
                         editLivestockViewModel.updateLivestockById(
-                            receiveId,
-                            name,
-                            gender,
-                            nation,
-                            description,
-                            createdAt,
-                            parentFemaleId,
-                            parentMaleId,
+                            id = receiveId,
+                            name = name,
+                            gender = gender,
+                            nation = nation,
+                            description = description,
+                            birthDate = createdAt,
+                            parentFemaleId = parentFemaleId,
+                            parentMaleId = parentMaleId,
+                            file = "[in development]"
                         )
                         livestockViewModel.livestockMoveSled(
-                            receiveId.toInt(),
-                            sledId,
-                            blockAreaId
+                            receiveId.toInt(), sledId, blockAreaId
                         )
                     }
                 } else {
@@ -198,18 +203,27 @@ class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListene
                 }
             }
             isUpdateLivestock.observe(viewLifecycleOwner) { livestock ->
+                Log.d(TAG, "observerView: ${livestock?.message}")
                 livestockViewModel.livestockMoveSledEmitter.observe(viewLifecycleOwner) { livestockMoveSled ->
                     Toast.makeText(
-                        requireContext(),
-                        livestock?.message.toString(),
-                        Toast.LENGTH_SHORT
+                        requireContext(), livestock?.message.toString(), Toast.LENGTH_SHORT
                     ).show()
+                    Log.d(TAG, "observerView: ${livestockMoveSled?.message}")
                     view?.findNavController()?.popBackStack()
                 }
             }
             isError().observe(viewLifecycleOwner) { errorMessage ->
                 Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
             }
+        }
+        addLivestockViewModel.observeLoading().observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+        addLivestockViewModel.postImageLivestock.observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
+        }
+        addLivestockViewModel.isError().observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage.toString(), Toast.LENGTH_SHORT).show()
         }
         livestockViewModel.observeLoading().observe(viewLifecycleOwner) {
             showLoading(it)
@@ -236,6 +250,8 @@ class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListene
                 iconFilePhoto.visibility = View.GONE
                 tvUploadFilePhoto.visibility = View.GONE
             }
+        } else {
+            Log.e(TAG, "BITMAP PHOTO : $photo")
         }
     }
 
@@ -251,6 +267,22 @@ class EditLivestockFragment : Fragment(), View.OnClickListener, SnapSheetListene
             }
             iconFilePhoto.visibility = View.GONE
             tvUploadFilePhoto.visibility = View.GONE
+        }
+    }
+
+    override fun getFile(file: File?) {
+        if (file != null) {
+            Log.d(TAG, "get File: $file")
+            lifecycleScope.launch {
+                try {
+                    val myFile = withContext(Dispatchers.Main) {
+                        fileToMultipart(TAG, file)
+                    }
+                    addLivestockViewModel.postImageLivestock(myFile!!)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

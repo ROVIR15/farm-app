@@ -40,11 +40,9 @@ import com.vt.vt.utils.reduceFileImage
 import com.vt.vt.utils.selected
 import com.vt.vt.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 @AndroidEntryPoint
@@ -58,8 +56,8 @@ class AddLivestockFragment : Fragment() {
 
     private var id = 0
     private var blockId = 0
-    private var getFile: File? = null
     private lateinit var currentPhotoPath: String
+    private var imgUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -91,31 +89,18 @@ class AddLivestockFragment : Fragment() {
                 val birthDate = tvBirth.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(birthDate)
                 val genderId = spinnerGender.selectedItemId.toInt()
-                if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty() && createdAt.isNotEmpty() && genderId != 0 && getFile != null) {
+                if (name.isNotEmpty() && description.isNotEmpty() && bangsa.isNotEmpty() && createdAt.isNotEmpty() && genderId != 0) {
                     Log.d(
                         TAG,
-                        "onViewCreated: name $name desc: $description, bangsa : $bangsa, createat: $createdAt, gender: $genderId, file: $getFile"
+                        "onViewCreated: name $name desc: $description, bangsa : $bangsa, createat: $createdAt, gender: $genderId, file: $imgUrl"
                     )
-                    val file = reduceFileImage(getFile as File)
-                    val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
-                    val imageMultipart = MultipartBody.Part.createFormData(
-                        "file", file.name, requestImageFile
-                    )
-
-                    val newName = name.toRequestBody("text/plain".toMediaType())
-                    val newBirthDate = createdAt.toRequestBody("text/plain".toMediaType())
-                    val newGender = genderId.toString().toRequestBody("text/plain".toMediaType())
-                    val newBangsa = bangsa.toRequestBody("text/plain".toMediaType())
-                    val newDescription = description.toRequestBody("text/plain".toMediaType())
-
-                    Log.d(TAG, "image multipart : $imageMultipart ")
                     addLivestockViewModel.createLivestock(
-                        file = imageMultipart,
-                        name = newName,
-                        birthDate = newBirthDate,
-                        gender = newGender,
-                        bangsa = newBangsa,
-                        description = newDescription,
+                        name = name,
+                        birthDate = createdAt,
+                        gender = genderId,
+                        bangsa = bangsa,
+                        description = description,
+                        file = imgUrl,
                     )
                 } else {
                     Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
@@ -135,6 +120,9 @@ class AddLivestockFragment : Fragment() {
             observeLoading().observe(viewLifecycleOwner) {
                 showLoading(it)
             }
+            postImageLivestock.observe(viewLifecycleOwner) {
+                imgUrl = it.urlLink
+            }
             createLivestock.observe(viewLifecycleOwner) { data ->
                 showBottomSheetAddLivestock(data.livestockId)
                 Toast.makeText(requireActivity(), data.message.toString(), Toast.LENGTH_SHORT)
@@ -142,9 +130,7 @@ class AddLivestockFragment : Fragment() {
             }
             storeLivestock.observe(viewLifecycleOwner) {
                 Toast.makeText(
-                    requireContext(),
-                    "Menambahkan Livestock Berhasil",
-                    Toast.LENGTH_SHORT
+                    requireContext(), "Menambahkan Livestock Berhasil", Toast.LENGTH_SHORT
                 ).show()
             }
             isError().observe(viewLifecycleOwner) {
@@ -154,9 +140,7 @@ class AddLivestockFragment : Fragment() {
     }
 
     private fun observerViewBottomSheet(
-        spinner: Spinner,
-        textInputEditText: TextInputEditText,
-        progressBar: ProgressBar
+        spinner: Spinner, textInputEditText: TextInputEditText, progressBar: ProgressBar
     ) {
         detailAreaBlockViewModel.apply {
             getSleds()
@@ -178,9 +162,7 @@ class AddLivestockFragment : Fragment() {
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(
-                    requireContext(),
-                    it ?: "Unkown Error",
-                    Toast.LENGTH_SHORT
+                    requireContext(), it ?: "Unkown Error", Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -289,13 +271,16 @@ class AddLivestockFragment : Fragment() {
         val resultCode = result.resultCode
         if (resultCode == Activity.RESULT_OK) {
             val myFile = File(currentPhotoPath)
-            // get photo file from camera
-            getFile = myFile
-            Log.d(TAG, "file photo from camera : $myFile")
+            val file = reduceFileImage(myFile)
             val filePhoto = getRotateImage(
                 myFile.absolutePath,
                 BitmapFactory.decodeFile(myFile.path),
             )
+            val multipartFile = convertFileToMultipart(file)
+            Log.d(TAG, "image multipart camera : $multipartFile ")
+            if (multipartFile != null) {
+                addLivestockViewModel.postImageLivestock(multipartFile)
+            }
             binding.ivPhotoDataArea.setImageBitmap(filePhoto)
             binding.ivPhotoDataArea.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_outline_image_24)
@@ -319,9 +304,12 @@ class AddLivestockFragment : Fragment() {
             if (it.resultCode == AppCompatActivity.RESULT_OK) {
                 val selectedImg = it.data?.data as Uri
                 val myFile = uriToFile(selectedImg, requireContext())
-                // get file photo from gallery
-                getFile = myFile
-                Log.d(TAG, "file photo gallery : $myFile")
+                val file = reduceFileImage(myFile)
+                val multipartFile = convertFileToMultipart(file)
+                Log.d(TAG, "image multipart gallery : $multipartFile ")
+                if (multipartFile != null) {
+                    addLivestockViewModel.postImageLivestock(multipartFile)
+                }
                 with(binding) {
                     ivPhotoDataArea.apply {
                         setImageURI(selectedImg)
@@ -335,6 +323,14 @@ class AddLivestockFragment : Fragment() {
                 }
             }
         }
+
+    private fun convertFileToMultipart(file: File?): MultipartBody.Part? {
+        if (file == null) return null
+        val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData(
+            "file", file.name, requestImageFile
+        )
+    }
 
     private fun spinnerGenderAdapter() {
         ArrayAdapter.createFromResource(

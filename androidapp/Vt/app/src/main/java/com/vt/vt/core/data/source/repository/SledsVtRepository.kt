@@ -6,6 +6,8 @@ import com.vt.vt.core.data.source.remote.sleds.dto.SledOptionResponseItem
 import com.vt.vt.core.data.source.remote.sleds.dto.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponseItem
+import com.vt.vt.core.data.source.remote.upload_image.PostFileResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -16,6 +18,7 @@ class SledsVtRepository @Inject constructor(private val apiService: ApiService) 
 
     suspend fun deleteSledById(id: String): Response<SledsResponse> = apiService.deleteSledById(id)
     suspend fun getSledById(id: String): Response<SledsResponseItem> = apiService.getSledById(id)
+    suspend fun postImageSled(file: MultipartBody.Part): Response<PostFileResponse> = apiService.postImageSled(file)
     suspend fun createSled(sledRequest: SledRequest): Response<SledsResponse> =
         apiService.createSled(sledRequest)
 

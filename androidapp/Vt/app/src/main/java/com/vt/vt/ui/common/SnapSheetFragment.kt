@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.vt.vt.R
 import com.vt.vt.databinding.FragmentSnapSheetBinding
 import com.vt.vt.utils.createCustomTempFile
 import com.vt.vt.utils.getRotateImage
+import com.vt.vt.utils.reduceFileImage
 import com.vt.vt.utils.uriToFile
 import java.io.File
 
@@ -29,7 +29,6 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
     private var snapSheetListener: SnapSheetListener? = null
 
     private lateinit var currentPhotoPath: String
-    private var getFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,8 +43,6 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
             rlCamera.setOnClickListener(this@SnapSheetFragment)
             rlGallery.setOnClickListener(this@SnapSheetFragment)
         }
-        Log.d(TAG, "image file : $getFile ")
-
     }
 
     override fun onAttach(context: Context) {
@@ -80,11 +77,12 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
     ) { result ->
         val resultCode = result.resultCode
         if (resultCode == Activity.RESULT_OK) {
-            val myFile = File(currentPhotoPath)
+            val file = File(currentPhotoPath)
             val filePhoto = getRotateImage(
-                myFile.absolutePath,
-                BitmapFactory.decodeFile(myFile.path),
+                file.absolutePath,
+                BitmapFactory.decodeFile(file.path),
             )
+            val myFile = reduceFileImage(file)
             snapSheetListener?.getFile(myFile).run {
                 snapSheetListener?.bitmapPhotos(filePhoto).also {
                     dismiss()
@@ -106,9 +104,12 @@ class SnapSheetFragment : BottomSheetDialogFragment(), View.OnClickListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == AppCompatActivity.RESULT_OK) {
                 val selectedImg = it.data?.data as Uri
-                val myFile = uriToFile(selectedImg, requireContext())
+                val uriToFile = uriToFile(selectedImg, requireContext())
+                val myFile = reduceFileImage(uriToFile)
                 snapSheetListener?.getFile(myFile).run {
-                    snapSheetListener?.uriFile(selectedImg).also { dismiss() }
+                    snapSheetListener?.uriFile(selectedImg).also {
+                        dismiss()
+                    }
                 }
             }
         }

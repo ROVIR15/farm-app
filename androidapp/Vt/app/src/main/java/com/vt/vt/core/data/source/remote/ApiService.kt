@@ -33,13 +33,17 @@ import com.vt.vt.core.data.source.remote.livestock.dto.*
 import com.vt.vt.core.data.source.remote.products.dto.*
 import com.vt.vt.core.data.source.remote.profile.dto.*
 import com.vt.vt.core.data.source.remote.sleds.dto.*
+import com.vt.vt.core.data.source.remote.upload_image.PostFileResponse
 import com.vt.vt.core.data.source.remote.weight_record.dto.*
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -71,6 +75,11 @@ interface ApiService {
         @Path("id") id: String
     ): Response<BlockAreaInfoResponse>
 
+    // Post Image Block Area
+    @Multipart
+    @POST("api/upload-block-area")
+    suspend fun postImageBlockArea(@Part file: MultipartBody.Part): Response<PostFileResponse>
+
     @POST("api/block-area")
     suspend fun createBlockArea(@Body blockAndAreaRequest: BlockAndAreaRequest): Response<BlockAndAreasResponse>
 
@@ -101,6 +110,11 @@ interface ApiService {
         @Path("id") id: String
     ): Response<SledsResponseItem>
 
+    // Post Image Sled
+    @Multipart
+    @POST("api/upload-sled")
+    suspend fun postImageSled(@Part file: MultipartBody.Part): Response<PostFileResponse>
+
     @POST("api/sled")
     suspend fun createSled(@Body sledRequest: SledRequest): Response<SledsResponse>
 
@@ -128,6 +142,12 @@ interface ApiService {
         @Path("id") id: String
     ): Response<LivestockByIdResponse>
 
+    // Post Image Livestock
+    @Multipart
+    @POST("api/upload-livestock")
+    suspend fun postImageLivestock(@Part file: MultipartBody.Part): Response<PostFileResponse>
+
+    // Form Only
     @POST("api/livestock")
     suspend fun createLivestock(@Body livestockRequest: LivestockRequest): Response<LivestockResponse>
 
@@ -208,7 +228,13 @@ interface ApiService {
     @POST("api/health-record")
     suspend fun createHealthRecord(@Body healthRecordRequest: HealthRecordRequest): Response<HealthRecordResponse>
 
-    //    Farm Profile
+    //  Farm Profile
+    //  Image Only
+    @Multipart
+    @POST("api/upload-farm-profile")
+    suspend fun postImageFarmProfile(@Part file: MultipartBody.Part): Response<PostFileResponse>
+
+    //  Form Only
     @GET("api/farm-profile")
     suspend fun getFarmProfile(): Response<FarmProfileResponse>
 

@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
@@ -21,7 +22,11 @@ import com.vt.vt.databinding.FragmentDataAreaBinding
 import com.vt.vt.ui.common.SnapSheetFragment
 import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.adapter.LivestockStorageAdapter
+import com.vt.vt.utils.fileToMultipart
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 @AndroidEntryPoint
@@ -32,7 +37,6 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
 
     private val dataAreaViewModel by viewModels<DataAreaViewModel>()
     private var id: String = ""
-    private var getFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -79,6 +83,9 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
         }
         dataAreaViewModel.isCreatedBlockAndArea.observe(viewLifecycleOwner) {
             view?.findNavController()?.popBackStack()
+        }
+        dataAreaViewModel.postImageEmitter.observe(viewLifecycleOwner) {
+            Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
         }
         dataAreaViewModel.getBlockArea.observe(viewLifecycleOwner) { data ->
             binding.appBarLayout.topAppBar.title = "Edit ${data?.name}"
@@ -138,10 +145,16 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
 
     override fun getFile(file: File?) {
         if (file != null) {
-            Log.d(TAG, "get File: $file")
-            getFile = file
-        } else {
-            Log.e(TAG, "get File: $file")
+            lifecycleScope.launch {
+                try {
+                    val myFile = withContext(Dispatchers.Main) {
+                        fileToMultipart(TAG, file)
+                    }
+                    dataAreaViewModel.postImageBlockArea(myFile!!)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -162,8 +175,7 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
                         isEnabled = true
                         setBackgroundColor(
                             ContextCompat.getColor(
-                                requireActivity(),
-                                R.color.btn_blue_icon
+                                requireActivity(), R.color.btn_blue_icon
                             )
                         )
                     }

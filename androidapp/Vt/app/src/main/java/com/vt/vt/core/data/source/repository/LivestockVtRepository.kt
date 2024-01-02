@@ -8,6 +8,8 @@ import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponseItem
 import com.vt.vt.core.data.source.remote.livestock.dto.StoreLivestockRequest
+import com.vt.vt.core.data.source.remote.upload_image.PostFileResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -15,6 +17,9 @@ class LivestockVtRepository @Inject constructor(private val apiService: ApiServi
     suspend fun getLivestock(): Response<List<LivestockResponseItem>> = apiService.getLivestocks()
     suspend fun searchLivestock(query: String?): Response<List<LivestockResponseItem>> =
         apiService.getListBySearch(query)
+
+    suspend fun postImageLivestock(file: MultipartBody.Part): Response<PostFileResponse> =
+        apiService.postImageLivestock(file)
 
     suspend fun createLivestock(livestockRequest: LivestockRequest): Response<LivestockResponse> =
         apiService.createLivestock(livestockRequest)

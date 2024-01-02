@@ -21,6 +21,7 @@ import com.vt.vt.databinding.FragmentPersonalProfileBinding
 import com.vt.vt.ui.common.SnapSheetFragment
 import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.utils.PickDatesUtils
+import com.vt.vt.utils.fileToMultipart
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -98,11 +99,10 @@ class PersonalProfileFragment : Fragment(), View.OnClickListener, SnapSheetListe
     }
 
     override fun getFile(file: File?) {
+        Log.d(TAG, "get file : $file")
         if (file != null) {
-            Log.d(TAG, "getFileMultipart: $file")
-            getFile = file
-        } else {
-            Log.e(TAG, "getFileMultipart: $file")
+            val myFile = fileToMultipart(TAG, file)
+            Log.d(TAG, "getFileMultipart: $myFile")
         }
     }
 

@@ -1,5 +1,6 @@
 package com.vt.vt.ui.edit_livestock
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
@@ -8,6 +9,7 @@ import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +41,11 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
         name: String?,
         gender: Int,
         nation: String?,
-        description: String?, birthDate: String?, parentFemaleId: Int?, parentMaleId: Int?
+        description: String?,
+        birthDate: String?,
+        parentFemaleId: Int?,
+        parentMaleId: Int?,
+        file: String
     ) {
         launch(action = {
             val livestockRequest = LivestockRequest(
@@ -49,12 +55,15 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
                 birthDate,
                 description,
                 parentFemaleId,
-                parentMaleId
+                parentMaleId,
+                file
             )
             val response = livestockVtRepository.updateLivestockById(id, livestockRequest)
             if (response.isSuccessful) {
                 _updateLivestock.postValue(response.body())
             } else {
+                Log.e("EditLivestockFragment", "updateLivestockById: ${response.message()}", )
+                Log.e("EditLivestockFragment", "updateLivestockById: ${response.body()}", )
                 isError.postValue(response.message())
             }
         }, error = { networkError ->

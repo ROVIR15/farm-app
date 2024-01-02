@@ -1,5 +1,6 @@
 package com.vt.vt.ui.file_provider.dataarea
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
@@ -7,8 +8,10 @@ import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreaRequest
 import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreasResponse
 import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAndAreasResponseItem
 import com.vt.vt.core.data.source.remote.block_areas.dto.BlockAreaInfoResponse
+import com.vt.vt.core.data.source.remote.upload_image.PostFileResponse
 import com.vt.vt.core.data.source.repository.BlockAndAreasVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -26,6 +29,24 @@ class DataAreaViewModel @Inject constructor(private val blockAndAreasVtRepositor
 
     private val _blockAreaInfoByIdEmitter = MutableLiveData<BlockAreaInfoResponse>()
     val blockAreaInfoByIdEmitter: LiveData<BlockAreaInfoResponse> = _blockAreaInfoByIdEmitter
+
+    private val _postImageEmitter = MutableLiveData<PostFileResponse>()
+    val postImageEmitter: LiveData<PostFileResponse> = _postImageEmitter
+
+    fun postImageBlockArea(file: MultipartBody.Part) {
+        launch(action = {
+            val response = blockAndAreasVtRepository.postImageBlockArea(file)
+            if (response.isSuccessful) {
+                _postImageEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
 
     fun createBlockAndArea(title: String?, description: String?) {
         launch(action = {

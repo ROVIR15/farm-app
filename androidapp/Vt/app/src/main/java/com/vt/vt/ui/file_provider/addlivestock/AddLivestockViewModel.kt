@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vt.vt.core.data.source.base.BaseViewModel
+import com.vt.vt.core.data.source.remote.livestock.dto.LivestockRequest
 import com.vt.vt.core.data.source.remote.livestock.dto.LivestockResponse
 import com.vt.vt.core.data.source.remote.livestock.dto.StoreLivestockRequest
+import com.vt.vt.core.data.source.remote.upload_image.PostFileResponse
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -19,26 +20,48 @@ class AddLivestockViewModel @Inject constructor(private val livestockVtRepositor
     private val _createLivestock = MutableLiveData<LivestockResponse>()
     val createLivestock: LiveData<LivestockResponse> = _createLivestock
 
+    private val _postImageLivestock = MutableLiveData<PostFileResponse>()
+    val postImageLivestock: LiveData<PostFileResponse> = _postImageLivestock
+
     private val _storeLivestock = MutableLiveData<LivestockResponse>()
     val storeLivestock: LiveData<LivestockResponse> = _storeLivestock
 
+    fun postImageLivestock(file: MultipartBody.Part) {
+        launch(action = {
+            val response = livestockVtRepository.postImageLivestock(file)
+            if (response.isSuccessful) {
+                _postImageLivestock.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
     fun createLivestock(
-        name: RequestBody,
-        birthDate: RequestBody,
-        gender: RequestBody,
-        bangsa: RequestBody,
-        description: RequestBody,
-        file: MultipartBody.Part
+        name: String?,
+        birthDate: String?,
+        description: String?,
+        gender: Int,
+        bangsa: String?,
+        file: String?
     ) {
         launch(action = {
-            val response = livestockVtRepository.createLivestock(
-                file = file,
-                name = name,
-                birthDate = birthDate,
-                gender = gender,
-                bangsa = bangsa,
-                description = description,
+            val livestockRequest = LivestockRequest(
+                bangsa,
+                gender,
+                name,
+                birthDate,
+                description,
+                null,
+                null,
+                file
+
             )
+            val response = livestockVtRepository.createLivestock(livestockRequest)
             if (response.isSuccessful) {
                 _createLivestock.postValue(response.body())
             } else {
@@ -48,8 +71,8 @@ class AddLivestockViewModel @Inject constructor(private val livestockVtRepositor
                 isError.postValue(message.toString())
             }
         }, error = { networkError ->
-            Log.d("AddLivestock", "errorrr 1 : ${networkError.errorMessage} ")
-            Log.d("AddLivestock", "errorrr 2 : ${networkError.error} ")
+            Log.e("AddLivestock", "errorrr 1 : ${networkError.errorMessage} ")
+            Log.e("AddLivestock", "errorrr 2 : ${networkError.error} ")
             if (networkError.isNetworkError) {
                 isError.postValue("No Internet Connection")
             }

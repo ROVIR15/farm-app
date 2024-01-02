@@ -8,15 +8,21 @@ import com.vt.vt.core.data.source.remote.sleds.dto.SledOptionResponseItem
 import com.vt.vt.core.data.source.remote.sleds.dto.SledRequest
 import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponse
 import com.vt.vt.core.data.source.remote.sleds.dto.SledsResponseItem
+import com.vt.vt.core.data.source.remote.upload_image.PostFileResponse
 import com.vt.vt.core.data.source.repository.SledsVtRepository
 import com.vt.vt.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
 import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class DataKandangViewModel @Inject constructor(private val sledsVtRepository: SledsVtRepository) :
     BaseViewModel() {
+
+    private val _postImageSledEmitter = MutableLiveData<PostFileResponse>()
+    val postImageSledEmitter: LiveData<PostFileResponse> = _postImageSledEmitter
+
     private val _createSled = MutableLiveData<SledsResponse>()
     val createSled: LiveData<SledsResponse> = _createSled
 
@@ -47,6 +53,21 @@ class DataKandangViewModel @Inject constructor(private val sledsVtRepository: Sl
             val response = sledsVtRepository.getSledOptions()
             if (response.isSuccessful) {
                 _sledOptionsEmitter.postValue(response.body())
+            } else {
+                isError.postValue(response.message())
+            }
+        }, error = { networkError ->
+            if (networkError.isNetworkError) {
+                isError.postValue("No Internet Connection")
+            }
+        })
+    }
+
+    fun postImageSled(file: MultipartBody.Part) {
+        launch(action = {
+            val response = sledsVtRepository.postImageSled(file)
+            if (response.isSuccessful) {
+                _postImageSledEmitter.postValue(response.body())
             } else {
                 isError.postValue(response.message())
             }

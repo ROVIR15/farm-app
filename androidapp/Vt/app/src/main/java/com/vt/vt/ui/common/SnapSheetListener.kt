@@ -2,7 +2,6 @@ package com.vt.vt.ui.common
 
 import android.graphics.Bitmap
 import android.net.Uri
-import okhttp3.MultipartBody
 import java.io.File
 
 interface SnapSheetListener {
