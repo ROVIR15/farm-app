@@ -1,6 +1,8 @@
 package com.vt.vt.core.data.source.repository
 
 import com.vt.vt.core.data.source.remote.ApiService
+import com.vt.vt.core.data.source.remote.auth.dto.change_password.ChangePasswordRequest
+import com.vt.vt.core.data.source.remote.auth.dto.change_password.ChangePasswordResponse
 import com.vt.vt.core.data.source.remote.auth.dto.login.LoginRequest
 import com.vt.vt.core.data.source.remote.auth.dto.login.LoginResponse
 import com.vt.vt.core.data.source.remote.auth.dto.register.request.RegisterRequest
@@ -18,5 +20,8 @@ class DataRepository @Inject constructor(private val networkService: ApiService)
         networkService.doLogin(loginRequest)
 
     suspend fun logout(): Response<LoginResponse> = networkService.doLogout()
+
+    suspend fun doChangePassword(changePasswordRequest: ChangePasswordRequest): Response<ChangePasswordResponse> =
+        networkService.doChangePassword(changePasswordRequest)
 
 }

@@ -41,6 +41,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             profileGoodsAndService.setOnClickListener(this@ProfileFragment)
             profileAnimalCageArea.setOnClickListener(this@ProfileFragment)
             profileAnimalAddCageArea.setOnClickListener(this@ProfileFragment)
+            tvForgotPassword.setOnClickListener(this@ProfileFragment)
         }
 
         observerView()
@@ -75,6 +76,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.personal_profile -> {
@@ -100,6 +102,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             R.id.profile_animal_add_cage_area -> {
                 v.findNavController()
                     .navigate(R.id.action_navigation_profile_to_dataKandangFragment)
+            }
+
+            R.id.tv_forgot_password -> {
+                v.findNavController().navigate(R.id.action_navigation_profile_to_forgotPasswordFragment)
             }
         }
     }

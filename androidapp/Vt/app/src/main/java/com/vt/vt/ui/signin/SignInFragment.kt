@@ -18,7 +18,7 @@ import com.vt.vt.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment : Fragment() {
+class SignInFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
@@ -41,16 +41,9 @@ class SignInFragment : Fragment() {
             }
         }
         with(binding) {
-            signInBtnLogin.setOnClickListener {
-                val username = signInCvEmail.text.toString()
-                val password = signInCvPassword.text.toString()
-                if (username.isNotEmpty() && password.isNotEmpty()) {
-                    signInViewModel.login(username, password)
-                }
-            }
-            signInBtnSignUp.setOnClickListener {
-                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
-            }
+            signInBtnLogin.setOnClickListener(this@SignInFragment)
+            signInBtnSignUp.setOnClickListener(this@SignInFragment)
+            signInTvForgotPassword.setOnClickListener(this@SignInFragment)
         }
         setWindowTouchable()
         observeView()
@@ -104,5 +97,25 @@ class SignInFragment : Fragment() {
                 }
             })
 
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.sign_in_btn_login -> {
+                val username = binding.signInCvEmail.text.toString()
+                val password = binding.signInCvPassword.text.toString()
+                if (username.isNotEmpty() && password.isNotEmpty()) {
+                    signInViewModel.login(username, password)
+                }
+            }
+
+            R.id.sign_in_btn_sign_up -> {
+                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+            }
+
+            R.id.sign_in_tv_forgot_password -> {
+                findNavController().navigate(R.id.action_signInFragment_to_forgotPasswordFragment)
+            }
+        }
     }
 }

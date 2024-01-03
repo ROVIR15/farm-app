@@ -162,6 +162,7 @@
             android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_forgot_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_baseline_arrow_outward_left_24"

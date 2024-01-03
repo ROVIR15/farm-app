@@ -16,7 +16,7 @@
             app:argType="boolean" />
         <action
             android:id="@+id/action_navigation_home_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/navigation_authentication" />
         <action
             android:id="@+id/action_navigation_home_to_breedingFragment"
             app:destination="@id/breedingFragment" />
@@ -96,7 +96,7 @@
             app:argType="boolean" />
         <action
             android:id="@+id/action_navigation_profile_to_signInFragment"
-            app:destination="@id/signInFragment"
+            app:destination="@id/navigation_authentication"
             app:popUpTo="@id/navigation_profile"
             app:popUpToInclusive="true" />
         <action
@@ -114,26 +114,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_penyimpanTernakFragment"
             app:destination="@id/penyimpanTernakFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.vt.vt.ui.signup.SignUpFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_up">
         <action
-            android:id="@+id/action_signUpFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-        <action
-            android:id="@+id/action_signUpFragment_to_updateSignUpProfileFragment"
-            app:destination="@id/updateSignUpProfileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.vt.vt.ui.signin.SignInFragment"
-        android:label="SignInFragment">
-        <action
-            android:id="@+id/action_signInFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            android:id="@+id/action_navigation_profile_to_forgotPasswordFragment"
+            app:destination="@id/navigation_authentication" />
     </fragment>
     <fragment
         android:id="@+id/addEditDataBarangJasaFragment"
@@ -398,26 +381,6 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/updateSignUpProfileFragment"
-        android:name="com.vt.vt.ui.signup.UpdateSignUpProfileFragment"
-        android:label="UpdateSignUpProfileFragment">
-        <action
-            android:id="@+id/action_updateSignUpProfileFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-        <argument
-            android:name="username"
-            android:defaultValue="username"
-            app:argType="string" />
-        <argument
-            android:name="email"
-            android:defaultValue="email"
-            app:argType="string" />
-        <argument
-            android:name="password"
-            android:defaultValue="password"
-            app:argType="string" />
-    </fragment>
     <navigation
         android:id="@+id/navigation"
         app:startDestination="@id/pemberianTernakFragment">
@@ -582,5 +545,56 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
+    <navigation android:id="@+id/navigation_authentication"
+        app:startDestination="@id/signInFragment">
+        <fragment
+            android:id="@+id/signUpFragment"
+            android:name="com.vt.vt.ui.signup.SignUpFragment"
+            android:label="fragment_sign_in"
+            tools:layout="@layout/fragment_sign_up">
+            <action
+                android:id="@+id/action_signUpFragment_to_signInFragment"
+                app:destination="@id/signInFragment" />
+            <action
+                android:id="@+id/action_signUpFragment_to_updateSignUpProfileFragment"
+                app:destination="@id/updateSignUpProfileFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/forgotPasswordFragment"
+            android:name="com.vt.vt.ui.forgot_password.ForgotPasswordFragment"
+            android:label="fragment_forgot_password"
+            tools:layout="@layout/fragment_forgot_password" />
+        <fragment
+            android:id="@+id/signInFragment"
+            android:name="com.vt.vt.ui.signin.SignInFragment"
+            android:label="SignInFragment">
+            <action
+                android:id="@+id/action_signInFragment_to_signUpFragment"
+                app:destination="@id/signUpFragment" />
+            <action
+                android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+                app:destination="@id/forgotPasswordFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/updateSignUpProfileFragment"
+            android:name="com.vt.vt.ui.signup.UpdateSignUpProfileFragment"
+            android:label="UpdateSignUpProfileFragment">
+            <action
+                android:id="@+id/action_updateSignUpProfileFragment_to_signInFragment"
+                app:destination="@id/signInFragment" />
+            <argument
+                android:name="username"
+                android:defaultValue="username"
+                app:argType="string" />
+            <argument
+                android:name="email"
+                android:defaultValue="email"
+                app:argType="string" />
+            <argument
+                android:name="password"
+                android:defaultValue="password"
+                app:argType="string" />
+        </fragment>
+    </navigation>
 
 </navigation>

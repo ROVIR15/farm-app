@@ -1,5 +1,7 @@
 package com.vt.vt.core.data.source.remote
 
+import com.vt.vt.core.data.source.remote.auth.dto.change_password.ChangePasswordRequest
+import com.vt.vt.core.data.source.remote.auth.dto.change_password.ChangePasswordResponse
 import com.vt.vt.core.data.source.remote.auth.dto.login.*
 import com.vt.vt.core.data.source.remote.auth.dto.register.request.*
 import com.vt.vt.core.data.source.remote.auth.dto.register.response.*
@@ -60,6 +62,9 @@ interface ApiService {
 
     @POST("api/logout")
     suspend fun doLogout(): Response<LoginResponse>
+
+    @POST("api/change-password")
+    suspend fun doChangePassword(@Body changePasswordRequest: ChangePasswordRequest): Response<ChangePasswordResponse>
 
     //    BLOCK AND AREAS
     @GET("api/block-areas")

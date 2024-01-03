@@ -76,7 +76,6 @@ class HomeFragment : Fragment() {
                 binding.contentHome.contentHomeGreeting.text = "Hello, ${data.message?.name}👋"
             }
             isError().observe(viewLifecycleOwner) {
-                Log.e("HOME FRAGMENT", it.toString())
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
