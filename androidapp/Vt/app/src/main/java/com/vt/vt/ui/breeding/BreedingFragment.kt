@@ -124,22 +124,6 @@ class BreedingFragment : Fragment() {
         }
     }
 
-    private fun showLoading(state: Boolean) {
-        val btnSave = view?.findViewById<MaterialButton>(R.id.btn_save)
-        val btnCancel = view?.findViewById<MaterialButton>(R.id.btn_cancel)
-        val progressBar = view?.findViewById<ProgressBar>(R.id.progressBarLivestock)
-
-        btnSave?.isEnabled = !state
-        btnCancel?.isEnabled = !state
-
-        btnSave?.setBackgroundColor(
-            if (state) Color.GRAY
-            else ContextCompat.getColor(requireActivity(), R.color.btn_blue_icon)
-        )
-
-        progressBar?.visibility = if (state) View.VISIBLE else View.GONE
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
