@@ -108,11 +108,6 @@ class RekamBeratBadanFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     private fun showLoading(state: Boolean) {
         with(binding) {
             btnSimpanRekamBeratBadan.isEnabled = !state
@@ -125,4 +120,10 @@ class RekamBeratBadanFragment : Fragment() {
             loading.progressBar.visibility = if (state) View.VISIBLE else View.GONE
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }

@@ -43,6 +43,7 @@
     <string name="record_food">Rekam \n<b>Pakan</b></string>
     <string name="record_height">Rekam \n<b>Tinggi Badan</b></string>
     <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>
+    <string name="record_milk">Rekam \n<b>Susu</b></string>
 
     <!--  Feeding Record Food  -->
     <string name="feeding_is_complete">Klik Simpan atau Batal untuk Membatalkan</string>

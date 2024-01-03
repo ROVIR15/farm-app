@@ -63,6 +63,10 @@ class BreedingFragment : Fragment() {
                     R.id.action_breedingFragment_to_rekamBeratBadanFragment
                 navigateToRecord(navigationToWeightRecord)
             }
+            contentBreedingCategoryRecordMilk.setOnClickListener{
+                val navigationToMilkRecord = R.id.action_breedingFragment_to_recordMilkProductionFragment
+                navigateToRecord(navigationToMilkRecord)
+            }
             contentBreedingCategoryRecordHealth.setOnClickListener {
                 val navigationToHealthRecord =
                     R.id.action_breedingFragment_to_rekamKesehatanFragment
@@ -70,28 +74,6 @@ class BreedingFragment : Fragment() {
             }
             contentBreedingCategoryRecordAnimalMating.setOnClickListener {
                 findNavController().navigate(R.id.action_breedingFragment_to_listAnimalMatingsFragment)
-            }
-        }
-    }
-
-    private fun observerView(spinner: Spinner) {
-        livestockViewModel.apply {
-            observeLoading().observe(viewLifecycleOwner) {
-                showLoading(it)
-            }
-            livestockItems.observe(viewLifecycleOwner) { livestock ->
-                val nameArrays = livestock.map { item ->
-                    item.name
-                }.toTypedArray()
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, nameArrays)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-                spinner.selected { position ->
-                    livestockId = livestock[position].id!!
-                }
-            }
-            isError().observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
     }

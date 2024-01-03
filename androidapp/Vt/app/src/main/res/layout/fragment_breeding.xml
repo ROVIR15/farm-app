@@ -81,42 +81,56 @@
                 android:id="@+id/content_breeding_category_record_weight"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_circle_home_category"
+                android:padding="14dp"
+                android:src="@drawable/ic_baseline_add_square_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_health"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content_breeding_category_record_milk"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/bg_circle_home_category"
                 android:padding="14dp"
                 android:src="@drawable/ic_baseline_add_square_24"
                 app:layout_constraintEnd_toStartOf="@+id/content_breeding_category_record_health"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view5"
-                app:layout_constraintTop_toTopOf="@+id/view5" />
+                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_animal_mating"
+                app:layout_constraintTop_toTopOf="@+id/view5"
+                tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/content_breeding_category_record_health"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/bg_circle_home_category"
                 android:padding="14dp"
                 android:src="@drawable/ic_baseline_add_square_24"
-                app:layout_constraintEnd_toStartOf="@+id/content_breeding_category_record_animal_mating"
+                app:layout_constraintEnd_toStartOf="@+id/content_breeding_category_record_weight"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_weight"
-                app:layout_constraintTop_toTopOf="@+id/view5" />
+                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_milk"
+                app:layout_constraintTop_toTopOf="@+id/view5"
+                tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/content_breeding_category_record_animal_mating"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/bg_circle_home_category"
                 android:padding="14dp"
                 android:src="@drawable/ic_baseline_add_square_24"
-                app:layout_constraintEnd_toStartOf="@+id/view5"
+                app:layout_constraintEnd_toStartOf="@+id/content_breeding_category_record_milk"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/content_breeding_category_record_health"
-                app:layout_constraintTop_toTopOf="@+id/view5" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view5"
+                tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView6"
@@ -130,6 +144,19 @@
                 app:layout_constraintEnd_toEndOf="@+id/content_breeding_category_record_weight"
                 app:layout_constraintStart_toStartOf="@+id/content_breeding_category_record_weight"
                 app:layout_constraintTop_toBottomOf="@+id/content_breeding_category_record_weight" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView61"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/record_milk"
+                android:textAlignment="center"
+                android:textColor="@color/text_black"
+                app:layout_constraintEnd_toEndOf="@+id/content_breeding_category_record_milk"
+                app:layout_constraintStart_toStartOf="@+id/content_breeding_category_record_milk"
+                app:layout_constraintTop_toBottomOf="@+id/content_breeding_category_record_milk" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView7"
@@ -302,7 +329,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="349dp" />
+                app:layout_constraintGuide_begin="355dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"

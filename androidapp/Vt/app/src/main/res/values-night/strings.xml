@@ -31,6 +31,7 @@
     <string name="tab_text_1_animal_mating_history">Histori</string>
     <string name="tab_text_2_animal_mating_history">Peranakan</string>
     <string name="record_animal_matings">Rekam \n<b>Perkawinan</b></string>
+    <string name="record_milk">Rekam \n<b>Susu</b></string>
 
     <!--  TAB TITLE BREEDING  -->
     <string name="tab_text_1_breeding">Berat Badan</string>

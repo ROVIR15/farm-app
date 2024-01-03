@@ -235,6 +235,9 @@
         <action
             android:id="@+id/action_breedingFragment_to_listAnimalMatingsFragment"
             app:destination="@id/listAnimalMatingsFragment" />
+        <action
+            android:id="@+id/action_breedingFragment_to_recordMilkProductionFragment"
+            app:destination="@id/recordMilkProductionFragment" />
     </fragment>
     <fragment
         android:id="@+id/fatteningFragment"
@@ -365,7 +368,7 @@
         android:id="@+id/recordHeightFragment"
         android:name="com.vt.vt.ui.rekam_tinggi_badan.RecordHeightFragment"
         android:label="fragment_record_height"
-        tools:layout="@layout/fragment_record_height" >
+        tools:layout="@layout/fragment_record_height">
         <argument
             android:name="livestockId"
             android:defaultValue="0"
@@ -539,13 +542,14 @@
         android:id="@+id/editIncomeFragment"
         android:name="com.vt.vt.ui.income.edit.EditIncomeFragment"
         android:label="fragment_edit_income"
-        tools:layout="@layout/fragment_edit_income" >
+        tools:layout="@layout/fragment_edit_income">
         <argument
             android:name="incomeId"
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
-    <navigation android:id="@+id/navigation_authentication"
+    <navigation
+        android:id="@+id/navigation_authentication"
         app:startDestination="@id/signInFragment">
         <fragment
             android:id="@+id/signUpFragment"
@@ -596,5 +600,15 @@
                 app:argType="string" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/recordMilkProductionFragment"
+        android:name="com.vt.vt.ui.rekam_susu.RecordMilkProductionFragment"
+        android:label="fragment_record_milk_production"
+        tools:layout="@layout/fragment_record_milk_production">
+        <argument
+            android:name="livestockId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
