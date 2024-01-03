@@ -39,9 +39,15 @@ class LivestockAdapter(
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         @SuppressLint("SetTextI18n")
         fun bind(livestock: LivestockResponseItem) {
+            val dynamicPattern = Regex("S-\\d+")
+            val newInfo = if (dynamicPattern.containsMatchIn(livestock.info)) {
+                livestock.info.replace(dynamicPattern, "")
+            } else {
+                livestock.info
+            }
             binding.tvDateContent.text = livestock.createdAt
             binding.textViewTitle.text = livestock.name
-            binding.textViewSubtitle.text = livestock.info
+            binding.textViewSubtitle.text = newInfo
             binding.btnOptionsItemLivestock.setOnClickListener(this)
             binding.btnRecord.setOnClickListener(this)
             binding.btnInfo.setOnClickListener(this)

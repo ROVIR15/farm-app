@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Pilih Tanggal Pemasukan" />
+            android:text="Pilih Tanggal Pendapatan" />
 
         <LinearLayout
             android:id="@+id/containerDate"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/roboto_regular"
-                android:hint="Tanggal Pemasukan"
+                android:hint="Tanggal Pendapatan"
                 android:paddingHorizontal="16dp"
                 android:textSize="14sp" />
 
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Kategori Pemasukan" />
+            android:text="Kategori Pendapatan" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

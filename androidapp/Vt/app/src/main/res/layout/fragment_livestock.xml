@@ -23,7 +23,7 @@
             android:layout_marginTop="8dp"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="Search Here..." />
+            app:queryHint="Cari Ternak..." />
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -63,7 +63,6 @@ class EditLivestockViewModel @Inject constructor(private val livestockVtReposito
                 _updateLivestock.postValue(response.body())
             } else {
                 Log.e("EditLivestockFragment", "updateLivestockById: ${response.message()}", )
-                Log.e("EditLivestockFragment", "updateLivestockById: ${response.body()}", )
                 isError.postValue(response.message())
             }
         }, error = { networkError ->

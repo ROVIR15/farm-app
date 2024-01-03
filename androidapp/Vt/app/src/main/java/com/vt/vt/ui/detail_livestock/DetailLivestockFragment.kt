@@ -62,9 +62,17 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 binding.loading.progressBar.isVisible = it
             }
             getLivestockById.observe(viewLifecycleOwner) { data ->
-                binding.tvTitleLivestock.text = data?.name
-                binding.tvInfo.text = data?.info
-                binding.tvDescriptionLivestock.text = data?.description
+                if (data != null) {
+                    val dynamicPattern = Regex("S-\\d+")
+                    val newInfo = if (dynamicPattern.containsMatchIn(data.info)) {
+                        data.info.replace(dynamicPattern, "")
+                    } else {
+                        data.info
+                    }
+                    binding.tvTitleLivestock.text = newInfo.trim()
+                    binding.tvInfo.text = data.info.trim()
+                    binding.tvDescriptionLivestock.text = data.description.trim()
+                }
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
