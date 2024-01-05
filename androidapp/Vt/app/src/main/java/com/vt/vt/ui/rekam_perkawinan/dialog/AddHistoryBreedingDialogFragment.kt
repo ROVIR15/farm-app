@@ -51,7 +51,7 @@ class AddHistoryBreedingDialogFragment : BottomSheetDialogFragment() {
                         )
                     }
                 } else {
-                    Toast.makeText(requireActivity(), "Lengkapi Kolom", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), R.string.please_fill_all_column, Toast.LENGTH_SHORT).show()
                 }
             }
             btnCancelAnimalMating.setOnClickListener { dismiss() }

@@ -66,12 +66,12 @@ class AddIncomeFragment : Fragment() {
                     } else {
                         Toast.makeText(
                             requireActivity(),
-                            "Budget Maksimal 100 Juta",
+                            R.string.maximal_budget,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireActivity(), R.string.please_fill_all_column, Toast.LENGTH_SHORT)
                         .show()
                 }
             }

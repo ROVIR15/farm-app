@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.vt.vt.R
 import com.vt.vt.core.data.source.remote.feeding_record.dto.ConsumptionRecordItem
@@ -22,6 +23,10 @@ import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatterDateFromCalendar
 import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class VitaminFragment : Fragment() {
@@ -33,7 +38,7 @@ class VitaminFragment : Fragment() {
     private val feedingViewModel by viewModels<FeedingViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
-    private var skuId: Int = 0
+    private var skuId: Int? = null
     private var receiveBlockId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -62,7 +67,7 @@ class VitaminFragment : Fragment() {
                 val score = editTextRekamPemberianVitamin.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
 
-                if (score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
+                if (skuId != null && score.isNotEmpty() && receiveVitaminId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
                     val consumptionRecordItem = mutableListOf(
                         ConsumptionRecordItem(
                             date = createdAt,
@@ -79,7 +84,11 @@ class VitaminFragment : Fragment() {
                     )
                     feedingViewModel.push(map)
                 } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireActivity(),
+                        R.string.please_fill_all_column,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -102,22 +111,26 @@ class VitaminFragment : Fragment() {
                 ).show()
             }
             observeException().observe(viewLifecycleOwner) { e ->
-                Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
+                Log.e(ContentValues.TAG, getString(R.string.failed_save_data, e?.message), e)
             }
-//            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
-//                if (isCommitSuccessful) {
-//                    binding.loading.progressBar.isVisible = true
-//                    lifecycleScope.launch {
-//                        vitaminViewModel.setButtonVitamin(receiveBlockId!!, false)
-//                        delay(1000)
-//                        withContext(Dispatchers.Main) {
-//                            binding.btnSimpanVitamin.isEnabled = false
-//                            view?.findNavController()?.popBackStack()
-//                        }
-//                    }
-//                } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
-//                    .show()
-//            }
+            pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
+                if (isCommitSuccessful) {
+                    binding.loading.progressBar.isVisible = true
+                    lifecycleScope.launch {
+                        vitaminViewModel.setButtonVitamin(receiveBlockId!!, false)
+                        delay(1000)
+                        withContext(Dispatchers.Main) {
+                            binding.btnSimpanVitamin.isEnabled = false
+                            view?.findNavController()?.popBackStack()
+                        }
+                    }
+                } else Toast.makeText(
+                    requireActivity(),
+                    R.string.failed_save_data,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
             }
@@ -130,7 +143,7 @@ class VitaminFragment : Fragment() {
                 binding.tvBlockName.text = data.name
                 binding.tvBlockInfo.text = data.info
             } else {
-                Toast.makeText(requireActivity(), "Block Tidak Ditemukan", Toast.LENGTH_SHORT)
+                Toast.makeText(requireActivity(), R.string.block_is_missing, Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -146,12 +159,18 @@ class VitaminFragment : Fragment() {
                 val namesArray = product.map {
                     it.productName
                 }.toTypedArray()
-                binding.spinner.selected { position ->
-                    skuId = product[position].skuId!!
-                }
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
+                val productsArrayWithPrompt = arrayOf(getString(R.string.prompt_select_item)) + namesArray
+                val adapter =
+                    ArrayAdapter(requireActivity(), R.layout.item_spinner, productsArrayWithPrompt)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinner.adapter = adapter
+                binding.spinner.selected { position ->
+                    skuId = if (position == 0) {
+                        null
+                    } else {
+                        product[position - 1].skuId
+                    }
+                }
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

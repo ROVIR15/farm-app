@@ -86,7 +86,7 @@ class AddAreaBlockDialogFragment : BottomSheetDialogFragment() {
         }
         sledViewModel.moveSledEmitter.observe(viewLifecycleOwner) { responseSled ->
             Log.d(AddAreaBlockDialogFragment::class.java.simpleName, "${responseSled.message}")
-//            Toast.makeText(requireActivity(), "${responseSled.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(), "${responseSled.message}", Toast.LENGTH_SHORT).show()
         }
         sledViewModel.isError().observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

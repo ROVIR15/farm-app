@@ -2,7 +2,6 @@ package com.vt.vt.ui.bottom_navigation.keuangan
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -139,7 +138,7 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
         incomeViewModel.deleteIncomeEmitter.observe(viewLifecycleOwner) {
-            if (it.status == "success") {
+            if (it.status.equals(other = "success", ignoreCase = true)) {
                 budgetViewModel.currentDate.observe(viewLifecycleOwner) { selectedDate ->
                     budgetViewModel.loadBudgetByMonth(selectedDate.toString())
                 }
@@ -162,15 +161,15 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         val swipeHandler = object : BaseSwipeToDeleteAdapter(requireActivity()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                AlertDialog.Builder(requireContext()).setTitle("Delete")
+                AlertDialog.Builder(requireContext()).setTitle(R.string.title_alert_delete_item)
                     .setIcon(R.drawable.ic_outline_delete_outline_24)
-                    .setMessage("Are you sure delete this Information")
-                    .setPositiveButton("Yes") { dialog, _ ->
+                    .setMessage(R.string.message_delete_item)
+                    .setPositiveButton(R.string.yes) { dialog, _ ->
                         val item = listBudgetAdapter.currentList[position]
                         budgetViewModel.deleteBudgetById(item.id.toString())
                         listBudgetAdapter.notifyItemRemoved(position)
                         dialog.dismiss()
-                    }.setNegativeButton("No") { dialog, _ ->
+                    }.setNegativeButton(R.string.no) { dialog, _ ->
                         listBudgetAdapter.notifyItemChanged(position)
                         dialog.dismiss()
                     }.create().show()
@@ -184,15 +183,15 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         val swipeHandler = object : BaseSwipeToDeleteAdapter(requireActivity()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                AlertDialog.Builder(requireContext()).setTitle("Delete")
+                AlertDialog.Builder(requireContext()).setTitle(R.string.title_alert_delete_item)
                     .setIcon(R.drawable.ic_outline_delete_outline_24)
-                    .setMessage("Are you sure delete this Information")
-                    .setPositiveButton("Yes") { dialog, _ ->
+                    .setMessage(R.string.message_delete_item)
+                    .setPositiveButton(R.string.yes) { dialog, _ ->
                         val item = listIncomeAdapter.currentList[position].id
                         incomeViewModel.deleteIncomeById(item.toString())
                         listIncomeAdapter.notifyItemRemoved(position)
                         dialog.dismiss()
-                    }.setNegativeButton("No") { dialog, _ ->
+                    }.setNegativeButton(R.string.no) { dialog, _ ->
                         listIncomeAdapter.notifyItemChanged(position)
                         dialog.dismiss()
                     }.create().show()

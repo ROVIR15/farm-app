@@ -21,9 +21,8 @@ import com.vt.vt.R
 import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
 import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentAddCageBinding
-import com.vt.vt.ui.common.SnapSheetFragment
-import com.vt.vt.ui.common.SnapSheetListener
-import com.vt.vt.ui.file_provider.dataarea.DataAreaFragment
+import com.vt.vt.ui.snapsheet.SnapSheetFragment
+import com.vt.vt.ui.snapsheet.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.LivestockStorageViewModel
 import com.vt.vt.utils.fileToMultipart
 import com.vt.vt.utils.selected
@@ -31,9 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint

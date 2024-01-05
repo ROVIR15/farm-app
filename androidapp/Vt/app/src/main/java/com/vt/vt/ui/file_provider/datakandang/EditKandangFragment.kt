@@ -54,7 +54,11 @@ class EditKandangFragment : Fragment() {
                         sledsId.toString(), blockAreaId, name, description
                     )
                 } else {
-                    Toast.makeText(requireContext(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.please_fill_all_column,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }

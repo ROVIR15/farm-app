@@ -68,16 +68,16 @@ class ListItemsAndServiceAdapter(private val viewModel: ListItemsAndServiceViewM
 
                 R.id.menu_delete -> {
                     ItemsAndServiceFragment.IS_UPDATE_DATA = false
-                    AlertDialog.Builder(itemView.context).setTitle("Delete")
+                    AlertDialog.Builder(itemView.context).setTitle(R.string.title_alert_delete_item)
                         .setIcon(R.drawable.ic_outline_delete_outline_24)
-                        .setMessage("Are you sure delete this Information")
-                        .setPositiveButton("Yes") { dialog, _ ->
+                        .setMessage(R.string.message_delete_item)
+                        .setPositiveButton(R.string.yes) { dialog, _ ->
                             val productId = currentList[adapterPosition]
                             viewModel.deleteProduct(
                                 productId.productId.toString()
                             )
                             dialog.dismiss()
-                        }.setNegativeButton("No") { dialog, _ ->
+                        }.setNegativeButton(R.string.no) { dialog, _ ->
                             dialog.dismiss()
                         }.create().show()
                     return true

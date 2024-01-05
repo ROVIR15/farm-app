@@ -42,7 +42,7 @@ class SignUpFragment : Fragment() {
                 } else {
                     Toast.makeText(
                         requireActivity(),
-                        "Kata sandi tidak cocok atau kolom kosong",
+                        R.string.password_is_not_matching_or_empty,
                         Toast.LENGTH_SHORT
                     )
                         .show()

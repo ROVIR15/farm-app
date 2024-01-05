@@ -1,4 +1,4 @@
-package com.vt.vt.ui.common
+package com.vt.vt.ui.snapsheet
 
 import android.app.Activity
 import android.content.Context

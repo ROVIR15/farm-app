@@ -9,11 +9,9 @@
     <string name="title_profile">Profil</string>
 
     <string name="tambah_nlivestock">Tambah \n <b>Ternak</b></string>
-    <string name="tambah_nlivestocks">Tambah \nTernak</string>
     <string name="tambah_npengeluran">Tambah \n<b>Pengeluaran</b></string>
     <string name="lihat_nlivestock">Lihat \nLivestock</string>
     <string name="anggaran_dan_realisasi_nkeuangan">Anggaran dan Realisasi \nKeuangan</string>
-    <string name="question_about_ngetting_started">Question about \nGetting Started</string>
     <string name="daftar_narea_ternak">Daftar \nArea Ternak</string>
     <string name="hide">Hide</string>
     <string name="show">Show</string>

@@ -100,6 +100,10 @@ class FeedingFragment : Fragment() {
         Log.d("FEEDING", "all list consumption : ${listConsumptionRecord}")
         if (!listConsumptionRecord.isNullOrEmpty()) {
             if (listConsumptionRecord.isNotEmpty()) {
+                binding.contentPemberianMakanTernak.tvFeedingSize.apply {
+                    visibility = View.VISIBLE
+                    text = getString(R.string.size_feeding_has_been_added, listConsumptionRecord.size)
+                }
                 if (listConsumptionRecord.size >= 4) {
                     binding.contentPemberianMakanTernak.tvGreetingsFinish.visibility = View.VISIBLE
                     binding.contentPemberianMakanTernak.tvUsernameGreetings.visibility = View.GONE

@@ -18,8 +18,8 @@ import com.vt.vt.R
 import com.vt.vt.core.data.permission.PermissionAlertDialog
 import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentPersonalProfileBinding
-import com.vt.vt.ui.common.SnapSheetFragment
-import com.vt.vt.ui.common.SnapSheetListener
+import com.vt.vt.ui.snapsheet.SnapSheetFragment
+import com.vt.vt.ui.snapsheet.SnapSheetListener
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.fileToMultipart
 import dagger.hilt.android.AndroidEntryPoint

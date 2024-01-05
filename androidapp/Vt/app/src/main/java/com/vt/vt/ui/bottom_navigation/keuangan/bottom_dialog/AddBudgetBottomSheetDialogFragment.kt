@@ -58,17 +58,21 @@ class AddBudgetBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     } else {
                         Toast.makeText(
                             requireActivity(),
-                            "Maksimal Budget 100 Juta",
+                            R.string.maximal_budget,
                             Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        ).show()
                         Log.e(
-                            "ADD BUDGET",
-                            "BUDGET MORE THAN LIMIT : ${budgetValue.getNumericValueBigDecimal()}"
+                            TAG,
+                            "Budget over the limit : ${budgetValue.getNumericValueBigDecimal()}",
+                            null
                         )
                     }
                 } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireActivity(),
+                        R.string.please_fill_all_column,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -123,5 +127,9 @@ class AddBudgetBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        private val TAG = AddBudgetBottomSheetDialogFragment::class.java.simpleName
     }
 }

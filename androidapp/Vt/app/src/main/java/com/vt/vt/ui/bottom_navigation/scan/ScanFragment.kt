@@ -21,7 +21,6 @@ import com.king.zxing.analyze.MultiFormatAnalyzer
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentScanBinding
 import com.vt.vt.ui.ToDetailAfterScanFragment
-import com.vt.vt.utils.PermissionUtils
 import com.vt.vt.utils.PermissionUtils.showPermissionRationaleDialog
 
 class ScanFragment : Fragment(), CameraScan.OnScanResultCallback {
@@ -87,7 +86,10 @@ class ScanFragment : Fragment(), CameraScan.OnScanResultCallback {
             }
             if (!permissionGranted) {
                 showPermissionRationaleDialog(requireContext())
-                Toast.makeText(requireActivity(), "Permission Request Denied", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireActivity(), R.string.permission_request_denied,
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             } else {
                 startCameraScan()
@@ -101,7 +103,8 @@ class ScanFragment : Fragment(), CameraScan.OnScanResultCallback {
     override fun onScanResultCallback(result: Result?): Boolean {
         val bundle = Bundle()
         bundle.putString(ToDetailAfterScanFragment.EXTRA_SCAN_ID, result?.text)
-        view?.findNavController()?.navigate(R.id.action_navigation_scan_to_toDetailAfterScanFragment, bundle)
+        view?.findNavController()
+            ?.navigate(R.id.action_navigation_scan_to_toDetailAfterScanFragment, bundle)
         return true
     }
 

@@ -100,17 +100,17 @@ class LivestockStorageAdapter(
                 R.id.menu_delete_penyimpanan_ternak -> {
                     isUpdate = false
                     AlertDialog.Builder(context)
-                        .setTitle("Delete")
+                        .setTitle(R.string.title_alert_delete_item)
                         .setIcon(R.drawable.ic_outline_delete_outline_24)
-                        .setMessage("Are you sure delete this Information")
-                        .setPositiveButton("Yes") { dialog, _ ->
+                        .setMessage(R.string.message_delete_item)
+                        .setPositiveButton(R.string.yes) { dialog, _ ->
                             val blockArea = currentList[adapterPosition]
                             viewModel.deleteBlockAndArea(
                                 blockArea.id.toString()
                             )
                             dialog.dismiss()
                         }
-                        .setNegativeButton("No") { dialog, _ ->
+                        .setNegativeButton(R.string.no) { dialog, _ ->
                             dialog.dismiss()
                         }
                         .create()

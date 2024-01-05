@@ -93,13 +93,13 @@ class ListLivestockAreasAdapter(private val livestockViewModel: LivestockViewMod
 
                 R.id.menu_delete -> {
                     val getId = currentList[adapterPosition].id
-                    AlertDialog.Builder(itemView.context).setTitle("Delete")
+                    AlertDialog.Builder(itemView.context).setTitle(R.string.title_alert_delete_item)
                         .setIcon(R.drawable.ic_outline_delete_outline_24)
-                        .setMessage("Are you sure delete this Information")
-                        .setPositiveButton("Yes") { dialog, _ ->
+                        .setMessage(R.string.message_delete_item)
+                        .setPositiveButton(R.string.yes) { dialog, _ ->
                             livestockViewModel.deleteLivestockById(getId.toString())
                             dialog.dismiss()
-                        }.setNegativeButton("No") { dialog, _ ->
+                        }.setNegativeButton(R.string.no) { dialog, _ ->
                             dialog.dismiss()
                         }.create().show()
                     return true

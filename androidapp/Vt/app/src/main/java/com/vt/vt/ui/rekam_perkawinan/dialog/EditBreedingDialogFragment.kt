@@ -60,7 +60,7 @@ class EditBreedingDialogFragment : BottomSheetDialogFragment() {
                         .show()
                     // PUT API HERE...
                 } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireActivity(), R.string.please_fill_all_column, Toast.LENGTH_SHORT)
                         .show()
                 }
             }

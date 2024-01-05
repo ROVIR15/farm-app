@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.pengeluaran.add_pengeluaran.AddPengeluaranFragment">
+    tools:context=".ui.pengeluaran.add_pengeluaran.AddExpenditureFragment">
 
     <include
         android:id="@+id/app_bar_add_anggaran"

@@ -2,9 +2,11 @@ package com.vt.vt.utils
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
+import com.vt.vt.R
 
 object PermissionUtils {
 
@@ -17,12 +19,12 @@ object PermissionUtils {
 
     fun showPermissionRationaleDialog(context: Context) {
         val alertDialog = AlertDialog.Builder(context)
-            .setTitle("Izinkan Kamera")
-            .setMessage("Perizinan kamera perlu diaktifkan.")
-            .setPositiveButton("OK") { _, _ ->
+            .setTitle(Resources.getSystem().getString(R.string.camera_permission))
+            .setMessage(Resources.getSystem().getString(R.string.message_camera_permission))
+            .setPositiveButton(Resources.getSystem().getString(R.string.yes)) { _, _ ->
                 openAppSettings(context)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(Resources.getSystem().getString(R.string.no), null)
             .create()
 
         alertDialog.show()

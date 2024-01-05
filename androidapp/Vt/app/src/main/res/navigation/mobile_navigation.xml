@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_navigation_home_to_addLivestockFragment"
             app:destination="@id/addLivestockFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_add_expenditure_fragment"
+            app:destination="@id/addExpenditureFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_livestock"
@@ -148,11 +151,6 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/displayLivestockFragment"
-        android:name="com.vt.vt.ui.displaylivestock.DisplayLivestockFragment"
-        android:label="fragment_display_livestock"
-        tools:layout="@layout/fragment_display_livestock" />
-    <fragment
         android:id="@+id/detailLivestockFragment"
         android:name="com.vt.vt.ui.detail_livestock.DetailLivestockFragment"
         android:label="fragment_detail_livestock"
@@ -200,13 +198,13 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_anggaranFragment_to_addPengeluaranFragment"
-            app:destination="@id/addPengeluaranFragment" />
+            app:destination="@id/addExpenditureFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addPengeluaranFragment"
-        android:name="com.vt.vt.ui.pengeluaran.add_pengeluaran.AddPengeluaranFragment"
+        android:id="@+id/addExpenditureFragment"
+        android:name="com.vt.vt.ui.pengeluaran.add_pengeluaran.AddExpenditureFragment"
         android:label="fragment_add_pengeluaran"
-        tools:layout="@layout/fragment_add_pengeluaran">
+        tools:layout="@layout/fragment_add_expenditure">
         <argument
             android:name="categoryId"
             android:defaultValue="0"

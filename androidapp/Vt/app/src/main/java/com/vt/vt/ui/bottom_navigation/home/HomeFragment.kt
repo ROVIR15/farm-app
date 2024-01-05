@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
                 it.findNavController().navigate(R.id.action_navigation_home_to_addLivestockFragment)
             }
             contentHome.contentHomeCategoryAddExpenses.setOnClickListener {
-                Toast.makeText(requireContext(), "no action", Toast.LENGTH_SHORT).show()
+                it.findNavController().navigate(R.id.action_navigation_home_to_add_expenditure_fragment)
             }
             contentHome.contentHomeCategorySeeCage.setOnClickListener {
                 it.findNavController()

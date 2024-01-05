@@ -56,7 +56,7 @@ class RekamKesehatanFragment : Fragment() {
                 } else {
                     Toast.makeText(
                         requireActivity(),
-                        "Silahkan Lengkapi Kolom Deskripsi",
+                        R.string.please_fill_all_column,
                         Toast.LENGTH_SHORT
                     ).show()
                 }

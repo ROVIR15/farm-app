@@ -35,12 +35,11 @@ class TambahanFragment : Fragment() {
 
     private var value: Int? = 0
 
-    private val tambahanViewModel by viewModels<TambahanViewModel>()
     private val listItemsAndServiceViewModel by viewModels<ListItemsAndServiceViewModel>()
     private val feedingViewModel by viewModels<FeedingViewModel>()
     private val dataAreaBlockViewModel by viewModels<DataAreaViewModel>()
 
-    private var skuId: Int = 0
+    private var skuId: Int? = null
     private var receiveBlockId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -68,7 +67,7 @@ class TambahanFragment : Fragment() {
             btnSimpanTambahan.setOnClickListener {
                 val score = editTextRekamPemberianTambahan.text.toString().trim()
                 val createdAt = formatterDateFromCalendar(tvShowDate.text.toString().trim())
-                if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && createdAt.isNotEmpty()) {
+                if (score.isNotEmpty() && receiveTambahanId != null && receiveBlockId != null && createdAt.isNotEmpty() && skuId != null) {
                     val consumptionRecordItem = mutableListOf(
                         ConsumptionRecordItem(
                             date = createdAt,
@@ -86,7 +85,7 @@ class TambahanFragment : Fragment() {
                     feedingViewModel.push(map)
                 } else Toast.makeText(
                     requireActivity(),
-                    "Silahkan Lengkapi Kolom",
+                    R.string.please_fill_all_column,
                     Toast.LENGTH_SHORT
                 )
                     .show()
@@ -110,7 +109,7 @@ class TambahanFragment : Fragment() {
                 ).show()
             }
             observeException().observe(viewLifecycleOwner) { e ->
-                Log.e(ContentValues.TAG, "Failed to save data: ${e?.message}", e)
+                Log.e(ContentValues.TAG, getString(R.string.failed_save_data, e?.message), e)
             }
             pushFeeding.observe(viewLifecycleOwner) { (isCommitSuccessful, _) ->
                 if (isCommitSuccessful) {
@@ -122,7 +121,11 @@ class TambahanFragment : Fragment() {
                             view?.findNavController()?.popBackStack()
                         }
                     }
-                } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+                } else Toast.makeText(
+                    requireActivity(),
+                    R.string.failed_save_data,
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
             isError().observe(viewLifecycleOwner) {
@@ -136,7 +139,7 @@ class TambahanFragment : Fragment() {
             if (receiveBlockId != null) {
                 binding.tvBlockName.text = data.name
                 binding.tvBlockInfo.text = data.info
-            } else Toast.makeText(requireActivity(), "Gagal Menyimpan Data", Toast.LENGTH_SHORT)
+            } else Toast.makeText(requireActivity(), R.string.failed_save_data, Toast.LENGTH_SHORT)
                 .show()
         }
         dataAreaBlockViewModel.isError().observe(viewLifecycleOwner) {
@@ -151,12 +154,18 @@ class TambahanFragment : Fragment() {
                 val namesArray = product.map {
                     it.productName
                 }.toTypedArray()
-                binding.spinner.selected { position ->
-                    skuId = product[position].skuId!!
-                }
-                val adapter = ArrayAdapter(requireActivity(), R.layout.item_spinner, namesArray)
+                val productsArrayWithPrompt = arrayOf(getString(R.string.prompt_select_item)) + namesArray
+                val adapter =
+                    ArrayAdapter(requireActivity(), R.layout.item_spinner, productsArrayWithPrompt)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinner.adapter = adapter
+                binding.spinner.selected { position ->
+                    skuId = if (position == 0) {
+                        null
+                    } else {
+                        product[position - 1].skuId
+                    }
+                }
             }
             isError().observe(viewLifecycleOwner) {
                 Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()

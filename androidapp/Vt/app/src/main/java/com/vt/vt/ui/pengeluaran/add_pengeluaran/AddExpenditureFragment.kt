@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.vt.vt.R
-import com.vt.vt.databinding.FragmentAddPengeluaranBinding
+import com.vt.vt.databinding.FragmentAddExpenditureBinding
 import com.vt.vt.ui.barang_dan_jasa.ListItemsAndServiceViewModel
 import com.vt.vt.ui.bottom_navigation.keuangan.BudgetViewModel
 import com.vt.vt.ui.pengeluaran.ExpenditureViewModel
@@ -23,9 +23,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 
 @AndroidEntryPoint
-class AddPengeluaranFragment : Fragment() {
+class AddExpenditureFragment : Fragment() {
 
-    private var _binding: FragmentAddPengeluaranBinding? = null
+    private var _binding: FragmentAddExpenditureBinding? = null
     private val binding get() = _binding!!
 
     private val expenditureViewModel by viewModels<ExpenditureViewModel>()
@@ -36,11 +36,9 @@ class AddPengeluaranFragment : Fragment() {
     private var budgetSubCategoryId: Int = 0
     private var skuId: Int? = null
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddPengeluaranBinding.inflate(inflater, container, false)
+        _binding = FragmentAddExpenditureBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -63,28 +61,23 @@ class AddPengeluaranFragment : Fragment() {
                 val remarks = edtDescription.text.toString().trim()
                 val formatter = tvPengeluaranCreatedAt.text.toString()
                 val dateSelected = formatterDateFromCalendar(formatter)
-                if (dateSelected.isNotEmpty() && amount.isNotEmpty())
-                    if (expenditure <= limit) {
-                        expenditureViewModel.addExpenditure(
-                            budgetCategoryId,
-                            budgetSubCategoryId,
-                            expenditure,
-                            skuId,
-                            remarks,
-                            dateSelected
-                        )
-                    } else {
-                        Toast.makeText(
-                            requireActivity(),
-                            "Maksimal Pengeluaran 100 Juta",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                if (dateSelected.isNotEmpty() && amount.isNotEmpty()) if (expenditure <= limit) {
+                    expenditureViewModel.addExpenditure(
+                        budgetCategoryId,
+                        budgetSubCategoryId,
+                        expenditure,
+                        skuId,
+                        remarks,
+                        dateSelected
+                    )
+                } else {
+                    Toast.makeText(
+                        requireActivity(), R.string.maximal_expenditure, Toast.LENGTH_SHORT
+                    ).show()
+                }
                 else {
                     Toast.makeText(
-                        requireActivity(),
-                        "Lengkapi Tanggal dan Pengeluaran",
-                        Toast.LENGTH_SHORT
+                        requireActivity(), R.string.please_fill_all_column, Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -135,17 +128,17 @@ class AddPengeluaranFragment : Fragment() {
             val productsArrays = listProducts.map { item ->
                 item.productName
             }.toTypedArray()
-            val prompt = "Select a products"
-            val productsArrayWithPrompt = arrayOf(prompt) + productsArrays
+            val productsArrayWithPrompt =
+                arrayOf(getString(R.string.prompt_select_item)) + productsArrays
             val adapter =
                 ArrayAdapter(requireActivity(), R.layout.item_spinner, productsArrayWithPrompt)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spProducts.adapter = adapter
             binding.spProducts.selected { position ->
-                if (position == 0) {
-                    skuId = null
+                skuId = if (position == 0) {
+                    null
                 } else {
-                    skuId = listProducts[position - 1].skuId
+                    listProducts[position - 1].skuId
                 }
             }
         }

@@ -14,21 +14,20 @@
     <string name="length_number">Setidaknya 5 angka!</string>
     <string name="empty_password">Kata sandi tidak boleh kosong!</string>
     <string name="length_password">Setidaknya 8 karakter!</string>
+    <string name="password_is_not_matching_or_empty">Kata sandi tidak cocok atau kolom kosong</string>
     <string name="rule_password">"Kata sandi harus mengandung setidaknya satu huruf besar, huruf kecil, angka, simbol, dan tanpa spasi"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tambah_nlivestock">Tambah \n<b>Ternak</b></string>
-    <string name="tambah_nlivestocks">Tambah \n<b>Ternak</b></string>
     <string name="tambah_npengeluran">Tambah \n<b>Pengeluaran</b></string>
     <string name="lihat_nlivestock">Lihat \n<b>Livestock</b></string>
     <string name="anggaran_dan_realisasi_nkeuangan">Anggaran dan Realisasi \n<b>Keuangan</b></string>
-    <string name="question_about_ngetting_started">Question about \n<b>Getting Started</b></string>
     <string name="daftar_narea_ternak">Daftar \n<b>Area Ternak</b></string>
     <string name="hide">Hide</string>
     <string name="show">Show</string>
 
     <!--  Pemberian Makan  -->
-    <string name="dropdown_prompt">Select an item</string>
+    <string name="dropdown_prompt">Pilih item</string>
     <string name="tambah_livestock">Tambah Livestock</string>
     <string name="tambah_nkandang">Tambah \n<b>Kandang</b></string>
     <string name="lihat_nkandang">Lihat \n<b>Kandang</b></string>
@@ -52,6 +51,42 @@
     <string name="category_kimia">Kategori Kimia</string>
     <string name="category_vitamin">Kategori Vitamin</string>
     <string name="category_tambahan">Kategori Tambahan</string>
+    <string name="size_feeding_has_been_added">%1$d makanan telah ditambahkan</string>
+
+    <!--  Alert Dialog  -->
+    <!--   For Delete Item     -->
+    <string name="title_alert_delete_item">Apakah anda yakin ?</string>
+    <string name="message_delete_item">Item ini akan dihapus secara permanen</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+
+    <!--  Alert Dialog -->
+    <!--  Permission -->
+    <string name="permission_request_granted">Perizinan kamera diberikan</string>
+    <string name="permission_request_denied">Perizinan kamera ditolak</string>
+    <!--    Camera Permission -->
+    <string name="camera_permission">Izinkan camera</string>
+    <string name="message_camera_permission">Perizinan kamera perlu diaktifkan</string>
+    <!--    Gallery and Camera Permission -->
+    <string name="camera_and_gallery_permission">Izinkan camera dan galeri</string>
+    <string name="message_camera_and_gallery_permission">Aktifkan izin kamera dan gallery di pengaturan aplikasi.</string>
+
+    <!--  Toast Common -->
+    <string name="please_fill_all_column">Silahkan Lengkapi Kolom</string>
+    <!--Toast Budget-->
+    <string name="maximal_budget">Maksimal Budget 100 Juta</string>
+    <!--Toast Pengeluaran-->
+    <string name="maximal_expenditure">Maksimal Pengeluaran 100 Juta</string>
+    <!--  Toast Failed Save Data -->
+    <string name="failed_save_data">Gagal menyimpan data %s</string>
+    <string name="block_is_missing">Blok tidak ditemukan</string>
+    <!-- Prompt Dropdown-->
+    <string name="prompt_select_item">Pilih produk</string>
+
+    <!--  Sled  -->
+    <string name="sled_is_empty">Kandang Kosong</string>
+    <!--  Area -->
+    <string name="area_is_empty">Area Kosong</string>
 
     <array name="dropdown_items">
         <item>Item 1</item>

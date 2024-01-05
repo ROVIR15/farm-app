@@ -1,5 +1,6 @@
 package com.vt.vt.ui.file_provider.dataarea
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -19,9 +20,9 @@ import com.vt.vt.R
 import com.vt.vt.core.data.permission.PermissionAlertDialog.showPermissionDeniedDialog
 import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentDataAreaBinding
-import com.vt.vt.ui.common.SnapSheetFragment
-import com.vt.vt.ui.common.SnapSheetListener
 import com.vt.vt.ui.penyimpan_ternak.adapter.LivestockStorageAdapter
+import com.vt.vt.ui.snapsheet.SnapSheetFragment
+import com.vt.vt.ui.snapsheet.SnapSheetListener
 import com.vt.vt.utils.fileToMultipart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,7 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (LivestockStorageAdapter.isUpdate) {
@@ -70,7 +72,11 @@ class DataAreaFragment : Fragment(), View.OnClickListener, SnapSheetListener {
                         dataAreaViewModel.createBlockAndArea(name, description)
                     }
                 } else {
-                    Toast.makeText(requireContext(), "Lengkapi Kolom ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.please_fill_all_column,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

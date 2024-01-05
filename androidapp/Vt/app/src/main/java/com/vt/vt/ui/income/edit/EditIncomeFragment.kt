@@ -2,7 +2,6 @@ package com.vt.vt.ui.income.edit
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,13 +71,17 @@ class EditIncomeFragment : Fragment() {
                     } else {
                         Toast.makeText(
                             requireActivity(),
-                            "Maksimal Budget 100 Juta",
+                            R.string.maximal_budget,
                             Toast.LENGTH_SHORT
                         )
                             .show()
                     }
                 } else {
-                    Toast.makeText(requireActivity(), "Silahkan Lengkapi Kolom", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireActivity(),
+                        R.string.please_fill_all_column,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }

@@ -89,8 +89,8 @@ class BreedingRecordFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                             tvSled.text = sled[desiredPosition].name
                             edtArea.setText(sled[desiredPosition].blockAreaName)
                         } else {
-                            tvSled.text = "Kandang Kosong"
-                            edtArea.setText("Area Kosong")
+                            tvSled.text = getString(R.string.sled_is_empty)
+                            edtArea.setText(R.string.area_is_empty)
                         }
                     }
                 }
