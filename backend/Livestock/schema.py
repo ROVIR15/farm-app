@@ -27,7 +27,7 @@ class LivestockSchema(Schema):
         HealthRecordSchema, allow_none=True, many=True)
     feeding_records = fields.Nested(FeedListSchema, many=True)
     descendant = fields.Nested(DescendantSchema, required=False)
-
+    imageurl = fields.Str(required=False)
 
 class LivestockSchema_new(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
@@ -43,3 +43,4 @@ class LivestockSchema_new(Schema):
     info = fields.Str(required=False)
     created_at = fields.Str(required=True)
     descendant = fields.Nested(DescendantSchema, required=False)
+    imageurl = fields.Str(required=False)
