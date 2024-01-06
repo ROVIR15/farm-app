@@ -31,6 +31,7 @@ from Record.HeightRecord.views import views_height_record_bp
 from Record.WeightRecord.views import views_weight_record_bp
 from Record.HealthRecord.views import views_health_record_bp
 from Record.FeedingRecord.views import views_consumption_bp
+from interfaces.controllers.Record.Milk import views_milk_record_bp
 
 from Breeds.Breeding.views import views_breeding_bp
 from Breeds.Breeding.v1b1.views import views_breeding_bp as views_breeding_bp_new
@@ -44,6 +45,8 @@ from Finance.Income.views import views_income_bp
 from Finance.BudgetCategory.views import views_budget_category_bp
 
 from Dashboard.views import views_dashboard_bp
+
+from infrastructure.Record.Milk import MilkRecordEncoder
 
 # Set the locale to Bahasa Indonesia
 from babel import Locale
@@ -83,6 +86,8 @@ def serve_file(filename):
     return send_from_directory('static/uploads', filename)
 
 app.login_manager = AuthManager(app, app.config['SECRET_KEY'])
+
+app.json_encoder = MilkRecordEncoder
 
 # @login_manager.user_loader
 # def load_user(user_id):
@@ -166,6 +171,9 @@ app.register_blueprint(views_sled_bp_new, url_prefix='/api/v1.1')
 
 # V1.1 - 20. Breeding new version with move to block area feature
 app.register_blueprint(views_breeding_bp_new, url_prefix='/api/v1.1')
+
+# V1.1 - 21. Milk Record using Clean Architecture
+app.register_blueprint(views_milk_record_bp, url_prefix='/api')
 
 # app.register_blueprint(views_bp)
 # app.register_blueprint(views_sled_bp)
