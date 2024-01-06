@@ -60,6 +60,7 @@ def get_livestocks():
                         'name': item.livestock.name,
                         'info': f'Tinggal di {query_block_area_livestock.sled.name} di {query_block_area_livestock.block_area.name} | {item.livestock.get_gender_label()}',
                         'gender': item.livestock.gender,
+                        'imageurl': item.livestock.imageurl,
                         'created_at': formatted_date
                     }
                 else:
@@ -69,6 +70,7 @@ def get_livestocks():
                         'bangsa': item.livestock.bangsa,
                         'info': f'Belum di taruh kandang | {item.livestock.get_gender_label()}',
                         'gender': item.livestock.gender,
+                        'imageurl': item.livestock.imageurl,
                         'created_at': formatted_date
                     }
 

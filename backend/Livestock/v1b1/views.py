@@ -79,6 +79,7 @@ def get_search_livestocks():
                         'id': item.livestock.id,
                         'name': item.livestock.name,
                         'bangsa': item.livestock.bangsa,
+                        'imageurl': item.livestock.imageurl,
                         'info': f'Tinggal di kandang {query_block_area_livestock.sled.name} di {query_block_area_livestock.block_area.name}'
                     }
                 else:
@@ -87,6 +88,7 @@ def get_search_livestocks():
                         'name': item.livestock.name,
                         'info': f'Belum di taruh kandang',
                         'created_at': formatted_date,
+                        'imageurl': item.livestock.imageurl
                     }
 
                 results.append(data)
@@ -151,6 +153,7 @@ def get_a_livestock(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
+                'imageurl': query.imageurl,
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
@@ -496,6 +499,7 @@ def get_a_livestock_new(livestock_id):
                 'birth_date': query.birth_date,
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
+                'imageurl': query.imageurl,
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
                 'block_area_id': query_block_area_livestock.block_area_id,
@@ -522,6 +526,7 @@ def get_a_livestock_new(livestock_id):
                 'birth_date': query.birth_date,
                 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
+                'imageurl': query.imageurl,
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
                 'block_area_id': query_block_area_livestock.block_area_id,
@@ -561,6 +566,7 @@ def post_livestock():
     gender = data.get('gender')
     bangsa = data.get('bangsa')
     description = data.get('description')
+    imageurl = data.get('imageurl')
 
     try:
         farm_profile_id = current_farm_profile()
@@ -569,7 +575,7 @@ def post_livestock():
             raise Exception("Cannot find farm profile!")
         else:
             query = Livestock(name=name, gender=gender, birth_date=birth_date,
-                              bangsa=bangsa, description=description)
+                              bangsa=bangsa, description=description, imageurl=imageurl)
             db.session.add(query)
             db.session.commit()
 
@@ -680,6 +686,7 @@ def update_livestock(livestock_id):
     bangsa = data.get('bangsa')
     description = data.get('description')
     sled_id = data.get('sled_id')
+    imageurl = data.get('imageurl')
 
     parent_male_id = data.get('parent_male_id')
     parent_female_id = data.get('parent_female_id')
@@ -693,6 +700,7 @@ def update_livestock(livestock_id):
             livestock.gender = gender
             livestock.bangsa = bangsa
             livestock.description = description
+            livestock.imageurl = imageurl
             db.session.commit()
 
             descendant = Descendant.query.filter_by(
