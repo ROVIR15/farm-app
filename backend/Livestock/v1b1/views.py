@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from db_connection import db
 from flask import Blueprint, request, jsonify, current_app
 from sqlalchemy import func, desc
@@ -29,6 +31,10 @@ from auth import login_required, current_farm_profile
 
 from decimal import Decimal
 from babel.dates import format_date
+
+load_dotenv()
+
+domain_url = os.environ.get('DOMAIN_URL_SECURE')
 
 views_bp = Blueprint('views_livestock_v1b1', __name__)
 
@@ -79,7 +85,7 @@ def get_search_livestocks():
                         'id': item.livestock.id,
                         'name': item.livestock.name,
                         'bangsa': item.livestock.bangsa,
-                        'imageurl': item.livestock.imageurl,
+                        'imageurl': f'{domain_url}{item.livestock.imageurl}',
                         'info': f'Tinggal di kandang {query_block_area_livestock.sled.name} di {query_block_area_livestock.block_area.name}'
                     }
                 else:
@@ -88,7 +94,7 @@ def get_search_livestocks():
                         'name': item.livestock.name,
                         'info': f'Belum di taruh kandang',
                         'created_at': formatted_date,
-                        'imageurl': item.livestock.imageurl
+                        'imageurl': f'{domain_url}{item.livestock.imageurl}'
                     }
 
                 results.append(data)
@@ -153,7 +159,7 @@ def get_a_livestock(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
-                'imageurl': query.imageurl,
+                'imageurl': f'{domain_url}{query.imageurl}',
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
@@ -499,7 +505,7 @@ def get_a_livestock_new(livestock_id):
                 'birth_date': query.birth_date,
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
-                'imageurl': query.imageurl,
+                'imageurl': f'{domain_url}{query.imageurl}',
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
                 'block_area_id': query_block_area_livestock.block_area_id,
@@ -526,7 +532,7 @@ def get_a_livestock_new(livestock_id):
                 'birth_date': query.birth_date,
                 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 # 'sled_id': None,
-                'imageurl': query.imageurl,
+                'imageurl': f'{domain_url}{query.imageurl}',
                 'sled_id': query_block_area_livestock.sled_id,
                 # 'block_area_id': None,
                 'block_area_id': query_block_area_livestock.block_area_id,

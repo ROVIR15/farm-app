@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from db_connection import db
 from flask import Blueprint, request, jsonify
 
@@ -16,6 +19,9 @@ views_sled_bp = Blueprint('views_sled', __name__)
 sled_schema = SledSchema()
 sleds_schema = SledSchema(many=True)
 
+load_dotenv()
+
+domain_url = os.environ.get("DOMAIN_URL_SECURE")
 
 @views_sled_bp.route('/sleds', methods=['GET'])
 @login_required
@@ -48,6 +54,7 @@ def get_sleds():
                     'name': item.sled.name,
                     'description': item.sled.description,
                     'block_area_name': block_area_name,
+                    'imageurl': f'{domain_url}{item.sled.imageurl}',
                     'block_area_description': block_area_description
                 }
                 results.append(data)

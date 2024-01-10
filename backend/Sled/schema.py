@@ -7,5 +7,6 @@ class SledSchema(Schema):
     name = fields.Str(required=True)
     created_at = fields.Str(required=True)
     description = fields.Str(required=True)
+    imageurl = fields.Str(required=False)
     block_area_name = fields.Str(required=True)
     block_area_description = fields.Str(required=True)

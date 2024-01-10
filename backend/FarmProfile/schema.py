@@ -8,4 +8,5 @@ class FarmProfileSchema(Schema):
     address_two = fields.Str(required=True)
     city = fields.Str(required=True)
     province = fields.Str(required=True)
+    imageurl = fields.Str(required=False)
     created_at = CustomDateTimeField()

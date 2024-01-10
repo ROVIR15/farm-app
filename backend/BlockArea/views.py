@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from db_connection import db
 from flask import Blueprint, request, jsonify
 from sqlalchemy import func, desc
@@ -17,6 +20,10 @@ views_block_area_bp = Blueprint('views_block_area', __name__)
 
 block_area_schema = BlockAreaSchema()
 blocks_area_schema = BlockAreaSchema(many=True)
+
+load_dotenv()
+
+domain_url = os.environ.get("DOMAIN_URL_SECURE")
 
 
 @views_block_area_bp.route('/block-areas', methods=['GET'])
@@ -50,6 +57,7 @@ def get_block_areas():
                     'id': item.block_area.id,
                     'name': item.block_area.name,
                     'description': item.block_area.description,
+                    'imageurl': f'{domain_url}{item.block_area.imageurl}',
                     # 'sleds': item.sleds
                     'created_at': formatted_date,
                 }
@@ -180,6 +188,7 @@ def get_a_block_area(block_area_id):
             'name': query.name,
             'info': f'{sleds_count} Kandang, {livestock_count} Ekor',
             'description': query.description,
+            'imageurl': query.imageurl,
             'sleds': result_sleds,
             'livestock': [],
             'feeding_records': []
@@ -194,6 +203,7 @@ def get_a_block_area(block_area_id):
                     'name': livestock.name,
                     'gender': livestock.gender,
                     'bangsa': livestock.bangsa,
+                    'bangsa': livestock.imageurl,
                     'sled_id': item.sled_id,
                     'label': f'BA-{item.block_area_id}/S-{item.sled_id}',
                     'block_area_id': item.block_area_id,
