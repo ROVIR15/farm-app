@@ -97,7 +97,7 @@ class MilkService:
             if not query:
                 return {
                     'status': 404,
-                    'message': f'Failed to get milk production record by livestock_id = {livestock_id}',
+                    'message': f'Not Found, Failed to get milk production record by milk_record_id = {milk_record_id}',
                 }
 
             entity = MilkRecordEntities(
@@ -106,6 +106,7 @@ class MilkService:
             entity.setNewScore(new_score)
 
             MilkRepositiories.update(entity)
+            db.session.commit()
 
         except Exception as e:
             error_message = str(e)

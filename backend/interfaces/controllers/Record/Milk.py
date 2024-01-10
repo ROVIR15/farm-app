@@ -38,3 +38,33 @@ def store_milk_record():
                                         )
     return jsonify(query), 200
 
+@views_milk_record_bp.route('milk-record/<int:milk_record_id>', methods=['PUT'])
+@login_required
+def update_milk_record(milk_record_id):
+    data = request.get_json()
+
+    score = data.get('score')
+    date = data.get('date')
+
+    response = MilkService.updateMilkRecord(milk_record_id, new_date=date, new_score=score)
+    if 'status' in response:
+        # Access the status code from the response dictionary
+        status_code = response['status']
+        return jsonify(response), status_code
+    else:
+        # Default to 200 OK if 'status' is not present
+        return jsonify({'message': 'Something Error'}), 500
+
+@views_milk_record_bp.route('milk-record/<int:milk_record_id>', methods=['DELETE'])
+@login_required
+def delete_milk_record(milk_record_id):
+    response = MilkService.deleteMilkRecord(milk_record_id)
+
+    # Check if 'status' key exists in the response dictionary
+    if 'status' in response:
+        # Access the status code from the response dictionary
+        status_code = response['status']
+        return jsonify(response), status_code
+    else:
+        # Default to 200 OK if 'status' is not present
+        return jsonify({'message': 'Something Error'}), 500
