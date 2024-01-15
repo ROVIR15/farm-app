@@ -1,5 +1,6 @@
 package com.vt.vt.ui.profile.farm_profile
 
+import android.animation.Animator
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -20,6 +21,7 @@ import com.vt.vt.core.data.permission.PermissionManager
 import com.vt.vt.databinding.FragmentPersonalFarmProfileBinding
 import com.vt.vt.ui.snapsheet.SnapSheetFragment
 import com.vt.vt.ui.snapsheet.SnapSheetListener
+import com.vt.vt.utils.Animations
 import com.vt.vt.utils.PickDatesUtils
 import com.vt.vt.utils.formatDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,11 +37,8 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
     private val binding get() = _binding!!
 
     private val farmProfileViewModel by viewModels<FarmProfileViewModel>()
-    private var getFile: File? = null
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPersonalFarmProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -52,7 +51,7 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
                 title = "Profil Perternakan"
                 setNavigationOnClickListener { findNavController().popBackStack() }
             }
-            ivDatePicker.setOnClickListener(this@PersonalFarmProfileFragment)
+            circleImageView.setOnClickListener(this@PersonalFarmProfileFragment)
             btnEditProfilePicture.setOnClickListener(this@PersonalFarmProfileFragment)
             btnSaveFarmProfile.setOnClickListener(this@PersonalFarmProfileFragment)
         }
@@ -79,7 +78,6 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
                 showLoading(it)
             }
             postImageFarmProfile.observe(viewLifecycleOwner) {
-                Log.d(TAG, "observerView: ${it.message}")
                 Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
             }
             farmProfileEmitter.observe(viewLifecycleOwner) { farmProfile ->
@@ -112,7 +110,6 @@ class PersonalFarmProfileFragment : Fragment(), View.OnClickListener, SnapSheetL
     override fun getFile(file: File?) {
         if (file != null) {
             val myFile = convertFileToMultipart(file)
-            Log.d(TAG, "get multipart file : $file")
             farmProfileViewModel.postImageFarmProfile(myFile)
         }
     }
