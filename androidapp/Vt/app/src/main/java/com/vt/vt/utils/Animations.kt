@@ -23,24 +23,15 @@ object Animations {
         expandedCircleImageView: CircleImageView?,
         expandedImageView: ImageView?,
     ) {
-        // If there's an animation in progress, cancel it immediately and
-        // proceed with this one.
         currentAnimator?.cancel()
 
-        // Load the high-resolution "zoomed-in" image.
         expandedCircleImageView?.setImageResource(imageResId)
             ?: expandedImageView?.setImageResource(imageResId)
 
-        // Calculate the starting and ending bounds for the zoomed-in image.
         val startBoundsInt = Rect()
         val finalBoundsInt = Rect()
         val globalOffset = Point()
 
-        // The start bounds are the global visible rectangle of the thumbnail,
-        // and the final bounds are the global visible rectangle of the
-        // container view. Set the container view's offset as the origin for the
-        // bounds, since that's the origin for the positioning animation
-        // properties (X, Y).
         thumbView.getGlobalVisibleRect(startBoundsInt)
         container.getGlobalVisibleRect(finalBoundsInt, globalOffset)
         startBoundsInt.offset(-globalOffset.x, -globalOffset.y)
@@ -49,20 +40,14 @@ object Animations {
         val startBounds = RectF(startBoundsInt)
         val finalBounds = RectF(finalBoundsInt)
 
-        // Using the "center crop" technique, adjust the start bounds to be the
-        // same aspect ratio as the final bounds. This prevents unwanted
-        // stretching during the animation. Calculate the start scaling factor.
-        // The end scaling factor is always 1.0.
         val startScale: Float
         if ((finalBounds.width() / finalBounds.height() > startBounds.width() / startBounds.height())) {
-            // Extend start bounds horizontally.
             startScale = startBounds.height() / finalBounds.height()
             val startWidth: Float = startScale * finalBounds.width()
             val deltaWidth: Float = (startWidth - startBounds.width()) / 2
             startBounds.left -= deltaWidth.toInt()
             startBounds.right += deltaWidth.toInt()
         } else {
-            // Extend start bounds vertically.
             startScale = startBounds.width() / finalBounds.width()
             val startHeight: Float = startScale * finalBounds.height()
             val deltaHeight: Float = (startHeight - startBounds.height()) / 2f
@@ -70,9 +55,6 @@ object Animations {
             startBounds.bottom += deltaHeight.toInt()
         }
 
-        // Hide the thumbnail and show the zoomed-in view. When the animation
-        // begins, it positions the zoomed-in view in the place of the
-        // thumbnail.
         thumbView.alpha = 0f
 
         animateZoomToLargeImage(
@@ -102,7 +84,6 @@ object Animations {
         expandedCircleImageView: CircleImageView?,
         expandedImageView: ImageView?
     ) {
-//        var currentAnimator = animator
         if (expandedCircleImageView != null) {
             expandedCircleImageView.visibility = View.VISIBLE
             expandedCircleImageView.pivotX = 0f
@@ -111,8 +92,6 @@ object Animations {
             expandedImageView.pivotX = 0f
         }
 
-        // Construct and run the parallel animation of the four translation and
-        // scale properties: X, Y, SCALE_X, and SCALE_Y.
         currentAnimator = AnimatorSet().apply {
             play(
                 ObjectAnimator.ofFloat(
@@ -171,16 +150,11 @@ object Animations {
         expandedCircleImageView: CircleImageView?,
         expandedImageView: ImageView?,
     ) {
-//        var currentAnimator = animator
         val expandedView = expandedCircleImageView ?: expandedImageView
-        // When the zoomed-in image is tapped, it zooms down to the original
-        // bounds and shows the thumbnail instead of the expanded image.
 
         expandedView?.setOnClickListener {
             currentAnimator?.cancel()
 
-            // Animate the four positioning and sizing properties in parallel,
-            // back to their original values.
             currentAnimator = AnimatorSet().apply {
                 play(
                     ObjectAnimator.ofFloat(

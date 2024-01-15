@@ -221,6 +221,10 @@ interface ApiService {
     @POST("api/weight-record")
     suspend fun createWeightRecord(@Body livestockRecordRequest: LivestockRecordRequest): Response<WeightRecordResponse>
 
+    // Milk Production
+    @POST("api/milk-record")
+    suspend fun createMilkRecord(@Body livestockRecordRequest: LivestockRecordRequest): Response<LivestockResponse>
+
     // Height Record
 
     @POST("api/v1.1/height-record")

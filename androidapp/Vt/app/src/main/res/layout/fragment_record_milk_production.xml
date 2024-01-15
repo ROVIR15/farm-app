@@ -122,8 +122,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editText_height_record"
-                android:layout_width="138dp"
+                android:id="@+id/editText_milk_production_record"
+                android:layout_width="188dp"
                 android:layout_height="112dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_edt_normal"
@@ -131,7 +131,7 @@
                 android:gravity="center"
                 android:hint="..."
                 android:inputType="numberDecimal"
-                android:maxLength="5"
+                android:maxLength="4"
                 android:textColor="@color/black"
                 android:textSize="48sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -154,7 +154,7 @@
                 app:elevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText_height_record" />
+                app:layout_constraintTop_toBottomOf="@+id/editText_milk_production_record" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel"

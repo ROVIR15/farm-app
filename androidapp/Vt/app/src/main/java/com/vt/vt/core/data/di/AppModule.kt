@@ -17,6 +17,7 @@ import com.vt.vt.core.data.source.repository.HealthRecordVtRepository
 import com.vt.vt.core.data.source.repository.HeightRecordVtRepository
 import com.vt.vt.core.data.source.repository.IncomeVtRepository
 import com.vt.vt.core.data.source.repository.LivestockVtRepository
+import com.vt.vt.core.data.source.repository.MilkProductionVtRepository
 import com.vt.vt.core.data.source.repository.ProductsVtRepository
 import com.vt.vt.core.data.source.repository.SledsVtRepository
 import com.vt.vt.core.data.source.repository.WeightRecordVtRepository
@@ -64,6 +65,10 @@ class AppModule {
     @Singleton
     fun provideWeightRecordVtRepository(apiService: ApiService): WeightRecordVtRepository =
         WeightRecordVtRepository(apiService)
+    @Provides
+    @Singleton
+    fun provideMilkProductionRecordVtRepository(apiService: ApiService): MilkProductionVtRepository =
+        MilkProductionVtRepository(apiService)
 
     @Provides
     @Singleton
