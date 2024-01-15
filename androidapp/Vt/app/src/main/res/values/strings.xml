@@ -132,6 +132,7 @@
     <string name="tab_text_3_breeding">BCS</string>
     <string name="tab_text_4_breeding">Pakan</string>
     <string name="tab_text_5_breeding">Tinggi Badan</string>
+    <string name="tab_text_6_breeding">Produksi Susu</string>
 
     <!--  DESCRIPTION IMAGE VIEW  -->
     <string name="livestock_image">"livestock image"</string>

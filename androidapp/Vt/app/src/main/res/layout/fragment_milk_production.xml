@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.detail_livestock.tab_layout.tinggi_badan.HeightTabLayoutFragment">
+    tools:context=".ui.detail_livestock.tab_layout.milk_production.MilkProductionFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_height"
+        android:id="@+id/list_milk_production"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_height" />
+        tools:listitem="@layout/item_milk_production" />
 
     <include
         android:id="@+id/loading"
@@ -23,4 +23,5 @@
     <include
         android:id="@+id/data_empty"
         layout="@layout/data_empty" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

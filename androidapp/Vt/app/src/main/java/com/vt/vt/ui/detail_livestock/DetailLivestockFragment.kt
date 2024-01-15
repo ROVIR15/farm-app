@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentDetailLivestockBinding
@@ -57,6 +58,7 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun observerView() {
+        val examplephoto = "https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
         editLivestockViewModel.apply {
             observeLoading().observe(viewLifecycleOwner) {
                 binding.loading.progressBar.isVisible = it
@@ -69,6 +71,10 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                     } else {
                         data.info
                     }
+                    Glide.with(requireContext())
+                        .load(data.imageUrl)
+                        .error(R.drawable.photo)
+                        .into(binding.ivDetailLivestock)
                     binding.tvTitleLivestock.text = newInfo.trim()
                     binding.tvInfo.text = data.info.trim()
                     binding.tvDescriptionLivestock.text = data.description.trim()
@@ -116,6 +122,7 @@ class DetailLivestockFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             R.string.tab_text_3_breeding,
             R.string.tab_text_4_breeding,
             R.string.tab_text_5_breeding,
+            R.string.tab_text_6_breeding,
         )
     }
 }

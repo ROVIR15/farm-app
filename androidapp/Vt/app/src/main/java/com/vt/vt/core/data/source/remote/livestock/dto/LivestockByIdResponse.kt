@@ -14,6 +14,9 @@ data class LivestockByIdResponse(
     @field:SerializedName("info")
     val info: String,
 
+    @field:SerializedName("imageurl")
+    val imageUrl: String,
+
     @field:SerializedName("bangsa")
     val bangsa: String,
 
@@ -37,6 +40,9 @@ data class LivestockByIdResponse(
 
     @field:SerializedName("height_records")
     val heightRecords: List<HeightRecordsItem>,
+
+    @field:SerializedName("milk_records")
+    val milkRecords: List<HeightRecordsItem>,
 
     @field:SerializedName("bcs_records")
     val bcsRecords: List<BcsRecordsItem>,

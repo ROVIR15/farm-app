@@ -37,6 +37,7 @@
     <string name="tab_text_3_breeding">BCS</string>
     <string name="tab_text_4_breeding">Pakan</string>
     <string name="tab_text_5_breeding">Tinggi Badan</string>
+    <string name="tab_text_6_breeding">Produksi Susu</string>
 
     <!--  Feeding Record Food  -->
     <string name="feeding_is_complete">Klik Simpan atau Batal untuk Membatalkan</string>
