@@ -142,13 +142,14 @@ def api_profile():
 @login_required
 def reset_password():
     data = request.json
+    password = data.get('password')
     new_password = data.get('new_password')
     
     try:
         user_id = current_user()
         user = User.query.get(user_id)
 
-        if user:
+        if user and check_password_hash(user.password, password):
             new_password_enc = generate_password_hash(new_password, method='sha256')
 
             user.password = new_password_enc
