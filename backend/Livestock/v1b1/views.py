@@ -150,7 +150,9 @@ def get_a_livestock(livestock_id):
                 subqueryload(Livestock.weight_records),
                 subqueryload(Livestock.height_records),
                 subqueryload(Livestock.bcs_records),
-                subqueryload(Livestock.health_records)
+                subqueryload(Livestock.health_records),
+                # milk records
+                subqueryload(Livestock.milk_records)
             ]).get(livestock_id)
 
             result = {
@@ -159,10 +161,12 @@ def get_a_livestock(livestock_id):
                 'gender': query.gender,
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
-                'imageurl': f'{domain_url}{query.imageurl}',
+                'imageurl': f'{domain_url}{query.imageurl}' if query.imageurl is not None else None,
                 'info': f'Belum di taruh kandang | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
                 'description': query.description,
                 'bcs_records': [],
+                # milk-records new adding
+                'milk_records': [],
                 'height_records': [],
                 'weight_records': [],
                 'feeding_records': [],
@@ -173,6 +177,8 @@ def get_a_livestock(livestock_id):
             results_bcs_records = []
             results_weight_records = []
             results_height_records = []
+            # milk records
+            results_milk_records = []
             prev_score = None
 
             if isinstance(query.bcs_records, list):
@@ -256,6 +262,35 @@ def get_a_livestock(livestock_id):
                     results_height_records.append(data_height)
                     prev_score = current_record.score  # Update prev_score for the next iteration
 
+            if isinstance(query.milk_records, list):
+                for current_record in query.milk_records:
+                    data_weight = {
+                        'id': current_record.id,
+                        'livestock_id': current_record.livestock_id,
+                        'date': current_record.date,
+                        'score': current_record.score,
+                        'remarks': current_record.remarks,
+                        'created_at': current_record.created_at
+                    }
+
+                    if prev_score is not None:
+                        growth = current_record.score - prev_score
+                        percentage = (growth / prev_score) * 100
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{percentage:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = prev_score if prev_score is not None else 0
+                    else:
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{0:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = 0
+
+                    results_milk_records.append(data_weight)
+                    prev_score = current_record.score  # Update prev_score for the next iteration
+
+            
+            result['milk_records'] = results_milk_records[::-1]
             result['bcs_records'] = results_bcs_records[::-1]
             result['height_records'] = results_height_records[::-1]
             result['weight_records'] = results_weight_records[::-1]
@@ -326,7 +361,8 @@ def get_a_livestock(livestock_id):
                 subqueryload(Livestock.weight_records),
                 subqueryload(Livestock.height_records),
                 subqueryload(Livestock.bcs_records),
-                subqueryload(Livestock.health_records)
+                subqueryload(Livestock.health_records),
+                subqueryload(Livestock.milk_records)
             ]).get(livestock_id)
 
             sled = {'id': query_block_area_livestock.sled_id,
@@ -341,17 +377,22 @@ def get_a_livestock(livestock_id):
                 'bangsa': query.bangsa,
                 'birth_date': query.birth_date.strftime('%d-%m-%Y'),
                 'info': f'Tinggal di kandang S-{sled["id"]} {sled["name"]} di blok BA-{block_area["id"]} {block_area["name"]} | {query.get_gender_label()} | {query.calculate_age()} | Bangsa {query.bangsa}',
+                'imageurl': f'{domain_url}{query.imageurl}' if query.imageurl is not None else None,
                 'description': query.description,
                 'bcs_records': [],
                 'weight_records': [],
                 'height_records': [],
                 'feeding_records': [],
+                # milk records
+                'milk_records': [],
                 'health_records': query.health_records,
                 'sled_id': query_block_area_livestock.sled_id,
                 'block_area_id': query_block_area_livestock.block_area_id,
                 'descendant': descendant_result
             }
 
+            # add = milk records
+            results_milk_records = []
             results_bcs_records = []
             results_height_records = []
             results_weight_records = []
@@ -439,6 +480,35 @@ def get_a_livestock(livestock_id):
                     results_height_records.append(data_height)
                     prev_score = current_record.score  # Update prev_score for the next iteration
 
+            if isinstance(query.milk_records, list):
+                for current_record in query.milk_records:
+                    data_weight = {
+                        'id': current_record.id,
+                        'livestock_id': current_record.livestock_id,
+                        'date': current_record.date,
+                        'score': current_record.score,
+                        'remarks': current_record.remarks,
+                        'created_at': current_record.created_at
+                    }
+
+                    if prev_score is not None:
+                        growth = current_record.score - prev_score
+                        percentage = (growth / prev_score) * 100
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{percentage:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = prev_score if prev_score is not None else 0
+                    else:
+                        # Format the percentage with two decimal places
+                        data_weight['growth'] = f'{0:.2f}%'
+                        # Format the percentage with two decimal places
+                        data_weight['prev_score'] = 0
+
+                    results_milk_records.append(data_weight)
+                    prev_score = current_record.score  # Update prev_score for the next iteration
+
+            # milk records add
+            result['milk_records'] = results_milk_records[::-1]
             result['bcs_records'] = results_bcs_records[::-1]
             result['height_records'] = results_height_records[::-1]
             result['weight_records'] = results_weight_records[::-1]

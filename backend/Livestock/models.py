@@ -7,6 +7,9 @@ from Record.WeightRecord.models import WeightRecord
 from Record.BCSRecord.models import BCSRecord
 from Record.HealthRecord.models import HealthRecord
 
+# new implementation of clean architecture
+# all models will be stored in framework / sqlalchemy
+from frameworks.sqlalchemy.Record.Milk.models import MilkRecord
 
 class Livestock (db.Model):
     __tablename__ = "livestock"
@@ -31,6 +34,8 @@ class Livestock (db.Model):
         BCSRecord.created_at), lazy=True)
     health_records = db.relationship('HealthRecord', back_populates='livestock', order_by=asc(
         HealthRecord.created_at), lazy=True)
+
+    milk_records = db.relationship('MilkRecord', back_populates='livestock', order_by=asc(MilkRecord.date), lazy=True)
 
     def get_gender_label(self):
         gender_mapping = {1: 'Jantan', 2: 'Betina'}

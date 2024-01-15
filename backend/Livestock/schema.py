@@ -6,6 +6,8 @@ from Record.HealthRecord.schema import HealthRecordSchema
 from Record.FeedingRecord.schema import FeedListSchema
 from Descendant.schema import DescendantSchema
 
+# new milk record schema
+from entities.Record.Milk import MilkRecordSchema
 
 class LivestockSchema(Schema):
     id = fields.Int(primary_key=True, dump_only=True)
@@ -22,6 +24,7 @@ class LivestockSchema(Schema):
         HeightRecordSchema, allow_none=True, many=True)
     weight_records = fields.Nested(
         WeightRecordSchema, allow_none=True, many=True)
+    milk_records = fields.Nested(MilkRecordSchema, allow_none=True, many=True)
     bcs_records = fields.Nested(BCSRecordSchema, allow_none=True, many=True)
     health_records = fields.Nested(
         HealthRecordSchema, allow_none=True, many=True)
