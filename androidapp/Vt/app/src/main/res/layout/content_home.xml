@@ -217,7 +217,7 @@
                 android:id="@+id/img_btn_fattening"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginHorizontal="16dp"
                 android:background="@drawable/frame_category"
                 android:contentDescription="fattening"
                 android:padding="48dp"

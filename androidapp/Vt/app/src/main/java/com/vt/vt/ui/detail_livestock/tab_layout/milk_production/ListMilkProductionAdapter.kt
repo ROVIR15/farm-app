@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vt.vt.core.data.source.remote.livestock.dto.HeightRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.MilkProductionRecordsItem
 import com.vt.vt.databinding.ItemMilkProductionBinding
 
 class ListMilkProductionAdapter :
-    ListAdapter<HeightRecordsItem, ListMilkProductionAdapter.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<MilkProductionRecordsItem, ListMilkProductionAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -26,7 +26,7 @@ class ListMilkProductionAdapter :
     inner class ViewHolder(private val binding: ItemMilkProductionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bindTo(data: HeightRecordsItem) {
+        fun bindTo(data: MilkProductionRecordsItem) {
             with(binding) {
                 tvItemDate.text = data.date
                 tvItemValueCurrentMilk.text = "${data.score} liter"
@@ -37,16 +37,16 @@ class ListMilkProductionAdapter :
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<HeightRecordsItem?> =
-            object : DiffUtil.ItemCallback<HeightRecordsItem?>() {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<MilkProductionRecordsItem?> =
+            object : DiffUtil.ItemCallback<MilkProductionRecordsItem?>() {
                 override fun areItemsTheSame(
-                    oldItem: HeightRecordsItem, newItem: HeightRecordsItem
+                    oldItem: MilkProductionRecordsItem, newItem: MilkProductionRecordsItem
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: HeightRecordsItem, newItem: HeightRecordsItem
+                    oldItem: MilkProductionRecordsItem, newItem: MilkProductionRecordsItem
                 ): Boolean {
                     return oldItem == newItem
                 }

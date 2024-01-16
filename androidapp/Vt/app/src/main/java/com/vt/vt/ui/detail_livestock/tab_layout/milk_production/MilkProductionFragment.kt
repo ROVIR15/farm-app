@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.vt.vt.core.data.source.remote.livestock.dto.HeightRecordsItem
+import com.vt.vt.core.data.source.remote.livestock.dto.MilkProductionRecordsItem
 import com.vt.vt.databinding.FragmentMilkProductionBinding
 import com.vt.vt.databinding.FragmentRecordMilkProductionBinding
 import com.vt.vt.ui.edit_livestock.EditLivestockViewModel
@@ -35,6 +37,12 @@ class MilkProductionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val receiveId = arguments?.getInt("livestockId")
         livestockViewModel.getLivestockById(receiveId.toString())
+        with(binding) {
+            listMilkProduction.adapter = listMilkProductionAdapter
+            listMilkProduction.layoutManager = LinearLayoutManager(
+                requireActivity(), LinearLayoutManager.VERTICAL, false
+            )
+        }
         observerView()
     }
 
@@ -43,13 +51,10 @@ class MilkProductionFragment : Fragment() {
             binding.loading.progressBar.isVisible = it
         }
         livestockViewModel.getLivestockById.observe(viewLifecycleOwner) { result ->
-            //TODO : API LIST MILK PRODUCTION
-            // 1. ITEM LIST MILK RECORD
-
             Log.d(TAG, "observerView: ${result?.milkRecords}")
             result?.let { data ->
-                binding.dataEmpty.isEmpty.isVisible = data.weightRecords.isEmpty()
-//                listHeight(result.heightRecords)
+                binding.dataEmpty.isEmpty.isVisible = data.milkRecords.isEmpty()
+                listMilkProductionRecord(result.milkRecords)
             }
         }
         livestockViewModel.isError().observe(viewLifecycleOwner) {
@@ -57,7 +62,7 @@ class MilkProductionFragment : Fragment() {
         }
     }
 
-    private fun listHeight(data: List<HeightRecordsItem>) {
+    private fun listMilkProductionRecord(data: List<MilkProductionRecordsItem>) {
         listMilkProductionAdapter.submitList(data)
     }
 

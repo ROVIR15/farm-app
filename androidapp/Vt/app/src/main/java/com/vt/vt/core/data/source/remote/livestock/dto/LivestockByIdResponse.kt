@@ -42,7 +42,7 @@ data class LivestockByIdResponse(
     val heightRecords: List<HeightRecordsItem>,
 
     @field:SerializedName("milk_records")
-    val milkRecords: List<HeightRecordsItem>,
+    val milkRecords: List<MilkProductionRecordsItem>,
 
     @field:SerializedName("bcs_records")
     val bcsRecords: List<BcsRecordsItem>,
@@ -106,6 +106,33 @@ data class WeightRecordsItem(
 )
 
 data class HeightRecordsItem(
+
+    @field:SerializedName("date")
+    val date: String,
+
+    @field:SerializedName("score")
+    val score: Double,
+
+    @field:SerializedName("growth")
+    val growth: String,
+
+    @field:SerializedName("prev_score")
+    val prevScore: Double,
+
+    @field:SerializedName("livestock_id")
+    val livestockId: Int,
+
+    @field:SerializedName("created_at")
+    val createdAt: String,
+
+    @field:SerializedName("id")
+    val id: Int,
+
+    @field:SerializedName("remarks")
+    val remarks: String
+)
+
+data class MilkProductionRecordsItem(
 
     @field:SerializedName("date")
     val date: String,
