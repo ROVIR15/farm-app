@@ -18,15 +18,15 @@ class ForgotPasswordViewModel @Inject constructor(private val dataRepository: Da
     val changePasswordEmitter: LiveData<ChangePasswordResponse?> = _changePasswordEmitter
 
     fun doChangePassword(
-        username: String,
         password: String,
+        oldPassword: String,
         newPassword: String
     ) {
         launch(
             action = {
                 val changePasswordRequest = ChangePasswordRequest(
-                    username = username,
                     password = password,
+                    oldPassword = oldPassword,
                     newPassword = newPassword
                 )
                 val response = dataRepository.doChangePassword(changePasswordRequest)

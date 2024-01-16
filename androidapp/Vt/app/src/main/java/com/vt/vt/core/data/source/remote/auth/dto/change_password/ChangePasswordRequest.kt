@@ -7,9 +7,9 @@ data class ChangePasswordRequest(
 	@field:SerializedName("password")
 	val password: String? = null,
 
-	@field:SerializedName("new_password")
-	val newPassword: String? = null,
+	@field:SerializedName("old_password")
+	val oldPassword: String? = null,
 
-	@field:SerializedName("username")
-	val username: String? = null
+	@field:SerializedName("new_password")
+	val newPassword: String? = null
 )

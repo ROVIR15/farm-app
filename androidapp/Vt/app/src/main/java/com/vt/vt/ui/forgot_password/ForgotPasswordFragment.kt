@@ -78,17 +78,29 @@ class ForgotPasswordFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_change_password -> {
-                val username = binding.username.text.toString().trim()
-                val password = binding.cvOldPassword.text.toString().trim()
+                val password = binding.password.text.toString().trim()
+                val oldPassword = binding.cvOldPassword.text.toString().trim()
                 val newPassword = binding.cvNewPassword.text.toString().trim()
-                if (username.isNotEmpty() && password.isNotEmpty() && newPassword.isNotEmpty()) {
-                    viewModel.doChangePassword(
-                        username = username,
-                        password = password,
-                        newPassword = newPassword
-                    )
+                if (password.isNotEmpty() && password.isNotEmpty() && newPassword.isNotEmpty()) {
+                    if (password != oldPassword) {
+                        Toast.makeText(
+                            requireActivity(),
+                            R.string.password_is_not_matching_or_empty,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        viewModel.doChangePassword(
+                            password = password,
+                            oldPassword = oldPassword,
+                            newPassword = newPassword
+                        )
+                    }
                 } else {
-                    Toast.makeText(requireActivity(), "Lengkapi Kolom", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireActivity(),
+                        R.string.password_is_not_matching_or_empty,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
