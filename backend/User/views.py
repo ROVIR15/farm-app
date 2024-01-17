@@ -167,6 +167,35 @@ def reset_password():
 
         return jsonify(response), 500
 
+# Reset Password route (not protected API)
+@views_auth_bp.route('/api/change-password-non-barrier', methods=['POST'])
+def reset_password():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    new_password = data.get('new_password')
+    
+    try:
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+            new_password_enc = generate_password_hash(new_password, method='sha256')
+
+            user.password = new_password_enc
+            db.session.commit()
+            return jsonify({"message": "Your password has changed!"}), 200
+
+        else:
+            return jsonify({"message": "Your credential is failed. Check your username and password."}), 401
+    except Exception as e:
+        error_message = str(e)
+        response = {
+            'status': 'error',
+            'message': f'Failed to proceed your request! due to error: {error_message}'
+        }
+
+        return jsonify(response), 500
+
 
 # Logout route (protected API)
 @views_auth_bp.route('/api/logout', methods=['POST'])
