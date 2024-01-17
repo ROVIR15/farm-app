@@ -114,7 +114,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.sign_in_tv_forgot_password -> {
-                findNavController().navigate(R.id.action_signInFragment_to_forgotPasswordFragment)
+                // TODO: NAVIGATE WHEN USER FORGET PASSWORD
             }
         }
     }

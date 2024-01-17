@@ -119,7 +119,7 @@
             app:destination="@id/penyimpanTernakFragment" />
         <action
             android:id="@+id/action_navigation_profile_to_forgotPasswordFragment"
-            app:destination="@id/navigation_authentication" />
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditDataBarangJasaFragment"
@@ -546,6 +546,12 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.vt.vt.ui.forgot_password.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" />
     <navigation
         android:id="@+id/navigation_authentication"
         app:startDestination="@id/signInFragment">
@@ -562,20 +568,12 @@
                 app:destination="@id/updateSignUpProfileFragment" />
         </fragment>
         <fragment
-            android:id="@+id/forgotPasswordFragment"
-            android:name="com.vt.vt.ui.forgot_password.ForgotPasswordFragment"
-            android:label="fragment_forgot_password"
-            tools:layout="@layout/fragment_forgot_password" />
-        <fragment
             android:id="@+id/signInFragment"
             android:name="com.vt.vt.ui.signin.SignInFragment"
             android:label="SignInFragment">
             <action
                 android:id="@+id/action_signInFragment_to_signUpFragment"
                 app:destination="@id/signUpFragment" />
-            <action
-                android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
-                app:destination="@id/forgotPasswordFragment" />
         </fragment>
         <fragment
             android:id="@+id/updateSignUpProfileFragment"

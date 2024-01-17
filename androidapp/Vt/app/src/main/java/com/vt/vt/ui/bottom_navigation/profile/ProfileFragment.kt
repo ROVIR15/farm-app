@@ -105,7 +105,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.tv_forgot_password -> {
-                v.findNavController().navigate(R.id.action_navigation_profile_to_forgotPasswordFragment)
+                v.findNavController()
+                    .navigate(R.id.action_navigation_profile_to_forgotPasswordFragment)
             }
         }
     }
