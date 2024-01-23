@@ -60,7 +60,6 @@ class FatteningFragment : Fragment(), View.OnClickListener {
                 }
             }
             contentFatteningCategoryWeightRecord.setOnClickListener(this@FatteningFragment)
-            contentFatteningCategoryBcsRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryHealthRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryFoodRecord.setOnClickListener(this@FatteningFragment)
             contentFatteningCategoryHeightRecord.setOnClickListener(this@FatteningFragment)
@@ -177,12 +176,6 @@ class FatteningFragment : Fragment(), View.OnClickListener {
                 val navigationToWeightRecord =
                     R.id.action_fatteningFragment_to_rekamBeratBadanFragment
                 navigateToRecord(navigationToWeightRecord)
-            }
-
-            R.id.content_fattening_category_bcs_record -> {
-                val navigationToBcsRecord =
-                    R.id.action_fatteningFragment_to_rekamBCSFragment
-                navigateToRecord(navigationToBcsRecord)
             }
 
             R.id.content_fattening_category_health_record -> {

@@ -5,11 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ProgressBar
-import android.widget.Spinner
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,13 +14,11 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.material.button.MaterialButton
 import com.vt.vt.R
 import com.vt.vt.databinding.FragmentBreedingBinding
 import com.vt.vt.ui.bottom_navigation.livestock.LivestockViewModel
 import com.vt.vt.ui.fattening.dialog.FatteningBottomDialogFragment
 import com.vt.vt.utils.PickDatesUtils
-import com.vt.vt.utils.selected
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,14 +56,19 @@ class BreedingFragment : Fragment() {
                     R.id.action_breedingFragment_to_rekamBeratBadanFragment
                 navigateToRecord(navigationToWeightRecord)
             }
-            contentBreedingCategoryRecordMilk.setOnClickListener{
-                val navigationToMilkRecord = R.id.action_breedingFragment_to_recordMilkProductionFragment
+            contentBreedingCategoryRecordMilk.setOnClickListener {
+                val navigationToMilkRecord =
+                    R.id.action_breedingFragment_to_recordMilkProductionFragment
                 navigateToRecord(navigationToMilkRecord)
             }
             contentBreedingCategoryRecordHealth.setOnClickListener {
                 val navigationToHealthRecord =
                     R.id.action_breedingFragment_to_rekamKesehatanFragment
                 navigateToRecord(navigationToHealthRecord)
+            }
+            contentBreedingCategoryRecordBcs.setOnClickListener {
+                val navigationToBcs = R.id.action_breedingFragment_to_rekamBCSFragment
+                navigateToRecord(navigationToBcs)
             }
             contentBreedingCategoryRecordAnimalMating.setOnClickListener {
                 findNavController().navigate(R.id.action_breedingFragment_to_listAnimalMatingsFragment)

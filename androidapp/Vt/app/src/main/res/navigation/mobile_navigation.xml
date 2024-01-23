@@ -236,6 +236,9 @@
         <action
             android:id="@+id/action_breedingFragment_to_recordMilkProductionFragment"
             app:destination="@id/recordMilkProductionFragment" />
+        <action
+            android:id="@+id/action_breedingFragment_to_rekamBCSFragment"
+            app:destination="@id/rekamBCSFragment" />
     </fragment>
     <fragment
         android:id="@+id/fatteningFragment"
@@ -249,9 +252,6 @@
         <action
             android:id="@+id/action_fatteningFragment_to_rekamKesehatanFragment"
             app:destination="@id/rekamKesehatanFragment" />
-        <action
-            android:id="@+id/action_fatteningFragment_to_rekamBCSFragment"
-            app:destination="@id/rekamBCSFragment" />
         <action
             android:id="@+id/action_fatteningFragment_to_rekamBeratBadanFragment"
             app:destination="@id/rekamBeratBadanFragment" />
