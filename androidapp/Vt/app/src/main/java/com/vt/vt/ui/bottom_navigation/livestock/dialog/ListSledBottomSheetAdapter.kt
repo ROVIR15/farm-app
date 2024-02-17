@@ -27,6 +27,7 @@ class ListSledBottomSheetAdapter :
         fun bindTo(data: SledOptionResponseItem) {
             val adapterPositionId = currentList[adapterPosition].id
             binding.nameSled.text = data.name
+            binding.detail.text = data.info
             if (selectedItem == adapterPositionId) {
                 binding.radioButton.isChecked = true
                 binding.container.background =

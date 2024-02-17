@@ -55,7 +55,7 @@ class LivestockAdapter(
         }
 
         override fun onClick(v: View?) {
-            val id = currentList[adapterPosition].id
+            val posAdapter = currentList[adapterPosition]
             when (v?.id) {
                 R.id.btn_options_item_livestock -> {
                     val popup = PopupMenu(v.context, v)
@@ -64,8 +64,8 @@ class LivestockAdapter(
                         when (item.itemId) {
                             R.id.menu_edit_livestock -> {
                                 val mBundle = Bundle()
-                                if (id != null) {
-                                    mBundle.putInt("id", id)
+                                if (posAdapter.id != null) {
+                                    mBundle.putInt("id", posAdapter.id)
                                     v.findNavController()
                                         .navigate(
                                             R.id.action_navigation_livestock_to_editLivestockFragment,
@@ -111,8 +111,8 @@ class LivestockAdapter(
 
                 R.id.btn_record -> {
                     val mBundle = Bundle()
-                    if (id != null) {
-                        mBundle.putString("livestockId", id.toString())
+                    if (posAdapter.id != null) {
+                        mBundle.putString("livestockId", posAdapter.id.toString())
                         v.findNavController()
                             .navigate(
                                 R.id.action_navigation_livestock_to_fatteningFragment,
@@ -124,7 +124,10 @@ class LivestockAdapter(
                 R.id.btn_info -> {
                     val id = currentList[adapterPosition].id
                     val mBundle = Bundle()
-                    id?.let { mBundle.putInt("id", it) }
+                    id?.let {
+                        mBundle.putInt("id", it)
+                        mBundle.putString("livestockTitle", posAdapter.name)
+                    }
                     v.findNavController()
                         .navigate(
                             R.id.action_navigation_livestock_to_detailLivestockFragment,

@@ -159,6 +159,9 @@
             android:name="id"
             android:defaultValue="0"
             app:argType="integer" />
+        <argument
+            android:name="livestockTitle"
+            app:argType="string" />
         <action
             android:id="@+id/action_detailLivestockFragment_to_editLivestockFragment"
             app:destination="@id/editLivestockFragment" />
