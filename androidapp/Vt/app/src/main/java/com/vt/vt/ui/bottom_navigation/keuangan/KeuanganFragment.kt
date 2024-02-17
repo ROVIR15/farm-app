@@ -2,6 +2,7 @@ package com.vt.vt.ui.bottom_navigation.keuangan
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -55,7 +56,7 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 inflateMenu(R.menu.menu_keuangan)
                 setOnMenuItemClickListener(this@KeuanganFragment)
             }
-            ivDatePicker.setOnClickListener {
+            containerDate.setOnClickListener {
                 PickDatesUtils.pickMonthAndYear(requireActivity(), tvDatePick) { selectedDate ->
                     budgetViewModel.updateSelectedDate(selectedDate)
                 }
@@ -92,13 +93,16 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
         }
         budgetViewModel.budgetEmitter.observe(viewLifecycleOwner) { budget ->
+            listBudget(budget.budgetBreakdown)
+            listIncome(budget.incomes)
             val isBudgetBreakdownEmpty = budget.budgetBreakdown.isNullOrEmpty()
             val isIncomesEmpty = budget.incomes.isNullOrEmpty()
 
             binding.anggaranText.isVisible = !isBudgetBreakdownEmpty
-            binding.incomeText.isVisible = !isIncomesEmpty
             binding.horizontalLine1.isVisible = !isBudgetBreakdownEmpty
+            binding.incomeText.isVisible = !isIncomesEmpty
             binding.horizontalLine2.isVisible = !isIncomesEmpty
+
             binding.isEmpty.isEmpty.isVisible = isBudgetBreakdownEmpty && isIncomesEmpty
 
             if (isBudgetBreakdownEmpty && isIncomesEmpty) {
@@ -118,8 +122,6 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 totalBudgetAmountValue.replace(".", "").toBigDecimal()
             binding.tvTotalExpenditure.text = decimalTotalBudgetAmountValue.convertRupiah()
 
-            listBudget(budget.budgetBreakdown)
-            listIncome(budget.incomes)
         }
         budgetViewModel.deleteBudgetEmitter.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { eventMessage ->
@@ -204,10 +206,6 @@ class KeuanganFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
     private fun showLoading(state: Boolean) {
         binding.loading.progressBar.isVisible = state
-        binding.anggaranText.isVisible = !state
-        binding.incomeText.isVisible = !state
-        binding.horizontalLine1.isVisible = !state
-        binding.horizontalLine2.isVisible = !state
     }
 
     override fun onDestroy() {
