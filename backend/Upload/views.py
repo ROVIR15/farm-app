@@ -77,9 +77,10 @@ def upload_file():
         resized_img.save(file_path)
 
         return jsonify({
-            'url_link': file_path,
-            'url_link_alt': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}',
-            'message': 'File uploaded and resized to 70% successfully'}), 200
+            'url_link_alt': file_path,
+            'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}',
+            'message': 'File uploaded and resized to 70% successfully'
+        }), 200
 
     except Exception as e:
       error_message = str(e)
@@ -136,7 +137,11 @@ def upload_file_sled():
         file_path = os.path.join(UPLOAD_FOLDER, new_filename)
         resized_img.save(file_path)
 
-        return jsonify({'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}','message': 'File uploaded and resized to 70% successfully'}), 200
+        return jsonify({
+            'url_link_alt': file_path,
+            'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}',
+            'message': 'File uploaded and resized to 70% successfully'
+        }), 200
 
     except Exception as e:
       error_message = str(e)
@@ -194,7 +199,11 @@ def upload_file_block_area():
         file_path = os.path.join(UPLOAD_FOLDER, new_filename)
         resized_img.save(file_path)
 
-        return jsonify({'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}','message': 'File uploaded and resized to 70% successfully'}), 200
+        return jsonify({
+            'url_link_alt': file_path,
+            'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}',
+            'message': 'File uploaded and resized to 70% successfully'
+        }), 200
 
     except Exception as e:
       error_message = str(e)
@@ -252,8 +261,12 @@ def upload_file_farm_profile():
         file_path = os.path.join(UPLOAD_FOLDER, new_filename)
         resized_img.save(file_path)
 
-        return jsonify({'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}','message': 'File uploaded and resized to 70% successfully'}), 200
-
+        return jsonify({
+            'url_link_alt': file_path,
+            'url_link': f'{UPLOAD_FOLDER.replace("/var/www/farm-app", "")}/{new_filename}',
+            'message': 'File uploaded and resized to 70% successfully'
+        }), 200
+        
     except Exception as e:
       error_message = str(e)
       response = {
