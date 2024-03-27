@@ -750,7 +750,7 @@ def update_livestock(livestock_id):
             livestock.gender = gender
             livestock.bangsa = bangsa
             livestock.description = description
-            livestock.imageurl = 'imageurl'
+            livestock.imageurl = imageurl
             db.session.commit()
 
             descendant = Descendant.query.filter_by(
