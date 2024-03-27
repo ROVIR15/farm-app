@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from dotenv import load_dotenv
 import os
 import logging
@@ -80,6 +80,17 @@ app.logger.setLevel(logging.INFO)  # Set the logging level to INFO or any desire
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] - %(message)s'))
 app.logger.addHandler(handler)
+
+@app.before_request
+def log_request_info():
+    if request.method == 'PUT' or request.method == 'POST':
+        app.logger.info('Request URL: %s', request.url)
+        app.logger.info('Request Method: %s', request.method)
+        app.logger.info('Request Data: %s', request.data)
+        app.logger.info('Request JSON: %s', request.json)
+        app.logger.info('Request Form: %s', request.form)
+        app.logger.info('Request Args: %s', request.args)
+        app.logger.info('Request Headers: %s', request.headers)
 
 @app.route('/static/uploads/<filename>', methods=['GET'])
 def serve_file(filename):
