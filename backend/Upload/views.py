@@ -31,7 +31,7 @@ def resize_image(file, scale_factor):
 
 @views_upload_bp.route('/upload-livestock', methods=['POST'])
 def upload_file():
-    UPLOAD_FOLDER = 'static/uploads/livestocks'
+    UPLOAD_FOLDER = 'var/www/farm-app/static/uploads/livestocks'
 
     try:
         if 'file' not in request.files:
@@ -89,7 +89,7 @@ def upload_file():
 
 @views_upload_bp.route('/upload-sled', methods=['POST'])
 def upload_file_sled():
-    UPLOAD_FOLDER = 'static/uploads/sleds'
+    UPLOAD_FOLDER = 'var/www/farm-app/static/uploads/sleds'
 
     try:
         if 'file' not in request.files:
@@ -147,7 +147,7 @@ def upload_file_sled():
 
 @views_upload_bp.route('/upload-block-area', methods=['POST'])
 def upload_file_block_area():
-    UPLOAD_FOLDER = 'static/uploads/block-area'
+    UPLOAD_FOLDER = 'var/www/farm-app/static/uploads/block-area'
 
     try:
         if 'file' not in request.files:
@@ -205,7 +205,7 @@ def upload_file_block_area():
 
 @views_upload_bp.route('/upload-farm-profile', methods=['POST'])
 def upload_file_farm_profile():
-    UPLOAD_FOLDER = 'static/uploads/farm-profile'
+    UPLOAD_FOLDER = 'var/www/farm-app/static/uploads/farm-profile'
 
     try:
         if 'file' not in request.files:
