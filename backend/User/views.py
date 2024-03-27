@@ -169,7 +169,7 @@ def reset_password():
 
 # Reset Password route (not protected API)
 @views_auth_bp.route('/api/change-password-non-barrier', methods=['POST'])
-def reset_password():
+def reset_password_non_barrier():
     data = request.json
     username = data.get('username')
     password = data.get('password')
