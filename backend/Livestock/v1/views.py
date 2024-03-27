@@ -620,6 +620,7 @@ def update_livestock(livestock_id):
     bangsa = data.get('bangsa')
     description = data.get('description')
     sled_id = data.get('sled_id')
+    imageurl = data.get('imageurl')
 
     parent_male_id = data.get('parent_male_id')
     parent_female_id = data.get('parent_female_id')
@@ -633,6 +634,7 @@ def update_livestock(livestock_id):
             livestock.gender = gender
             livestock.bangsa = bangsa
             livestock.description = description
+            livestock.imageurl = imageurl
             db.session.commit()
 
             descendant = Descendant.query.filter_by(
